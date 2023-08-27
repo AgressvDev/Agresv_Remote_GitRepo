@@ -15,6 +15,8 @@ class HomeScreenViewController: UIViewController {
     
     @IBOutlet weak var MainUNLabel: UILabel!
     
+    @IBOutlet weak var DoublesRankLabel: UILabel!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -33,14 +35,25 @@ class HomeScreenViewController: UIViewController {
                         } else {
                             print("\(document!.documentID) => \(String(describing: document!.data()))")
                             
+                            let Doubles_Rank = document!.data()!["Doubles_Rank"]
+                                
+                            let Doubles_Rank_As_String = String(describing: Doubles_Rank!)
+                            
+                            self.DoublesRankLabel.text = Doubles_Rank_As_String
+                            
                             self.MainUNLabel.text = document!.data()!["Username"] as? String
+                            
+                            
+                           
                         }
                     }
                 }
         
+        
    //Calls the Username function
     print(GetUsername())
     
+ 
         //Font aspects for Username
     let CustomFont = UIFont(name: "Impact", size: 30)
     let usernamelabel = MainUNLabel
@@ -49,17 +62,24 @@ class HomeScreenViewController: UIViewController {
         usernamelabel!.textAlignment = .center
         usernamelabel!.font = CustomFont
         usernamelabel!.adjustsFontSizeToFitWidth = true
-                
+        usernamelabel!.backgroundColor = UIColor.black
+        usernamelabel!.layer.cornerRadius = 15
+        usernamelabel!.clipsToBounds = true
+        
+        //Font aspects for Doubles Rank
+    let DoublesRankFont = UIFont(name: "Impact", size: 30)
+    let DoublesRankLabel = DoublesRankLabel
+   
+        DoublesRankLabel!.center = CGPoint(x: 80, y: 465)
+        DoublesRankLabel!.textAlignment = .center
+        DoublesRankLabel!.font = DoublesRankFont
+        DoublesRankLabel!.adjustsFontSizeToFitWidth = true
+        DoublesRankLabel!.backgroundColor = UIColor.gray
+        DoublesRankLabel!.layer.cornerRadius = 5
+        DoublesRankLabel!.clipsToBounds = true
+        
             
-//            let CurrentUserEmail = Auth.auth().currentUser!.email
-//            let CustomFont = UIFont(name: "Impact", size: 15)
-//
-//
-//            let label = UILabel(frame: CGRect(x: 0, y: 0, width: 200, height: 50))
-//
-//            label.font = CustomFont
-//            label.text = CurrentUserEmail
-//            self.view.addSubview(label)
+
         }
         
  

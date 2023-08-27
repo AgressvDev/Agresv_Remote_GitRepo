@@ -27,7 +27,9 @@ class CreateAccountViewController: UIViewController {
         let db = Firestore.firestore()
         let ref = db.collection("Agressv_Users").document(Email)
 
-        ref.setData(["Username" : Username, "Doubles_Rank" : 8.5, "Singles_Rank": 8.5, "Email": Email])
+        ref.setData(["Username" : Username, "Doubles_Rank" : 8.5, "Singles_Rank": 8.5, "Email": Email,
+                     "Doubles_Games_Played": 150, "Singles_Games_Played": 70,
+                     "Doubles_Games_Wins": 100, "Doubles_Games_Losses": 50, "Singles_Games_Wins": 60, "Singles_Games_Losses": 10])
        
     }
     
