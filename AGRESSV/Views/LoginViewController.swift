@@ -29,7 +29,7 @@ class LoginViewController: UIViewController {
         Auth.auth().signIn(withEmail: email, password: password) { Result, error in
             if error != nil {
                 // Create new Alert
-                let dialogMessage = UIAlertController(title: "Error.", message: "Invalid Login. Please try again", preferredStyle: .alert)
+                let dialogMessage = UIAlertController(title: "Error.", message: "Invalid Login. Please try again.", preferredStyle: .alert)
                 
                 // Create OK button with action handler
                 let ok = UIAlertAction(title: "OK", style: .default, handler: { (action) -> Void in
