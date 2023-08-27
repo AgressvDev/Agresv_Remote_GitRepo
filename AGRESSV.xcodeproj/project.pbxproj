@@ -7,15 +7,19 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4508FA992A900D910081B477 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4508FA982A900D910081B477 /* LoginViewController.swift */; };
+		4508FA9B2A90229B0081B477 /* CreateAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4508FA9A2A90229B0081B477 /* CreateAccountViewController.swift */; };
 		450A49742A8EC94D00DEB7CF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 450A49732A8EC94D00DEB7CF /* AppDelegate.swift */; };
 		450A49762A8EC94D00DEB7CF /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 450A49752A8EC94D00DEB7CF /* SceneDelegate.swift */; };
-		450A49782A8EC94D00DEB7CF /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 450A49772A8EC94D00DEB7CF /* ViewController.swift */; };
+		450A49782A8EC94D00DEB7CF /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 450A49772A8EC94D00DEB7CF /* MainViewController.swift */; };
 		450A497B2A8EC94D00DEB7CF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 450A49792A8EC94D00DEB7CF /* Main.storyboard */; };
 		450A497D2A8EC94E00DEB7CF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 450A497C2A8EC94E00DEB7CF /* Assets.xcassets */; };
 		450A49802A8EC94E00DEB7CF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 450A497E2A8EC94E00DEB7CF /* LaunchScreen.storyboard */; };
-		450A498B2A8EC94F00DEB7CF /* AGRESSVTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 450A498A2A8EC94F00DEB7CF /* AGRESSVTests.swift */; };
-		450A49952A8EC94F00DEB7CF /* AGRESSVUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 450A49942A8EC94F00DEB7CF /* AGRESSVUITests.swift */; };
-		450A49972A8EC94F00DEB7CF /* AGRESSVUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 450A49962A8EC94F00DEB7CF /* AGRESSVUITestsLaunchTests.swift */; };
+		450C07CD2A92CFCD006E4540 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 450C07CC2A92CFCD006E4540 /* FirebaseFirestore */; };
+		450C07CF2A9321C7006E4540 /* Erectlorite.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 450C07CE2A9321C7006E4540 /* Erectlorite.ttf */; };
+		4526342E2A98734E0045FD6A /* HomeScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4526342D2A98734E0045FD6A /* HomeScreenViewController.swift */; };
+		4573B8B82A91A636009FAE1E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4573B8B72A91A636009FAE1E /* GoogleService-Info.plist */; };
+		4573B8BB2A91A868009FAE1E /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 4573B8BA2A91A868009FAE1E /* FirebaseAuth */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,19 +40,21 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4508FA982A900D910081B477 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		4508FA9A2A90229B0081B477 /* CreateAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAccountViewController.swift; sourceTree = "<group>"; };
 		450A49702A8EC94D00DEB7CF /* AGRESSV.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AGRESSV.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		450A49732A8EC94D00DEB7CF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		450A49752A8EC94D00DEB7CF /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		450A49772A8EC94D00DEB7CF /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		450A49772A8EC94D00DEB7CF /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		450A497A2A8EC94D00DEB7CF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		450A497C2A8EC94E00DEB7CF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		450A497F2A8EC94E00DEB7CF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		450A49812A8EC94E00DEB7CF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		450A49862A8EC94F00DEB7CF /* AGRESSVTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AGRESSVTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		450A498A2A8EC94F00DEB7CF /* AGRESSVTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AGRESSVTests.swift; sourceTree = "<group>"; };
 		450A49902A8EC94F00DEB7CF /* AGRESSVUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AGRESSVUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		450A49942A8EC94F00DEB7CF /* AGRESSVUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AGRESSVUITests.swift; sourceTree = "<group>"; };
-		450A49962A8EC94F00DEB7CF /* AGRESSVUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AGRESSVUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		450C07CE2A9321C7006E4540 /* Erectlorite.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Erectlorite.ttf; sourceTree = "<group>"; };
+		4526342D2A98734E0045FD6A /* HomeScreenViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeScreenViewController.swift; sourceTree = "<group>"; };
+		4573B8B72A91A636009FAE1E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +62,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4573B8BB2A91A868009FAE1E /* FirebaseAuth in Frameworks */,
+				450C07CD2A92CFCD006E4540 /* FirebaseFirestore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -80,9 +88,8 @@
 			isa = PBXGroup;
 			children = (
 				450A49722A8EC94D00DEB7CF /* AGRESSV */,
-				450A49892A8EC94F00DEB7CF /* AGRESSVTests */,
-				450A49932A8EC94F00DEB7CF /* AGRESSVUITests */,
 				450A49712A8EC94D00DEB7CF /* Products */,
+				450C07CB2A92CFCD006E4540 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -101,30 +108,33 @@
 			children = (
 				450A49732A8EC94D00DEB7CF /* AppDelegate.swift */,
 				450A49752A8EC94D00DEB7CF /* SceneDelegate.swift */,
-				450A49772A8EC94D00DEB7CF /* ViewController.swift */,
 				450A49792A8EC94D00DEB7CF /* Main.storyboard */,
+				45FFBE5A2A96F26F004AB0D3 /* Views */,
+				450C07CE2A9321C7006E4540 /* Erectlorite.ttf */,
 				450A497C2A8EC94E00DEB7CF /* Assets.xcassets */,
 				450A497E2A8EC94E00DEB7CF /* LaunchScreen.storyboard */,
 				450A49812A8EC94E00DEB7CF /* Info.plist */,
+				4573B8B72A91A636009FAE1E /* GoogleService-Info.plist */,
 			);
 			path = AGRESSV;
 			sourceTree = "<group>";
 		};
-		450A49892A8EC94F00DEB7CF /* AGRESSVTests */ = {
+		450C07CB2A92CFCD006E4540 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				450A498A2A8EC94F00DEB7CF /* AGRESSVTests.swift */,
 			);
-			path = AGRESSVTests;
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		450A49932A8EC94F00DEB7CF /* AGRESSVUITests */ = {
+		45FFBE5A2A96F26F004AB0D3 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				450A49942A8EC94F00DEB7CF /* AGRESSVUITests.swift */,
-				450A49962A8EC94F00DEB7CF /* AGRESSVUITestsLaunchTests.swift */,
+				450A49772A8EC94D00DEB7CF /* MainViewController.swift */,
+				4526342D2A98734E0045FD6A /* HomeScreenViewController.swift */,
+				4508FA9A2A90229B0081B477 /* CreateAccountViewController.swift */,
+				4508FA982A900D910081B477 /* LoginViewController.swift */,
 			);
-			path = AGRESSVUITests;
+			path = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -143,6 +153,10 @@
 			dependencies = (
 			);
 			name = AGRESSV;
+			packageProductDependencies = (
+				4573B8BA2A91A868009FAE1E /* FirebaseAuth */,
+				450C07CC2A92CFCD006E4540 /* FirebaseFirestore */,
+			);
 			productName = AGRESSV;
 			productReference = 450A49702A8EC94D00DEB7CF /* AGRESSV.app */;
 			productType = "com.apple.product-type.application";
@@ -215,6 +229,9 @@
 				Base,
 			);
 			mainGroup = 450A49672A8EC94D00DEB7CF;
+			packageReferences = (
+				4573B8B92A91A868009FAE1E /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+			);
 			productRefGroup = 450A49712A8EC94D00DEB7CF /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -232,8 +249,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				450A49802A8EC94E00DEB7CF /* LaunchScreen.storyboard in Resources */,
+				4573B8B82A91A636009FAE1E /* GoogleService-Info.plist in Resources */,
 				450A497D2A8EC94E00DEB7CF /* Assets.xcassets in Resources */,
 				450A497B2A8EC94D00DEB7CF /* Main.storyboard in Resources */,
+				450C07CF2A9321C7006E4540 /* Erectlorite.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -258,8 +277,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				450A49782A8EC94D00DEB7CF /* ViewController.swift in Sources */,
+				4508FA9B2A90229B0081B477 /* CreateAccountViewController.swift in Sources */,
+				4508FA992A900D910081B477 /* LoginViewController.swift in Sources */,
+				450A49782A8EC94D00DEB7CF /* MainViewController.swift in Sources */,
 				450A49742A8EC94D00DEB7CF /* AppDelegate.swift in Sources */,
+				4526342E2A98734E0045FD6A /* HomeScreenViewController.swift in Sources */,
 				450A49762A8EC94D00DEB7CF /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -268,7 +290,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				450A498B2A8EC94F00DEB7CF /* AGRESSVTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -276,8 +297,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				450A49972A8EC94F00DEB7CF /* AGRESSVUITestsLaunchTests.swift in Sources */,
-				450A49952A8EC94F00DEB7CF /* AGRESSVUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -596,6 +615,30 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		4573B8B92A91A868009FAE1E /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 10.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		450C07CC2A92CFCD006E4540 /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4573B8B92A91A868009FAE1E /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
+		};
+		4573B8BA2A91A868009FAE1E /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4573B8B92A91A868009FAE1E /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 450A49682A8EC94D00DEB7CF /* Project object */;
 }
