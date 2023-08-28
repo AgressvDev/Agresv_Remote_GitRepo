@@ -16,6 +16,7 @@ class HomeScreenViewController: UIViewController {
     @IBOutlet weak var MainUNLabel: UILabel!
     
     @IBOutlet weak var DoublesRankLabel: UILabel!
+    @IBOutlet weak var SinglesRankLabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,7 +26,7 @@ class HomeScreenViewController: UIViewController {
         let db = Firestore.firestore()
               //insert the UIlabel reference
                 
-                func GetUsername() {
+                func GetHomeScreenData() {
                     let uid = Auth.auth().currentUser!.email
                     let docRef = db.collection("Agressv_Users").document(uid!)
                     
@@ -35,11 +36,17 @@ class HomeScreenViewController: UIViewController {
                         } else {
                             print("\(document!.documentID) => \(String(describing: document!.data()))")
                             
+                            //Doubles Rank number to string conversion
                             let Doubles_Rank = document!.data()!["Doubles_Rank"]
-                                
                             let Doubles_Rank_As_String = String(describing: Doubles_Rank!)
-                            
                             self.DoublesRankLabel.text = Doubles_Rank_As_String
+                            
+                            
+                            //Singles Rank number to string conversion
+                            let Singles_Rank = document!.data()!["Singles_Rank"]
+                            let Singles_Rank_As_String = String(describing: Singles_Rank!)
+                            self.SinglesRankLabel.text = Singles_Rank_As_String
+                            
                             
                             self.MainUNLabel.text = document!.data()!["Username"] as? String
                             
@@ -51,7 +58,7 @@ class HomeScreenViewController: UIViewController {
         
         
    //Calls the Username function
-    print(GetUsername())
+    print(GetHomeScreenData())
     
  
         //Font aspects for Username
@@ -70,15 +77,29 @@ class HomeScreenViewController: UIViewController {
     let DoublesRankFont = UIFont(name: "Impact", size: 30)
     let DoublesRankLabel = DoublesRankLabel
    
-        DoublesRankLabel!.center = CGPoint(x: 80, y: 465)
+        //DoublesRankLabel!.center = CGPoint(x: 130, y: 465)
         DoublesRankLabel!.textAlignment = .center
         DoublesRankLabel!.font = DoublesRankFont
         DoublesRankLabel!.adjustsFontSizeToFitWidth = true
-        DoublesRankLabel!.backgroundColor = UIColor.gray
+        DoublesRankLabel!.backgroundColor = UIColor.lightGray
+        DoublesRankLabel!.layer.borderColor = UIColor.red.cgColor
+        DoublesRankLabel!.layer.borderWidth = 2.0
         DoublesRankLabel!.layer.cornerRadius = 5
         DoublesRankLabel!.clipsToBounds = true
         
-            
+        //Font aspects for Singles Rank
+    let SinglesRankFont = UIFont(name: "Impact", size: 30)
+    let SinglesRankLabel = SinglesRankLabel
+   
+        //SinglesRankLabel!.center = CGPoint(x: 240, y: 465)
+        SinglesRankLabel!.textAlignment = .center
+        SinglesRankLabel!.font = SinglesRankFont
+        SinglesRankLabel!.adjustsFontSizeToFitWidth = true
+        SinglesRankLabel!.backgroundColor = UIColor.lightGray
+        SinglesRankLabel!.layer.borderColor = UIColor.red.cgColor
+        SinglesRankLabel!.layer.borderWidth = 2.0
+        SinglesRankLabel!.layer.cornerRadius = 5
+        SinglesRankLabel!.clipsToBounds = true
 
         }
         
