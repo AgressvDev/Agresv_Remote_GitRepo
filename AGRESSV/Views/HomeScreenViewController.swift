@@ -17,6 +17,10 @@ class HomeScreenViewController: UIViewController {
     
     @IBOutlet weak var DoublesRankLabel: UILabel!
     @IBOutlet weak var SinglesRankLabel: UILabel!
+    @IBOutlet weak var DoublesWinsLabel: UILabel!
+    @IBOutlet weak var DoublesLossesLabel: UILabel!
+    @IBOutlet weak var SinglesWinsLabel: UILabel!
+    @IBOutlet weak var SinglesLossesLabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,11 +45,31 @@ class HomeScreenViewController: UIViewController {
                             let Doubles_Rank_As_String = String(describing: Doubles_Rank!)
                             self.DoublesRankLabel.text = Doubles_Rank_As_String
                             
-                            
                             //Singles Rank number to string conversion
                             let Singles_Rank = document!.data()!["Singles_Rank"]
                             let Singles_Rank_As_String = String(describing: Singles_Rank!)
                             self.SinglesRankLabel.text = Singles_Rank_As_String
+                            
+                            //Doubles Wins number to string conversion
+                            let DoublesWins = document!.data()!["Doubles_Games_Wins"]
+                            let DoublesWins_As_String = String(describing: DoublesWins!)
+                            self.DoublesWinsLabel.text = DoublesWins_As_String
+                            
+                            //Doubles Losses number to string conversion
+                            let DoublesLosses = document!.data()!["Doubles_Games_Losses"]
+                            let DoublesLosses_As_String = String(describing: DoublesLosses!)
+                            self.DoublesLossesLabel.text = DoublesLosses_As_String
+                            
+                            //Singles Wins number to string conversion
+                            let SinglesWins = document!.data()!["Singles_Games_Wins"]
+                            let SinglesWins_As_String = String(describing: SinglesWins!)
+                            self.SinglesWinsLabel.text = SinglesWins_As_String
+                            
+                            //Singles Losses number to string conversion
+                            let SinglesLosses = document!.data()!["Singles_Games_Losses"]
+                            let SinglesLosses_As_String = String(describing: SinglesLosses!)
+                            self.SinglesLossesLabel.text = SinglesLosses_As_String
+                            
                             
                             
                             self.MainUNLabel.text = document!.data()!["Username"] as? String
