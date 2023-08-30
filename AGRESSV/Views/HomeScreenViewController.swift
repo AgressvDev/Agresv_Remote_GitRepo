@@ -8,10 +8,14 @@
 import UIKit
 import Firebase
 import FirebaseFirestore
+import SwiftUI
 
 
 class HomeScreenViewController: UIViewController {
     
+   
+    
+   
     
     @IBOutlet weak var MainUNLabel: UILabel!
     
@@ -24,7 +28,7 @@ class HomeScreenViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+       
         
        
         let db = Firestore.firestore()
@@ -124,16 +128,21 @@ class HomeScreenViewController: UIViewController {
         SinglesRankLabel!.layer.borderWidth = 2.0
         SinglesRankLabel!.layer.cornerRadius = 5
         SinglesRankLabel!.clipsToBounds = true
-
-        }
+        
+        
+        
+        
+        //Guage stuff
+      
+        
+        } //end of loading bracket
         
  
   
+        
+        
+
     
-  
-        
-        
-        
         //    @IBAction func UserLogOut(_ sender: UIButton) {
         //
         //        try! Auth.auth().signOut()
