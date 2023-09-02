@@ -21,9 +21,11 @@ import SwiftUI
                     
                     
                 }
-                .gaugeStyle(.accessoryLinear)
+                .gaugeStyle(.accessoryCircular)
                 .tint(gradient)
                 .padding()
+                .scaleEffect(1)
+                .position(x:80, y:85)
                 
                 
             }

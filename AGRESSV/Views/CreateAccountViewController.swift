@@ -45,7 +45,7 @@ class CreateAccountViewController: UIViewController {
             if error != nil {
                //print(error!.localizedDescription)
                 // Create new Alert
-                let dialogMessage = UIAlertController(title: "Error.", message: "Check email format and make sure you've entered a password. Please try again.", preferredStyle: .alert)
+                let dialogMessage = UIAlertController(title: "Error.", message: "Email may already exist or format may be incorrect. Please try again.", preferredStyle: .alert)
 
                 // Create OK button with action handler
                 let ok = UIAlertAction(title: "OK", style: .default, handler: { (action) -> Void in
