@@ -27,12 +27,12 @@ import SwiftUI
                 .scaleEffect(1)
                 .position(x:80, y:85)
                 
-                
+              
             }
             
             
         }
-        
+      
     }
     struct GaugeView_Previews: PreviewProvider {
         static var previews: some View {

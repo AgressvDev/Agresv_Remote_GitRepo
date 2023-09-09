@@ -22,6 +22,8 @@
 		4573B8BB2A91A868009FAE1E /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 4573B8BA2A91A868009FAE1E /* FirebaseAuth */; };
 		45A1DF4B2AA3E09400191437 /* UsernamesArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45A1DF4A2AA3E09400191437 /* UsernamesArray.swift */; };
 		45A1DF4D2AA3F58D00191437 /* NewGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45A1DF4C2AA3F58D00191437 /* NewGameViewController.swift */; };
+		45A9923C2AAD30B80010A151 /* SearchDoublesPartnerVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45A9923B2AAD30B80010A151 /* SearchDoublesPartnerVC.swift */; };
+		45EE444A2AAAC1DA00319597 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45EE44492AAAC1DA00319597 /* ViewController.swift */; };
 		45F489262A9D7A4C0043238C /* GaugeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F489252A9D7A4C0043238C /* GaugeView.swift */; };
 		45FB8C0C2AA1557D008C2CC7 /* DoublesSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45FB8C0B2AA1557D008C2CC7 /* DoublesSearchView.swift */; };
 /* End PBXBuildFile section */
@@ -61,6 +63,8 @@
 		4573B8B72A91A636009FAE1E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		45A1DF4A2AA3E09400191437 /* UsernamesArray.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsernamesArray.swift; sourceTree = "<group>"; };
 		45A1DF4C2AA3F58D00191437 /* NewGameViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewGameViewController.swift; sourceTree = "<group>"; };
+		45A9923B2AAD30B80010A151 /* SearchDoublesPartnerVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchDoublesPartnerVC.swift; sourceTree = "<group>"; };
+		45EE44492AAAC1DA00319597 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		45F489252A9D7A4C0043238C /* GaugeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GaugeView.swift; sourceTree = "<group>"; };
 		45FB8C0B2AA1557D008C2CC7 /* DoublesSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoublesSearchView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -134,6 +138,14 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		45B875902AA41A29008A67EF /* Playometer */ = {
+			isa = PBXGroup;
+			children = (
+				45F489252A9D7A4C0043238C /* GaugeView.swift */,
+			);
+			path = Playometer;
+			sourceTree = "<group>";
+		};
 		45FB8C152AA1B5CB008C2CC7 /* Search */ = {
 			isa = PBXGroup;
 			children = (
@@ -146,12 +158,14 @@
 		45FFBE5A2A96F26F004AB0D3 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				45A9923B2AAD30B80010A151 /* SearchDoublesPartnerVC.swift */,
 				450A49772A8EC94D00DEB7CF /* MainViewController.swift */,
+				45EE44492AAAC1DA00319597 /* ViewController.swift */,
 				4526342D2A98734E0045FD6A /* HomeScreenViewController.swift */,
 				4508FA9A2A90229B0081B477 /* CreateAccountViewController.swift */,
 				45A1DF4C2AA3F58D00191437 /* NewGameViewController.swift */,
 				4508FA982A900D910081B477 /* LoginViewController.swift */,
-				45F489252A9D7A4C0043238C /* GaugeView.swift */,
+				45B875902AA41A29008A67EF /* Playometer */,
 				45FB8C152AA1B5CB008C2CC7 /* Search */,
 			);
 			path = Views;
@@ -297,10 +311,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				45A9923C2AAD30B80010A151 /* SearchDoublesPartnerVC.swift in Sources */,
 				4508FA9B2A90229B0081B477 /* CreateAccountViewController.swift in Sources */,
 				45FB8C0C2AA1557D008C2CC7 /* DoublesSearchView.swift in Sources */,
 				4508FA992A900D910081B477 /* LoginViewController.swift in Sources */,
 				45A1DF4B2AA3E09400191437 /* UsernamesArray.swift in Sources */,
+				45EE444A2AAAC1DA00319597 /* ViewController.swift in Sources */,
 				450A49782A8EC94D00DEB7CF /* MainViewController.swift in Sources */,
 				450A49742A8EC94D00DEB7CF /* AppDelegate.swift in Sources */,
 				4526342E2A98734E0045FD6A /* HomeScreenViewController.swift in Sources */,

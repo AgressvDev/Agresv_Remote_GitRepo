@@ -7,17 +7,32 @@
 
 import UIKit
 import Firebase
+import SwiftUI
 
 class LoginViewController: UIViewController {
 
+    @IBOutlet var backgroundGradView: UIView!
   
     @IBOutlet weak var EmailTextField: UITextField!
     @IBOutlet weak var PasswordTextField: UITextField!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+            
         // Do any additional setup after loading the view.
+    
+        let gradientLayer = CAGradientLayer()
+        
+        gradientLayer.frame = view.bounds
+        
+        gradientLayer.colors = [UIColor.black.cgColor, UIColor.white.cgColor] //UIColor.red.cgColor]
+        
+        gradientLayer.shouldRasterize = true
+        
+        backgroundGradView.layer.addSublayer(gradientLayer)
+        
+        self.view.layer.insertSublayer(gradientLayer, at: 0)
+        
     }
     
     
@@ -56,5 +71,5 @@ class LoginViewController: UIViewController {
         // Pass the selected object to the new view controller.
     }
     */
-
+    
 }
