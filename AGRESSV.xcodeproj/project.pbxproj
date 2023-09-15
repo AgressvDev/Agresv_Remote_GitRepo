@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4506107B2AB43D280083E11F /* TestGaugeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4506107A2AB43D280083E11F /* TestGaugeViewController.swift */; };
 		4508FA992A900D910081B477 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4508FA982A900D910081B477 /* LoginViewController.swift */; };
 		4508FA9B2A90229B0081B477 /* CreateAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4508FA9A2A90229B0081B477 /* CreateAccountViewController.swift */; };
 		450A49742A8EC94D00DEB7CF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 450A49732A8EC94D00DEB7CF /* AppDelegate.swift */; };
@@ -44,6 +45,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4506107A2AB43D280083E11F /* TestGaugeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestGaugeViewController.swift; sourceTree = "<group>"; };
 		4508FA982A900D910081B477 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		4508FA9A2A90229B0081B477 /* CreateAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAccountViewController.swift; sourceTree = "<group>"; };
 		450A49702A8EC94D00DEB7CF /* AGRESSV.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AGRESSV.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -156,6 +158,7 @@
 				450A49772A8EC94D00DEB7CF /* MainViewController.swift */,
 				45EE44492AAAC1DA00319597 /* ViewController.swift */,
 				4526342D2A98734E0045FD6A /* HomeScreenViewController.swift */,
+				4506107A2AB43D280083E11F /* TestGaugeViewController.swift */,
 				4508FA9A2A90229B0081B477 /* CreateAccountViewController.swift */,
 				45A1DF4C2AA3F58D00191437 /* NewGameViewController.swift */,
 				4508FA982A900D910081B477 /* LoginViewController.swift */,
@@ -306,6 +309,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				45A9923C2AAD30B80010A151 /* SearchDoublesPartnerVC.swift in Sources */,
+				4506107B2AB43D280083E11F /* TestGaugeViewController.swift in Sources */,
 				4508FA9B2A90229B0081B477 /* CreateAccountViewController.swift in Sources */,
 				4508FA992A900D910081B477 /* LoginViewController.swift in Sources */,
 				45EE444A2AAAC1DA00319597 /* ViewController.swift in Sources */,

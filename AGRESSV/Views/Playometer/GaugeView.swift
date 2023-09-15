@@ -28,7 +28,7 @@ struct GaugeView: View {
             .gaugeStyle(.accessoryLinear)
             .tint(gradient)
             .padding()
-            .position(x: 210, y: 510)
+            .position(x: 200, y: 560)
             
             
             
