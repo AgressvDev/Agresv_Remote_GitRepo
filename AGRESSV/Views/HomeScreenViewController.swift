@@ -16,6 +16,8 @@ class HomeScreenViewController: UIViewController {
    
     
    
+  
+
     
     @IBOutlet weak var MainUNLabel: UILabel!
     
@@ -32,7 +34,7 @@ class HomeScreenViewController: UIViewController {
         
        
         let db = Firestore.firestore()
-              //insert the UIlabel reference
+             
                 
                 func GetHomeScreenData() {
                     let uid = Auth.auth().currentUser!.email
@@ -132,7 +134,28 @@ class HomeScreenViewController: UIViewController {
         
         
         
-        //Guage stuff
+      //add gauge / Playometer
+        
+        let vc = UIHostingController(rootView: GaugeView())
+
+            let swiftuiView_gauge = vc.view!
+        swiftuiView_gauge.translatesAutoresizingMaskIntoConstraints = false
+            
+        swiftuiView_gauge.frame.size.width = 400
+        
+    
+            // 2
+            // Add the view controller to the destination view controller.
+            addChild(vc)
+            view.addSubview(swiftuiView_gauge)
+            
+        self.view.bringSubviewToFront(swiftuiView_gauge)
+            swiftuiView_gauge.frame = CGRectMake( 15, 75, swiftuiView_gauge.frame.size.width, swiftuiView_gauge.frame.size.height ) // set new position exactly
+        
+        
+            // 4
+            // Notify the child view controller that the move is complete.
+            vc.didMove(toParent: self)
       
         
         } //end of loading bracket
@@ -140,30 +163,16 @@ class HomeScreenViewController: UIViewController {
  
   
         
-
+    
 
     
-        //    @IBAction func UserLogOut(_ sender: UIButton) {
-        //
-        //        try! Auth.auth().signOut()
-        //        if let storyboard = self.storyboard {
-        //            let vc = storyboard.instantiateViewController(withIdentifier: "MainViewController") as! UINavigationController
-        //                self.present(vc, animated: false, completion: nil)
-        //            }
-        //    }
-        
-        /*
-         // MARK: - Navigation
-         
-         // In a storyboard-based application, you will often want to do a little preparation before navigation
-         override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-         // Get the new view controller using segue.destination.
-         // Pass the selected object to the new view controller.
-         }
-         */
+       
         
     }
     
     
-    
+
+
+
+
 

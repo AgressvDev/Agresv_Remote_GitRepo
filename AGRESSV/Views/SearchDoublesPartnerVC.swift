@@ -6,15 +6,15 @@
 //
 
 import UIKit
-
+import Firebase
+import FirebaseFirestore
 
 
 class SearchDoublesPartnerVC: UIViewController {
     
     
-    
-    
-   
+
+  
     let Usernames = ["user1", "user2", "user3"]
     var FilteredUsernames: [String]!
     
@@ -47,5 +47,8 @@ extension SearchDoublesPartnerVC: UITableViewDelegate, UITableViewDataSource
         cell.textLabel?.text = FilteredUsernames[indexPath.row]
         return cell
     }
+    
+   
+
     
 }
