@@ -6,10 +6,17 @@
 //
 
 import SwiftUI
+import Firebase
+import FirebaseFirestore
+
+let CurrentDateMinus7 = Calendar.current.date(byAdding: .day, value:-7, to: Date())
+
+
+
 
 struct GaugeView: View {
     
-    @State var current = 14.0 //change to actual data
+    @State var current = 29.0 //change to actual data
     let gradient = Gradient(colors: [.white, .black, .red])
     @State private var minValue = 0.0
     @State private var maxValue = 32.0
@@ -25,11 +32,20 @@ struct GaugeView: View {
                 
                 
             }
+        currentValueLabel: {
+            Text("\(Int(current))")
+        }
+        minimumValueLabel: {
+            Text("\(Int(minValue))")
+        }
+        maximumValueLabel:{
+            Text("\(Int(maxValue))")
+        }
             .gaugeStyle(.accessoryLinear)
             .tint(gradient)
             .padding()
-            .position(x: 200, y: 560)
-            
+            .position(x: 195, y: 560)
+           
             
             
             

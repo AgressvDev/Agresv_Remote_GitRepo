@@ -25,28 +25,50 @@ class HomeScreenViewController: UIViewController {
     @IBOutlet weak var lbl_DoublesHeader: UILabel!
     @IBOutlet weak var lbl_SinglesHeader: UILabel!
     
-    @IBOutlet weak var DoublesRankLabel: UILabel!
-    @IBOutlet weak var SinglesRankLabel: UILabel!
+    
+    @IBOutlet weak var NewDoublesRankLabel: UILabel!
+    @IBOutlet weak var NewSinglesRankLabel: UILabel!
+    
+
+    @IBOutlet weak var DW_letter: UILabel!
+    @IBOutlet weak var DL_Letter: UILabel!
+    
+    @IBOutlet weak var SW_Letter: UILabel!
+    @IBOutlet weak var SL_Letter: UILabel!
     
     
- 
-
-
- 
-
     
+    @IBOutlet weak var lbl_Playometer: UILabel!
+
+    @IBOutlet weak var lbl_GamesPlayed: UILabel!
     
     @IBOutlet weak var lbl_PlayMoreGames: UILabel!
   
     
+  
     
 
+    @IBOutlet weak var backgroundGradView: UIView!
     
 
     
     override func viewDidLoad() {
         super.viewDidLoad()
        
+      
+        //GRADIENT BACKGROUND - MAYBE
+        
+//        let gradientLayer = CAGradientLayer()
+//        
+//        gradientLayer.frame = view.bounds
+//        
+//        gradientLayer.colors = [UIColor.blue.cgColor, UIColor.white.cgColor] //UIColor.red.cgColor]
+//        
+//        gradientLayer.shouldRasterize = true
+//        
+//        backgroundGradView.layer.addSublayer(gradientLayer)
+//        
+//        self.view.layer.insertSublayer(gradientLayer, at: 0)
         
         //ADD GAUGE / PLAYOMETER
           
@@ -88,16 +110,16 @@ class HomeScreenViewController: UIViewController {
                         } else {
                             print("\(document!.documentID) => \(String(describing: document!.data()))")
                             
-                            //Doubles Rank number to string conversion
+                           //Doubles Rank number to string conversion
                             let Doubles_Rank = document!.data()!["Doubles_Rank"]
                             let Doubles_Rank_As_String = String(describing: Doubles_Rank!)
-                            self.DoublesRankLabel.text = Doubles_Rank_As_String
+                            self.NewDoublesRankLabel.text = Doubles_Rank_As_String
                             
-                            
+
                             //Singles Rank number to string conversion
                             let Singles_Rank = document!.data()!["Singles_Rank"]
                             let Singles_Rank_As_String = String(describing: Singles_Rank!)
-                            self.SinglesRankLabel.text = Singles_Rank_As_String
+                            self.NewSinglesRankLabel.text = Singles_Rank_As_String
                             
 //                            //Doubles Wins number to string conversion
 //                            let DoublesWins = document!.data()!["Doubles_Games_Wins"]
@@ -133,6 +155,7 @@ class HomeScreenViewController: UIViewController {
    //Calls the Username function
     print(GetHomeScreenData())
     
+        
  
         //Font aspects for Username
     let CustomFont = UIFont(name: "Impact", size: 30)
@@ -148,21 +171,22 @@ class HomeScreenViewController: UIViewController {
         
         //Font aspects for Doubles Rank
     let DoublesRankFont = UIFont(name: "Impact", size: 30)
-    let DoublesRankLabel = DoublesRankLabel
+    let DoublesRankLabelC = NewDoublesRankLabel
 
+        
         //DoublesRankLabel!.frame.origin = CGPoint(x: 65, y: 340)
-        DoublesRankLabel!.textAlignment = .center
-        DoublesRankLabel!.font = DoublesRankFont
-        DoublesRankLabel!.adjustsFontSizeToFitWidth = true
-        DoublesRankLabel!.backgroundColor = UIColor.lightGray
-        DoublesRankLabel!.layer.borderColor = UIColor.red.cgColor
-        DoublesRankLabel!.layer.borderWidth = 2.0
-        DoublesRankLabel!.layer.cornerRadius = 5
-        DoublesRankLabel!.clipsToBounds = true
+        DoublesRankLabelC!.textAlignment = .center
+        DoublesRankLabelC!.font = DoublesRankFont
+        DoublesRankLabelC!.adjustsFontSizeToFitWidth = true
+        DoublesRankLabelC!.backgroundColor = UIColor.lightGray
+        DoublesRankLabelC!.layer.borderColor = UIColor.red.cgColor
+        DoublesRankLabelC!.layer.borderWidth = 2.0
+        DoublesRankLabelC!.layer.cornerRadius = 5
+        DoublesRankLabelC!.clipsToBounds = true
         
         //Font aspects for Singles Rank
     let SinglesRankFont = UIFont(name: "Impact", size: 30)
-    let SinglesRankLabel = SinglesRankLabel
+    let SinglesRankLabel = NewSinglesRankLabel
    
         //SinglesRankLabel!.center = CGPoint(x: 240, y: 465)
         SinglesRankLabel!.textAlignment = .center
@@ -224,9 +248,28 @@ class HomeScreenViewController: UIViewController {
         lbl_SinglesHeader.frame.origin = CGPoint(x: 285, y:320)
         
        
-    
-        
+        NewDoublesRankLabel.frame.origin = CGPoint(x:65, y:370)
+        NewDoublesRankLabel.frame.size.width = 80
+        NewDoublesRankLabel.frame.size.height = 80
        
+        
+        NewSinglesRankLabel.frame.origin = CGPoint(x:285, y:370)
+        NewSinglesRankLabel.frame.size.width = 80
+        NewSinglesRankLabel.frame.size.height = 80
+        
+        
+        DW_letter.frame.origin = CGPoint(x:65, y:480)
+        DL_Letter.frame.origin = CGPoint(x:65, y:520)
+        SW_Letter.frame.origin = CGPoint(x:285, y:480)
+        SL_Letter.frame.origin = CGPoint(x:285, y:520)
+        
+        
+        lbl_Playometer.frame.origin = CGPoint(x:65, y:595)
+        lbl_GamesPlayed.frame.origin = CGPoint(x:65, y:615)
+        
+        
+        
+        
         
         lbl_PlayMoreGames.frame.origin = CGPoint(x:120, y: 715)
 
