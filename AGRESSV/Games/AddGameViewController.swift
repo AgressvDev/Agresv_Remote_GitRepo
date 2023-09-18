@@ -16,13 +16,33 @@ class AddGameViewController: UIViewController {
     
     
     
+ 
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         
-     
+        func GetDoublesRank() {
+            let uid = Auth.auth().currentUser!.email
+            let docRef = db.collection("Agressv_Users").document(uid!)
+            
+            docRef.getDocument { (document, error) in
+                if let err = error {
+                    print("Error getting documents: \(err)")
+                } else {
+                    print("\(document!.documentID) => \(String(describing: document!.data()))")
+                    
+                    let Doubles_Rank = document!.data()!["Doubles_Rank"]
+                    let Doubles_Rank_As_String = String(describing: Doubles_Rank!)
+                    self.DoublesRankValue = Doubles_Rank_As_String
+                    
+                 
+                }
+            }
+        }
+        
+        print(GetDoublesRank())
         
         
         
@@ -31,22 +51,8 @@ class AddGameViewController: UIViewController {
     var WL_Selection = "W"
     var DoublesRankValue: String!
     
-    func GetDoublesRank() {
-        let uid = Auth.auth().currentUser!.email
-        let docRef = db.collection("Agressv_Users").document(uid!)
-        
-        docRef.getDocument { (document, error) in
-            if let err = error {
-                print("Error getting documents: \(err)")
-            } else {
-                print("\(document!.documentID) => \(String(describing: document!.data()))")
-                
-                let Doubles_Rank = document!.data()!["Doubles_Rank"]
-                let Doubles_Rank_As_String = String(describing: Doubles_Rank!)
-                self.DoublesRankValue = Doubles_Rank_As_String
-            }
-        }
-    }
+ 
+  
     
     @IBOutlet weak var seg_WLOutlet: UISegmentedControl!
     
@@ -120,12 +126,15 @@ class AddGameViewController: UIViewController {
             
             //if Doubles Rank is 8.5 do not decrement
             if DoublesRankValue == "8.5" {
-                return
+                //do not decrement
             } else {
                 User_ref.updateData([
                     "Doubles_Rank": FieldValue.increment(-0.1)])
+                
+               
             }
         }
+        
             
             
             
