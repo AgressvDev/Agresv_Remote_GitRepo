@@ -28,8 +28,8 @@ class CreateAccountViewController: UIViewController {
         let ref = db.collection("Agressv_Users").document(Email)
 
         ref.setData(["Username" : Username, "Doubles_Rank" : 8.5, "Singles_Rank": 8.5, "Email": Email,
-                     "Doubles_Games_Played": 150, "Singles_Games_Played": 70,
-                     "Doubles_Games_Wins": 100, "Doubles_Games_Losses": 50, "Singles_Games_Wins": 60, "Singles_Games_Losses": 10])
+                     "Doubles_Games_Played": 0, "Singles_Games_Played": 0,
+                     "Doubles_Games_Wins": 0, "Doubles_Games_Losses": 0, "Singles_Games_Wins": 0, "Singles_Games_Losses": 0])
        
     }
     

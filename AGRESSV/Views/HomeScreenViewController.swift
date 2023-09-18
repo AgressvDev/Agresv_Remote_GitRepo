@@ -37,6 +37,15 @@ class HomeScreenViewController: UIViewController {
     @IBOutlet weak var SL_Letter: UILabel!
     
     
+    @IBOutlet weak var DoublesWinsLabel: UILabel!
+    
+    @IBOutlet weak var DoublesLossesLabel: UILabel!
+    
+    @IBOutlet weak var SinglesWinsLabel: UILabel!
+    
+    @IBOutlet weak var SinglesLossesLabel: UILabel!
+    
+    
     
     @IBOutlet weak var lbl_Playometer: UILabel!
 
@@ -121,26 +130,26 @@ class HomeScreenViewController: UIViewController {
                             let Singles_Rank_As_String = String(describing: Singles_Rank!)
                             self.NewSinglesRankLabel.text = Singles_Rank_As_String
                             
-//                            //Doubles Wins number to string conversion
-//                            let DoublesWins = document!.data()!["Doubles_Games_Wins"]
-//                            let DoublesWins_As_String = String(describing: DoublesWins!)
-//                            self.DoublesWinsLabel.text = DoublesWins_As_String
-//
-//                            //Doubles Losses number to string conversion
-//                            let DoublesLosses = document!.data()!["Doubles_Games_Losses"]
-//                            let DoublesLosses_As_String = String(describing: DoublesLosses!)
-//                            self.DoublesLossesLabel.text = DoublesLosses_As_String
-//
-//                            //Singles Wins number to string conversion
-//                            let SinglesWins = document!.data()!["Singles_Games_Wins"]
-//                            let SinglesWins_As_String = String(describing: SinglesWins!)
-//                            self.SinglesWinsLabel.text = SinglesWins_As_String
-//
-//                            //Singles Losses number to string conversion
-//                            let SinglesLosses = document!.data()!["Singles_Games_Losses"]
-//                            let SinglesLosses_As_String = String(describing: SinglesLosses!)
-//                            self.SinglesLossesLabel.text = SinglesLosses_As_String
-//
+                            //Doubles Wins number to string conversion
+                            let DoublesWins = document!.data()!["Doubles_Games_Wins"]
+                            let DoublesWins_As_String = String(describing: DoublesWins!)
+                            self.DoublesWinsLabel.text = DoublesWins_As_String
+
+                            //Doubles Losses number to string conversion
+                            let DoublesLosses = document!.data()!["Doubles_Games_Losses"]
+                            let DoublesLosses_As_String = String(describing: DoublesLosses!)
+                            self.DoublesLossesLabel.text = DoublesLosses_As_String
+
+                            //Singles Wins number to string conversion
+                            let SinglesWins = document!.data()!["Singles_Games_Wins"]
+                            let SinglesWins_As_String = String(describing: SinglesWins!)
+                            self.SinglesWinsLabel.text = SinglesWins_As_String
+
+                            //Singles Losses number to string conversion
+                            let SinglesLosses = document!.data()!["Singles_Games_Losses"]
+                            let SinglesLosses_As_String = String(describing: SinglesLosses!)
+                            self.SinglesLossesLabel.text = SinglesLosses_As_String
+
                             
                             
                             self.MainUNLabel.text = document!.data()!["Username"] as? String
@@ -262,6 +271,12 @@ class HomeScreenViewController: UIViewController {
         DL_Letter.frame.origin = CGPoint(x:65, y:520)
         SW_Letter.frame.origin = CGPoint(x:285, y:480)
         SL_Letter.frame.origin = CGPoint(x:285, y:520)
+        
+        
+        DoublesWinsLabel.frame.origin = CGPoint(x:95, y:480)
+        DoublesLossesLabel.frame.origin = CGPoint(x:95, y:520)
+        SinglesWinsLabel.frame.origin = CGPoint(x:315, y:480)
+        SinglesLossesLabel.frame.origin = CGPoint(x:315, y:520)
         
         
         lbl_Playometer.frame.origin = CGPoint(x:65, y:595)

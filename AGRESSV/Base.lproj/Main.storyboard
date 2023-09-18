@@ -268,6 +268,34 @@
                                 <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="DoublesWinsLabel" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aeF-AE-4r4">
+                                <rect key="frame" x="97" y="496" width="142" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="DoublesLossesLabel" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="B6L-GZ-pf1">
+                                <rect key="frame" x="97" y="527" width="157" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="SinglesWins" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BGg-br-2CP">
+                                <rect key="frame" x="276" y="497" width="93" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="SinglesLosses" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cZY-EI-ZE8">
+                                <rect key="frame" x="276" y="528" width="109" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="SdD-XJ-Noq"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -276,11 +304,15 @@
                     <connections>
                         <outlet property="DL_Letter" destination="KFL-0p-NsC" id="7ip-ht-E52"/>
                         <outlet property="DW_letter" destination="K3T-s5-Xgj" id="MJq-sq-hW8"/>
+                        <outlet property="DoublesLossesLabel" destination="B6L-GZ-pf1" id="gza-KQ-TqD"/>
+                        <outlet property="DoublesWinsLabel" destination="aeF-AE-4r4" id="6PQ-cp-M1B"/>
                         <outlet property="MainUNLabel" destination="fHt-D3-GLl" id="fih-Wc-WdK"/>
                         <outlet property="NewDoublesRankLabel" destination="NKd-7B-UWZ" id="Pgh-If-3I0"/>
                         <outlet property="NewSinglesRankLabel" destination="X6c-zx-tdY" id="d6U-Li-L1K"/>
                         <outlet property="SL_Letter" destination="sFo-fy-QpO" id="Hao-ub-1z6"/>
                         <outlet property="SW_Letter" destination="LC2-ir-O5D" id="Uw2-3v-WUE"/>
+                        <outlet property="SinglesLossesLabel" destination="cZY-EI-ZE8" id="65l-SK-oKG"/>
+                        <outlet property="SinglesWinsLabel" destination="BGg-br-2CP" id="j6p-kt-W9c"/>
                         <outlet property="backgroundGradView" destination="LJY-JB-lH7" id="Ekm-RM-1es"/>
                         <outlet property="btn_NewGame" destination="uaT-Ko-XgQ" id="Kgw-Cp-Y04"/>
                         <outlet property="lbl_DoublesHeader" destination="IWp-TT-evv" id="99o-6K-VZ6"/>
@@ -316,7 +348,7 @@
                                 </state>
                                 <connections>
                                     <action selector="LoginClicked:" destination="qAQ-S4-96j" eventType="touchUpInside" id="rng-Dq-bFe"/>
-                                    <segue destination="NRj-dg-pDF" kind="show" id="ZzW-kS-NvI"/>
+                                    <segue destination="xwF-2R-Q1P" kind="show" id="ikr-Oh-41k"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xT9-g4-CYl">
@@ -353,6 +385,47 @@
             </objects>
             <point key="canvasLocation" x="3545.801526717557" y="-199.29577464788733"/>
         </scene>
+        <!--Doubles_LogGame-->
+        <scene sceneID="IbR-Cl-bp5">
+            <objects>
+                <viewController title="Doubles_LogGame" id="xwF-2R-Q1P" customClass="AddGameViewController" customModule="AGRESSV" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="WmU-Hn-6Gq">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8wj-ne-hjH">
+                                <rect key="frame" x="47" y="467" width="318" height="35"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="filled" title="Log Game"/>
+                                <connections>
+                                    <action selector="btn_LogGame:" destination="xwF-2R-Q1P" eventType="touchUpInside" id="AXd-4g-GhO"/>
+                                </connections>
+                            </button>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="CGG-bX-5nc">
+                                <rect key="frame" x="131" y="343" width="131" height="32"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <segments>
+                                    <segment title="Won"/>
+                                    <segment title="Lost"/>
+                                </segments>
+                                <connections>
+                                    <action selector="seg_WL:" destination="xwF-2R-Q1P" eventType="valueChanged" id="6ct-ns-hLz"/>
+                                </connections>
+                            </segmentedControl>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="NDa-Sj-Ijj"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="fms-IZ-iKv"/>
+                    <connections>
+                        <outlet property="seg_WLOutlet" destination="CGG-bX-5nc" id="9g5-J4-TUy"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Rs9-9Z-8hE" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4342.7480916030536" y="-66.197183098591552"/>
+        </scene>
         <!--SearchDoublesPartner-->
         <scene sceneID="dxo-5T-7qC">
             <objects>
@@ -362,7 +435,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="vfO-d9-Jce">
-                                <rect key="frame" x="0.0" y="103" width="393" height="44"/>
+                                <rect key="frame" x="0.0" y="59" width="393" height="88"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <connections>
                                     <outlet property="delegate" destination="NRj-dg-pDF" id="FKz-aX-yHd"/>
@@ -404,7 +477,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3wP-tq-BgB" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4363" y="-495"/>
+            <point key="canvasLocation" x="5127" y="-662"/>
         </scene>
         <!--CreateAccountScreen-->
         <scene sceneID="1oR-t0-Crf">
@@ -530,7 +603,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="UyE-a9-rgm"/>
+        <segue reference="Ap0-aB-1NR"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="AgressvLogoSmall" width="452" height="178"/>

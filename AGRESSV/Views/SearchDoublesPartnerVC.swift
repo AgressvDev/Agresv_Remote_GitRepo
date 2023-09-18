@@ -12,10 +12,15 @@ import FirebaseFirestore
 
 class SearchDoublesPartnerVC: UIViewController {
     
-    
 
+   
+    var UsernameArray = [String]()
+    
+ 
+    
   
-    let Usernames = ["user1", "user2", "user3"]
+    
+    //let Usernames = ["user1", "user2", "user3"]
     var FilteredUsernames: [String]!
     
 
@@ -26,7 +31,7 @@ class SearchDoublesPartnerVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        FilteredUsernames = Usernames
+        FilteredUsernames = UsernameArray
 
         TableView.delegate = self
         TableView.dataSource = self
