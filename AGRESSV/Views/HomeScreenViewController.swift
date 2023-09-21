@@ -127,14 +127,15 @@ class HomeScreenViewController: UIViewController {
                             self.NewDoublesRankLabel.text = String(format: "%.1f", Int_Doubles_Rank!)
                             
                             
-                            //
+                            
                             //String.localizedStringWithFormat("%.1f", Doubles_Rank_As_String)
                             
 
                             //Singles Rank number to string conversion
                             let Singles_Rank = document!.data()!["Singles_Rank"]
                             let Singles_Rank_As_String = String(describing: Singles_Rank!)
-                            self.NewSinglesRankLabel.text = Singles_Rank_As_String
+                            let Int_Singles_Rank = Double(Singles_Rank_As_String)
+                            self.NewSinglesRankLabel.text = String(format: "%.1f", Int_Singles_Rank!)
                             
                             //Doubles Wins number to string conversion
                             let DoublesWins = document!.data()!["Doubles_Games_Wins"]
