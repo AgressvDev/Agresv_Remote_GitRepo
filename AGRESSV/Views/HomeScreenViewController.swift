@@ -9,6 +9,7 @@ import UIKit
 import Firebase
 import FirebaseFirestore
 import SwiftUI
+import Foundation
 
 
 class HomeScreenViewController: UIViewController {
@@ -122,7 +123,12 @@ class HomeScreenViewController: UIViewController {
                            //Doubles Rank number to string conversion
                             let Doubles_Rank = document!.data()!["Doubles_Rank"]
                             let Doubles_Rank_As_String = String(describing: Doubles_Rank!)
-                            self.NewDoublesRankLabel.text = Doubles_Rank_As_String
+                            let Int_Doubles_Rank = Double(Doubles_Rank_As_String)
+                            self.NewDoublesRankLabel.text = String(format: "%.1f", Int_Doubles_Rank!)
+                            
+                            
+                            //
+                            //String.localizedStringWithFormat("%.1f", Doubles_Rank_As_String)
                             
 
                             //Singles Rank number to string conversion

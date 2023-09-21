@@ -39,8 +39,6 @@ func GetCurrentUsername() {
 
 let CurrentDateMinus7 = Calendar.current.date(byAdding: .day, value:-7, to: Date())
 
-
-
 func getgamescount() async {
     let query = db.collection("Agressv_Games").whereField("Game_Date", isGreaterThanOrEqualTo: CurrentDateMinus7 ?? "")
 
@@ -54,3 +52,24 @@ func getgamescount() async {
     }
 }
 
+
+//class SomeClass {
+//    let finalcountofgames: String
+//    //let CurrentDateMinus7 = Calendar.current.date(byAdding: .day, value:-7, to: Date())
+//    class func getGameCount() {
+//        
+//        let db = Firestore.firestore()
+//        let uid = Auth.auth().currentUser!.email
+//        
+//         let query = db.collection("Agressv_Games")
+//            .whereField("Game_Creator", isEqualTo:uid!)
+//            .whereField("Game_Date", isGreaterThanOrEqualTo: Date())
+//         
+//         
+//        print(query.count)
+//       
+//         }
+//    init() {
+//        finalcountofgames = SomeClass.getGameCount()
+//    }
+//}
