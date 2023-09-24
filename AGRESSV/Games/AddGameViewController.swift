@@ -24,6 +24,7 @@ class AddGameViewController: UIViewController {
         
         
         func GetDoublesRank() {
+            let db = Firestore.firestore()
             let uid = Auth.auth().currentUser!.email
             let docRef = db.collection("Agressv_Users").document(uid!)
             
@@ -130,7 +131,7 @@ class AddGameViewController: UIViewController {
                 //do not decrement
             } else {
                 User_ref.updateData([
-                    "Doubles_Rank": FieldValue.increment(Int64(-0.1))])
+                    "Doubles_Rank": FieldValue.increment(-0.1)])
                 
                
             }
@@ -139,7 +140,7 @@ class AddGameViewController: UIViewController {
             
         
             
-        Game_ref.setData(["Game_Count" : 1, "Game_Date" : Today, "Game_Creator": uid!])
+        Game_ref.setData(["Game_Result" : WL_Selection, "Game_Date" : Today, "Game_Creator": uid!, "Game_Type": "Doubles", "Game_Partner": "", "Game_Opponent_One": "", "Game_Opponent_Two": ""])
             
             User_ref.updateData([
                 "Doubles_Games_Played": FieldValue.increment(Int64(1))])

@@ -296,6 +296,13 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uET-G4-NaV">
+                                <rect key="frame" x="197" y="575" width="42" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="SdD-XJ-Noq"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -320,6 +327,7 @@
                         <outlet property="lbl_PlayMoreGames" destination="aKC-aa-Qgg" id="Bhr-Dq-PWu"/>
                         <outlet property="lbl_Playometer" destination="7L2-qH-0C7" id="wrh-tp-fVl"/>
                         <outlet property="lbl_SinglesHeader" destination="WiD-FX-4Cy" id="kBb-9h-K6W"/>
+                        <outlet property="lbl_testcount" destination="uET-G4-NaV" id="94P-Ig-8G4"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="23v-09-a4d" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
