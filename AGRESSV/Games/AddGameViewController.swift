@@ -49,6 +49,7 @@ class AddGameViewController: UIViewController {
         
         
     }
+    
     var WL_Selection = "W"
     var DoublesRankValue: String!
     var Today = Date()
@@ -117,6 +118,14 @@ class AddGameViewController: UIViewController {
             
             User_ref.updateData([
                 "Doubles_Rank": FieldValue.increment(0.1)])
+           
+           //Partner_ref
+//           Partner_ref.updateData([
+//               "Doubles_Games_Wins": FieldValue.increment(Int64(1))])
+//
+//           Partner_ref.updateData([
+//               "Doubles_Rank": FieldValue.increment(0.1)])
+           
         }
         
         else if WL_Selection == "L"{
@@ -124,14 +133,24 @@ class AddGameViewController: UIViewController {
             User_ref.updateData([
                 "Doubles_Games_Losses": FieldValue.increment(Int64(1))])
             
-            
+            //Partner_ref
+//            Partner_ref.updateData([
+//                "Doubles_Games_Losses": FieldValue.increment(Int64(1))])
             
             //if Doubles Rank is 8.5 do not decrement
             if DoublesRankValue == "8.5" {
                 //do not decrement
-            } else {
+            }
+//            if DoublesRankValue_Partner == "8.5" {
+//                //do not decrement
+//            }
+            
+            else {
                 User_ref.updateData([
                     "Doubles_Rank": FieldValue.increment(-0.1)])
+                
+//                Partner_ref.updateData([
+//                    "Doubles_Rank": FieldValue.increment(-0.1)])
                 
                
             }
@@ -145,7 +164,9 @@ class AddGameViewController: UIViewController {
             User_ref.updateData([
                 "Doubles_Games_Played": FieldValue.increment(Int64(1))])
             
-            
+            //Partner_ref
+//          Partner_ref.updateData([
+//            "Doubles_Games_Played": FieldValue.increment(Int64(1))])
             
             let dialogMessage = UIAlertController(title: "Success!", message: "Your game has been logged.", preferredStyle: .alert)
             

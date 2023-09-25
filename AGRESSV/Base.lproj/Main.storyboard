@@ -356,7 +356,7 @@
                                 </state>
                                 <connections>
                                     <action selector="LoginClicked:" destination="qAQ-S4-96j" eventType="touchUpInside" id="rng-Dq-bFe"/>
-                                    <segue destination="xwF-2R-Q1P" kind="show" id="ikr-Oh-41k"/>
+                                    <segue destination="NRj-dg-pDF" kind="show" id="WFd-8G-SWP"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xT9-g4-CYl">
@@ -402,7 +402,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8wj-ne-hjH">
-                                <rect key="frame" x="47" y="467" width="318" height="35"/>
+                                <rect key="frame" x="37" y="603" width="318" height="35"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="filled" title="Log Game"/>
@@ -411,7 +411,7 @@
                                 </connections>
                             </button>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="CGG-bX-5nc">
-                                <rect key="frame" x="131" y="343" width="131" height="32"/>
+                                <rect key="frame" x="131" y="487" width="131" height="32"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <segments>
                                     <segment title="Won"/>
@@ -432,60 +432,36 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Rs9-9Z-8hE" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4342.7480916030536" y="-66.197183098591552"/>
+            <point key="canvasLocation" x="5303" y="-685"/>
         </scene>
         <!--SearchDoublesPartner-->
         <scene sceneID="dxo-5T-7qC">
             <objects>
-                <viewController title="SearchDoublesPartner" id="NRj-dg-pDF" customClass="SearchDoublesPartnerVC" customModule="AGRESSV" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="SearchDoublesPartner" id="NRj-dg-pDF" customClass="DoublesSearchVCNew" customModule="AGRESSV" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="TyE-5R-Xy7">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="vfO-d9-Jce">
-                                <rect key="frame" x="0.0" y="59" width="393" height="88"/>
+                            <searchBar contentMode="redraw" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="AVt-ms-HIl">
+                                <rect key="frame" x="0.0" y="224" width="393" height="44"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <connections>
-                                    <outlet property="delegate" destination="NRj-dg-pDF" id="FKz-aX-yHd"/>
+                                    <outlet property="delegate" destination="NRj-dg-pDF" id="wvK-3e-JVS"/>
                                 </connections>
                             </searchBar>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="3p8-AS-A1O">
-                                <rect key="frame" x="0.0" y="147" width="393" height="671"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="cell" id="JKv-9g-MxC">
-                                        <rect key="frame" x="0.0" y="50" width="393" height="43.666667938232422"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="JKv-9g-MxC" id="tJI-BD-l18">
-                                            <rect key="frame" x="0.0" y="0.0" width="393" height="43.666667938232422"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                </prototypes>
-                            </tableView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="K28-zh-zRf"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                        <constraints>
-                            <constraint firstItem="3p8-AS-A1O" firstAttribute="leading" secondItem="K28-zh-zRf" secondAttribute="leading" id="4qq-kZ-MHq"/>
-                            <constraint firstItem="vfO-d9-Jce" firstAttribute="trailing" secondItem="K28-zh-zRf" secondAttribute="trailing" id="Q1l-mD-ceJ"/>
-                            <constraint firstItem="K28-zh-zRf" firstAttribute="trailing" secondItem="3p8-AS-A1O" secondAttribute="trailing" id="SHh-EQ-Hpd"/>
-                            <constraint firstItem="K28-zh-zRf" firstAttribute="bottom" secondItem="3p8-AS-A1O" secondAttribute="bottom" id="c5m-ug-StZ"/>
-                            <constraint firstItem="3p8-AS-A1O" firstAttribute="top" secondItem="vfO-d9-Jce" secondAttribute="bottom" id="cHr-rR-DY7"/>
-                            <constraint firstItem="vfO-d9-Jce" firstAttribute="top" secondItem="K28-zh-zRf" secondAttribute="top" id="koz-T0-xL0"/>
-                            <constraint firstItem="K28-zh-zRf" firstAttribute="bottom" secondItem="vfO-d9-Jce" secondAttribute="bottom" constant="671" id="sn4-e5-zKh"/>
-                            <constraint firstItem="vfO-d9-Jce" firstAttribute="leading" secondItem="K28-zh-zRf" secondAttribute="leading" id="z3u-1H-dqr"/>
-                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="bHB-dS-tdT"/>
                     <connections>
-                        <outlet property="SearchBar" destination="vfO-d9-Jce" id="Fn2-n6-Ftd"/>
-                        <outlet property="TableView" destination="3p8-AS-A1O" id="AWb-Ou-NVw"/>
+                        <outlet property="sch_SearchPartner" destination="AVt-ms-HIl" id="b1M-0Q-3Pt"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3wP-tq-BgB" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5127" y="-662"/>
+            <point key="canvasLocation" x="4382" y="-557"/>
         </scene>
         <!--CreateAccountScreen-->
         <scene sceneID="1oR-t0-Crf">
