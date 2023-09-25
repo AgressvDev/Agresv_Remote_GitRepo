@@ -442,26 +442,29 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <searchBar contentMode="redraw" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="AVt-ms-HIl">
-                                <rect key="frame" x="0.0" y="224" width="393" height="44"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                                <textInputTraits key="textInputTraits"/>
-                                <connections>
-                                    <outlet property="delegate" destination="NRj-dg-pDF" id="wvK-3e-JVS"/>
-                                </connections>
-                            </searchBar>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pick Your Partner" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9FY-Jy-Jsr">
+                                <rect key="frame" x="0.0" y="138" width="393" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="K28-zh-zRf"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="9FY-Jy-Jsr" firstAttribute="trailing" secondItem="K28-zh-zRf" secondAttribute="trailing" id="6x3-i3-zcp"/>
+                            <constraint firstItem="9FY-Jy-Jsr" firstAttribute="top" secondItem="K28-zh-zRf" secondAttribute="top" constant="35" id="Ri2-bD-0f2"/>
+                            <constraint firstItem="9FY-Jy-Jsr" firstAttribute="leading" secondItem="K28-zh-zRf" secondAttribute="leading" id="xJn-Rz-Rdp"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="bHB-dS-tdT"/>
                     <connections>
-                        <outlet property="sch_SearchPartner" destination="AVt-ms-HIl" id="b1M-0Q-3Pt"/>
+                        <outlet property="lbl_PickPartner" destination="9FY-Jy-Jsr" id="VaG-V4-HPh"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3wP-tq-BgB" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4382" y="-557"/>
+            <point key="canvasLocation" x="4380.9160305343512" y="-557.04225352112678"/>
         </scene>
         <!--CreateAccountScreen-->
         <scene sceneID="1oR-t0-Crf">

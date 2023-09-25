@@ -33,8 +33,12 @@ class CreateAccountViewController: UIViewController {
        
     }
     
+    //function to check if username already exists
     
-    
+  
+   
+
+
     
     @IBAction func CreateMyAccountClicked(_ sender: UIButton) {
         guard let Email = CreateEmailTextField.text else {return}
@@ -73,10 +77,64 @@ class CreateAccountViewController: UIViewController {
             }
             
             else {
-                //add user to Agressv_Users collection
-                self.addUser(Username: Username, Email: Email)
-                //go to User's Homescreen
-                self.performSegue(withIdentifier: "CreateAccountGoToHome", sender: self)
+                
+                //add code to prevent duplicate Usernames
+                //if exists query wherefield "Username" isequalto: Username then raise dialogMessage
+                func checkUsernameExists(usernameinner: String, completion: @escaping (Bool, Error?) -> Void) {
+                    let db = Firestore.firestore()
+                    let usernameref = db.collection("Agressv_Users")
+                    
+                    // Query the "users" collection to check if the username exists
+                    usernameref.whereField("Username", isEqualTo: usernameinner).getDocuments { (querySnapshot, error) in
+                        if let error = error {
+                            // Handle any errors
+                            completion(false, error)
+                        } else {
+                            // Check if there are any documents in the query result
+                            if let documents = querySnapshot?.documents, !documents.isEmpty {
+                                // Username exists
+                                completion(true, nil)
+                            } else {
+                                // Username doesn't exist
+                                completion(false, nil)
+                            }
+                        }
+                    }
+                }
+                
+                checkUsernameExists(usernameinner: Username) { (usernameExists, error) in
+                    if let error = error {
+                        print("Error checking username existence: \(error.localizedDescription)")
+                    } else {
+                        if usernameExists {
+                            
+                            let dialogMessageUsername = UIAlertController(title: "Error.", message: "That Username already exists.", preferredStyle: .alert)
+
+                            // Create OK button with action handler
+                            let ok = UIAlertAction(title: "OK", style: .default, handler: { (action) -> Void in
+                                print("Ok button tapped")
+                             })
+
+                            //Add OK button to a dialog message
+                            dialogMessageUsername.addAction(ok)
+                            // Present Alert to
+                            self.present(dialogMessageUsername, animated: true, completion: nil)
+                            
+                            
+                            
+                        } else {
+                            
+                            //add user to Agressv_Users collection
+                            self.addUser(Username: Username, Email: Email)
+                            //go to User's Homescreen
+                            self.performSegue(withIdentifier: "CreateAccountGoToHome", sender: self)
+                           
+                        }
+                    }
+                }
+                
+                
+                
             }
         }
     }
