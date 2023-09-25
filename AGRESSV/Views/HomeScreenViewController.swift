@@ -61,12 +61,17 @@ class HomeScreenViewController: UIViewController {
     
     @IBOutlet weak var backgroundGradView: UIView!
     
-    var doccount: String = ""
+    var labelgaugecount: String = ""
     let CurrentDateMinus7 = Calendar.current.date(byAdding: .day, value:-7, to: Date())
+  
+    
+    public var gaugemetercount = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+
+      
         
         //GRADIENT BACKGROUND - MAYBE
         
@@ -93,59 +98,102 @@ class HomeScreenViewController: UIViewController {
             let uid = Auth.auth().currentUser!.email
             
             // Define your query
-            let query = db.collection("Agressv_Games").whereFilter(
-                Filter.orFilter([Filter.whereField("Game_Partner", isEqualTo: uid!),
-                Filter.whereField("Game_Creator", isEqualTo:uid!)]))
+            //            let query = db.collection("Agressv_Games").whereFilter(
+            //                Filter.orFilter([Filter.whereField("Game_Partner", isEqualTo: uid!),
+            //                Filter.whereField("Game_Creator", isEqualTo:uid!)]))
             
-//            let query = db.collection("Agressv_Games").whereFilter(Filter.andFilter([
-//                Filter.whereField("Game_Date", isGreaterOrEqualTo: CurrentDateMinus7!),
-//                Filter.orFilter([
-//                    Filter.whereField("Game_Creator", isEqualTo: uid!),
-//                    Filter.whereField("Game_Opponent_One", isEqualTo: uid!)
-//
-//                ])
-//            ]))
-                   
+            //query trial 2
+            let query = db.collection("Agressv_Games").whereFilter(Filter.andFilter([
+                Filter.whereField("Game_Date", isGreaterOrEqualTo: CurrentDateMinus7!),
+                Filter.orFilter([
+                    Filter.whereField("Game_Creator", isEqualTo: uid!),
+                    Filter.whereField("Game_Opponent_One", isEqualTo: uid!),
+                    Filter.whereField("Game_Opponent_Two", isEqualTo: uid!),
+                    Filter.whereField("Game_Partner", isEqualTo: uid!)
+                    
+                ])
+            ]))
+            
+            //query trial 3
+            //            let query = db.collection("Agressv_Games").whereFilter(
+            //                    Filter.andFilter([Filter.whereField("Game_Opponent_Two", isEqualTo: uid!),
+            //                    Filter.whereField("Game_Date", isGreaterOrEqualTo: CurrentDateMinus7!)]))
             
             
             query.getDocuments { (querySnapshot, error) in
                 if error != nil {
                     return
-                } else {
+                }
+                else {
+                    
                     let count = querySnapshot?.documents.count ?? 0
                     
-                    self.doccount = String(count)
-                    self.lbl_testcount.frame.origin = CGPoint(x:65, y:580)
-                    self.lbl_testcount.text = self.doccount
+                    
+                    self.labelgaugecount = String(count)
+                    self.lbl_testcount.frame.origin = CGPoint(x:225, y:612)
+                    self.lbl_testcount.textColor = UIColor.systemGray
+                    self.lbl_testcount.font = UIFont.systemFont(ofSize: 12)
+                    self.lbl_testcount.text = self.labelgaugecount
+                    
+                    self.gaugemetercount = String(count)
+                    let vc = UIHostingController(rootView: GaugeView(currentValue: self.gaugemetercount))
+                        
+                        let swiftuiView_gauge = vc.view!
+                        swiftuiView_gauge.translatesAutoresizingMaskIntoConstraints = true
+                        
+                        swiftuiView_gauge.frame.size.width = 400
+                        
+                        
+                        // 2
+                        // Add the view controller to the destination view controller.
+                    self.addChild(vc)
+                    self.view.addSubview(swiftuiView_gauge)
+                        
+                        self.view.bringSubviewToFront(swiftuiView_gauge)
+                        swiftuiView_gauge.frame = CGRectMake( 15, 75, swiftuiView_gauge.frame.size.width, swiftuiView_gauge.frame.size.height ) // set new position exactly
+                        
+                        
+                        // 4
+                        // Notify the child view controller that the move is complete.
+                        vc.didMove(toParent: self)
                 }
-            }}
+            }
             
-            print(currentcountforgauge())
+        }
         
-       
+        //update the gauge value
+        print(currentcountforgauge())
+        
+      
+        
+       //INVOKE Gauge View
             
-            let vc = UIHostingController(rootView: GaugeView())
-            
-            let swiftuiView_gauge = vc.view!
-            swiftuiView_gauge.translatesAutoresizingMaskIntoConstraints = true
-            
-            swiftuiView_gauge.frame.size.width = 400
-            
-            
-            // 2
-            // Add the view controller to the destination view controller.
-            addChild(vc)
-            view.addSubview(swiftuiView_gauge)
-            
-            self.view.bringSubviewToFront(swiftuiView_gauge)
-            swiftuiView_gauge.frame = CGRectMake( 15, 75, swiftuiView_gauge.frame.size.width, swiftuiView_gauge.frame.size.height ) // set new position exactly
-            
-            
-            // 4
-            // Notify the child view controller that the move is complete.
-            vc.didMove(toParent: self)
+//        let vc = UIHostingController(rootView: GaugeView(currentValue: gaugemetercount))
+//
+//            let swiftuiView_gauge = vc.view!
+//            swiftuiView_gauge.translatesAutoresizingMaskIntoConstraints = true
+//
+//            swiftuiView_gauge.frame.size.width = 400
+//
+//
+//            // 2
+//            // Add the view controller to the destination view controller.
+//            addChild(vc)
+//            view.addSubview(swiftuiView_gauge)
+//
+//            self.view.bringSubviewToFront(swiftuiView_gauge)
+//            swiftuiView_gauge.frame = CGRectMake( 15, 75, swiftuiView_gauge.frame.size.width, swiftuiView_gauge.frame.size.height ) // set new position exactly
+//
+//
+//            // 4
+//            // Notify the child view controller that the move is complete.
+//            vc.didMove(toParent: self)
             
       
+        
+       
+        
+        
             
             //GET DATA
             
