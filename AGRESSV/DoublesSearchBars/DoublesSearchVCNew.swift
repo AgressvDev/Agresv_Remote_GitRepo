@@ -6,12 +6,14 @@
 //
 
 import UIKit
+import Firebase
+import FirebaseFirestore
 
 class DoublesSearchVCNew: UIViewController {
     
     
     
-    
+
     
     
 
@@ -23,11 +25,15 @@ class DoublesSearchVCNew: UIViewController {
     @IBOutlet weak var Table_PartnerUsernames: UITableView!
     
     
-    var dataSourceArrayPartner = ["guyfromservicerd","BigDumbPickle","AnnePickle","69erFuckboyPickle", "sonofBitch", "crazyAlWaters", "sucky", "AndyDick", "dumbguy", "BenJohns", "Riley2D3", "luckDragon", "Alf", "cronos", "Marty", "CarlWeathers", "TheRollingStones"]
+    
+    
+    
+//    ["guyfromservicerd","BigDumbPickle","AnnePickle","69erFuckboyPickle", "sonofBitch", "crazyAlWaters", "sucky", "AndyDick", "dumbguy", "BenJohns", "Riley2D3", "luckDragon", "Alf", "cronos", "Marty", "CarlWeathers", "TheRollingStones"]
     
 //    var dataSourceArrayOpponentOne = ["player1","player2","player3","player4"]
 //    var dataSourceArrayOpponentTwo = ["player1","player2","player3","player4"]
 //
+    var dataSourceArrayPartner = [String]()
     var filteredDataSourceArrayPartner = [String]()
     
 //    var filteredDataSourceArrayOpponentOne = [String]()
@@ -40,6 +46,43 @@ class DoublesSearchVCNew: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
+        
+
+        
+
+        func fetchUsernames(completion: @escaping (Error?) -> Void) {
+            let db = Firestore.firestore()
+            let usersCollection = db.collection("Agressv_Users") // Replace with your Firestore collection name
+
+            usersCollection.getDocuments { (querySnapshot, error) in
+                if let error = error {
+                    completion(error)
+                    return
+                }
+
+                for document in querySnapshot!.documents {
+                    if let username = document["Username"] as? String {
+                        self.dataSourceArrayPartner.append(username)
+                    }
+                }
+
+                completion(nil)
+            }
+        }
+        
+        // Call the function to fetch and populate usernames
+        fetchUsernames { error in
+            if let error = error {
+                print("Error fetching usernames: \(error.localizedDescription)")
+                return
+            }
+
+            self.Table_PartnerUsernames.reloadData()
+        }
+
+
+        
         // Call this method initially to display the data in alphabetical order.
                 alphabetizeDataAndReloadTableView()
             
@@ -51,8 +94,6 @@ class DoublesSearchVCNew: UIViewController {
                 // Reload the table view to display the sorted data.
                 Table_PartnerUsernames.reloadData()
             }
-        
-        
         
     } //end of loading
     
