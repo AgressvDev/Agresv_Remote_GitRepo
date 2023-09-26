@@ -12,10 +12,7 @@ import FirebaseFirestore
 class DoublesSearchVCNew: UIViewController {
     
     
-    
 
-    
-    
 
     
     @IBOutlet weak var lbl_PickPartner: UILabel!
@@ -26,30 +23,18 @@ class DoublesSearchVCNew: UIViewController {
     
     
     
-    
-    
-//    ["guyfromservicerd","BigDumbPickle","AnnePickle","69erFuckboyPickle", "sonofBitch", "crazyAlWaters", "sucky", "AndyDick", "dumbguy", "BenJohns", "Riley2D3", "luckDragon", "Alf", "cronos", "Marty", "CarlWeathers", "TheRollingStones"]
-    
-//    var dataSourceArrayOpponentOne = ["player1","player2","player3","player4"]
-//    var dataSourceArrayOpponentTwo = ["player1","player2","player3","player4"]
-//
     var dataSourceArrayPartner = [String]()
     var filteredDataSourceArrayPartner = [String]()
     
-//    var filteredDataSourceArrayOpponentOne = [String]()
-//    var filteredDataSourceArrayOpponentTwo = [String]()
-    
+
     var searching = false
-    
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         
-        
-
-        
+    
 
         func fetchUsernames(completion: @escaping (Error?) -> Void) {
             let db = Firestore.firestore()

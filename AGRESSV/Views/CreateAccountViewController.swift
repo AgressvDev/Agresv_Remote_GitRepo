@@ -120,7 +120,21 @@ class CreateAccountViewController: UIViewController {
                             // Present Alert to
                             self.present(dialogMessageUsername, animated: true, completion: nil)
                             
-                            
+                           //DELETE THE USER EMAIL FROM AUTHENTICATION DB 
+                            let auth = Auth.auth()
+
+                            // Get the current user
+                            if let currentUser = auth.currentUser {
+                                currentUser.delete { error in
+                                    if let error = error {
+                                        print("Error deleting user: \(error.localizedDescription)")
+                                    } else {
+                                        print("User deleted successfully.")
+                                    }
+                                }
+                            } else {
+                                print("No user is currently signed in.")
+                            }
                             
                         } else {
                             
