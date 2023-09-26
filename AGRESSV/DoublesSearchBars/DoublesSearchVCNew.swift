@@ -37,8 +37,9 @@ class DoublesSearchVCNew: UIViewController {
     
 
         func fetchUsernames(completion: @escaping (Error?) -> Void) {
+            let uid = Auth.auth().currentUser!.email
             let db = Firestore.firestore()
-            let usersCollection = db.collection("Agressv_Users") // Replace with your Firestore collection name
+            let usersCollection = db.collection("Agressv_Users").whereField("Email", isNotEqualTo: uid!) // Replace with your Firestore collection name
 
             usersCollection.getDocuments { (querySnapshot, error) in
                 if let error = error {
