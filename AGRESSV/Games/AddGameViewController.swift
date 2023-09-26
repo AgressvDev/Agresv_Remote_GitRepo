@@ -47,8 +47,7 @@ class AddGameViewController: UIViewController {
         
         
         
-        
-    }
+    } //end of load
     
     var WL_Selection = "W"
     var DoublesRankValue: String!
@@ -61,42 +60,22 @@ class AddGameViewController: UIViewController {
    
     
     @IBAction func seg_WL(_ sender: UISegmentedControl) {
-//        let db = Firestore.firestore()
-//        let uid = Auth.auth().currentUser!.email
-//
-//        let User_ref = db.collection("Agressv_Users").document(uid!)
+
        
-        if seg_WLOutlet.selectedSegmentIndex == 0 {
-            
+        if seg_WLOutlet.selectedSegmentIndex == 0
+        {
+
             self.WL_Selection = "W"
             
-            //            User_ref.updateData([
-            //                "Doubles_Games_Wins": FieldValue.increment(Int64(1))])
-            //
-            //            User_ref.updateData([
-            //                "Doubles_Rank": FieldValue.increment(0.1)])
-            
-            
-        } else if seg_WLOutlet.selectedSegmentIndex == 1 {
+            }
+            else if seg_WLOutlet.selectedSegmentIndex == 1
+                        
+            {
             
             self.WL_Selection = "L"
             
-    
-            
-            
-            //            User_ref.updateData([
-            //                "Doubles_Games_Losses": FieldValue.increment(Int64(1))])
-            //
-            //
-            //
-            //            //if Doubles Rank is 8.5 do not decrement
-            //            if DoublesRankValue == "8.5" {
-            //                return
-            //            } else {
-            //                User_ref.updateData([
-            //                    "Doubles_Rank": FieldValue.increment(-0.1)])
+            }
         }
-    }
     
     
     
