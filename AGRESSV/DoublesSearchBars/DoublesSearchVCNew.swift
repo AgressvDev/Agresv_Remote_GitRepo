@@ -123,16 +123,27 @@ extension DoublesSearchVCNew: UITableViewDelegate, UITableViewDataSource {
     }
     
      func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-            let selectedValue = dataSourceArrayPartner[indexPath.row]
             
+         if searching {
+             let selectedValue = filteredDataSourceArrayPartner[indexPath.row]
+             SharedData.shared.PartnerSelection = selectedValue
+         }
+         else
+         {
+             let selectedValue = dataSourceArrayPartner[indexPath.row]
+             SharedData.shared.PartnerSelection = selectedValue
+         }
             // Create an instance of SecondViewController
             let OppOneVC = storyboard?.instantiateViewController(withIdentifier: "OppOneID") as! OppOneViewController
             
          //prep for sending partner variable
-         let LogGameVC = storyboard?.instantiateViewController(withIdentifier: "AddGameID") as! AddGameViewController
+         //let LogGameVC = storyboard?.instantiateViewController(withIdentifier: "AddGameID") as! AddGameViewController
          
             // Set the selected cell's value as the public variable in SecondViewController
-        LogGameVC.selectedCellValue = selectedValue
+         
+        //LogGameVC.selectedCellValue = selectedValue
+         
+         
             
             // Push to the SecondViewController
             navigationController?.pushViewController(OppOneVC, animated: true)

@@ -1,5 +1,5 @@
 //
-//  OppOneViewController.swift
+//  OppTwoViewController.swift
 //  AGRESSV
 //
 //  Created by RyanMax OMelia on 9/27/23.
@@ -9,25 +9,19 @@ import UIKit
 import Firebase
 import FirebaseFirestore
 
+class OppTwoViewController: UIViewController {
 
-class OppOneViewController: UIViewController {
-
+    
+    @IBOutlet weak var lbl_PickOppTwo: UILabel!
+    
+    @IBOutlet weak var SB_OppTwo: UISearchBar!
+    
+    @IBOutlet weak var Table_OppTwoUsernames: UITableView!
     
     
-    @IBOutlet weak var lbl_PickOppOne: UILabel!
-    
-    
-    @IBOutlet weak var SB_OppOne: UISearchBar!
-    
-    
-    @IBOutlet weak var Table_OppOneUsernames: UITableView!
-    
-    
-  
-    
-    var dataSourceArrayOppOne = [String]()
-    var filtereddataSourceArrayOppOne = [String]()
-    var oppsearching = false
+    var dataSourceArrayOppTwo = [String]()
+    var filtereddataSourceArrayOppTwo = [String]()
+    var opptwosearching = false
     
     
     override func viewDidLoad() {
@@ -49,8 +43,6 @@ class OppOneViewController: UIViewController {
         
         //end gradient background view
         
-        
-        
         func fetchUsernames(completion: @escaping (Error?) -> Void) {
             let uid = Auth.auth().currentUser!.email
             let db = Firestore.firestore()
@@ -64,7 +56,7 @@ class OppOneViewController: UIViewController {
 
                 for document in querySnapshot!.documents {
                     if let username = document["Username"] as? String {
-                        self.dataSourceArrayOppOne.append(username)
+                        self.dataSourceArrayOppTwo.append(username)
                     }
                 }
 
@@ -79,7 +71,7 @@ class OppOneViewController: UIViewController {
                 return
             }
 
-            self.Table_OppOneUsernames.reloadData()
+            self.Table_OppTwoUsernames.reloadData()
         }
 
 
@@ -90,63 +82,62 @@ class OppOneViewController: UIViewController {
 
             func alphabetizeDataAndReloadTableView() {
                 // Sort the dataArray in alphabetical order.
-                dataSourceArrayOppOne.sort()
+                dataSourceArrayOppTwo.sort()
 
                 
                 // Reload the table view to display the sorted data.
-                Table_OppOneUsernames.reloadData()
+                Table_OppTwoUsernames.reloadData()
             }
         
-    } //end of load
+        
+    } // end of load
     
 
     
-   
 
 } //end of class
 
-extension OppOneViewController: UITableViewDelegate, UITableViewDataSource {
-    
+extension OppTwoViewController: UITableViewDelegate, UITableViewDataSource {
+
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 100.0 // Adjust this value to your desired cell height
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if oppsearching {
-            return filtereddataSourceArrayOppOne.count
+        if opptwosearching {
+           return filtereddataSourceArrayOppTwo.count
         }
         else
         {
-            return dataSourceArrayOppOne.count
+            return dataSourceArrayOppTwo.count
         }
-        
-        
+            
+
     }
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if oppsearching{
-            let selectedValue = filtereddataSourceArrayOppOne[indexPath.row]
-            SharedData.shared.OppOneSelection = selectedValue
+     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+         if opptwosearching {
+             let selectedValue = filtereddataSourceArrayOppTwo[indexPath.row]
+             
+             SharedData.shared.OppTwoSelection = selectedValue
+         }
+         else
+         {
+             let selectedValue = dataSourceArrayOppTwo[indexPath.row]
+             
+             SharedData.shared.OppTwoSelection = selectedValue
+         }
+            
+         //prep for sending partner variable
+         let LogGameVC = storyboard?.instantiateViewController(withIdentifier: "AddGameID") as! AddGameViewController
+         
+            // Set the selected cell's value as the public variable in SecondViewController
+        
+            
+            // Push to the SecondViewController
+            navigationController?.pushViewController(LogGameVC, animated: true)
+         
         }
-        else
-        {
-            let selectedValue = dataSourceArrayOppOne[indexPath.row]
-            SharedData.shared.OppOneSelection = selectedValue
-        }
-        // Create an instance of opp two VC
-        let OppTwoVC = storyboard?.instantiateViewController(withIdentifier: "OppTwoID") as! OppTwoViewController
-        
-        //prep for sending partner variable
-        //let LogGameVC = storyboard?.instantiateViewController(withIdentifier: "AddGameID") as! AddGameViewController
-        
-        // Set the selected cell's value as the public variable in SecondViewController
-        ///LogGameVC.selectedCellValueOppOne = selectedValue
-        
-        
-        // Push to the SecondViewController
-        navigationController?.pushViewController(OppTwoVC, animated: true)
-        
-    }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
@@ -157,12 +148,12 @@ extension OppOneViewController: UITableViewDelegate, UITableViewDataSource {
         cell.contentView.backgroundColor = customColor
         
         
-        if oppsearching {
-            cell.textLabel?.text = filtereddataSourceArrayOppOne[indexPath.row]
+        if opptwosearching {
+            cell.textLabel?.text = filtereddataSourceArrayOppTwo[indexPath.row]
             
         }
         else {
-            cell.textLabel?.text = dataSourceArrayOppOne[indexPath.row]
+            cell.textLabel?.text = dataSourceArrayOppTwo[indexPath.row]
           
         }
             
@@ -174,17 +165,17 @@ extension OppOneViewController: UITableViewDelegate, UITableViewDataSource {
 
 
     
-extension OppOneViewController: UISearchBarDelegate {
+extension OppTwoViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         //filteredDataSourceArrayPartner = dataSourceArrayPartner.filter({$0.prefix(searchText.count)==searchText})
         if searchText.isEmpty {
                 // If the search text is empty, show all items
-            filtereddataSourceArrayOppOne = dataSourceArrayOppOne
+            filtereddataSourceArrayOppTwo = dataSourceArrayOppTwo
             } else {
                 // Filter the data source array based on the search text
-                filtereddataSourceArrayOppOne = dataSourceArrayOppOne.filter { $0.lowercased().contains(searchText.lowercased()) }
+                filtereddataSourceArrayOppTwo = dataSourceArrayOppTwo.filter { $0.lowercased().contains(searchText.lowercased()) }
             }
-        oppsearching = true
-        Table_OppOneUsernames.reloadData()
+        opptwosearching = true
+        Table_OppTwoUsernames.reloadData()
     }
 }
