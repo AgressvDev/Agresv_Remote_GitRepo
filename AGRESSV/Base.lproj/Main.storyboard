@@ -515,14 +515,81 @@
                     <view key="view" contentMode="scaleToFill" id="0SB-wu-MGI">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pick Opponent One" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CpP-Hl-p1F">
+                                <rect key="frame" x="0.0" y="126" width="393" height="37"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="37" id="e80-JO-91l"/>
+                                    <constraint firstAttribute="width" constant="393" id="vCf-zx-V1Q"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Impact" family="Impact" pointSize="26"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="insetGrouped" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" estimatedSectionHeaderHeight="-1" sectionFooterHeight="18" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="Bwa-4c-GvR">
+                                <rect key="frame" x="16" y="226" width="361" height="619"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="361" id="JHh-71-sKK"/>
+                                    <constraint firstAttribute="height" constant="619" id="qvr-Ar-8HK"/>
+                                </constraints>
+                                <color key="separatorColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="cell" id="yan-W3-kaA">
+                                        <rect key="frame" x="20" y="55.333332061767578" width="321" height="43.666667938232422"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="yan-W3-kaA" id="PTQ-JN-MS0">
+                                            <rect key="frame" x="0.0" y="0.0" width="321" height="43.666667938232422"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="NRj-dg-pDF" id="hbl-Jq-kIJ"/>
+                                    <outlet property="delegate" destination="NRj-dg-pDF" id="z9n-xI-6Ti"/>
+                                </connections>
+                            </tableView>
+                            <searchBar contentMode="redraw" placeholder="Search Username" translatesAutoresizingMaskIntoConstraints="NO" id="2nP-kA-o2i">
+                                <rect key="frame" x="16" y="170" width="361" height="56"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="361" id="Fbw-Km-bBb"/>
+                                    <constraint firstAttribute="height" constant="56" id="G99-vO-Xlv"/>
+                                </constraints>
+                                <color key="barTintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <outlet property="delegate" destination="NRj-dg-pDF" id="rWS-TY-vci"/>
+                                </connections>
+                            </searchBar>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="GaI-uu-y4F"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="CpP-Hl-p1F" firstAttribute="top" secondItem="GaI-uu-y4F" secondAttribute="top" constant="23" id="1bc-Cu-gGe"/>
+                            <constraint firstItem="CpP-Hl-p1F" firstAttribute="leading" secondItem="GaI-uu-y4F" secondAttribute="leading" id="Lwd-0Q-Lrh"/>
+                            <constraint firstItem="Bwa-4c-GvR" firstAttribute="top" secondItem="2nP-kA-o2i" secondAttribute="bottom" id="NFr-MY-umG"/>
+                            <constraint firstItem="Bwa-4c-GvR" firstAttribute="top" secondItem="2nP-kA-o2i" secondAttribute="bottom" id="TkF-hz-GmS"/>
+                            <constraint firstItem="2nP-kA-o2i" firstAttribute="top" secondItem="CpP-Hl-p1F" secondAttribute="bottom" constant="7" id="VWS-rZ-bQz"/>
+                            <constraint firstAttribute="bottom" secondItem="Bwa-4c-GvR" secondAttribute="bottom" constant="7" id="fpB-ey-nFp"/>
+                            <constraint firstItem="2nP-kA-o2i" firstAttribute="leading" secondItem="GaI-uu-y4F" secondAttribute="leading" constant="16" id="m0u-XE-k3Q"/>
+                            <constraint firstItem="GaI-uu-y4F" firstAttribute="trailing" secondItem="2nP-kA-o2i" secondAttribute="trailing" constant="16" id="rzF-Uj-lXn"/>
+                            <constraint firstItem="Bwa-4c-GvR" firstAttribute="leading" secondItem="GaI-uu-y4F" secondAttribute="leading" constant="16" id="tkm-lf-dVQ"/>
+                            <constraint firstItem="GaI-uu-y4F" firstAttribute="trailing" secondItem="Bwa-4c-GvR" secondAttribute="trailing" constant="16" id="vpz-rf-KSN"/>
+                            <constraint firstItem="2nP-kA-o2i" firstAttribute="top" secondItem="CpP-Hl-p1F" secondAttribute="bottom" constant="7" id="vqK-21-Nb8"/>
+                            <constraint firstItem="CpP-Hl-p1F" firstAttribute="trailing" secondItem="GaI-uu-y4F" secondAttribute="trailing" id="xc9-Uy-O6g"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="LuT-CM-0bq"/>
+                    <connections>
+                        <outlet property="SB_OpponentOne" destination="2nP-kA-o2i" id="wXC-Sr-K2v"/>
+                        <outlet property="Table_OpponentOne" destination="Bwa-4c-GvR" id="sou-EL-yMu"/>
+                        <outlet property="lbl_OpponentOne" destination="CpP-Hl-p1F" id="feO-vK-Z4T"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Hb8-Yq-vhQ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5234" y="-557"/>
+            <point key="canvasLocation" x="5232.8244274809158" y="-557.04225352112678"/>
         </scene>
         <!--CreateAccountScreen-->
         <scene sceneID="1oR-t0-Crf">
