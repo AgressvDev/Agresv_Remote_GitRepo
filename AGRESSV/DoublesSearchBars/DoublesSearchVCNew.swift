@@ -15,6 +15,7 @@ class DoublesSearchVCNew: UIViewController {
 
 
     
+    
     @IBOutlet weak var lbl_PickPartner: UILabel!
     
     @IBOutlet weak var SB_PartnerSearchBar: UISearchBar!
@@ -33,13 +34,27 @@ class DoublesSearchVCNew: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+       //Gradient background
         
-    
+        let gradientLayer = CAGradientLayer()
+        
+        gradientLayer.frame = view.bounds
+        
+        gradientLayer.colors = [UIColor.black.cgColor, UIColor.white.cgColor] //UIColor.red.cgColor]
+        
+        gradientLayer.shouldRasterize = true
+        
+        //GradientPartnerbackground.layer.addSublayer(gradientLayer)
+        
+        self.view.layer.insertSublayer(gradientLayer, at: 0)
+        
+        
+        //end gradient background view
 
         func fetchUsernames(completion: @escaping (Error?) -> Void) {
             let uid = Auth.auth().currentUser!.email
             let db = Firestore.firestore()
-            let usersCollection = db.collection("Agressv_Users").whereField("Email", isNotEqualTo: uid!) // Replace with your Firestore collection name
+            let usersCollection = db.collection("Agressv_Users").whereField("Email", isNotEqualTo: uid!)
 
             usersCollection.getDocuments { (querySnapshot, error) in
                 if let error = error {
@@ -77,6 +92,7 @@ class DoublesSearchVCNew: UIViewController {
                 // Sort the dataArray in alphabetical order.
                 dataSourceArrayPartner.sort()
 
+                
                 // Reload the table view to display the sorted data.
                 Table_PartnerUsernames.reloadData()
             }
@@ -90,7 +106,10 @@ class DoublesSearchVCNew: UIViewController {
     
 extension DoublesSearchVCNew: UITableViewDelegate, UITableViewDataSource {
 
-
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 100.0 // Adjust this value to your desired cell height
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if searching {
            return filteredDataSourceArrayPartner.count
@@ -102,15 +121,40 @@ extension DoublesSearchVCNew: UITableViewDelegate, UITableViewDataSource {
             
 
     }
+    
+     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+            let selectedValue = dataSourceArrayPartner[indexPath.row]
+            
+            // Create an instance of SecondViewController
+            let OppOneVC = storyboard?.instantiateViewController(withIdentifier: "OppOneID") as! OppOneViewController
+            
+         //prep for sending partner variable
+         let LogGameVC = storyboard?.instantiateViewController(withIdentifier: "AddGameID") as! AddGameViewController
+         
+            // Set the selected cell's value as the public variable in SecondViewController
+        LogGameVC.selectedCellValue = selectedValue
+            
+            // Push to the SecondViewController
+            navigationController?.pushViewController(OppOneVC, animated: true)
+         
+        }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
             let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        
+        let customColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 0.1)
+        cell.textLabel?.font = UIFont.systemFont(ofSize: 18.0)
+        cell.contentView.backgroundColor = customColor
+        
+        
         if searching {
             cell.textLabel?.text = filteredDataSourceArrayPartner[indexPath.row]
+            
         }
         else {
             cell.textLabel?.text = dataSourceArrayPartner[indexPath.row]
+          
         }
             
             return cell
@@ -118,6 +162,8 @@ extension DoublesSearchVCNew: UITableViewDelegate, UITableViewDataSource {
 
     }
 }
+
+
     
 extension DoublesSearchVCNew: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {

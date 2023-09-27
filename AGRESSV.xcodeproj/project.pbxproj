@@ -23,6 +23,7 @@
 		4573B8B82A91A636009FAE1E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4573B8B72A91A636009FAE1E /* GoogleService-Info.plist */; };
 		4573B8BB2A91A868009FAE1E /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 4573B8BA2A91A868009FAE1E /* FirebaseAuth */; };
 		45A1DF4D2AA3F58D00191437 /* NewGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45A1DF4C2AA3F58D00191437 /* NewGameViewController.swift */; };
+		45E9C2E52AC41214003953FA /* OppOneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E9C2E42AC41214003953FA /* OppOneViewController.swift */; };
 		45EE444A2AAAC1DA00319597 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45EE44492AAAC1DA00319597 /* ViewController.swift */; };
 		45F489262A9D7A4C0043238C /* GaugeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F489252A9D7A4C0043238C /* GaugeView.swift */; };
 		45F7AB992AB669E700D1DA2C /* GamesCount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F7AB982AB669E700D1DA2C /* GamesCount.swift */; };
@@ -64,6 +65,7 @@
 		455606E02AB8AECC00CBE801 /* AddGameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddGameViewController.swift; sourceTree = "<group>"; };
 		4573B8B72A91A636009FAE1E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		45A1DF4C2AA3F58D00191437 /* NewGameViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewGameViewController.swift; sourceTree = "<group>"; };
+		45E9C2E42AC41214003953FA /* OppOneViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OppOneViewController.swift; sourceTree = "<group>"; };
 		45EE44492AAAC1DA00319597 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		45F489252A9D7A4C0043238C /* GaugeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GaugeView.swift; sourceTree = "<group>"; };
 		45F7AB982AB669E700D1DA2C /* GamesCount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamesCount.swift; sourceTree = "<group>"; };
@@ -144,6 +146,7 @@
 			isa = PBXGroup;
 			children = (
 				45271D0E2AC1241F006A3050 /* DoublesSearchVCNew.swift */,
+				45E9C2E42AC41214003953FA /* OppOneViewController.swift */,
 			);
 			path = DoublesSearchBars;
 			sourceTree = "<group>";
@@ -319,6 +322,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				45E9C2E52AC41214003953FA /* OppOneViewController.swift in Sources */,
 				4508FA9B2A90229B0081B477 /* CreateAccountViewController.swift in Sources */,
 				4508FA992A900D910081B477 /* LoginViewController.swift in Sources */,
 				45EE444A2AAAC1DA00319597 /* ViewController.swift in Sources */,

@@ -15,7 +15,7 @@ class AddGameViewController: UIViewController {
     
     
     
-    
+    var selectedCellValue: String = ""
  
     
     
