@@ -144,9 +144,63 @@ class AddGameViewController: UIViewController {
                 }
             }
         }
+        
+        func GetOppOneEmail() {
+            let db = Firestore.firestore()
+            let uid = selectedCellValueOppOne
+            let query = db.collection("Agressv_Users").whereField("Username", isEqualTo: uid)
+        
+            query.getDocuments { (querySnapshot, error) in
+                if error != nil {
+                    print("error")
+                } else {
+                    for document in querySnapshot!.documents {
+                        // Access the value of field2 from the document
+                        let PartnerEmail = document.data()["Email"] as? String
+                        if let PartnerEmail = PartnerEmail {
+                            self.selectedCellValueOppOneEmail = PartnerEmail
+                        } else {
+                            return
+                        }
+                        
+                        
+                        
+                        
+                    }
+                }
+            }
+        }
+        
+        func GetOppTwoEmail() {
+            let db = Firestore.firestore()
+            let uid = selectedCellValueOppTwo
+            let query = db.collection("Agressv_Users").whereField("Username", isEqualTo: uid)
+        
+            query.getDocuments { (querySnapshot, error) in
+                if error != nil {
+                    print("error")
+                } else {
+                    for document in querySnapshot!.documents {
+                        // Access the value of field2 from the document
+                        let PartnerEmail = document.data()["Email"] as? String
+                        if let PartnerEmail = PartnerEmail {
+                            self.selectedCellValueOppTwoEmail = PartnerEmail
+                        } else {
+                            return
+                        }
+                        
+                        
+                        
+                        
+                    }
+                }
+            }
+        }
+        
         print(GetPartnerRank())
         print(GetPartnerEmail())
-        
+        print(GetOppOneEmail())
+        print(GetOppTwoEmail())
         
         
         
@@ -266,7 +320,7 @@ class AddGameViewController: UIViewController {
         
         
         
-        Game_ref.setData(["Game_Result" : WL_Selection, "Game_Date" : Today, "Game_Creator": uid!, "Game_Type": "Doubles", "Game_Partner": selectedCellValueEmail, "Game_Opponent_One": selectedCellValueOppOne, "Game_Opponent_Two": selectedCellValueOppTwo])
+        Game_ref.setData(["Game_Result" : WL_Selection, "Game_Date" : Today, "Game_Creator": uid!, "Game_Type": "Doubles", "Game_Partner": selectedCellValueEmail, "Game_Opponent_One": selectedCellValueOppOneEmail, "Game_Opponent_Two": selectedCellValueOppTwoEmail])
         
         User_ref.updateData([
             "Doubles_Games_Played": FieldValue.increment(Int64(1))])

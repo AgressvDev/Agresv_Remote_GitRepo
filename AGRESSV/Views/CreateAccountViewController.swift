@@ -17,11 +17,27 @@ class CreateAccountViewController: UIViewController {
     @IBOutlet weak var CreateUsernameTextField: UITextField!
     
     
+            
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
     }
+    
+    //force lowercase text
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+            // Check if the text field being edited is your CreateEmailTextField
+            if textField == CreateEmailTextField {
+                // Convert the replacementString to lowercase and update the text field
+                textField.text = (textField.text as NSString?)?.replacingCharacters(in: range, with: string.lowercased())
+                return false // Return false to prevent default behavior
+            }
+            return true
+        }
+    
+    
+    
     
     func addUser(Username: String, Email: String){
         let db = Firestore.firestore()
@@ -33,7 +49,7 @@ class CreateAccountViewController: UIViewController {
        
     }
     
-    //function to check if username already exists
+    
     
   
    
@@ -41,7 +57,7 @@ class CreateAccountViewController: UIViewController {
 
     
     @IBAction func CreateMyAccountClicked(_ sender: UIButton) {
-        guard let Email = CreateEmailTextField.text else {return}
+        guard let Email = CreateEmailTextField.text?.lowercased() else {return}
         guard let password = CreatePasswordTextField.text else {return}
         guard let Username = CreateUsernameTextField.text else {return}
         
@@ -152,16 +168,10 @@ class CreateAccountViewController: UIViewController {
                 
             }
         }
-    }
+    } //end of load
     
-    /*
-    // MARK: - Navigation
+    
+    
+    
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
-}
+} //end of class

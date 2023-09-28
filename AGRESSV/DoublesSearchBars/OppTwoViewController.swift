@@ -19,6 +19,9 @@ class OppTwoViewController: UIViewController {
     @IBOutlet weak var Table_OppTwoUsernames: UITableView!
     
     
+    var PartnerSelectionUsername: String = SharedData.shared.PartnerSelection
+    var OppOneSelectionUsername: String = SharedData.shared.OppOneSelection
+    
     var dataSourceArrayOppTwo = [String]()
     var filtereddataSourceArrayOppTwo = [String]()
     var opptwosearching = false
@@ -47,7 +50,9 @@ class OppTwoViewController: UIViewController {
             let uid = Auth.auth().currentUser!.email
             let db = Firestore.firestore()
             let usersCollection = db.collection("Agressv_Users").whereField("Email", isNotEqualTo: uid!)
-
+            let partner = PartnerSelectionUsername
+            let oppone = OppOneSelectionUsername
+            
             usersCollection.getDocuments { (querySnapshot, error) in
                 if let error = error {
                     completion(error)
@@ -57,6 +62,10 @@ class OppTwoViewController: UIViewController {
                 for document in querySnapshot!.documents {
                     if let username = document["Username"] as? String {
                         self.dataSourceArrayOppTwo.append(username)
+                        
+                        self.dataSourceArrayOppTwo.removeAll { $0 == partner }
+                        self.dataSourceArrayOppTwo.removeAll { $0 == oppone }
+                        
                     }
                 }
 

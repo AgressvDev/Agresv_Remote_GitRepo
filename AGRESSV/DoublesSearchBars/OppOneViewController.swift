@@ -22,8 +22,8 @@ class OppOneViewController: UIViewController {
     
     @IBOutlet weak var Table_OppOneUsernames: UITableView!
     
+    var PartnerSelectionUsername: String = SharedData.shared.PartnerSelection
     
-  
     
     var dataSourceArrayOppOne = [String]()
     var filtereddataSourceArrayOppOne = [String]()
@@ -51,11 +51,13 @@ class OppOneViewController: UIViewController {
         
         
         
+        
         func fetchUsernames(completion: @escaping (Error?) -> Void) {
             let uid = Auth.auth().currentUser!.email
             let db = Firestore.firestore()
             let usersCollection = db.collection("Agressv_Users").whereField("Email", isNotEqualTo: uid!)
-
+            let partner = PartnerSelectionUsername
+            
             usersCollection.getDocuments { (querySnapshot, error) in
                 if let error = error {
                     completion(error)
@@ -65,6 +67,9 @@ class OppOneViewController: UIViewController {
                 for document in querySnapshot!.documents {
                     if let username = document["Username"] as? String {
                         self.dataSourceArrayOppOne.append(username)
+                        
+                        
+                        self.dataSourceArrayOppOne.removeAll { $0 == partner }
                     }
                 }
 
@@ -99,7 +104,7 @@ class OppOneViewController: UIViewController {
         
     } //end of load
     
-
+    
     
    
 
