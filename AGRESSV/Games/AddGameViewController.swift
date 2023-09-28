@@ -30,6 +30,12 @@ class AddGameViewController: UIViewController {
     
     @IBOutlet weak var lbl_VS: UILabel!
     
+    //For calculating players' ranks
+    var CurrentUserDoublesRank: String!
+    var PartnerDoublesRank: String!
+    var OppOneDoublesRank: String!
+    var OppTwoDoublesRank: String!
+    
     //Displaying game players
     var currentuser: String = ""
     var selectedCellValue: String = SharedData.shared.PartnerSelection //Partner
@@ -107,6 +113,58 @@ class AddGameViewController: UIViewController {
                         let PartnerDoublesRank = document.data()["Doubles_Rank"] as? String
                         if let PartnerDoublesRank = PartnerDoublesRank {
                             self.PartnerDoublesRank = PartnerDoublesRank
+                        } else {
+                            return
+                        }
+                        
+                        
+                        
+                        
+                    }
+                }
+            }
+        }
+        
+        func GetOppOneRank() {
+            let db = Firestore.firestore()
+            let uid = selectedCellValueOppOne
+            let query = db.collection("Agressv_Users").whereField("Username", isEqualTo: uid)
+        
+            query.getDocuments { (querySnapshot, error) in
+                if error != nil {
+                    print("error")
+                } else {
+                    for document in querySnapshot!.documents {
+                        // Access the value of field2 from the document
+                        let PartnerDoublesRank = document.data()["Doubles_Rank"] as? String
+                        if let PartnerDoublesRank = PartnerDoublesRank {
+                            self.OppOneDoublesRank = PartnerDoublesRank
+                        } else {
+                            return
+                        }
+                        
+                        
+                        
+                        
+                    }
+                }
+            }
+        }
+        
+        func GetOppTwoRank() {
+            let db = Firestore.firestore()
+            let uid = selectedCellValueOppTwo
+            let query = db.collection("Agressv_Users").whereField("Username", isEqualTo: uid)
+        
+            query.getDocuments { (querySnapshot, error) in
+                if error != nil {
+                    print("error")
+                } else {
+                    for document in querySnapshot!.documents {
+                        // Access the value of field2 from the document
+                        let PartnerDoublesRank = document.data()["Doubles_Rank"] as? String
+                        if let PartnerDoublesRank = PartnerDoublesRank {
+                            self.OppTwoDoublesRank = PartnerDoublesRank
                         } else {
                             return
                         }
@@ -198,6 +256,8 @@ class AddGameViewController: UIViewController {
         }
         
         print(GetPartnerRank())
+        print(GetOppOneRank())
+        print(GetOppTwoRank())
         print(GetPartnerEmail())
         print(GetOppOneEmail())
         print(GetOppTwoEmail())
@@ -228,11 +288,7 @@ class AddGameViewController: UIViewController {
     
     var Today = Date()
  
-    //For calculating players' ranks
-    var CurrentUserDoublesRank: String!
-    var PartnerDoublesRank: String!
-    var OppOneDoublesRank: String!
-    var OppTwoDoublesRank: String!
+    
     
   
    
@@ -266,7 +322,9 @@ class AddGameViewController: UIViewController {
         
         let db = Firestore.firestore()
         let uid = Auth.auth().currentUser!.email
-        
+        let Partner_ref = db.collection("Agressv_Users").document(selectedCellValueEmail)
+        let OppOne_ref = db.collection("Agressv_Users").document(selectedCellValueOppOneEmail)
+        let OppTwo_ref = db.collection("Agressv_Users").document(selectedCellValueOppTwoEmail)
         let Game_ref = db.collection("Agressv_Games").document()
         let User_ref = db.collection("Agressv_Users").document(uid!)
         
@@ -274,46 +332,87 @@ class AddGameViewController: UIViewController {
         
         if WL_Selection == "W" {
             
+            //increment winning side
             User_ref.updateData([
                 "Doubles_Games_Wins": FieldValue.increment(Int64(1))])
             
             User_ref.updateData([
                 "Doubles_Rank": FieldValue.increment(0.1)])
             
-            //Partner_ref
-            //           Partner_ref.updateData([
-            //               "Doubles_Games_Wins": FieldValue.increment(Int64(1))])
-            //
-            //           Partner_ref.updateData([
-            //               "Doubles_Rank": FieldValue.increment(0.1)])
+            Partner_ref.updateData([
+                "Doubles_Games_Wins": FieldValue.increment(Int64(1))])
+            
+            Partner_ref.updateData([
+                "Doubles_Rank": FieldValue.increment(0.1)])
+            
+            //decrement losing side
+            OppOne_ref.updateData([
+                "Doubles_Games_Losses": FieldValue.increment(Int64(1))])
+            
+            OppTwo_ref.updateData([
+                "Doubles_Games_Losses": FieldValue.increment(Int64(1))])
+            
+            if OppOneDoublesRank == "8.5" {
+                //do not decrement
+            }
+            else
+            {
+                OppOne_ref.updateData([
+                    "Doubles_Rank": FieldValue.increment(-0.1)])
+            }
+            
+            if OppTwoDoublesRank == "8.5" {
+                //do not decrement
+            }
+            else
+            {
+                OppTwo_ref.updateData([
+                    "Doubles_Rank": FieldValue.increment(-0.1)])
+            }
+            
+            
             
         }
         
         else if WL_Selection == "L"{
             
+            
+            //increment winning side
+            OppOne_ref.updateData([
+                "Doubles_Games_Wins": FieldValue.increment(Int64(1))])
+            
+            OppOne_ref.updateData([
+                "Doubles_Rank": FieldValue.increment(0.1)])
+            
+            OppTwo_ref.updateData([
+                "Doubles_Games_Wins": FieldValue.increment(Int64(1))])
+            
+            OppTwo_ref.updateData([
+                "Doubles_Rank": FieldValue.increment(0.1)])
+            
+            //decrement losing side
             User_ref.updateData([
                 "Doubles_Games_Losses": FieldValue.increment(Int64(1))])
             
-            //Partner_ref
-            //            Partner_ref.updateData([
-            //                "Doubles_Games_Losses": FieldValue.increment(Int64(1))])
+            Partner_ref.updateData([
+                "Doubles_Games_Losses": FieldValue.increment(Int64(1))])
             
             //if Doubles Rank is 8.5 do not decrement
             if CurrentUserDoublesRank == "8.5" {
                 //do not decrement
             }
+            else
+            {
+                User_ref.updateData([
+                    "Doubles_Rank": FieldValue.increment(-0.1)])
+            }
             if PartnerDoublesRank == "8.5" {
                 //do not decrement
             }
-            
-            else {
-                User_ref.updateData([
+            else
+            {
+                Partner_ref.updateData([
                     "Doubles_Rank": FieldValue.increment(-0.1)])
-                
-                //                Partner_ref.updateData([
-                //                    "Doubles_Rank": FieldValue.increment(-0.1)])
-                
-                
             }
         }
         
