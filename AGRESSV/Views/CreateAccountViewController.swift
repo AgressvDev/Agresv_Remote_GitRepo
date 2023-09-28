@@ -141,6 +141,7 @@ class CreateAccountViewController: UIViewController {
                             //add user to Agressv_Users collection
                             self.addUser(Username: Username, Email: Email)
                             //go to User's Homescreen
+                            
                             self.performSegue(withIdentifier: "CreateAccountGoToHome", sender: self)
                            
                         }

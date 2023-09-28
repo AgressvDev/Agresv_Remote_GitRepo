@@ -153,7 +153,7 @@
                         <outlet property="EmailTextField" destination="soT-Mr-1P3" id="AjN-AF-Md7"/>
                         <outlet property="PasswordTextField" destination="Uqg-wO-hdQ" id="BZ8-NA-Vqm"/>
                         <outlet property="backgroundGradView" destination="Ass-aW-gKL" id="KV1-ai-0Uv"/>
-                        <segue destination="qMP-bG-fLV" kind="show" identifier="LoginGoToHome" id="UyE-a9-rgm"/>
+                        <segue destination="qMP-bG-fLV" kind="show" identifier="LoginGoToHome" id="2PO-r3-wgQ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="olw-el-0Ij" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -165,7 +165,7 @@
             <objects>
                 <viewController storyboardIdentifier="HomeScreenID" title="HomeScreen" id="qMP-bG-fLV" customClass="HomeScreenViewController" customModule="AGRESSV" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="uBD-oD-nkk">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Username" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fHt-D3-GLl">
@@ -332,18 +332,18 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="23v-09-a4d" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2744.2748091603053" y="-145.07042253521126"/>
+            <point key="canvasLocation" x="3670.9923664122134" y="-145.07042253521126"/>
         </scene>
         <!--New Game View Controller-->
         <scene sceneID="UNf-3L-ltp">
             <objects>
                 <viewController id="6pw-EH-Q0c" customClass="NewGameViewController" customModule="AGRESSV" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="qRu-7N-lwj">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KX5-rH-Htg">
-                                <rect key="frame" x="30" y="293" width="333" height="89"/>
+                                <rect key="frame" x="30" y="190" width="333" height="89"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="89" id="BfK-fM-B1c"/>
@@ -360,7 +360,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xT9-g4-CYl">
-                                <rect key="frame" x="30" y="422" width="333" height="89"/>
+                                <rect key="frame" x="30" y="319" width="333" height="89"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="333" id="Bu1-eV-0LD"/>
@@ -391,7 +391,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Fpz-cw-DKf" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3545.801526717557" y="-199.29577464788733"/>
+            <point key="canvasLocation" x="4472.5190839694651" y="-199.29577464788733"/>
         </scene>
         <!--Doubles_LogGame-->
         <scene sceneID="IbR-Cl-bp5">
@@ -500,22 +500,23 @@
                         <outlet property="lbl_WL_Prompt" destination="UiV-8v-lSX" id="7W4-8h-qAa"/>
                         <outlet property="lbl_doublesgame" destination="OAX-7J-oOA" id="zSD-7s-SW9"/>
                         <outlet property="seg_WLOutlet" destination="CGG-bX-5nc" id="9g5-J4-TUy"/>
+                        <segue destination="qMP-bG-fLV" kind="show" identifier="LogGameGoHome" id="Kpw-OR-ZKN"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Rs9-9Z-8hE" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6867.93893129771" y="-546.47887323943667"/>
+            <point key="canvasLocation" x="7794.6564885496182" y="-546.47887323943667"/>
         </scene>
         <!--SearchDoublesPartner-->
         <scene sceneID="dxo-5T-7qC">
             <objects>
                 <viewController title="SearchDoublesPartner" id="NRj-dg-pDF" customClass="DoublesSearchVCNew" customModule="AGRESSV" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="TyE-5R-Xy7">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pick Your Partner" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9FY-Jy-Jsr">
-                                <rect key="frame" x="0.0" y="138" width="393" height="21"/>
+                                <rect key="frame" x="0.0" y="35" width="393" height="21"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="21" id="2lY-Ge-peI"/>
                                     <constraint firstAttribute="width" constant="393" id="sUJ-JD-ulY"/>
@@ -525,7 +526,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <searchBar contentMode="redraw" placeholder="Search Username" translatesAutoresizingMaskIntoConstraints="NO" id="Lr1-Aq-ch4">
-                                <rect key="frame" x="16" y="171" width="361" height="56"/>
+                                <rect key="frame" x="16" y="68" width="361" height="56"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <color key="barTintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <textInputTraits key="textInputTraits"/>
@@ -534,7 +535,7 @@
                                 </connections>
                             </searchBar>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="insetGrouped" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" estimatedSectionHeaderHeight="-1" sectionFooterHeight="18" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="snc-fW-m2n">
-                                <rect key="frame" x="16" y="233" width="361" height="619"/>
+                                <rect key="frame" x="16" y="130" width="361" height="712"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <color key="separatorColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
@@ -578,31 +579,31 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3wP-tq-BgB" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4413" y="-546"/>
+            <point key="canvasLocation" x="5339.6946564885493" y="-546.47887323943667"/>
         </scene>
         <!--SearchOppOne-->
         <scene sceneID="j1I-K6-D3h">
             <objects>
                 <viewController storyboardIdentifier="OppOneID" title="SearchOppOne" id="B2a-as-hg0" customClass="OppOneViewController" customModule="AGRESSV" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="JDV-b8-SnP">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pick Opponent One" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="J5L-TD-gBn">
-                                <rect key="frame" x="0.0" y="138" width="393" height="32"/>
+                                <rect key="frame" x="0.0" y="35" width="393" height="32"/>
                                 <fontDescription key="fontDescription" name="Impact" family="Impact" pointSize="26"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <searchBar contentMode="redraw" placeholder="Search Username" translatesAutoresizingMaskIntoConstraints="NO" id="APU-tu-utP">
-                                <rect key="frame" x="16" y="182" width="361" height="56"/>
+                                <rect key="frame" x="16" y="79" width="361" height="56"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <connections>
                                     <outlet property="delegate" destination="B2a-as-hg0" id="wdN-ay-qFq"/>
                                 </connections>
                             </searchBar>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="insetGrouped" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" estimatedSectionHeaderHeight="-1" sectionFooterHeight="18" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="aPG-P2-MrY">
-                                <rect key="frame" x="16" y="244" width="361" height="608"/>
+                                <rect key="frame" x="16" y="141" width="361" height="701"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <color key="separatorColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
@@ -645,7 +646,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4TF-GM-sj0" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5203.8167938931292" y="-546.47887323943667"/>
+            <point key="canvasLocation" x="6130.5343511450383" y="-546.47887323943667"/>
         </scene>
         <!--OppTwoSearch-->
         <scene sceneID="4FT-ui-Mjb">
@@ -714,7 +715,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Epr-KW-Owi" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6032.8244274809158" y="-546.47887323943667"/>
+            <point key="canvasLocation" x="6959.5419847328239" y="-546.47887323943667"/>
         </scene>
         <!--CreateAccountScreen-->
         <scene sceneID="1oR-t0-Crf">
@@ -813,7 +814,7 @@
                         <outlet property="CreateEmailTextField" destination="epT-zc-buS" id="mVM-dN-Gp4"/>
                         <outlet property="CreatePasswordTextField" destination="o06-R3-MX8" id="irq-Bn-MIf"/>
                         <outlet property="CreateUsernameTextField" destination="cCC-1a-TIe" id="CPK-uk-27k"/>
-                        <segue destination="qMP-bG-fLV" kind="show" identifier="CreateAccountGoToHome" id="Ap0-aB-1NR"/>
+                        <segue destination="qMP-bG-fLV" kind="show" identifier="CreateAccountGoToHome" id="8WD-Qb-5E7"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kT8-Oy-8Kd" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -840,7 +841,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="UyE-a9-rgm"/>
+        <segue reference="Kpw-OR-ZKN"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="AgressvLogoSmall" width="452" height="178"/>

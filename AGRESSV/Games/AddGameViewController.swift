@@ -37,14 +37,16 @@ class AddGameViewController: UIViewController {
     var selectedCellValueOppTwo: String = SharedData.shared.OppTwoSelection
     
     
-   
-    
-    
+   //For posting to Agressv_Games table to enable rolling 7 day count of games played
+    var selectedCellValueEmail: String = ""
+    var selectedCellValueOppOneEmail: String = ""
+    var selectedCellValueOppTwoEmail: String = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
        
+        
         
         func getcurrentuser() {
             let db = Firestore.firestore()
@@ -57,9 +59,9 @@ class AddGameViewController: UIViewController {
                 } else {
                     print("\(document!.documentID) => \(String(describing: document!.data()))")
                     
-                    let Doubles_Rank = document!.data()!["Username"]
-                    let Doubles_Rank_As_String = String(describing: Doubles_Rank!)
-                    self.currentuser = Doubles_Rank_As_String
+                    let CurrentUser = document!.data()!["Username"]
+                    let Current_User_As_String = String(describing: CurrentUser!)
+                    self.currentuser = Current_User_As_String
                     self.lbl_CurrentUser.text = self.currentuser
                  
                 }
@@ -89,6 +91,62 @@ class AddGameViewController: UIViewController {
         }
         
         print(GetDoublesRank())
+        
+        
+        func GetPartnerRank() {
+            let db = Firestore.firestore()
+            let uid = selectedCellValue
+            let query = db.collection("Agressv_Users").whereField("Username", isEqualTo: uid)
+        
+            query.getDocuments { (querySnapshot, error) in
+                if error != nil {
+                    print("error")
+                } else {
+                    for document in querySnapshot!.documents {
+                        // Access the value of field2 from the document
+                        let PartnerDoublesRank = document.data()["Doubles_Rank"] as? String
+                        if let PartnerDoublesRank = PartnerDoublesRank {
+                            self.PartnerDoublesRank = PartnerDoublesRank
+                        } else {
+                            return
+                        }
+                        
+                        
+                        
+                        
+                    }
+                }
+            }
+        }
+        
+        func GetPartnerEmail() {
+            let db = Firestore.firestore()
+            let uid = selectedCellValue
+            let query = db.collection("Agressv_Users").whereField("Username", isEqualTo: uid)
+        
+            query.getDocuments { (querySnapshot, error) in
+                if error != nil {
+                    print("error")
+                } else {
+                    for document in querySnapshot!.documents {
+                        // Access the value of field2 from the document
+                        let PartnerEmail = document.data()["Email"] as? String
+                        if let PartnerEmail = PartnerEmail {
+                            self.selectedCellValueEmail = PartnerEmail
+                        } else {
+                            return
+                        }
+                        
+                        
+                        
+                        
+                    }
+                }
+            }
+        }
+        print(GetPartnerRank())
+        print(GetPartnerEmail())
+        
         
         
         
@@ -122,6 +180,8 @@ class AddGameViewController: UIViewController {
     var OppOneDoublesRank: String!
     var OppTwoDoublesRank: String!
     
+  
+   
     
     @IBOutlet weak var seg_WLOutlet: UISegmentedControl!
     
@@ -152,27 +212,27 @@ class AddGameViewController: UIViewController {
         
         let db = Firestore.firestore()
         let uid = Auth.auth().currentUser!.email
-   
+        
         let Game_ref = db.collection("Agressv_Games").document()
         let User_ref = db.collection("Agressv_Users").document(uid!)
         
-     
-    
-       if WL_Selection == "W" {
+        
+        
+        if WL_Selection == "W" {
             
             User_ref.updateData([
                 "Doubles_Games_Wins": FieldValue.increment(Int64(1))])
             
             User_ref.updateData([
                 "Doubles_Rank": FieldValue.increment(0.1)])
-           
-           //Partner_ref
-//           Partner_ref.updateData([
-//               "Doubles_Games_Wins": FieldValue.increment(Int64(1))])
-//
-//           Partner_ref.updateData([
-//               "Doubles_Rank": FieldValue.increment(0.1)])
-           
+            
+            //Partner_ref
+            //           Partner_ref.updateData([
+            //               "Doubles_Games_Wins": FieldValue.increment(Int64(1))])
+            //
+            //           Partner_ref.updateData([
+            //               "Doubles_Rank": FieldValue.increment(0.1)])
+            
         }
         
         else if WL_Selection == "L"{
@@ -181,59 +241,75 @@ class AddGameViewController: UIViewController {
                 "Doubles_Games_Losses": FieldValue.increment(Int64(1))])
             
             //Partner_ref
-//            Partner_ref.updateData([
-//                "Doubles_Games_Losses": FieldValue.increment(Int64(1))])
+            //            Partner_ref.updateData([
+            //                "Doubles_Games_Losses": FieldValue.increment(Int64(1))])
             
             //if Doubles Rank is 8.5 do not decrement
             if CurrentUserDoublesRank == "8.5" {
                 //do not decrement
             }
-//            if DoublesRankValue_Partner == "8.5" {
-//                //do not decrement
-//            }
+            if PartnerDoublesRank == "8.5" {
+                //do not decrement
+            }
             
             else {
                 User_ref.updateData([
                     "Doubles_Rank": FieldValue.increment(-0.1)])
                 
-//                Partner_ref.updateData([
-//                    "Doubles_Rank": FieldValue.increment(-0.1)])
+                //                Partner_ref.updateData([
+                //                    "Doubles_Rank": FieldValue.increment(-0.1)])
                 
-               
+                
             }
         }
         
-            
         
+        
+        
+        Game_ref.setData(["Game_Result" : WL_Selection, "Game_Date" : Today, "Game_Creator": uid!, "Game_Type": "Doubles", "Game_Partner": selectedCellValueEmail, "Game_Opponent_One": selectedCellValueOppOne, "Game_Opponent_Two": selectedCellValueOppTwo])
+        
+        User_ref.updateData([
+            "Doubles_Games_Played": FieldValue.increment(Int64(1))])
+        
+        //Partner_ref
+        //          Partner_ref.updateData([
+        //            "Doubles_Games_Played": FieldValue.increment(Int64(1))])
+        
+        let dialogMessage = UIAlertController(title: "Success!", message: "Your game has been logged.", preferredStyle: .alert)
+        
+        // Create OK button with action handler
+        let ok = UIAlertAction(title: "OK", style: .default, handler: { (action) -> Void in
+            print("Ok button tapped")
             
-        Game_ref.setData(["Game_Result" : WL_Selection, "Game_Date" : Today, "Game_Creator": uid!, "Game_Type": "Doubles", "Game_Partner": "", "Game_Opponent_One": "", "Game_Opponent_Two": ""])
+            self.performSegue(withIdentifier: "LogGameGoHome", sender: self)
+        })
+        
+        
+        
+        
+        //let okAction = UIAlertAction(title: "OK", style: .default) { (action) in
             
-            User_ref.updateData([
-                "Doubles_Games_Played": FieldValue.increment(Int64(1))])
-            
-            //Partner_ref
-//          Partner_ref.updateData([
-//            "Doubles_Games_Played": FieldValue.increment(Int64(1))])
-            
-            let dialogMessage = UIAlertController(title: "Success!", message: "Your game has been logged.", preferredStyle: .alert)
-            
-            // Create OK button with action handler
-            let ok = UIAlertAction(title: "OK", style: .default, handler: { (action) -> Void in
-                print("Ok button tapped")
-            })
             
             //Add OK button to a dialog message
             dialogMessage.addAction(ok)
             // Present Alert to
             self.present(dialogMessage, animated: true, completion: nil)
             
+            // Perform the segue to the target view controller
+           
             
         }
         
+    
         
         
-        
-        
-        
-    }
+    
+    
+    
+    
+    
+    
+    
+    
+    }//end of class
 
