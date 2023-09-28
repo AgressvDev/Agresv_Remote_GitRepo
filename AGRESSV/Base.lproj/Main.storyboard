@@ -163,7 +163,7 @@
         <!--HomeScreen-->
         <scene sceneID="6aW-1R-YQe">
             <objects>
-                <viewController title="HomeScreen" id="qMP-bG-fLV" customClass="HomeScreenViewController" customModule="AGRESSV" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="HomeScreenID" title="HomeScreen" id="qMP-bG-fLV" customClass="HomeScreenViewController" customModule="AGRESSV" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="uBD-oD-nkk">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -840,7 +840,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="Ap0-aB-1NR"/>
+        <segue reference="UyE-a9-rgm"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="AgressvLogoSmall" width="452" height="178"/>

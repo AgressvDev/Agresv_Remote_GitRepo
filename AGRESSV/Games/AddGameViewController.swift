@@ -96,14 +96,18 @@ class AddGameViewController: UIViewController {
         self.lbl_OppOne.text = selectedCellValueOppOne
         self.lbl_OppTwo.text = selectedCellValueOppTwo
         
+        lbl_doublesgame.frame.origin = CGPoint(x:70, y:110)
         
-        lbl_CurrentUser.frame.origin = CGPoint(x:140, y:205)
-        lbl_Partner.frame.origin = CGPoint(x:140, y:245)
-        lbl_OppOne.frame.origin = CGPoint(x:140, y:355)
-        lbl_OppTwo.frame.origin = CGPoint(x:140, y:395)
-        lbl_doublesgame.frame.origin = CGPoint(x:70, y:105)
+        lbl_CurrentUser.frame.origin = CGPoint(x:140, y:210)
+        lbl_Partner.frame.origin = CGPoint(x:140, y:250)
+        lbl_OppOne.frame.origin = CGPoint(x:140, y:360)
+        lbl_OppTwo.frame.origin = CGPoint(x:140, y:400)
+        
+        
         lbl_VS.frame.origin = CGPoint(x:175, y:300)
         lbl_WL_Prompt.frame.origin = CGPoint(x:70, y:500)
+        
+        
     } //end of load
     
     
