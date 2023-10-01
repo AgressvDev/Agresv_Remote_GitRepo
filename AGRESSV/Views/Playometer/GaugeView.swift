@@ -14,13 +14,11 @@ import Swift
 
 struct GaugeView: View {
     
-   // var currentValue: String = "4"
+    
+    
+    public var currentValue: String
     
   
-    public var currentValue: String
-
-    
-    
     
     
     let gradient = Gradient(colors: [.white, .black, .red])
@@ -34,37 +32,42 @@ struct GaugeView: View {
         
         
         VStack{
-            Gauge(value: Double(currentValue) ?? 0, in: minValue...maxValue){
+            
+                Gauge(value: Double(currentValue) ?? 0, in: minValue...maxValue){
+                    
+                    
+                }
+                
+            currentValueLabel: {
+                Text(currentValue)
+            }
+            minimumValueLabel: {
+                Text("\(Int(minValue))")
+            }
+            maximumValueLabel:{
+                Text("\(Int(maxValue))")
+            }
+            .gaugeStyle(.accessoryLinear)
+            .tint(gradient)
+            .padding()
+                //.frame(width: 400)
+                //.frame(height: 5)
+                //.position(x:190, y:550)
+                
                 
                 
             }
-        currentValueLabel: {
-            Text(currentValue)
-        }
-        minimumValueLabel: {
-            Text("\(Int(minValue))")
-        }
-        maximumValueLabel:{
-            Text("\(Int(maxValue))")
-        }
-        .gaugeStyle(.accessoryLinear)
-        .tint(gradient)
-        .padding()
-        .position(x: 195, y: 560)
-            
-            
-            
             
         }
+        //    struct GaugeView_Previews: PreviewProvider {
+        //        static var previews: some View {
+        //            GaugeView(currentValue: doccount)
+        //            //GaugeView()
+        //        }
+        //    }
+        
+        
+        
         
     }
-//    struct GaugeView_Previews: PreviewProvider {
-//        static var previews: some View {
-//            GaugeView(currentValue: doccount)
-//        }
-//    }
-    
-    
-    
-    
-}
+
