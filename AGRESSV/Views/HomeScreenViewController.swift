@@ -244,7 +244,12 @@ class HomeScreenViewController: UIViewController {
         // Add the label to the view hierarchy
         view.addSubview(lbl_Playometer)
         
-       
+        // Calculate the adjusted font size based on the scalingFactor
+        let baseFontSize: CGFloat = 17.0 // Set your base font size
+        let adjustedFontSize = baseFontSize * scalingFactor
+
+        // Set the font size for lbl_Playometer
+        lbl_Playometer.font = UIFont.systemFont(ofSize: adjustedFontSize)
         
         // Define Auto Layout constraints to position and scale the label
 //        NSLayoutConstraint.activate([
@@ -277,13 +282,20 @@ class HomeScreenViewController: UIViewController {
        
         lbl_GamesPlayed.text = "Games played in rolling week:"
                 lbl_GamesPlayed.textColor = .lightGray
-                lbl_GamesPlayed.font = UIFont.systemFont(ofSize: 11)
                 lbl_GamesPlayed.numberOfLines = 0 // Allow multiple lines
                 lbl_GamesPlayed.translatesAutoresizingMaskIntoConstraints = false // Enable Auto Layout
 
                 // Add the label to the view hierarchy
                 view.addSubview(lbl_GamesPlayed)
 
+        // Calculate the adjusted font size based on the scalingFactor
+        let baseFontSizeGamesPlayed: CGFloat = 13.0 // Set your base font size
+        let adjustedFontSizeGamesPlayed = baseFontSizeGamesPlayed * scalingFactor
+
+        // Set the font size for lbl_Playometer
+        lbl_GamesPlayed.font = UIFont.systemFont(ofSize: adjustedFontSizeGamesPlayed)
+        
+        
                 // Define Auto Layout constraints to position and allow the label to expand its width based on content
                 NSLayoutConstraint.activate([
                     lbl_GamesPlayed.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 40 * scalingFactor), // Left side of the screen
@@ -304,15 +316,23 @@ class HomeScreenViewController: UIViewController {
         
       
         lbl_testcount.textColor = .lightGray
-        lbl_testcount.font = UIFont.systemFont(ofSize: 11)
         lbl_testcount.translatesAutoresizingMaskIntoConstraints = false // Enable Auto Layout
         
         // Add the label to the view hierarchy
         view.addSubview(lbl_testcount)
         
+        
+        // Calculate the adjusted font size based on the scalingFactor
+        let baseFontSizeGaugeCount: CGFloat = 13.0 // Set your base font size
+        let adjustedFontSizeGaugeCount = baseFontSizeGaugeCount * scalingFactor
+
+        // Set the font size for lbl_Playometer
+        lbl_testcount.font = UIFont.systemFont(ofSize: adjustedFontSizeGaugeCount)
+        
+        
         // Define Auto Layout constraints to position and scale the label
         NSLayoutConstraint.activate([
-            lbl_testcount.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 200), // Left side of the screen
+            lbl_testcount.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 230 * scalingFactor), // Left side of the screen
             lbl_testcount.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -265 * scalingFactor), // A little higher than the bottom
             lbl_testcount.heightAnchor.constraint(equalToConstant: 30 * scalingFactor), // Adjust the reference size as needed
         ])
@@ -364,7 +384,7 @@ class HomeScreenViewController: UIViewController {
                 view.addSubview(SinglesLossesLabel)
                 view.addSubview(lbl_DoublesHeader)
                 view.addSubview(lbl_SinglesHeader)
-                view.addSubview(MainUNLabel)
+                //view.addSubview(MainUNLabel)
         
         
         
@@ -376,56 +396,56 @@ class HomeScreenViewController: UIViewController {
         
         // Set the size of the labels to be 80x80 and scale based on the screen size
                 let labelSize: CGFloat = 80.0
-                var xOffsetPercent: CGFloat = 0.22 // Default values (larger screens)
-                var yOffsetPercent: CGFloat = 0.50 // Default values (larger screens)
+                let xOffsetPercent: CGFloat = 0.22 // Default values (larger screens)
+               
             
         
-                if scalingFactor <= 0.95 {
-                    // Adjust percentages for smaller screens
-                    xOffsetPercent = 0.35
-                    yOffsetPercent = 0.75
-                    
-                    
-                }
+//                if scalingFactor <= 0.95 {
+//                    // Adjust percentages for smaller screens
+//                    xOffsetPercent = 0.35
+//
+//
+//
+//                }
                
     
         
-        // Define the initial width, height, and edge percentages
-        var initialWidth: CGFloat = 365 // Set your initial width
-        var initialHeight: CGFloat = 80.0  // Set your initial height
-        
-        // Calculate the adjusted size based on the scalingFactor
-            var adjustedWidth = initialWidth * widthScalingFactor
-            var adjustedHeight = initialHeight * heightScalingFactor
-        
-        if scalingFactor <= 0.95 {
-            
-            initialWidth = 365
-            initialHeight = 80
-            
-             adjustedWidth = initialWidth * widthScalingFactor
-             adjustedHeight = initialHeight * heightScalingFactor
+//        // Define the initial width, height, and edge percentages
+//        var initialWidth: CGFloat = 365 // Set your initial width
+//        var initialHeight: CGFloat = 80.0  // Set your initial height
+//
+//        // Calculate the adjusted size based on the scalingFactor
+//            var adjustedWidth = initialWidth * widthScalingFactor
+//            var adjustedHeight = initialHeight * heightScalingFactor
+//
+//        if scalingFactor <= 0.95 {
+//
+//            initialWidth = 365
+//            initialHeight = 80
+//
+//             adjustedWidth = initialWidth * widthScalingFactor
+//             adjustedHeight = initialHeight * heightScalingFactor
             
            
-            // Set the initial width and height of MainUNLabel
-            NSLayoutConstraint.activate([
-                    MainUNLabel.widthAnchor.constraint(equalToConstant: adjustedWidth),
-                    MainUNLabel.heightAnchor.constraint(equalToConstant: adjustedHeight),
-                    MainUNLabel.centerXAnchor.constraint(equalTo: NewSinglesRankLabel.centerXAnchor, constant: -130  * scalingFactor ),
-                    MainUNLabel.topAnchor.constraint(equalTo: NewSinglesRankLabel.bottomAnchor, constant: -200  * scalingFactor)
-            
-            ])
-        }
-        
-        
-        // Set the initial width and height of MainUNLabel
-        NSLayoutConstraint.activate([
-                MainUNLabel.widthAnchor.constraint(equalToConstant: adjustedWidth),
-                MainUNLabel.heightAnchor.constraint(equalToConstant: adjustedHeight),
-                MainUNLabel.centerXAnchor.constraint(equalTo: NewSinglesRankLabel.centerXAnchor, constant: -95  * scalingFactor),
-                MainUNLabel.topAnchor.constraint(equalTo: NewSinglesRankLabel.bottomAnchor, constant: -220 * scalingFactor)
-        
-        ])
+//            // Set the initial width and height of MainUNLabel
+//            NSLayoutConstraint.activate([
+//                    MainUNLabel.widthAnchor.constraint(equalToConstant: adjustedWidth),
+//                    MainUNLabel.heightAnchor.constraint(equalToConstant: adjustedHeight),
+//                    MainUNLabel.centerXAnchor.constraint(equalTo: NewSinglesRankLabel.centerXAnchor, constant: -130  * scalingFactor ),
+//                    MainUNLabel.topAnchor.constraint(equalTo: NewSinglesRankLabel.bottomAnchor, constant: -200  * scalingFactor)
+//
+//            ])
+//        }
+//
+//
+//        // Set the initial width and height of MainUNLabel
+//        NSLayoutConstraint.activate([
+//                MainUNLabel.widthAnchor.constraint(equalToConstant: adjustedWidth),
+//                MainUNLabel.heightAnchor.constraint(equalToConstant: adjustedHeight),
+//                MainUNLabel.centerXAnchor.constraint(equalTo: NewSinglesRankLabel.centerXAnchor, constant: -95  * scalingFactor),
+//                MainUNLabel.topAnchor.constraint(equalTo: NewSinglesRankLabel.bottomAnchor, constant: -220 * scalingFactor)
+//
+//        ])
         
                 NSLayoutConstraint.activate([
                     // Position NewDoublesRankLabel to the left of the center by a certain percentage
