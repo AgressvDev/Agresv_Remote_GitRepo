@@ -132,15 +132,23 @@ extension OppOneViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if oppsearching{
-            let selectedValue = filtereddataSourceArrayOppOne[indexPath.row]
-            SharedData.shared.OppOneSelection = selectedValue
-        }
-        else
-        {
-            let selectedValue = dataSourceArrayOppOne[indexPath.row]
-            SharedData.shared.OppOneSelection = selectedValue
-        }
+        if oppsearching {
+                    let selectedValue = filtereddataSourceArrayOppOne[indexPath.row]
+                    SharedData.shared.OppOneSelection = selectedValue
+
+                    // Extract username without the rank and assign it to SharedDataNoRank.sharednorank.PartnerSelection_NoRank
+                    if let username = selectedValue.components(separatedBy: " - ").first {
+                        SharedDataNoRank.sharednorank.OppOneSelection_NoRank = username
+                    }
+                } else {
+                    let selectedValue = dataSourceArrayOppOne[indexPath.row]
+                    SharedData.shared.OppOneSelection = selectedValue
+
+                    // Extract username without the rank and assign it to SharedDataNoRank.sharednorank.PartnerSelection_NoRank
+                    if let username = selectedValue.components(separatedBy: " - ").first {
+                        SharedDataNoRank.sharednorank.OppOneSelection_NoRank = username
+                    }
+                }
         // Create an instance of opp two VC
         let OppTwoVC = storyboard?.instantiateViewController(withIdentifier: "OppTwoID") as! OppTwoViewController
         

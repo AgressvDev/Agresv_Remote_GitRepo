@@ -278,30 +278,6 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Doubles Game" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OAX-7J-oOA">
-                                <rect key="frame" x="65" y="102" width="276" height="46"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" name="Futura-Bold" family="Futura" pointSize="35"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8wj-ne-hjH">
-                                <rect key="frame" x="16" y="611" width="361" height="69"/>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="361" id="BuM-6b-6Wm"/>
-                                    <constraint firstAttribute="height" constant="69" id="FiD-DF-5f4"/>
-                                </constraints>
-                                <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="filled" title="Log Game">
-                                    <color key="baseForegroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                    <color key="baseBackgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                </buttonConfiguration>
-                                <connections>
-                                    <action selector="btn_LogGame:" destination="xwF-2R-Q1P" eventType="touchUpInside" id="AXd-4g-GhO"/>
-                                </connections>
-                            </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Did you and your partner win or lose?" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UiV-8v-lSX">
                                 <rect key="frame" x="55" y="440" width="283" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -319,9 +295,6 @@
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="NDa-Sj-Ijj"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                        <constraints>
-                            <constraint firstItem="NDa-Sj-Ijj" firstAttribute="trailing" secondItem="8wj-ne-hjH" secondAttribute="trailing" constant="16" id="94i-l0-Z1u"/>
-                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="fms-IZ-iKv"/>
                     <connections>
@@ -331,7 +304,6 @@
                         <outlet property="lbl_Partner" destination="JP8-eu-GIG" id="iLU-Mo-jL6"/>
                         <outlet property="lbl_VS" destination="WvS-PH-6nN" id="fhV-zr-Evg"/>
                         <outlet property="lbl_WL_Prompt" destination="UiV-8v-lSX" id="7W4-8h-qAa"/>
-                        <outlet property="lbl_doublesgame" destination="OAX-7J-oOA" id="zSD-7s-SW9"/>
                         <outlet property="seg_WLOutlet" destination="CGG-bX-5nc" id="9g5-J4-TUy"/>
                         <segue destination="qMP-bG-fLV" kind="show" identifier="LogGameGoHome" id="Kpw-OR-ZKN"/>
                     </connections>

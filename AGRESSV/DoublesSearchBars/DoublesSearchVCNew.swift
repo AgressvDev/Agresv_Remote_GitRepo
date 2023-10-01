@@ -128,14 +128,22 @@ extension DoublesSearchVCNew: UITableViewDelegate, UITableViewDataSource {
      func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
             
          if searching {
-             let selectedValue = filteredDataSourceArrayPartner[indexPath.row]
-             SharedData.shared.PartnerSelection = selectedValue
-         }
-         else
-         {
-             let selectedValue = dataSourceArrayPartner[indexPath.row]
-             SharedData.shared.PartnerSelection = selectedValue
-         }
+                     let selectedValue = filteredDataSourceArrayPartner[indexPath.row]
+                     SharedData.shared.PartnerSelection = selectedValue
+
+                     // Extract username without the rank and assign it to SharedDataNoRank.sharednorank.PartnerSelection_NoRank
+                     if let username = selectedValue.components(separatedBy: " - ").first {
+                         SharedDataNoRank.sharednorank.PartnerSelection_NoRank = username
+                     }
+                 } else {
+                     let selectedValue = dataSourceArrayPartner[indexPath.row]
+                     SharedData.shared.PartnerSelection = selectedValue
+
+                     // Extract username without the rank and assign it to SharedDataNoRank.sharednorank.PartnerSelection_NoRank
+                     if let username = selectedValue.components(separatedBy: " - ").first {
+                         SharedDataNoRank.sharednorank.PartnerSelection_NoRank = username
+                     }
+                 }
             // Create an instance of SecondViewController
             let OppOneVC = storyboard?.instantiateViewController(withIdentifier: "OppOneID") as! OppOneViewController
             

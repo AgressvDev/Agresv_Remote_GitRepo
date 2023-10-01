@@ -13,3 +13,10 @@ class SharedData {
     var OppOneSelection: String!
     var OppTwoSelection: String!
 }
+
+class SharedDataNoRank {
+    static let sharednorank = SharedDataNoRank()
+    var PartnerSelection_NoRank: String!
+    var OppOneSelection_NoRank: String!
+    var OppTwoSelection_NoRank: String!
+}

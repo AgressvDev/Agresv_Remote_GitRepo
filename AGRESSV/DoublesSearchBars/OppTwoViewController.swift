@@ -129,16 +129,22 @@ extension OppTwoViewController: UITableViewDelegate, UITableViewDataSource {
     
      func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
          if opptwosearching {
-             let selectedValue = filtereddataSourceArrayOppTwo[indexPath.row]
-             
-             SharedData.shared.OppTwoSelection = selectedValue
-         }
-         else
-         {
-             let selectedValue = dataSourceArrayOppTwo[indexPath.row]
-             
-             SharedData.shared.OppTwoSelection = selectedValue
-         }
+                     let selectedValue = filtereddataSourceArrayOppTwo[indexPath.row]
+                     SharedData.shared.OppTwoSelection = selectedValue
+
+                     // Extract username without the rank and assign it to SharedDataNoRank.sharednorank.PartnerSelection_NoRank
+                     if let username = selectedValue.components(separatedBy: " - ").first {
+                         SharedDataNoRank.sharednorank.OppTwoSelection_NoRank = username
+                     }
+                 } else {
+                     let selectedValue = dataSourceArrayOppTwo[indexPath.row]
+                     SharedData.shared.OppTwoSelection = selectedValue
+
+                     // Extract username without the rank and assign it to SharedDataNoRank.sharednorank.PartnerSelection_NoRank
+                     if let username = selectedValue.components(separatedBy: " - ").first {
+                         SharedDataNoRank.sharednorank.OppTwoSelection_NoRank = username
+                     }
+                 }
             
          //prep for sending partner variable
          let LogGameVC = storyboard?.instantiateViewController(withIdentifier: "AddGameID") as! AddGameViewController
