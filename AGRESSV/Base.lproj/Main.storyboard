@@ -171,10 +171,10 @@
             </objects>
             <point key="canvasLocation" x="3480.1526717557249" y="490.84507042253523"/>
         </scene>
-        <!--New Game View Controller-->
+        <!--DoublesORSinglesVC-->
         <scene sceneID="UNf-3L-ltp">
             <objects>
-                <viewController id="6pw-EH-Q0c" customClass="NewGameViewController" customModule="AGRESSV" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="DoublesORSinglesID" title="DoublesORSinglesVC" id="6pw-EH-Q0c" customClass="NewGameViewController" customModule="AGRESSV" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="qRu-7N-lwj">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

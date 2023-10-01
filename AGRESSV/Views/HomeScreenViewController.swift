@@ -21,7 +21,7 @@ class HomeScreenViewController: UIViewController {
    
 
     
-//    var btn_NewGame: UIButton!
+
 //
 //  var MainUNLabel: UILabel!
 //
@@ -57,7 +57,10 @@ class HomeScreenViewController: UIViewController {
     
     
     // Create a UILabel
-        
+  
+           
+    
+    
             
     let NewDoublesRankLabel: UILabel = {
             let label = UILabel()
@@ -167,12 +170,14 @@ class HomeScreenViewController: UIViewController {
         label.textAlignment = .center
         label.backgroundColor = .black
         label.textColor = .systemRed
-        label.layer.cornerRadius = 10
+        label.layer.cornerRadius = 15
         label.font = UIFont(name: "Impact", size: 20) // You can adjust the font size as needed
+        label.layer.masksToBounds = true
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
    
+
 
     let lbl_GamesPlayed = UILabel()
     
@@ -211,6 +216,25 @@ class HomeScreenViewController: UIViewController {
         
         //LABELS and IMAGES
         
+        let btn_NewGame = UIButton(type: .system)
+        btn_NewGame.translatesAutoresizingMaskIntoConstraints = false
+        btn_NewGame.setTitle("New Game", for: .normal)
+        btn_NewGame.titleLabel?.font = UIFont.systemFont(ofSize: 20)
+        btn_NewGame.setTitleColor(UIColor.systemRed, for: .normal)
+
+        // Add an action to the button to perform a segue
+        btn_NewGame.addTarget(self, action: #selector(startNewGame), for: .touchUpInside)
+
+        // Calculate the adjusted font size based on the scalingFactor
+        let baseFontSizeNewGame: CGFloat = 20.0 // Set your base font size
+        let adjustedFontSizeNewGame = baseFontSizeNewGame * scalingFactor
+
+        // Set the font size for lbl_Playometer
+        btn_NewGame.titleLabel?.font = UIFont.systemFont(ofSize: adjustedFontSizeNewGame)
+        // Add the button to the view hierarchy
+        view.addSubview(btn_NewGame)
+        view.bringSubviewToFront(btn_NewGame)
+        
         // Load the image
         if let AgressvLogo = UIImage(named: "AgressvLogoSmall.png") {
             let myImageView = UIImageView()
@@ -233,6 +257,8 @@ class HomeScreenViewController: UIViewController {
             
       
         }
+        
+        
         
         // Create the label
         let lbl_Playometer = UILabel()
@@ -369,7 +395,7 @@ class HomeScreenViewController: UIViewController {
         lbl_Playmoregames.layer.zPosition = 2
         
 
-       
+        
       
         // Add the labels to the view hierarchy
                 view.addSubview(NewDoublesRankLabel)
@@ -384,9 +410,74 @@ class HomeScreenViewController: UIViewController {
                 view.addSubview(SinglesLossesLabel)
                 view.addSubview(lbl_DoublesHeader)
                 view.addSubview(lbl_SinglesHeader)
-                //view.addSubview(MainUNLabel)
+                view.addSubview(MainUNLabel)
+                view.bringSubviewToFront(btn_NewGame)
+                btn_NewGame.layer.zPosition = 3
         
+        if let dobermanleft = UIImage(named: "dobermanpsdleft.png") {
+            let myImageViewdl = UIImageView()
+            myImageViewdl.contentMode = .scaleAspectFit
+            myImageViewdl.image = dobermanleft
+            myImageViewdl.translatesAutoresizingMaskIntoConstraints = false // Enable Auto Layout
+            
+            // Add the image view to the view hierarchy
+            view.addSubview(myImageViewdl)
+            view.bringSubviewToFront(myImageViewdl)
+            
+            myImageViewdl.layer.zPosition = 3
+            // Define Auto Layout constraints to position and scale the image
+            NSLayoutConstraint.activate([
+                myImageViewdl.leadingAnchor.constraint(equalTo: MainUNLabel.leadingAnchor, constant: -20 * scalingFactor),
+                myImageViewdl.bottomAnchor.constraint(equalTo: MainUNLabel.bottomAnchor, constant: -34 * scalingFactor),
+                myImageViewdl.widthAnchor.constraint(equalToConstant: 120 * scalingFactor), // Adjust the reference size as needed
+                myImageViewdl.heightAnchor.constraint(equalToConstant: 120 * scalingFactor), // Adjust the reference size as needed
+            ])
+            
+      
+        }
         
+        if let dobermanright = UIImage(named: "dobermanpsd.png") {
+            let myImageViewd2 = UIImageView()
+            myImageViewd2.contentMode = .scaleAspectFit
+            myImageViewd2.image = dobermanright
+            myImageViewd2.translatesAutoresizingMaskIntoConstraints = false // Enable Auto Layout
+            
+            // Add the image view to the view hierarchy
+            view.addSubview(myImageViewd2)
+            view.bringSubviewToFront(myImageViewd2)
+            
+            myImageViewd2.layer.zPosition = 3
+            // Define Auto Layout constraints to position and scale the image
+            NSLayoutConstraint.activate([
+                myImageViewd2.trailingAnchor.constraint(equalTo: MainUNLabel.trailingAnchor, constant: 20 * scalingFactor),
+                myImageViewd2.bottomAnchor.constraint(equalTo: MainUNLabel.bottomAnchor, constant: -34 * scalingFactor),
+                myImageViewd2.widthAnchor.constraint(equalToConstant: 120 * scalingFactor), // Adjust the reference size as needed
+                myImageViewd2.heightAnchor.constraint(equalToConstant: 120 * scalingFactor), // Adjust the reference size as needed
+            ])
+            
+      
+        }
+        
+        if let blackcircle = UIImage(named: "blackcircle.png") {
+            let blackcircleimamge = UIImageView()
+            blackcircleimamge.contentMode = .scaleAspectFit
+            blackcircleimamge.image = blackcircle
+            blackcircleimamge.translatesAutoresizingMaskIntoConstraints = false // Enable Auto Layout
+            
+            // Add the image view to the view hierarchy
+            view.addSubview(blackcircleimamge)
+            
+           
+            // Define Auto Layout constraints to position and scale the image
+            NSLayoutConstraint.activate([
+                blackcircleimamge.centerXAnchor.constraint(equalTo: MainUNLabel.centerXAnchor, constant: 1 * scalingFactor),
+                blackcircleimamge.bottomAnchor.constraint(equalTo: MainUNLabel.bottomAnchor, constant: -90 * scalingFactor),
+                blackcircleimamge.widthAnchor.constraint(equalToConstant: 150 * scalingFactor), // Adjust the reference size as needed
+                blackcircleimamge.heightAnchor.constraint(equalToConstant: 150 * scalingFactor), // Adjust the reference size as needed
+            ])
+            
+      
+        }
         
         let fontSize: CGFloat = 25.0 // Set your default font size
         let MainfontSize: CGFloat = 30.0 // Set your default font size
@@ -400,15 +491,24 @@ class HomeScreenViewController: UIViewController {
                
             
         
-//                if scalingFactor <= 0.95 {
-//                    // Adjust percentages for smaller screens
-//                    xOffsetPercent = 0.35
-//
-//
-//
-//                }
+        // Create Auto Layout constraints for the button's position and size
+                NSLayoutConstraint.activate([
+                    btn_NewGame.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+                    btn_NewGame.bottomAnchor.constraint(equalTo: MainUNLabel.topAnchor, constant: -65 * scalingFactor),
+                ])
                
-    
+        // Create a constraint to position the label horizontally (x percent away from the edges)
+                let marginPercentage: CGFloat = 0.07 // Adjust this value as needed
+                NSLayoutConstraint.activate([
+                    MainUNLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: view.bounds.width * marginPercentage),
+                    MainUNLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -view.bounds.width * marginPercentage),
+                    MainUNLabel.heightAnchor.constraint(equalToConstant: 80 * scalingFactor), // Adjust the height as needed
+                ])
+
+                // Position the label above the NewDoublesRankLabel
+                NSLayoutConstraint.activate([
+                    MainUNLabel.bottomAnchor.constraint(equalTo: NewDoublesRankLabel.topAnchor, constant: -45 * scalingFactor), // Adjust the vertical spacing as needed
+                ])
         
 //        // Define the initial width, height, and edge percentages
 //        var initialWidth: CGFloat = 365 // Set your initial width
@@ -783,7 +883,7 @@ class HomeScreenViewController: UIViewController {
 //            view.addSubview(myImageView)
 
             //btn_NewGame.frame.origin = CGPoint(x:157, y:144)
-            //view.bringSubviewToFront(btn_NewGame)
+            
 
 
             //MainUNLabel.frame.origin = CGPoint(x: 30, y:240)
@@ -885,7 +985,13 @@ class HomeScreenViewController: UIViewController {
        
 
 
-    
+    @objc func startNewGame() {
+        // Create an instance of opp two VC
+        let DoublesOrSinglesVC = storyboard?.instantiateViewController(withIdentifier: "DoublesORSinglesID") as! NewGameViewController
+        
+        // Push to the SecondViewController
+        navigationController?.pushViewController(DoublesOrSinglesVC, animated: true)
+        }
     
     
     } //end of class

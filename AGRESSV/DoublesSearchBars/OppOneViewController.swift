@@ -65,8 +65,11 @@ class OppOneViewController: UIViewController {
                 }
 
                 for document in querySnapshot!.documents {
-                    if let username = document["Username"] as? String {
-                        self.dataSourceArrayOppOne.append(username)
+                    if let username = document["Username"] as? String,
+                                   let doublesRank = document["Doubles_Rank"] as? Double {
+                                    let formattedRank = String(format: "%.1f", doublesRank)
+                                    let userWithFormattedRank = "\(username) - \(formattedRank)"
+                                    self.dataSourceArrayOppOne.append(userWithFormattedRank)
                         
                         
                         self.dataSourceArrayOppOne.removeAll { $0 == partner }

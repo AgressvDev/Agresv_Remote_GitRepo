@@ -63,8 +63,11 @@ class DoublesSearchVCNew: UIViewController {
                 }
 
                 for document in querySnapshot!.documents {
-                    if let username = document["Username"] as? String {
-                        self.dataSourceArrayPartner.append(username)
+                    if let username = document["Username"] as? String,
+                                   let doublesRank = document["Doubles_Rank"] as? Double {
+                                    let formattedRank = String(format: "%.1f", doublesRank)
+                                    let userWithFormattedRank = "\(username) - \(formattedRank)"
+                                    self.dataSourceArrayPartner.append(userWithFormattedRank)
                     }
                 }
 
@@ -151,26 +154,18 @@ extension DoublesSearchVCNew: UITableViewDelegate, UITableViewDataSource {
         }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-
-            let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         let customColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 0.1)
         cell.textLabel?.font = UIFont.systemFont(ofSize: 18.0)
         cell.contentView.backgroundColor = customColor
-        
-        
+
         if searching {
             cell.textLabel?.text = filteredDataSourceArrayPartner[indexPath.row]
-            
-        }
-        else {
+        } else {
             cell.textLabel?.text = dataSourceArrayPartner[indexPath.row]
-          
         }
-            
-            return cell
 
-
+        return cell
     }
 }
 

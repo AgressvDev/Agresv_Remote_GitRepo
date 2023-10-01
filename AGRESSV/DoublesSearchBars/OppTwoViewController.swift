@@ -60,8 +60,11 @@ class OppTwoViewController: UIViewController {
                 }
 
                 for document in querySnapshot!.documents {
-                    if let username = document["Username"] as? String {
-                        self.dataSourceArrayOppTwo.append(username)
+                    if let username = document["Username"] as? String,
+                                   let doublesRank = document["Doubles_Rank"] as? Double {
+                                    let formattedRank = String(format: "%.1f", doublesRank)
+                                    let userWithFormattedRank = "\(username) - \(formattedRank)"
+                                    self.dataSourceArrayOppTwo.append(userWithFormattedRank)
                         
                         self.dataSourceArrayOppTwo.removeAll { $0 == partner }
                         self.dataSourceArrayOppTwo.removeAll { $0 == oppone }
