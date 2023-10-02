@@ -122,14 +122,27 @@
                                     <action selector="LoginClicked:" destination="qAQ-S4-96j" eventType="touchUpInside" id="QHv-Xa-QRT"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4hu-UN-lgz">
+                                <rect key="frame" x="120" y="740" width="153" height="35"/>
+                                <color key="tintColor" red="1" green="0.079395044809999996" blue="0.1564888502" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Forgot Password"/>
+                                <connections>
+                                    <action selector="btn_ForgotPassword:" destination="qAQ-S4-96j" eventType="touchUpInside" id="Y24-Hv-V4W"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="P84-eA-Tkl"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <color key="tintColor" systemColor="tintColor"/>
                         <constraints>
+                            <constraint firstItem="4hu-UN-lgz" firstAttribute="top" secondItem="bHt-vr-vZ3" secondAttribute="bottom" constant="345" id="71R-ch-n8c"/>
+                            <constraint firstItem="4hu-UN-lgz" firstAttribute="leading" secondItem="P84-eA-Tkl" secondAttribute="leading" constant="120" id="8c6-rV-UZi"/>
+                            <constraint firstItem="P84-eA-Tkl" firstAttribute="bottom" secondItem="4hu-UN-lgz" secondAttribute="bottom" constant="43" id="9FU-PJ-nJC"/>
                             <constraint firstItem="bHt-vr-vZ3" firstAttribute="top" secondItem="Uqg-wO-hdQ" secondAttribute="bottom" constant="20" id="AMM-Ks-Pnc"/>
                             <constraint firstItem="bHt-vr-vZ3" firstAttribute="centerX" secondItem="Ass-aW-gKL" secondAttribute="centerX" id="BO8-0M-LFy"/>
                             <constraint firstItem="soT-Mr-1P3" firstAttribute="top" secondItem="P84-eA-Tkl" secondAttribute="top" constant="150" id="DA4-F1-cAG"/>
+                            <constraint firstItem="P84-eA-Tkl" firstAttribute="trailing" secondItem="4hu-UN-lgz" secondAttribute="trailing" constant="120" id="GZZ-ZJ-seH"/>
                             <constraint firstItem="P84-eA-Tkl" firstAttribute="trailing" secondItem="soT-Mr-1P3" secondAttribute="trailing" constant="30" id="Hkn-ar-JqM"/>
                             <constraint firstItem="soT-Mr-1P3" firstAttribute="leading" secondItem="P84-eA-Tkl" secondAttribute="leading" constant="30" id="Iys-8n-rOz"/>
                             <constraint firstItem="bHt-vr-vZ3" firstAttribute="leading" secondItem="P84-eA-Tkl" secondAttribute="leading" constant="30" id="TJn-PN-xct"/>
@@ -141,6 +154,7 @@
                             <constraint firstItem="P84-eA-Tkl" firstAttribute="trailing" secondItem="bHt-vr-vZ3" secondAttribute="trailing" constant="30" id="ohX-sk-l5g"/>
                             <constraint firstItem="Uqg-wO-hdQ" firstAttribute="top" secondItem="soT-Mr-1P3" secondAttribute="bottom" constant="20" id="uvB-gU-4qr"/>
                             <constraint firstItem="Uqg-wO-hdQ" firstAttribute="top" secondItem="soT-Mr-1P3" secondAttribute="bottom" constant="20" id="vmR-9d-Ra1"/>
+                            <constraint firstItem="4hu-UN-lgz" firstAttribute="centerX" secondItem="Ass-aW-gKL" secondAttribute="centerX" id="yUe-g8-Yb4"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="OZa-kN-jD3"/>
@@ -160,7 +174,7 @@
             <objects>
                 <viewController storyboardIdentifier="HomeScreenID" title="HomeScreen" id="qMP-bG-fLV" customClass="HomeScreenViewController" customModule="AGRESSV" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="uBD-oD-nkk">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="842"/>
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <viewLayoutGuide key="safeArea" id="SdD-XJ-Noq"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -682,7 +696,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="OQy-Sr-Kja"/>
+        <segue reference="2PO-r3-wgQ"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="AgressvLogoSmall" width="452" height="178"/>
