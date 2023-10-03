@@ -24,17 +24,19 @@ class AddGameViewController: UIViewController {
     
 
     
-   
+   //VARIABLES TO HOLD SUMS OF PLAYERS RANKINGS
+    var CurrentUserAndPartner_Combined_Rank: Double = 0.0
+    var Opponents_Combined_Rank: Double = 0.0
+    var CurrentUser_PercentDiff_Increment: Double = 0.0
+    var Partner_PercentDiff_Increment: Double = 0.0
+    var OppOne_PercentDiff_Increment: Double = 0.0
+    var OppTwo_PercentDiff_Increment: Double = 0.0
     
-
-    
-
-    
-    //For calculating players' ranks
-    var CurrentUserDoublesRank: String = ""
-    var PartnerDoublesRank: String = ""
-    var OppOneDoublesRank: String = ""
-    var OppTwoDoublesRank: String = ""
+    //STRING RANKS FOR DISPLAY
+    var CurrentUserDoublesRank: Double = 0.0
+    var PartnerDoublesRank: Double = 0.0
+    var OppOneDoublesRank: Double = 0.0
+    var OppTwoDoublesRank: Double = 0.0
     
     //Displaying game players
     var currentuser: String = ""
@@ -337,9 +339,13 @@ class AddGameViewController: UIViewController {
         ])
         
         // Create a segmented control
+        
+        // Define a custom green color
+        let customGreen = UIColor(red: 0.0, green: 0.5, blue: 0.0, alpha: 1.0) // Adjust the RGB values as needed
+        
         let seg_WLOutlet = UISegmentedControl(items: ["Won", "Lost"])
         seg_WLOutlet.selectedSegmentIndex = 0
-        seg_WLOutlet.tintColor = .systemGreen
+        seg_WLOutlet.tintColor = customGreen
         seg_WLOutlet.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(seg_WLOutlet)
 
@@ -356,33 +362,6 @@ class AddGameViewController: UIViewController {
         ])
 
         
-        
-        
-        // Create a label
-        let testEmails = UILabel()
-        testEmails.textAlignment = .center
-        //testEmails.text = "VS."
-        testEmails.textColor = .black
-        
-        testEmails.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(testEmails)
-        view.bringSubviewToFront(testEmails)
-        // Calculate the adjusted font size based on the scalingFactor
-        let baseFontSize_testEmails: CGFloat = 35.0 // Set your base font size
-        let adjustedFontSize_testEmails = baseFontSize_testEmails * scalingFactor
-        
-        
-        
-        // Set the font size for lbl_Playometer
-        lbl_VS.font = UIFont.systemFont(ofSize: adjustedFontSize_testEmails)
-
-        // Define constraints for lbl_OppTwo
-        NSLayoutConstraint.activate([
-            testEmails.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: view.bounds.width * marginPercentage),
-            testEmails.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -view.bounds.width * marginPercentage),
-            testEmails.bottomAnchor.constraint(equalTo: button.topAnchor, constant: -330 * scalingFactor), // Place it above the button with spacing
-            testEmails.heightAnchor.constraint(equalToConstant: 40 * heightScalingFactor) // Adjust the height as needed
-        ])
         
         
         
@@ -432,13 +411,13 @@ class AddGameViewController: UIViewController {
                     if let document = documentSnapshot, document.exists {
                         if let doublesRank = document.data()?["Doubles_Rank"] as? Double {
                             // Convert the Double to a String
-                            let doublesRankAsString = String(format: "%.1f", doublesRank)
-                            self.CurrentUserDoublesRank = doublesRankAsString
-
+//                            let doublesRankAsString = String(format: "%.1f", doublesRank)
+//                            self.CurrentUserDoublesRank = doublesRankAsString
+                            let currentUserRank = (doublesRank * 10.0).rounded() / 10.0
                             // Update the label here (on the main thread)
                             DispatchQueue.main.async {
                                 // Assuming you have a label called lbl_CurrentUserRank
-                                self.CurrentUserDoublesRank = doublesRankAsString
+                                self.CurrentUserDoublesRank = currentUserRank
                             }
                         } else {
                             print("Doubles_Rank is not a valid number in the document")
@@ -557,13 +536,11 @@ class AddGameViewController: UIViewController {
                 } else {
                     for document in querySnapshot!.documents {
                         if let doublesRank = document.data()["Doubles_Rank"] as? Double {
-                            // Convert the Double to a String
-                            let doublesRankAsString = String(format: "%.1f", doublesRank)
-                            self.PartnerDoublesRank = doublesRankAsString // Assign to OppOneDoublesRank
+                            let PartnerUserRank = (doublesRank * 10.0).rounded() / 10.0
 
                             // Update the label here
                             DispatchQueue.main.async {
-                                self.PartnerDoublesRank = doublesRankAsString
+                                self.PartnerDoublesRank = PartnerUserRank
                             }
                         } else {
                             print("Doubles_Rank is not a valid number in document with ID: \(document.documentID)")
@@ -589,13 +566,11 @@ class AddGameViewController: UIViewController {
                 } else {
                     for document in querySnapshot!.documents {
                         if let doublesRank = document.data()["Doubles_Rank"] as? Double {
-                            // Convert the Double to a String
-                            let doublesRankAsString = String(format: "%.1f", doublesRank)
-                            self.OppOneDoublesRank = doublesRankAsString // Assign to OppOneDoublesRank
+                            let OppOneUserRank = (doublesRank * 10.0).rounded() / 10.0
 
                             // Update the label here
                             DispatchQueue.main.async {
-                                self.OppOneDoublesRank = doublesRankAsString
+                                self.OppOneDoublesRank = OppOneUserRank
                             }
                         } else {
                             print("Doubles_Rank is not a valid number in document with ID: \(document.documentID)")
@@ -618,13 +593,11 @@ class AddGameViewController: UIViewController {
                 } else {
                     for document in querySnapshot!.documents {
                         if let doublesRank = document.data()["Doubles_Rank"] as? Double {
-                            // Convert the Double to a String
-                            let doublesRankAsString = String(format: "%.1f", doublesRank)
-                            self.OppTwoDoublesRank = doublesRankAsString // Assign to OppOneDoublesRank
+                            let OppTwoUserRank = (doublesRank * 10.0).rounded() / 10.0
 
                             // Update the label here
                             DispatchQueue.main.async {
-                                self.OppTwoDoublesRank = doublesRankAsString
+                                self.OppTwoDoublesRank = OppTwoUserRank
                             }
                         } else {
                             print("Doubles_Rank is not a valid number in document with ID: \(document.documentID)")
@@ -653,22 +626,91 @@ class AddGameViewController: UIViewController {
         print(GetOppTwoRank())
         
         
+        
+        
         lbl_Partner.text = selectedCellValue
         lbl_OppOne.text = selectedCellValueOppOne
         lbl_OppTwo.text = selectedCellValueOppTwo
         
        
-        
-    
-        
-        
-      
+//        //PERCENT DIFFERENCE STUFF
+//
+//            CurrentUserAndPartner_Combined_Rank = CurrentUserDoublesRank + PartnerDoublesRank
+//            Opponents_Combined_Rank = OppOneDoublesRank + OppTwoDoublesRank
+//
+//            let higherNumber = max(CurrentUserAndPartner_Combined_Rank, Opponents_Combined_Rank)
+//
+//            // Calculate the percent difference
+//            let percentDifference = abs((CurrentUserAndPartner_Combined_Rank - Opponents_Combined_Rank) / higherNumber * 100.0) / 100
+//
+//            if CurrentUserAndPartner_Combined_Rank > Opponents_Combined_Rank
+//            {
+//                OppOne_PercentDiff_Increment = OppOneDoublesRank * percentDifference
+//                OppTwo_PercentDiff_Increment = OppTwoDoublesRank * percentDifference
+//
+//                if OppOne_PercentDiff_Increment <= 0.1
+//                {
+//                    OppOne_PercentDiff_Increment = 0.1
+//                }
+//                if OppTwo_PercentDiff_Increment <= 0.1
+//                {
+//                    OppTwo_PercentDiff_Increment = 0.1
+//                }
+//            } else if Opponents_Combined_Rank > CurrentUserAndPartner_Combined_Rank
+//            {
+//                CurrentUser_PercentDiff_Increment = CurrentUserDoublesRank * percentDifference
+//                Partner_PercentDiff_Increment = PartnerDoublesRank * percentDifference
+//
+//                if CurrentUser_PercentDiff_Increment <= 0.1
+//                {
+//                    CurrentUser_PercentDiff_Increment = 0.1
+//                }
+//                if Partner_PercentDiff_Increment <= 0.1
+//                {
+//                    Partner_PercentDiff_Increment = 0.1
+//                }
+//            }
+//         //END PERCENT DIFF STUFF
         
         
         
     } //end of load
     
     
+    func performCalculations() {
+           let CurrentUserAndPartner_Combined_Rank = CurrentUserDoublesRank + PartnerDoublesRank
+           let Opponents_Combined_Rank = OppOneDoublesRank + OppTwoDoublesRank
+
+           let higherNumber = max(CurrentUserAndPartner_Combined_Rank, Opponents_Combined_Rank)
+
+           // Calculate the percent difference
+           let percentDifference = abs((CurrentUserAndPartner_Combined_Rank - Opponents_Combined_Rank) / higherNumber * 100.0) / 100
+
+           if CurrentUserAndPartner_Combined_Rank > Opponents_Combined_Rank {
+               // Perform calculations based on your conditions
+               OppOne_PercentDiff_Increment = OppOneDoublesRank * percentDifference
+               OppTwo_PercentDiff_Increment = OppTwoDoublesRank * percentDifference
+
+               if OppOne_PercentDiff_Increment <= 0.1 {
+                   OppOne_PercentDiff_Increment = 0.1
+               }
+               if OppTwo_PercentDiff_Increment <= 0.1 {
+                   OppTwo_PercentDiff_Increment = 0.1
+               }
+           } else if Opponents_Combined_Rank > CurrentUserAndPartner_Combined_Rank {
+               // Perform calculations based on your conditions
+               CurrentUser_PercentDiff_Increment = CurrentUserDoublesRank * percentDifference
+               Partner_PercentDiff_Increment = PartnerDoublesRank * percentDifference
+
+               if CurrentUser_PercentDiff_Increment <= 0.1 {
+                   CurrentUser_PercentDiff_Increment = 0.1
+               }
+               if Partner_PercentDiff_Increment <= 0.1 {
+                   Partner_PercentDiff_Increment = 0.1
+               }
+           }
+       }
+
     
     var WL_Selection = "W"
     
@@ -679,18 +721,21 @@ class AddGameViewController: UIViewController {
     @IBAction func seg_WL(_ sender: UISegmentedControl) {
 
        
+        
         if sender.selectedSegmentIndex == 0
         {
 
             self.WL_Selection = "W"
             
+          
             }
             else if sender.selectedSegmentIndex == 1
                         
             {
             
             self.WL_Selection = "L"
-            
+          
+                        
             }
         }
    
@@ -701,6 +746,8 @@ class AddGameViewController: UIViewController {
     
     
     @IBAction func btn_Log(_ sender: UIButton) {
+        
+        performCalculations()
 
         let db = Firestore.firestore()
         let uid = Auth.auth().currentUser!.email
@@ -719,13 +766,13 @@ class AddGameViewController: UIViewController {
                 "Doubles_Games_Wins": FieldValue.increment(Int64(1))])
 
             User_ref.updateData([
-                "Doubles_Rank": FieldValue.increment(0.1)])
+                "Doubles_Rank": FieldValue.increment(CurrentUser_PercentDiff_Increment)])
 
             Partner_ref.updateData([
                 "Doubles_Games_Wins": FieldValue.increment(Int64(1))])
 
             Partner_ref.updateData([
-                "Doubles_Rank": FieldValue.increment(0.1)])
+                "Doubles_Rank": FieldValue.increment(Partner_PercentDiff_Increment)])
 
             //decrement losing side
             OppOne_ref.updateData([
@@ -734,7 +781,7 @@ class AddGameViewController: UIViewController {
             OppTwo_ref.updateData([
                 "Doubles_Games_Losses": FieldValue.increment(Int64(1))])
 
-            if OppOneDoublesRank == "8.5" {
+            if OppOneDoublesRank == 8.5 {
                 //do not decrement
             }
             else
@@ -743,7 +790,7 @@ class AddGameViewController: UIViewController {
                     "Doubles_Rank": FieldValue.increment(-0.1)])
             }
 
-            if OppTwoDoublesRank == "8.5" {
+            if OppTwoDoublesRank == 8.5 {
                 //do not decrement
             }
             else
@@ -764,13 +811,13 @@ class AddGameViewController: UIViewController {
                 "Doubles_Games_Wins": FieldValue.increment(Int64(1))])
 
             OppOne_ref.updateData([
-                "Doubles_Rank": FieldValue.increment(0.1)])
+                "Doubles_Rank": FieldValue.increment(OppOne_PercentDiff_Increment)])
 
             OppTwo_ref.updateData([
                 "Doubles_Games_Wins": FieldValue.increment(Int64(1))])
 
             OppTwo_ref.updateData([
-                "Doubles_Rank": FieldValue.increment(0.1)])
+                "Doubles_Rank": FieldValue.increment(OppTwo_PercentDiff_Increment)])
 
             //decrement losing side
             User_ref.updateData([
@@ -780,7 +827,7 @@ class AddGameViewController: UIViewController {
                 "Doubles_Games_Losses": FieldValue.increment(Int64(1))])
 
             //if Doubles Rank is 8.5 do not decrement
-            if CurrentUserDoublesRank == "8.5" {
+            if CurrentUserDoublesRank == 8.5 {
                 //do not decrement
             }
             else
@@ -788,7 +835,7 @@ class AddGameViewController: UIViewController {
                 User_ref.updateData([
                     "Doubles_Rank": FieldValue.increment(-0.1)])
             }
-            if PartnerDoublesRank == "8.5" {
+            if PartnerDoublesRank == 8.5 {
                 //do not decrement
             }
             else
@@ -848,3 +895,12 @@ class AddGameViewController: UIViewController {
     
     }//end of class
 
+
+
+// Extension to round a Double to a specified number of decimal places
+extension Double {
+    func rounded(toPlaces places: Int) -> Double {
+        let divisor = pow(10.0, Double(places))
+        return (self * divisor).rounded() / divisor
+    }
+}

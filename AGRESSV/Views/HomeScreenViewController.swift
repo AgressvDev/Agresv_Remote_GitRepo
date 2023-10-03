@@ -193,7 +193,7 @@ class HomeScreenViewController: UIViewController {
     var loadingView: UIView?
     var loadingLabel: UILabel?
     
-    
+    var gaugeactualcount: Int = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -201,7 +201,7 @@ class HomeScreenViewController: UIViewController {
         // Call a function to show the loading view
                 showLoadingView()
                 
-        
+       
         
         // Calculate scaling factors based on screen width and height
         let screenWidth = view.bounds.size.width
@@ -689,7 +689,7 @@ class HomeScreenViewController: UIViewController {
                     //self.lbl_testcount.textColor = UIColor.systemGray
                     //self.lbl_testcount.font = UIFont.systemFont(ofSize: 12)
                     self.lbl_testcount.text = self.labelgaugecount
-
+                    self.gaugeactualcount = count
                     self.gaugemetercount = String(count)
                     let vc = UIHostingController(rootView: GaugeView(currentValue: self.gaugemetercount))
 
@@ -740,6 +740,10 @@ class HomeScreenViewController: UIViewController {
         print(currentcountforgauge())
 
 
+        
+        
+        
+        
             //GET DATA
 
             let db = Firestore.firestore()
@@ -946,7 +950,56 @@ class HomeScreenViewController: UIViewController {
         } //end of loading bracket
         
     
-    
+    func AddFireMessage() {
+        
+        //GAUGE METER MESSAGE FOR 32 GAMES AND OVER
+        // Calculate scaling factors based on screen width and height
+        let screenWidth = view.bounds.size.width
+        let screenHeight = view.bounds.size.height
+        let widthScalingFactor = screenWidth / 430.0 // Use a reference width, e.g., iPhone 6/6s/7/8 width
+        let heightScalingFactor = screenHeight / 932.0 // Use a reference height, e.g., iPhone 6/6s/7/8 height
+        let scalingFactor = min(widthScalingFactor, heightScalingFactor)
+                
+                // Create a label
+                let FireMessage = UILabel()
+                FireMessage.text = "You're on fire!"
+        FireMessage.textColor = .black
+        FireMessage.numberOfLines = 0 // Allow multiple lines
+        FireMessage.translatesAutoresizingMaskIntoConstraints = false // Enable Auto Layout
+               
+            
+                // Check if gaugeactualcount is greater than or equal to 32
+                if gaugeactualcount >= 32 {
+                    // Apply text attributes
+                    let attributedText = NSMutableAttributedString(string: "You're on fire!")
+                    attributedText.addAttribute(.foregroundColor, value: UIColor.black, range: NSRange(location: 0, length: 9)) // "You're on"
+                    attributedText.addAttribute(.foregroundColor, value: UIColor.systemRed, range: NSRange(location: 10, length: 4)) // "fire"
+                    FireMessage.attributedText = attributedText
+                    
+                    // Calculate the adjusted font size based on the scalingFactor
+                    let baseFontSizeActualGaugeCount: CGFloat = 13.0 // Set your base font size
+                    let adjustedFontSizeActualGaugeCount = baseFontSizeActualGaugeCount * scalingFactor
+
+                    // Set the font size for lbl_Playometer
+                    FireMessage.font = UIFont.systemFont(ofSize: adjustedFontSizeActualGaugeCount)
+                    
+                    // Add the label as a subview to your view (e.g., yourViewController.view)
+                    // Replace `yourViewController.view` with the appropriate view reference
+                    self.view.addSubview(FireMessage)
+                    
+                    // Define Auto Layout constraints to position and scale the label
+                    NSLayoutConstraint.activate([
+                        FireMessage.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 300 * scalingFactor), // Left side of the screen
+                        FireMessage.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -265 * scalingFactor), // A little higher than the bottom
+                        FireMessage.heightAnchor.constraint(equalToConstant: 30 * scalingFactor), // Adjust the reference size as needed
+                    ])
+                    
+                    FireMessage.layer.zPosition = 4
+                }
+        //END OF GAUGE MESSAGE
+        
+        
+    }
     func showLoadingView() {
             // Create a UIView that covers the entire screen
             loadingView = UIView(frame: view.bounds)
@@ -981,6 +1034,8 @@ class HomeScreenViewController: UIViewController {
             // Set the references to nil to release memory
             loadingLabel = nil
             loadingView = nil
+            
+            AddFireMessage()
         }
        
 

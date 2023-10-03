@@ -11,8 +11,8 @@ import FirebaseFirestore
 
 class SinglesAddGameViewController: UIViewController {
     
-    var CurrentUserSinglesRank: String!
-    var OppOneSinglesRank: String!
+    var CurrentUserSinglesRank: Double = 0.0
+    var OppOneSinglesRank: Double = 0.0
     
     var currentuser: String = ""
     var OppOneCellValue_NoRank: String = SharedDataNoRank.sharednorank.OppOneSelection_NoRank
@@ -281,14 +281,15 @@ class SinglesAddGameViewController: UIViewController {
                 } else {
                     if let document = documentSnapshot, document.exists {
                         if let doublesRank = document.data()?["Singles_Rank"] as? Double {
-                            // Convert the Double to a String
-                            let doublesRankAsString = String(format: "%.1f", doublesRank)
-                            self.CurrentUserSinglesRank = doublesRankAsString
+//                            // Convert the Double to a String
+//                            let doublesRankAsString = String(format: "%.1f", doublesRank)
+//                            self.CurrentUserSinglesRank = doublesRankAsString
+                            let currentUserRank = (doublesRank * 10.0).rounded() / 10.0
 
                             // Update the label here (on the main thread)
                             DispatchQueue.main.async {
                                 // Assuming you have a label called lbl_CurrentUserRank
-                                self.CurrentUserSinglesRank = doublesRankAsString
+                                self.CurrentUserSinglesRank = currentUserRank
                             }
                         } else {
                             print("Doubles_Rank is not a valid number in the document")
@@ -312,13 +313,11 @@ class SinglesAddGameViewController: UIViewController {
                 } else {
                     for document in querySnapshot!.documents {
                         if let doublesRank = document.data()["Singles_Rank"] as? Double {
-                            // Convert the Double to a String
-                            let doublesRankAsString = String(format: "%.1f", doublesRank)
-                            self.OppOneSinglesRank = doublesRankAsString // Assign to OppOneDoublesRank
+                            let OppOneUserRank = (doublesRank * 10.0).rounded() / 10.0
 
                             // Update the label here
                             DispatchQueue.main.async {
-                                self.OppOneSinglesRank = doublesRankAsString
+                                self.OppOneSinglesRank = OppOneUserRank
                             }
                         } else {
                             print("Doubles_Rank is not a valid number in document with ID: \(document.documentID)")
@@ -422,7 +421,7 @@ class SinglesAddGameViewController: UIViewController {
                 "Singles_Games_Losses": FieldValue.increment(Int64(1))])
 
 
-            if OppOneSinglesRank == "8.5" {
+            if OppOneSinglesRank == 8.5 {
                 //do not decrement
             }
             else
@@ -448,7 +447,7 @@ class SinglesAddGameViewController: UIViewController {
                 "Singles_Games_Losses": FieldValue.increment(Int64(1))])
 
            
-            if CurrentUserSinglesRank == "8.5" {
+            if CurrentUserSinglesRank == 8.5 {
                 //do not decrement
             }
             else

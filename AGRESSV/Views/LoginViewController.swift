@@ -12,7 +12,7 @@ import SwiftUI
 class LoginViewController: UIViewController {
 
     @IBOutlet var backgroundGradView: UIView!
-  
+   
     
     @IBOutlet weak var EmailTextField: UITextField!
     @IBOutlet weak var PasswordTextField: UITextField!
@@ -34,11 +34,48 @@ class LoginViewController: UIViewController {
         
         self.view.layer.insertSublayer(gradientLayer, at: 0)
         
+       
+                
+                // Calculate scaling factors based on screen width and height
+                let screenWidth = view.bounds.size.width
+                let screenHeight = view.bounds.size.height
+                let widthScalingFactor = screenWidth / 430.0 // Use a reference width, e.g., iPhone 6/6s/7/8 width
+                let heightScalingFactor = screenHeight / 932.0 // Use a reference height, e.g., iPhone 6/6s/7/8 height
+                let scalingFactor = min(widthScalingFactor, heightScalingFactor)
+                
+        // Create a button
+                let btn_ForgotPassword = UIButton(type: .system)
+                btn_ForgotPassword.setTitle("Forgot Password", for: .normal)
+                btn_ForgotPassword.setTitleColor(.systemRed, for: .normal)
+                btn_ForgotPassword.translatesAutoresizingMaskIntoConstraints = false
+                view.addSubview(btn_ForgotPassword)
+                view.bringSubviewToFront(btn_ForgotPassword)
+                
+                // Calculate and set the adjusted font size
+                let originalFontSize: CGFloat = 17.0 // Set your desired original font size
+                let adjustedFontSize = originalFontSize * scalingFactor
+                btn_ForgotPassword.titleLabel?.font = UIFont.systemFont(ofSize: adjustedFontSize)
+                
+        // Add constraints to position the button -20 points from the bottom of the screen
+        NSLayoutConstraint.activate([
+            btn_ForgotPassword.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20 * scalingFactor),
+            btn_ForgotPassword.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20 * scalingFactor),
+            btn_ForgotPassword.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -50 * scalingFactor),
+            btn_ForgotPassword.heightAnchor.constraint(equalToConstant: 50 * heightScalingFactor) // Set the desired height
+        ])
         
         
-    }
+            // Add action to the button
+            btn_ForgotPassword.addTarget(self, action: #selector(btn_ForgotPasswordAction(_:)), for: .touchUpInside)
+                
+                
+                
+            
+            
+            
+    } //end of load
     
-    @IBAction func btn_ForgotPassword(_ sender: UIButton) {
+    @IBAction func btn_ForgotPasswordAction(_ sender: UIButton) {
         
         
         // Create an alert controller
@@ -121,4 +158,4 @@ class LoginViewController: UIViewController {
     
     
 
-}
+} //end of class
