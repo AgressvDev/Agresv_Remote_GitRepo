@@ -11,8 +11,13 @@ import FirebaseFirestore
 
 class SinglesAddGameViewController: UIViewController {
     
+    
+    
+    
     var CurrentUserSinglesRank: Double = 0.0
     var OppOneSinglesRank: Double = 0.0
+    var CurrentUser_PercentDiff_Increment: Double = 0.0
+    var OppOne_PercentDiff_Increment: Double = 0.0
     
     var currentuser: String = ""
     var OppOneCellValue_NoRank: String = SharedDataNoRank.sharednorank.OppOneSelection_NoRank
@@ -368,6 +373,39 @@ class SinglesAddGameViewController: UIViewController {
         
     } //end of load
     
+    
+    func performCalculations() {
+           
+
+           let higherNumber = max(CurrentUserSinglesRank, OppOneSinglesRank)
+
+           // Calculate the percent difference
+           let percentDifference = abs((CurrentUserSinglesRank - OppOneSinglesRank) / higherNumber * 100.0) / 100
+
+           if CurrentUserSinglesRank > OppOneSinglesRank {
+               // Perform calculations based on your conditions
+               OppOne_PercentDiff_Increment = OppOneSinglesRank * percentDifference
+               CurrentUser_PercentDiff_Increment = 0.1
+
+               if OppOne_PercentDiff_Increment <= 0.1 {
+                   OppOne_PercentDiff_Increment = 0.1
+               }
+               
+           } else if OppOneSinglesRank > CurrentUserSinglesRank {
+               // Perform calculations based on your conditions
+               CurrentUser_PercentDiff_Increment = CurrentUserSinglesRank * percentDifference
+               OppOne_PercentDiff_Increment = 0.1
+
+               if CurrentUser_PercentDiff_Increment <= 0.1 {
+                   CurrentUser_PercentDiff_Increment = 0.1
+               }
+               
+           }
+       }
+    
+    
+    
+    
     var WL_Selection = "W"
     
     var Today = Date()
@@ -396,6 +434,8 @@ class SinglesAddGameViewController: UIViewController {
     
     
     @IBAction func btn_Log(_ sender: UIButton) {
+        
+        performCalculations()
 
         let db = Firestore.firestore()
         let uid = Auth.auth().currentUser!.email
@@ -414,7 +454,7 @@ class SinglesAddGameViewController: UIViewController {
                 "Singles_Games_Wins": FieldValue.increment(Int64(1))])
 
             User_ref.updateData([
-                "Singles_Rank": FieldValue.increment(0.1)])
+                "Singles_Rank": FieldValue.increment(CurrentUser_PercentDiff_Increment)])
 
             //decrement losing side
             OppOne_ref.updateData([
@@ -440,7 +480,7 @@ class SinglesAddGameViewController: UIViewController {
                 "Singles_Games_Wins": FieldValue.increment(Int64(1))])
 
             OppOne_ref.updateData([
-                "Singles_Rank": FieldValue.increment(0.1)])
+                "Singles_Rank": FieldValue.increment(OppOne_PercentDiff_Increment)])
 
             //decrement losing side
             User_ref.updateData([
@@ -500,3 +540,6 @@ class SinglesAddGameViewController: UIViewController {
  
 
 } //end of class
+
+
+

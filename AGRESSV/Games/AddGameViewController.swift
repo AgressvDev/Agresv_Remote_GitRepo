@@ -633,44 +633,7 @@ class AddGameViewController: UIViewController {
         lbl_OppTwo.text = selectedCellValueOppTwo
         
        
-//        //PERCENT DIFFERENCE STUFF
-//
-//            CurrentUserAndPartner_Combined_Rank = CurrentUserDoublesRank + PartnerDoublesRank
-//            Opponents_Combined_Rank = OppOneDoublesRank + OppTwoDoublesRank
-//
-//            let higherNumber = max(CurrentUserAndPartner_Combined_Rank, Opponents_Combined_Rank)
-//
-//            // Calculate the percent difference
-//            let percentDifference = abs((CurrentUserAndPartner_Combined_Rank - Opponents_Combined_Rank) / higherNumber * 100.0) / 100
-//
-//            if CurrentUserAndPartner_Combined_Rank > Opponents_Combined_Rank
-//            {
-//                OppOne_PercentDiff_Increment = OppOneDoublesRank * percentDifference
-//                OppTwo_PercentDiff_Increment = OppTwoDoublesRank * percentDifference
-//
-//                if OppOne_PercentDiff_Increment <= 0.1
-//                {
-//                    OppOne_PercentDiff_Increment = 0.1
-//                }
-//                if OppTwo_PercentDiff_Increment <= 0.1
-//                {
-//                    OppTwo_PercentDiff_Increment = 0.1
-//                }
-//            } else if Opponents_Combined_Rank > CurrentUserAndPartner_Combined_Rank
-//            {
-//                CurrentUser_PercentDiff_Increment = CurrentUserDoublesRank * percentDifference
-//                Partner_PercentDiff_Increment = PartnerDoublesRank * percentDifference
-//
-//                if CurrentUser_PercentDiff_Increment <= 0.1
-//                {
-//                    CurrentUser_PercentDiff_Increment = 0.1
-//                }
-//                if Partner_PercentDiff_Increment <= 0.1
-//                {
-//                    Partner_PercentDiff_Increment = 0.1
-//                }
-//            }
-//         //END PERCENT DIFF STUFF
+
         
         
         
@@ -690,7 +653,9 @@ class AddGameViewController: UIViewController {
                // Perform calculations based on your conditions
                OppOne_PercentDiff_Increment = OppOneDoublesRank * percentDifference
                OppTwo_PercentDiff_Increment = OppTwoDoublesRank * percentDifference
-
+               CurrentUser_PercentDiff_Increment = 0.1
+               Partner_PercentDiff_Increment = 0.1
+               
                if OppOne_PercentDiff_Increment <= 0.1 {
                    OppOne_PercentDiff_Increment = 0.1
                }
@@ -701,7 +666,8 @@ class AddGameViewController: UIViewController {
                // Perform calculations based on your conditions
                CurrentUser_PercentDiff_Increment = CurrentUserDoublesRank * percentDifference
                Partner_PercentDiff_Increment = PartnerDoublesRank * percentDifference
-
+               OppOne_PercentDiff_Increment = 0.1
+               OppTwo_PercentDiff_Increment = 0.1
                if CurrentUser_PercentDiff_Increment <= 0.1 {
                    CurrentUser_PercentDiff_Increment = 0.1
                }
