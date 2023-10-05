@@ -19,9 +19,9 @@ struct GaugeView: View {
     public var currentValue: String
     
   
+
     
-    
-    let gradient = Gradient(colors: [.white, .black, .red])
+    let gradient = Gradient(colors: [.white, .gray, .red])
     @State private var minValue = 0.0
     @State private var maxValue = 32.0
     
@@ -30,7 +30,7 @@ struct GaugeView: View {
     var body: some View {
         
         
-        
+       
         VStack{
             
                 Gauge(value: Double(currentValue) ?? 0, in: minValue...maxValue){
@@ -43,13 +43,18 @@ struct GaugeView: View {
             }
             minimumValueLabel: {
                 Text("\(Int(minValue))")
+                    .font(.headline)
+                                    .foregroundColor(.white)
             }
             maximumValueLabel:{
                 Text("\(Int(maxValue))")
+                    .font(.headline)
+                                    .foregroundColor(.white)
             }
             .gaugeStyle(.accessoryLinear)
             .tint(gradient)
             .padding()
+            
                 //.frame(width: 400)
                 //.frame(height: 5)
                 //.position(x:190, y:550)
@@ -57,6 +62,8 @@ struct GaugeView: View {
                 
                 
             }
+        .background(Color.clear)
+       
             
         }
         //    struct GaugeView_Previews: PreviewProvider {

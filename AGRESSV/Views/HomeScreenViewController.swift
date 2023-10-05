@@ -67,7 +67,7 @@ class HomeScreenViewController: UIViewController {
             label.textAlignment = .center
             label.backgroundColor = UIColor.lightGray
             label.textColor = .black // Set your desired text color
-            label.layer.borderColor = UIColor.systemRed.cgColor
+            label.layer.borderColor = UIColor.white.cgColor
             label.layer.borderWidth = 2.0 // Set your desired border width
             label.translatesAutoresizingMaskIntoConstraints = false
             return label
@@ -78,7 +78,7 @@ class HomeScreenViewController: UIViewController {
             label.textAlignment = .center
             label.backgroundColor = UIColor.lightGray
             label.textColor = .black // Set your desired text color
-            label.layer.borderColor = UIColor.systemRed.cgColor
+            label.layer.borderColor = UIColor.white.cgColor
             label.layer.borderWidth = 2.0 // Set your desired border width
             label.translatesAutoresizingMaskIntoConstraints = false
             return label
@@ -119,28 +119,28 @@ class HomeScreenViewController: UIViewController {
     
     let DoublesWinsLabel: UILabel = {
             let label = UILabel()
-            label.textColor = .black // Set your desired text color
+            label.textColor = .white // Set your desired text color
             label.translatesAutoresizingMaskIntoConstraints = false
             return label
         }()
     
     let DoublesLossesLabel: UILabel = {
             let label = UILabel()
-            label.textColor = .black // Set your desired text color
+            label.textColor = .white // Set your desired text color
             label.translatesAutoresizingMaskIntoConstraints = false
             return label
         }()
     
     let SinglesWinsLabel: UILabel = {
             let label = UILabel()
-            label.textColor = .black // Set your desired text color
+            label.textColor = .white // Set your desired text color
             label.translatesAutoresizingMaskIntoConstraints = false
             return label
         }()
     
     let SinglesLossesLabel: UILabel = {
             let label = UILabel()
-            label.textColor = .black // Set your desired text color
+            label.textColor = .white // Set your desired text color
             label.translatesAutoresizingMaskIntoConstraints = false
             return label
         }()
@@ -150,7 +150,7 @@ class HomeScreenViewController: UIViewController {
         label.textAlignment = .center
         label.font = UIFont(name: "Impact", size: 20)
         label.text = "Doubles" // You can set your desired text
-        label.textColor = .black // Set your desired text color
+        label.textColor = .white // Set your desired text color
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -160,7 +160,7 @@ class HomeScreenViewController: UIViewController {
         label.textAlignment = .center
         label.font = UIFont(name: "Impact", size: 20)
         label.text = "Singles" // You can set your desired text
-        label.textColor = .black // Set your desired text color
+        label.textColor = .white // Set your desired text color
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -211,6 +211,33 @@ class HomeScreenViewController: UIViewController {
         let scalingFactor = min(widthScalingFactor, heightScalingFactor)
         
         
+        //BACKGROUND
+        // Create UIImageView for the background image
+               let backgroundImage = UIImageView()
+
+               // Set the image to "AppBackgroundOne.png" from your asset catalog
+               backgroundImage.image = UIImage(named: "AppBackgroundOne")
+
+               // Make sure the image doesn't stretch or distort
+               backgroundImage.contentMode = .scaleAspectFill
+
+               // Add the UIImageView as a subview to the view
+               view.addSubview(backgroundImage)
+               view.sendSubviewToBack(backgroundImage)
+
+               // Disable autoresizing mask constraints for the UIImageView
+               backgroundImage.translatesAutoresizingMaskIntoConstraints = false
+
+               // Set constraints to cover the full screen using the scaling factor
+        // Define Auto Layout constraints to position and allow the label to expand its width based on content
+        NSLayoutConstraint.activate([
+            backgroundImage.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0 * scalingFactor), // Left side of the screen
+            backgroundImage.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0 * scalingFactor), // A little higher than the bottom
+            backgroundImage.topAnchor.constraint(equalTo: view.topAnchor, constant: 0 * scalingFactor),
+            backgroundImage.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0 * scalingFactor)
+        ])
+
+        //END BACKGROUND
         
        
         
@@ -220,7 +247,7 @@ class HomeScreenViewController: UIViewController {
         btn_NewGame.translatesAutoresizingMaskIntoConstraints = false
         btn_NewGame.setTitle("New Game", for: .normal)
         btn_NewGame.titleLabel?.font = UIFont.systemFont(ofSize: 20)
-        btn_NewGame.setTitleColor(UIColor.systemRed, for: .normal)
+        btn_NewGame.setTitleColor(UIColor.white, for: .normal)
 
         // Add an action to the button to perform a segue
         btn_NewGame.addTarget(self, action: #selector(startNewGame), for: .touchUpInside)
@@ -236,7 +263,7 @@ class HomeScreenViewController: UIViewController {
         view.bringSubviewToFront(btn_NewGame)
         
         // Load the image
-        if let AgressvLogo = UIImage(named: "AgressvLogoSmall.png") {
+        if let AgressvLogo = UIImage(named: "AgressvLogoSmallWhite.png") {
             let myImageView = UIImageView()
             myImageView.contentMode = .scaleAspectFit
             myImageView.image = AgressvLogo
@@ -263,7 +290,7 @@ class HomeScreenViewController: UIViewController {
         // Create the label
         let lbl_Playometer = UILabel()
         lbl_Playometer.text = "Playometer"
-        lbl_Playometer.textColor = .darkGray
+        lbl_Playometer.textColor = .white
         lbl_Playometer.font = UIFont.systemFont(ofSize: 17)
         lbl_Playometer.translatesAutoresizingMaskIntoConstraints = false // Enable Auto Layout
         lbl_Playometer.numberOfLines = 0 // Allow multiple lines
@@ -299,7 +326,7 @@ class HomeScreenViewController: UIViewController {
 
         NSLayoutConstraint.activate([minWidthConstraintPlayometer])
         
-        lbl_Playometer.layer.zPosition = 2
+        lbl_Playometer.layer.zPosition = 3
         
     
         
@@ -307,7 +334,7 @@ class HomeScreenViewController: UIViewController {
         // Create the label
        
         lbl_GamesPlayed.text = "Games played in rolling week:"
-                lbl_GamesPlayed.textColor = .lightGray
+                lbl_GamesPlayed.textColor = .white
                 lbl_GamesPlayed.numberOfLines = 0 // Allow multiple lines
                 lbl_GamesPlayed.translatesAutoresizingMaskIntoConstraints = false // Enable Auto Layout
 
@@ -336,12 +363,12 @@ class HomeScreenViewController: UIViewController {
                 NSLayoutConstraint.activate([minWidthConstraint])
         
         
-        lbl_GamesPlayed.layer.zPosition = 2
+        lbl_GamesPlayed.layer.zPosition = 3
                 
         
         
       
-        lbl_testcount.textColor = .lightGray
+        lbl_testcount.textColor = .white
         lbl_testcount.translatesAutoresizingMaskIntoConstraints = false // Enable Auto Layout
         
         // Add the label to the view hierarchy
@@ -363,14 +390,14 @@ class HomeScreenViewController: UIViewController {
             lbl_testcount.heightAnchor.constraint(equalToConstant: 30 * scalingFactor), // Adjust the reference size as needed
         ])
         
-        lbl_testcount.layer.zPosition = 2
+        lbl_testcount.layer.zPosition = 3
   
         
         
         
         let lbl_Playmoregames = UILabel()
         lbl_Playmoregames.text = "Play more games. Be"
-        lbl_Playmoregames.textColor = .black
+        lbl_Playmoregames.textColor = .white
         lbl_Playmoregames.font = UIFont.systemFont(ofSize: 12)
         lbl_Playmoregames.numberOfLines = 0 // Allow multiple lines
         lbl_Playmoregames.translatesAutoresizingMaskIntoConstraints = false // Enable Auto Layout
@@ -392,7 +419,7 @@ class HomeScreenViewController: UIViewController {
                 NSLayoutConstraint.activate([minWidthConstraint_playmoregames])
         
         
-        lbl_Playmoregames.layer.zPosition = 2
+        lbl_Playmoregames.layer.zPosition = 3
         
 
         
@@ -412,7 +439,7 @@ class HomeScreenViewController: UIViewController {
                 view.addSubview(lbl_SinglesHeader)
                 view.addSubview(MainUNLabel)
                 view.bringSubviewToFront(btn_NewGame)
-                btn_NewGame.layer.zPosition = 3
+                btn_NewGame.layer.zPosition = 4
         
         if let dobermanleft = UIImage(named: "dobermanpsdleft.png") {
             let myImageViewdl = UIImageView()
@@ -424,7 +451,7 @@ class HomeScreenViewController: UIViewController {
             view.addSubview(myImageViewdl)
             view.bringSubviewToFront(myImageViewdl)
             
-            myImageViewdl.layer.zPosition = 3
+            myImageViewdl.layer.zPosition = 4
             // Define Auto Layout constraints to position and scale the image
             NSLayoutConstraint.activate([
                 myImageViewdl.leadingAnchor.constraint(equalTo: MainUNLabel.leadingAnchor, constant: -20 * scalingFactor),
@@ -446,7 +473,7 @@ class HomeScreenViewController: UIViewController {
             view.addSubview(myImageViewd2)
             view.bringSubviewToFront(myImageViewd2)
             
-            myImageViewd2.layer.zPosition = 3
+            myImageViewd2.layer.zPosition = 4
             // Define Auto Layout constraints to position and scale the image
             NSLayoutConstraint.activate([
                 myImageViewd2.trailingAnchor.constraint(equalTo: MainUNLabel.trailingAnchor, constant: 20 * scalingFactor),
@@ -694,30 +721,30 @@ class HomeScreenViewController: UIViewController {
                     let vc = UIHostingController(rootView: GaugeView(currentValue: self.gaugemetercount))
 
                         let swiftuiView_gauge = vc.view!
-                        swiftuiView_gauge.translatesAutoresizingMaskIntoConstraints = true
+                        swiftuiView_gauge.translatesAutoresizingMaskIntoConstraints = false
                     
                     
-                            let screenSize = UIScreen.main.bounds.size
+                            //let screenSize = UIScreen.main.bounds.size
                     
-                    // Calculate the x and y coordinates based on the screen size
-                            let screenWidth = screenSize.width
-                            let screenHeight = screenSize.height
+//                    // Calculate the x and y coordinates based on the screen size
+//                            let screenWidth = screenSize.width
+//                            let screenHeight = screenSize.height
                             
-                            // Calculate the x and y coordinates as a percentage of the screen size
-                            let xCoordinate = screenWidth * 0.05 // 25% of the screen width
-                            let yCoordinate = screenHeight * 0.72 // 25% of the screen height
-                            
-                            // Calculate the width and height based on the screen width (adjust as needed)
-                            let frameWidth = screenWidth * 0.90 // 50% of the screen width
-                            let frameHeight = frameWidth * 0.01 // Maintain an aspect ratio (adjust as needed)
-                    
+//                            // Calculate the x and y coordinates as a percentage of the screen size
+//                            let xCoordinate = screenWidth * 0.05 // 25% of the screen width
+//                            let yCoordinate = screenHeight * 0.72 // 25% of the screen height
+//
+//                            // Calculate the width and height based on the screen width (adjust as needed)
+//                            let frameWidth = screenWidth * 0.90 // 50% of the screen width
+//                            let frameHeight = frameWidth * 0.01 // Maintain an aspect ratio (adjust as needed)
+//
                     
                     
                         //swiftuiView_gauge.frame.size.width = 400
                    // let scaleFactorGauge: CGFloat = UIScreen.main.bounds.width / 430.0 // 375.0 is a reference width
                             
                             // Set the subview's initial frame (you can adjust this as needed)
-                    swiftuiView_gauge.frame = CGRect(x: xCoordinate, y: yCoordinate, width: frameWidth, height: frameHeight)
+                    //swiftuiView_gauge.frame = CGRect(x: xCoordinate, y: yCoordinate, width: frameWidth, height: frameHeight)
 
 
                         // Add the view controller to the destination view controller.
@@ -726,11 +753,19 @@ class HomeScreenViewController: UIViewController {
 
                         self.view.bringSubviewToFront(swiftuiView_gauge)
                      
-                    swiftuiView_gauge.layer.zPosition = 1
+                    swiftuiView_gauge.layer.zPosition = 2
                     
                     
                         // Notify the child view controller that the move is complete.
                         vc.didMove(toParent: self)
+                    
+                    // Define Auto Layout constraints to position and allow the label to expand its width based on content
+                    NSLayoutConstraint.activate([
+                        swiftuiView_gauge.leadingAnchor.constraint(equalTo: backgroundImage.leadingAnchor, constant: 5 * scalingFactor), // Left side of the screen
+                        swiftuiView_gauge.trailingAnchor.constraint(equalTo: backgroundImage.trailingAnchor, constant: -5 * scalingFactor), // A little higher than the bottom
+                        swiftuiView_gauge.topAnchor.constraint(equalTo: backgroundImage.topAnchor, constant: 690 * scalingFactor),
+                        swiftuiView_gauge.bottomAnchor.constraint(equalTo: backgroundImage.bottomAnchor, constant: -250 * scalingFactor)
+                    ])
                 }
             }
 
@@ -829,8 +864,8 @@ class HomeScreenViewController: UIViewController {
             DoublesRankLabelC.font = DoublesRankFont
             DoublesRankLabelC.adjustsFontSizeToFitWidth = true
             DoublesRankLabelC.backgroundColor = UIColor.lightGray
-            DoublesRankLabelC.layer.borderColor = UIColor.red.cgColor
-            DoublesRankLabelC.layer.borderWidth = 2.0
+            //DoublesRankLabelC.layer.borderColor = UIColor.red.cgColor
+            //DoublesRankLabelC.layer.borderWidth = 2.0
             DoublesRankLabelC.layer.cornerRadius = 5
             DoublesRankLabelC.clipsToBounds = true
 
@@ -843,17 +878,27 @@ class HomeScreenViewController: UIViewController {
             SinglesRankLabel.font = SinglesRankFont
             SinglesRankLabel.adjustsFontSizeToFitWidth = true
             SinglesRankLabel.backgroundColor = UIColor.lightGray
-            SinglesRankLabel.layer.borderColor = UIColor.red.cgColor
-            SinglesRankLabel.layer.borderWidth = 2.0
+            //SinglesRankLabel.layer.borderColor = UIColor.red.cgColor
+            //SinglesRankLabel.layer.borderWidth = 2.0
             SinglesRankLabel.layer.cornerRadius = 5
             SinglesRankLabel.clipsToBounds = true
 
+        // Create a UIColor with the desired light blueish gray color
+        let lightBlueishGrayColor = UIColor(red: 173/255, green: 216/255, blue: 230/255, alpha: 1.0)
+        lbl_DoublesHeader.textColor = lightBlueishGrayColor
+        lbl_SinglesHeader.textColor = lightBlueishGrayColor
 
-
-
-
-
-
+        DL_Letter.textColor = lightBlueishGrayColor
+        SL_Letter.textColor = lightBlueishGrayColor
+        MainUNLabel.textColor = lightBlueishGrayColor
+        
+        
+       
+            MainUNLabel.layer.borderColor = UIColor.white.cgColor // Border color
+            MainUNLabel.layer.borderWidth = 1.0 // Border width
+        
+        
+        
             //POSITION ALL LABELS
 
 //            let DogLeft = UIImage(named: "dobermanpsdleft.png")
@@ -963,7 +1008,7 @@ class HomeScreenViewController: UIViewController {
                 // Create a label
                 let FireMessage = UILabel()
                 FireMessage.text = "You're on fire!"
-        FireMessage.textColor = .black
+        FireMessage.textColor = .white
         FireMessage.numberOfLines = 0 // Allow multiple lines
         FireMessage.translatesAutoresizingMaskIntoConstraints = false // Enable Auto Layout
                
@@ -972,7 +1017,7 @@ class HomeScreenViewController: UIViewController {
                 if gaugeactualcount >= 32 {
                     // Apply text attributes
                     let attributedText = NSMutableAttributedString(string: "You're on fire!")
-                    attributedText.addAttribute(.foregroundColor, value: UIColor.black, range: NSRange(location: 0, length: 9)) // "You're on"
+                    attributedText.addAttribute(.foregroundColor, value: UIColor.white, range: NSRange(location: 0, length: 9)) // "You're on"
                     attributedText.addAttribute(.foregroundColor, value: UIColor.systemRed, range: NSRange(location: 10, length: 4)) // "fire"
                     FireMessage.attributedText = attributedText
                     

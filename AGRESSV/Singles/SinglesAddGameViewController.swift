@@ -37,14 +37,40 @@ class SinglesAddGameViewController: UIViewController {
         let marginPercentage: CGFloat = 0.07
         
         
-        
+        //BACKGROUND
+        // Create UIImageView for the background image
+               let backgroundImage = UIImageView()
+
+               // Set the image to "AppBackgroundOne.png" from your asset catalog
+               backgroundImage.image = UIImage(named: "AppBackgroundOne")
+
+               // Make sure the image doesn't stretch or distort
+               backgroundImage.contentMode = .scaleAspectFill
+
+               // Add the UIImageView as a subview to the view
+               view.addSubview(backgroundImage)
+               view.sendSubviewToBack(backgroundImage)
+
+               // Disable autoresizing mask constraints for the UIImageView
+               backgroundImage.translatesAutoresizingMaskIntoConstraints = false
+
+               // Set constraints to cover the full screen using the scaling factor
+        // Define Auto Layout constraints to position and allow the label to expand its width based on content
+        NSLayoutConstraint.activate([
+            backgroundImage.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0 * scalingFactor), // Left side of the screen
+            backgroundImage.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0 * scalingFactor), // A little higher than the bottom
+            backgroundImage.topAnchor.constraint(equalTo: view.topAnchor, constant: 0 * scalingFactor),
+            backgroundImage.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0 * scalingFactor)
+        ])
+
+        //END BACKGROUND
         
         
         // Create a button
         let button = UIButton(type: .system)
         button.setTitle("Log Game", for: .normal)
-        button.backgroundColor = .black
-        button.setTitleColor(.white, for: .normal)
+        button.backgroundColor = .white
+        button.setTitleColor(.black, for: .normal)
         button.layer.cornerRadius = 8 // Adjust corner radius as needed
         button.layer.borderWidth = 1
         button.layer.borderColor = UIColor.white.cgColor
@@ -66,12 +92,14 @@ class SinglesAddGameViewController: UIViewController {
         button.addTarget(self, action: #selector(btn_Log(_:)), for: .touchUpInside)
         
         
+        // Create a UIColor with the desired light blueish gray color
+        let lightBlueishGrayColor = UIColor(red: 173/255, green: 216/255, blue: 230/255, alpha: 1.0)
         
         // Create a label
         let lbl_CurrentUser = UILabel()
         lbl_CurrentUser.textAlignment = .center
         lbl_CurrentUser.textColor = .black
-        lbl_CurrentUser.backgroundColor = UIColor(red: 100.0, green: 0.8, blue: 0.8, alpha: 2.0) // Light red background color
+        lbl_CurrentUser.backgroundColor = lightBlueishGrayColor//UIColor(red: 100.0, green: 0.8, blue: 0.8, alpha: 2.0) // Light red background color
         lbl_CurrentUser.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(lbl_CurrentUser)
         view.bringSubviewToFront(lbl_CurrentUser)
@@ -146,7 +174,7 @@ class SinglesAddGameViewController: UIViewController {
         let lbl_OppOne = UILabel()
         lbl_OppOne.textAlignment = .center
         lbl_OppOne.textColor = .black
-        lbl_OppOne.backgroundColor = UIColor(red: 100.0, green: 0.8, blue: 0.8, alpha: 2.0) // Light red background color
+        lbl_OppOne.backgroundColor = lightBlueishGrayColor//UIColor(red: 100.0, green: 0.8, blue: 0.8, alpha: 2.0) // Light red background color
         lbl_OppOne.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(lbl_OppOne)
         view.bringSubviewToFront(lbl_OppOne)
@@ -173,7 +201,7 @@ class SinglesAddGameViewController: UIViewController {
         let lbl_VS = UILabel()
         lbl_VS.textAlignment = .center
         lbl_VS.text = "VS."
-        lbl_VS.textColor = .black
+        lbl_VS.textColor = .white
 
         lbl_VS.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(lbl_VS)
@@ -204,7 +232,7 @@ class SinglesAddGameViewController: UIViewController {
         let lbl_Singles = UILabel()
         lbl_Singles.textAlignment = .center
         lbl_Singles.text = "Singles"
-        lbl_Singles.textColor = .black
+        lbl_Singles.textColor = .white
         lbl_Singles.font = UIFont(name: "Impact", size: adjustedFontSize_lbl_Singles) // Set the font with the adjusted size
         lbl_Singles.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(lbl_Singles)
@@ -225,6 +253,9 @@ class SinglesAddGameViewController: UIViewController {
         seg_WLOutlet.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(seg_WLOutlet)
 
+        // Customize the text color for individual segments
+        seg_WLOutlet.setTitleTextAttributes([.foregroundColor: UIColor.black], for: .selected) // Set "Won" to green
+        seg_WLOutlet.setTitleTextAttributes([.foregroundColor: UIColor.white], for: .normal)    // Set "Lost" to red
         
         // Add a target action to handle segment value changes
             seg_WLOutlet.addTarget(self, action: #selector(seg_WL(_:)), for: .valueChanged)
