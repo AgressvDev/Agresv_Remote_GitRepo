@@ -192,7 +192,7 @@ class SinglesAddGameViewController: UIViewController {
             lbl_OppOne.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: view.bounds.width * marginPercentage),
             lbl_OppOne.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -view.bounds.width * marginPercentage),
             lbl_OppOne.bottomAnchor.constraint(equalTo: button.topAnchor, constant: -270 * scalingFactor), // Place it above the button with spacing
-            lbl_OppOne.heightAnchor.constraint(equalToConstant: 45 * heightScalingFactor) // Adjust the height as needed
+            lbl_OppOne.heightAnchor.constraint(equalToConstant: 40 * heightScalingFactor) // Adjust the height as needed
         ])
         
         
@@ -243,7 +243,7 @@ class SinglesAddGameViewController: UIViewController {
             lbl_Singles.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: view.bounds.width * marginPercentage),
             lbl_Singles.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -view.bounds.width * marginPercentage),
             lbl_Singles.bottomAnchor.constraint(equalTo: button.topAnchor, constant: -600 * scalingFactor), // Place it above the button with spacing
-            lbl_Singles.heightAnchor.constraint(equalToConstant: 40 * heightScalingFactor) // Adjust the height as needed
+            lbl_Singles.heightAnchor.constraint(equalToConstant: 48 * heightScalingFactor) // Adjust the height as needed
         ])
         
         // Create a label

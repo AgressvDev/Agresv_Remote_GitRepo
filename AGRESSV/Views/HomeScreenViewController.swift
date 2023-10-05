@@ -1015,18 +1015,29 @@ class HomeScreenViewController: UIViewController {
             
                 // Check if gaugeactualcount is greater than or equal to 32
                 if gaugeactualcount >= 32 {
-                    // Apply text attributes
-                    let attributedText = NSMutableAttributedString(string: "You're on fire!")
-                    attributedText.addAttribute(.foregroundColor, value: UIColor.white, range: NSRange(location: 0, length: 9)) // "You're on"
-                    attributedText.addAttribute(.foregroundColor, value: UIColor.systemRed, range: NSRange(location: 10, length: 4)) // "fire"
-                    FireMessage.attributedText = attributedText
                     
                     // Calculate the adjusted font size based on the scalingFactor
                     let baseFontSizeActualGaugeCount: CGFloat = 13.0 // Set your base font size
                     let adjustedFontSizeActualGaugeCount = baseFontSizeActualGaugeCount * scalingFactor
-
+                    // Apply text attributes
+                    let fireFont = UIFont.systemFont(ofSize: 16.0, weight: .bold) // Adjust the size as needed
+                    
                     // Set the font size for lbl_Playometer
                     FireMessage.font = UIFont.systemFont(ofSize: adjustedFontSizeActualGaugeCount)
+                    
+                    let attributedText = NSMutableAttributedString(string: "You're on fire !")
+                    
+                    attributedText.addAttribute(.foregroundColor, value: UIColor.white, range: NSRange(location: 0, length: 9)) // "You're on"
+                    attributedText.addAttribute(.foregroundColor, value: UIColor.systemRed, range: NSRange(location: 10, length: 4)) // "fire"
+                    // Increase font size for the "fire" portion
+                    attributedText.addAttribute(.font, value: fireFont, range: NSRange(location: 10, length: 4)) // "fire"
+                    
+                    
+                    FireMessage.attributedText = attributedText
+                    
+                    
+
+                   
                     
                     // Add the label as a subview to your view (e.g., yourViewController.view)
                     // Replace `yourViewController.view` with the appropriate view reference
