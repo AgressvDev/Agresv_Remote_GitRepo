@@ -240,6 +240,57 @@ class HomeScreenViewController: UIViewController {
         //END BACKGROUND
         
        
+        // GAME HISTORY BUTTON
+        
+        // Create a UIButton with a custom type
+                let imageButton = UIButton(type: .custom)
+                
+        // Set the frame (position and size) of the button
+                imageButton.frame = CGRect(x: 50 * scalingFactor, y: 130 * scalingFactor, width: 50 * scalingFactor, height: 50 * scalingFactor) // Adjust the values for your desired position and size
+                
+                // Set the background image for the button
+                let buttonImage = UIImage(named: "GameHistoryIconWhite.png")
+                imageButton.setBackgroundImage(buttonImage, for: .normal)
+                
+                // Add an action to the button (what happens when it's tapped)
+                imageButton.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
+                
+                // Add the button to the view
+                view.addSubview(imageButton)
+        
+        
+        // Create the label
+        let lbl_GameHistory = UILabel()
+        lbl_GameHistory.text = "History"
+        lbl_GameHistory.textColor = .white
+        lbl_GameHistory.translatesAutoresizingMaskIntoConstraints = false // Enable Auto Layout
+        lbl_GameHistory.numberOfLines = 0 // Allow multiple lines
+        // Add the label to the view hierarchy
+        view.addSubview(lbl_GameHistory)
+        
+        // Calculate the adjusted font size based on the scalingFactor
+        let baseFontSize_lbl_GameHistory: CGFloat = 13.0 // Set your base font size
+        let adjustedFontSize_lbl_GameHistory = baseFontSize_lbl_GameHistory * scalingFactor
+
+        // Set the font size for lbl_Playometer
+        lbl_GameHistory.font = UIFont.systemFont(ofSize: adjustedFontSize_lbl_GameHistory)
+        
+        // Define Auto Layout constraints to position and scale the label
+//        NSLayoutConstraint.activate([
+//            lbl_Playometer.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 40), // Left side of the screen
+//            lbl_Playometer.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -280), // A little higher than the bottom
+//            lbl_Playometer.widthAnchor.constraint(equalToConstant: 100 * scalingFactor), // Adjust the reference size as needed
+//            lbl_Playometer.heightAnchor.constraint(equalToConstant: 30 * scalingFactor), // Adjust the reference size as needed
+//        ])
+        
+        // Define Auto Layout constraints to position and allow the label to expand its width based on content
+                NSLayoutConstraint.activate([
+                    lbl_GameHistory.leadingAnchor.constraint(equalTo: imageButton.leadingAnchor, constant: 5 * scalingFactor), // Left side of the screen
+                    lbl_GameHistory.bottomAnchor.constraint(equalTo: imageButton.bottomAnchor, constant: 15 * scalingFactor), // A little higher than the bottom
+                ])
+        
+        //END GAME HISTORY BUTTON
+        
         
         //LABELS and IMAGES
         
@@ -446,11 +497,11 @@ class HomeScreenViewController: UIViewController {
             myImageViewdl.contentMode = .scaleAspectFit
             myImageViewdl.image = dobermanleft
             myImageViewdl.translatesAutoresizingMaskIntoConstraints = false // Enable Auto Layout
-            
+
             // Add the image view to the view hierarchy
             view.addSubview(myImageViewdl)
             view.bringSubviewToFront(myImageViewdl)
-            
+
             myImageViewdl.layer.zPosition = 4
             // Define Auto Layout constraints to position and scale the image
             NSLayoutConstraint.activate([
@@ -459,8 +510,8 @@ class HomeScreenViewController: UIViewController {
                 myImageViewdl.widthAnchor.constraint(equalToConstant: 120 * scalingFactor), // Adjust the reference size as needed
                 myImageViewdl.heightAnchor.constraint(equalToConstant: 120 * scalingFactor), // Adjust the reference size as needed
             ])
-            
-      
+
+
         }
         
         if let dobermanright = UIImage(named: "dobermanpsd.png") {
@@ -498,7 +549,7 @@ class HomeScreenViewController: UIViewController {
             // Define Auto Layout constraints to position and scale the image
             NSLayoutConstraint.activate([
                 blackcircleimamge.centerXAnchor.constraint(equalTo: MainUNLabel.centerXAnchor, constant: 1 * scalingFactor),
-                blackcircleimamge.bottomAnchor.constraint(equalTo: MainUNLabel.bottomAnchor, constant: -90 * scalingFactor),
+                blackcircleimamge.bottomAnchor.constraint(equalTo: MainUNLabel.bottomAnchor, constant: -100 * scalingFactor),
                 blackcircleimamge.widthAnchor.constraint(equalToConstant: 150 * scalingFactor), // Adjust the reference size as needed
                 blackcircleimamge.heightAnchor.constraint(equalToConstant: 150 * scalingFactor), // Adjust the reference size as needed
             ])
@@ -521,9 +572,14 @@ class HomeScreenViewController: UIViewController {
         // Create Auto Layout constraints for the button's position and size
                 NSLayoutConstraint.activate([
                     btn_NewGame.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-                    btn_NewGame.bottomAnchor.constraint(equalTo: MainUNLabel.topAnchor, constant: -65 * scalingFactor),
+                    btn_NewGame.bottomAnchor.constraint(equalTo: MainUNLabel.topAnchor, constant: -75 * scalingFactor)
+               
                 ])
                
+        
+        
+        
+        
         // Create a constraint to position the label horizontally (x percent away from the edges)
                 let marginPercentage: CGFloat = 0.07 // Adjust this value as needed
                 NSLayoutConstraint.activate([
@@ -1007,7 +1063,7 @@ class HomeScreenViewController: UIViewController {
                 
                 // Create a label
                 let FireMessage = UILabel()
-                FireMessage.text = "You're on fire!"
+               
         FireMessage.textColor = .white
         FireMessage.numberOfLines = 0 // Allow multiple lines
         FireMessage.translatesAutoresizingMaskIntoConstraints = false // Enable Auto Layout
@@ -1102,6 +1158,15 @@ class HomeScreenViewController: UIViewController {
         
         // Push to the SecondViewController
         navigationController?.pushViewController(DoublesOrSinglesVC, animated: true)
+        }
+    
+    
+    @objc func buttonTapped() {
+        // Create an instance of opp two VC
+        let GameHistoryVC = storyboard?.instantiateViewController(withIdentifier: "GameHistoryID") as! GameHistoryViewController
+        
+        // Push to the SecondViewController
+        navigationController?.pushViewController(GameHistoryVC, animated: true)
         }
     
     

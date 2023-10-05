@@ -19,6 +19,7 @@ class SinglesAddGameViewController: UIViewController {
     var CurrentUser_PercentDiff_Increment: Double = 0.0
     var OppOne_PercentDiff_Increment: Double = 0.0
     
+    var CurrentUser_Username_NoRank: String = ""
     var currentuser: String = ""
     var OppOneCellValue_NoRank: String = SharedDataNoRank.sharednorank.OppOneSelection_NoRank
     var selectedCellValueOppOneEmail: String = ""
@@ -313,8 +314,10 @@ class SinglesAddGameViewController: UIViewController {
                        let doublesRank = document?["Singles_Rank"] as? Double {
                         let formattedRank = String(format: "%.1f", doublesRank)
                         let userWithFormattedRank = "\(username) - \(formattedRank)"
+                        let norank = "\(username)"
                         self.currentuser = userWithFormattedRank
                         lbl_CurrentUser.text = self.currentuser
+                        self.CurrentUser_Username_NoRank = norank
                         
                     }
                 }
@@ -322,7 +325,7 @@ class SinglesAddGameViewController: UIViewController {
         }
                 
             
-            
+        
         
         
         func GetCurrentUserRank() {
@@ -429,6 +432,7 @@ class SinglesAddGameViewController: UIViewController {
         
     } //end of load
     
+   
     
     func performCalculations() {
            
@@ -492,6 +496,7 @@ class SinglesAddGameViewController: UIViewController {
     @IBAction func btn_Log(_ sender: UIButton) {
         
         performCalculations()
+    
 
         let db = Firestore.firestore()
         let uid = Auth.auth().currentUser!.email
@@ -556,7 +561,7 @@ class SinglesAddGameViewController: UIViewController {
 
 
 
-        Game_ref.setData(["Game_Result" : WL_Selection, "Game_Date" : Today, "Game_Creator": uid!, "Game_Type": "Singles", "Game_Partner": "", "Game_Opponent_One": selectedCellValueOppOneEmail, "Game_Opponent_Two": ""])
+        Game_ref.setData(["Game_Result" : WL_Selection, "Game_Date" : Today, "Game_Creator": uid!, "Game_Type": "Singles", "Game_Partner": "", "Game_Opponent_One": selectedCellValueOppOneEmail, "Game_Opponent_Two": "", "Game_Creator_Username": CurrentUser_Username_NoRank, "Game_Opponent_One_Username": OppOneCellValue_NoRank])
 
         User_ref.updateData([
             "Singles_Games_Played": FieldValue.increment(Int64(1))])

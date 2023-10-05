@@ -45,6 +45,7 @@ class AddGameViewController: UIViewController {
     var selectedCellValueOppTwo: String = SharedData.shared.OppTwoSelection // Opp Two
     
     //Use for queries Usernames without the Rank string
+    var CurrentUser_Username_NoRank: String = ""
     var PartnerCellValue_NoRank: String = SharedDataNoRank.sharednorank.PartnerSelection_NoRank
     var OppOneCellValue_NoRank: String = SharedDataNoRank.sharednorank.OppOneSelection_NoRank
     var OppTwoCellValue_NoRank: String = SharedDataNoRank.sharednorank.OppTwoSelection_NoRank
@@ -439,14 +440,18 @@ class AddGameViewController: UIViewController {
                    let doublesRank = document?["Doubles_Rank"] as? Double {
                     let formattedRank = String(format: "%.1f", doublesRank)
                     let userWithFormattedRank = "\(username) - \(formattedRank)"
+                    let norank = "\(username)"
                     self.currentuser = userWithFormattedRank
                     lbl_CurrentUser.text = self.currentuser
+                    self.CurrentUser_Username_NoRank = norank
+                  
                     
                 }
             }
         }
     }
             
+       
         
         
         
@@ -668,9 +673,10 @@ class AddGameViewController: UIViewController {
         
         
         
+        
        
-        
-        
+      
+  
         print(getcurrentuser())
         print(GetCurrentUserRank())
         
@@ -682,7 +688,7 @@ class AddGameViewController: UIViewController {
         print(GetOppOneRank())
         print(GetOppTwoRank())
         
-        
+  
         
         
         lbl_Partner.text = selectedCellValue
@@ -690,11 +696,14 @@ class AddGameViewController: UIViewController {
         lbl_OppTwo.text = selectedCellValueOppTwo
         
        
-
         
+       
         
         
     } //end of load
+    
+   
+
     
     
     func performCalculations() {
@@ -771,6 +780,7 @@ class AddGameViewController: UIViewController {
     @IBAction func btn_Log(_ sender: UIButton) {
         
         performCalculations()
+       
 
         let db = Firestore.firestore()
         let uid = Auth.auth().currentUser!.email
@@ -871,7 +881,7 @@ class AddGameViewController: UIViewController {
 
 
 
-        Game_ref.setData(["Game_Result" : WL_Selection, "Game_Date" : Today, "Game_Creator": uid!, "Game_Type": "Doubles", "Game_Partner": selectedCellValueEmail, "Game_Opponent_One": selectedCellValueOppOneEmail, "Game_Opponent_Two": selectedCellValueOppTwoEmail])
+        Game_ref.setData(["Game_Result" : WL_Selection, "Game_Date" : Today, "Game_Creator": uid!, "Game_Type": "Doubles", "Game_Partner": selectedCellValueEmail, "Game_Opponent_One": selectedCellValueOppOneEmail, "Game_Opponent_Two": selectedCellValueOppTwoEmail, "Game_Partner_Username": PartnerCellValue_NoRank, "Game_Opponent_One_Username": OppOneCellValue_NoRank, "Game_Opponent_Two_Username": OppTwoCellValue_NoRank, "Game_Creator_Username": CurrentUser_Username_NoRank])
 
         User_ref.updateData([
             "Doubles_Games_Played": FieldValue.increment(Int64(1))])

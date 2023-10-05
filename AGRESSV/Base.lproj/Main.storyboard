@@ -251,6 +251,51 @@
             </objects>
             <point key="canvasLocation" x="5340" y="491"/>
         </scene>
+        <!--Game History View Controller-->
+        <scene sceneID="RZe-p1-xsS">
+            <objects>
+                <viewController storyboardIdentifier="GameHistoryID" id="BS9-lG-8hD" customClass="GameHistoryViewController" customModule="AGRESSV" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="l9W-5f-vyo">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="insetGrouped" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" estimatedSectionHeaderHeight="-1" sectionFooterHeight="18" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="Y8n-P7-6VB">
+                                <rect key="frame" x="16" y="139" width="361" height="713"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <color key="separatorColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="cell" id="I0R-j2-NkE">
+                                        <rect key="frame" x="20" y="55.333332061767578" width="321" height="43.666667938232422"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="I0R-j2-NkE" id="rQ6-Ok-ZuA">
+                                            <rect key="frame" x="0.0" y="0.0" width="321" height="43.666667938232422"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="BS9-lG-8hD" id="2Mb-Gf-omM"/>
+                                    <outlet property="delegate" destination="BS9-lG-8hD" id="pyb-7H-n4U"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="Xxz-XV-X0a"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="Y8n-P7-6VB" firstAttribute="leading" secondItem="Xxz-XV-X0a" secondAttribute="leading" constant="16" id="Bss-Nr-e3o"/>
+                            <constraint firstItem="Xxz-XV-X0a" firstAttribute="trailing" secondItem="Y8n-P7-6VB" secondAttribute="trailing" constant="16" id="KiP-dY-Mkt"/>
+                            <constraint firstItem="Y8n-P7-6VB" firstAttribute="top" secondItem="Xxz-XV-X0a" secondAttribute="top" constant="80" id="Neg-mt-21u"/>
+                            <constraint firstAttribute="bottom" secondItem="Y8n-P7-6VB" secondAttribute="bottom" id="bGp-00-vcg"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="Table_GameHistory" destination="Y8n-P7-6VB" id="OUy-aZ-BrV"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="jLJ-Ve-ljr" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3393" y="-415"/>
+        </scene>
         <!--DoublesORSinglesVC-->
         <scene sceneID="UNf-3L-ltp">
             <objects>
