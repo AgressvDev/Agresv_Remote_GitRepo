@@ -47,6 +47,40 @@ class GameHistoryViewController: UIViewController, UITableViewDelegate, UITableV
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        // Calculate scaling factors based on screen width and height
+        let screenWidth = view.bounds.size.width
+        let screenHeight = view.bounds.size.height
+        let widthScalingFactor = screenWidth / 430.0 // Use a reference width, e.g., iPhone 6/6s/7/8 width
+        let heightScalingFactor = screenHeight / 932.0 // Use a reference height, e.g., iPhone 6/6s/7/8 height
+        let scalingFactor = min(widthScalingFactor, heightScalingFactor)
+        
+        //BACKGROUND
+        // Create UIImageView for the background image
+               let backgroundImage = UIImageView()
+
+               // Set the image to "AppBackgroundOne.png" from your asset catalog
+               backgroundImage.image = UIImage(named: "AppBackgroundOne")
+
+               // Make sure the image doesn't stretch or distort
+               backgroundImage.contentMode = .scaleAspectFill
+
+               // Add the UIImageView as a subview to the view
+               view.addSubview(backgroundImage)
+               view.sendSubviewToBack(backgroundImage)
+
+               // Disable autoresizing mask constraints for the UIImageView
+               backgroundImage.translatesAutoresizingMaskIntoConstraints = false
+
+               // Set constraints to cover the full screen using the scaling factor
+        // Define Auto Layout constraints to position and allow the label to expand its width based on content
+        NSLayoutConstraint.activate([
+            backgroundImage.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0 * scalingFactor), // Left side of the screen
+            backgroundImage.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0 * scalingFactor), // A little higher than the bottom
+            backgroundImage.topAnchor.constraint(equalTo: view.topAnchor, constant: 0 * scalingFactor),
+            backgroundImage.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0 * scalingFactor)
+        ])
+        
+        
         // Call a function to fetch data from Firestore
                 fetchDataFromFirestore()
         
@@ -106,13 +140,16 @@ class GameHistoryViewController: UIViewController, UITableViewDelegate, UITableV
                
                let game = games[indexPath.row] // Get the game data
                
-       
-               // Create a dictionary to define the text attributes (color) for keys and values
+               // Set the background color to a lighter grey
+                  let lighterGreyColor = UIColor(red: 0.9, green: 0.9, blue: 0.9, alpha: 1.0)
+                  cell.backgroundColor = lighterGreyColor
+                  
+                  // Create a dictionary to define the text attributes (color) for keys and values
                   let keyAttributes: [NSAttributedString.Key: Any] = [
-                      .foregroundColor: UIColor.black, // You can change this color
+                      .foregroundColor: UIColor.black, // Key text color (black)
                   ]
                   let valueAttributes: [NSAttributedString.Key: Any] = [
-                      .foregroundColor: UIColor.blue, // You can change this color
+                      .foregroundColor: UIColor.blue, // Value text color (blue)
                   ]
                   
                   // Customize the cell with the game data, including formatting the date
@@ -136,11 +173,22 @@ class GameHistoryViewController: UIViewController, UITableViewDelegate, UITableV
                       attributedText.append(NSAttributedString(string: "Game Opponent Two Username: ", attributes: keyAttributes))
                       attributedText.append(NSAttributedString(string: "\(game.gameOpponentTwoUsername ?? "")\n", attributes: valueAttributes))
                       
+                      let gameResult = game.gameResult ?? ""
+                      var resultAttributes: [NSAttributedString.Key: Any] = [
+                          .foregroundColor: UIColor.black, // Default text color for Game_Result
+                      ]
+                      if gameResult == "W" {
+                          resultAttributes[.foregroundColor] = UIColor(red: 0.0, green: 0.5, blue: 0.0, alpha: 1.0) 
+                      } else if gameResult == "L" {
+                          resultAttributes[.foregroundColor] = UIColor.red
+                      }
+                      
                       attributedText.append(NSAttributedString(string: "Game Result: ", attributes: keyAttributes))
-                      attributedText.append(NSAttributedString(string: "\(game.gameResult ?? "")\n", attributes: valueAttributes))
+                      attributedText.append(NSAttributedString(string: "\(gameResult)\n", attributes: resultAttributes))
                       
                       cell.textLabel?.attributedText = attributedText
                   }
+
                        
                        return cell
            }
