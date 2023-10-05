@@ -192,7 +192,7 @@ class SinglesAddGameViewController: UIViewController {
             lbl_OppOne.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: view.bounds.width * marginPercentage),
             lbl_OppOne.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -view.bounds.width * marginPercentage),
             lbl_OppOne.bottomAnchor.constraint(equalTo: button.topAnchor, constant: -270 * scalingFactor), // Place it above the button with spacing
-            lbl_OppOne.heightAnchor.constraint(equalToConstant: 40 * heightScalingFactor) // Adjust the height as needed
+            lbl_OppOne.heightAnchor.constraint(equalToConstant: 45 * heightScalingFactor) // Adjust the height as needed
         ])
         
         
@@ -244,6 +244,31 @@ class SinglesAddGameViewController: UIViewController {
             lbl_Singles.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -view.bounds.width * marginPercentage),
             lbl_Singles.bottomAnchor.constraint(equalTo: button.topAnchor, constant: -600 * scalingFactor), // Place it above the button with spacing
             lbl_Singles.heightAnchor.constraint(equalToConstant: 40 * heightScalingFactor) // Adjust the height as needed
+        ])
+        
+        // Create a label
+        let gameresult_prompt = UILabel()
+        gameresult_prompt.textAlignment = .center
+        gameresult_prompt.textColor = .white
+        gameresult_prompt.text = "Did you win or lose?"
+        gameresult_prompt.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(gameresult_prompt)
+        view.bringSubviewToFront(gameresult_prompt)
+        
+        
+        // Calculate the adjusted font size based on the scalingFactor
+        let baseFontSize_lbl_gameresult_prompt: CGFloat = 16.0 // Set your base font size
+        let adjustedFontSize_lbl_gameresult_prompt = baseFontSize_lbl_gameresult_prompt * scalingFactor
+
+        // Set the font size for lbl_Playometer
+        gameresult_prompt.font = UIFont.systemFont(ofSize: adjustedFontSize_lbl_gameresult_prompt)
+
+        // Define constraints for the segmented control
+        NSLayoutConstraint.activate([
+            gameresult_prompt.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: view.bounds.width * 0.1), // Adjust the leading spacing
+            gameresult_prompt.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -view.bounds.width * 0.1), // Adjust the trailing spacing
+            gameresult_prompt.bottomAnchor.constraint(equalTo: button.topAnchor, constant: -120 * scalingFactor), // Place it above the button with spacing
+            gameresult_prompt.heightAnchor.constraint(equalToConstant: 40 * heightScalingFactor) // Adjust the height as needed
         ])
         
         // Create a segmented control
