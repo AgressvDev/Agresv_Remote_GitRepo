@@ -165,7 +165,7 @@ class GameHistoryViewController: UIViewController, UITableViewDelegate, UITableV
                                            }
                                            // Update Game_Result conditionally for games where Game_Creator is not the current user
                                                        for index in 0..<self.games.count {
-                                                           if self.games[index].gameCreatorUsername != self.currentUserUsername {
+                                                           if self.games[index].gameCreatorUsername == self.currentUserUsername {
                                                                if self.games[index].gameResult == "W" {
                                                                    self.games[index].gameResult = "L"
                                                                } else if self.games[index].gameResult == "L" {
