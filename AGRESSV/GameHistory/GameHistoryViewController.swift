@@ -19,6 +19,8 @@ class GameHistoryViewController: UIViewController, UITableViewDelegate, UITableV
         var gameOpponentTwoUsername: String?
         var gameResult: String?
         var Game_Result_Opposite_For_UserView: String?
+        var gameID: String
+        var gameType: String?
     }
 
     var currentUserUsername: String = ""
@@ -62,11 +64,9 @@ class GameHistoryViewController: UIViewController, UITableViewDelegate, UITableV
                     
                     //                    let CurrentUser = document!.data()!["Username"]
                     //                    let Current_User_As_String = String(describing: CurrentUser!)
-                    if let username = document?["Username"] as? String,
-                       let doublesRank = document?["Doubles_Rank"] as? Double {
-                        let formattedRank = String(format: "%.1f", doublesRank)
-                        let userWithFormattedRank = "\(username) - \(formattedRank)"
-                        let norank = "\(username)"
+                     let username = document?["Username"] as? String
+                       
+                    let norank = "\(String(describing: username))"
                         
                         DispatchQueue.main.async {
                            
@@ -74,7 +74,7 @@ class GameHistoryViewController: UIViewController, UITableViewDelegate, UITableV
                             
                         }
                        
-                    }
+                    
                 }
             }
         }
@@ -156,7 +156,10 @@ class GameHistoryViewController: UIViewController, UITableViewDelegate, UITableV
                                                    gameOpponentOneUsername: document["Game_Opponent_One_Username"] as? String,
                                                    gameOpponentTwoUsername: document["Game_Opponent_Two_Username"] as? String,
                                                    gameResult: document["Game_Result"] as? String,
-                                                   Game_Result_Opposite_For_UserView: document["Game_Result_Opposite_For_UserView"] as? String
+                                                   Game_Result_Opposite_For_UserView: document["Game_Result_Opposite_For_UserView"] as? String,
+                                                   gameID: document.documentID,
+                                                   gameType: document["Game_Type"] as? String
+                                                   
                                                )
                                                return gameData
                                            }
@@ -214,6 +217,9 @@ class GameHistoryViewController: UIViewController, UITableViewDelegate, UITableV
                       // Always append the game creator's username, even if it's nil or empty
                       attributedText.append(NSAttributedString(string: "\(game.gameCreatorUsername ?? "N/A")\n", attributes: valueAttributes))
                       
+                      attributedText.append(NSAttributedString(string: "Game Type: ", attributes: keyAttributes))
+                      attributedText.append(NSAttributedString(string: "\(game.gameType ?? "")\n", attributes: valueAttributes))
+                      
                       attributedText.append(NSAttributedString(string: "Date: ", attributes: keyAttributes))
                       attributedText.append(NSAttributedString(string: "\(dateFormatter.string(from: gameDate))\n", attributes: valueAttributes))
                       
@@ -253,10 +259,12 @@ class GameHistoryViewController: UIViewController, UITableViewDelegate, UITableV
         
         // Get the Game_Creator email from the selected cell
         let gameCreatorEmail = game.gameCreatorUsername
-        
+        let gameid = game.gameID
+        let gametype = game.gameType
         // Store the Game_Creator email in the shared variable
         SharedDataBlock.sharedblock.Game_Creator_forBlock = gameCreatorEmail
-        
+        SharedDataBlock.sharedblock.GameID = gameid
+        SharedDataBlock.sharedblock.GameType = gametype
         // Create an instance of the destination view controller
         if let blockScreen = storyboard?.instantiateViewController(withIdentifier: "BlockScreenID") as? BlockScreenViewController {
             // Push to the destination view controller

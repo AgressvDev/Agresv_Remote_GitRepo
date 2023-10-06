@@ -6,9 +6,12 @@
 //
 
 import Foundation
+import Firebase
 
 class SharedDataBlock {
     static let sharedblock = SharedDataBlock()
     var Game_Creator_forBlock: String!
+    var GameID: String!
+    var GameType: String!
 
 }

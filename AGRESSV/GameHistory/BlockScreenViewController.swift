@@ -16,6 +16,8 @@ class BlockScreenViewController: UIViewController {
     var BlockedUser: String = SharedDataBlock.sharedblock.Game_Creator_forBlock
     var BlockedUserEmail: String = ""
     
+    var GameID: String = SharedDataBlock.sharedblock.GameID
+    var GameType: String = SharedDataBlock.sharedblock.GameType
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,17 +35,19 @@ class BlockScreenViewController: UIViewController {
                     
                     //                    let CurrentUser = document!.data()!["Username"]
                     //                    let Current_User_As_String = String(describing: CurrentUser!)
-                    if let username = document?["Username"] as? String,
-                       let doublesRank = document?["Doubles_Rank"] as? Double {
-                        let norank = "\(username)"
+                     let username = document!["Username"] as? String
+                      
+                   
                         
                         DispatchQueue.main.async {
                            
-                            self.currentUserUsername = norank
+                            self.currentUserUsername = username!
+                            
+                            GetCurrentUserEmail()
                             
                         }
                        
-                    }
+                    
                 }
             }
         }
@@ -91,21 +95,23 @@ class BlockScreenViewController: UIViewController {
                 } else {
                     for document in querySnapshot!.documents {
                         // Access the value of field2 from the document
-                        let CurrentUserEmail = document.data()["Email"] as? String
-                        DispatchQueue.main.async {
-                            self.currentUserEmail = CurrentUserEmail!
-                        }
+                        let CurrentEmail = document.data()["Email"] as? String
+                        if let CurrentEmail = CurrentEmail {
+                            DispatchQueue.main.async {
+                                self.currentUserEmail = CurrentEmail
+                            }
                            
-
-
+                        } else {
+                            return
                         }
-
-
-
-
+                        
+                        
+                        
+                        
                     }
                 }
             }
+        }
         print(GetCurrentUserEmail())
         
         // Create a UIColor with the desired light blueish gray color
@@ -180,7 +186,7 @@ class BlockScreenViewController: UIViewController {
         
         // Prompt
         let lbl_prompt = UILabel()
-        lbl_prompt.text = "\(BlockedUser) created this game. If you dispute this game you can block the user and they will no longer be able to create games with your username. Additionally, .1 will be returned to your rank. Do you wish to block this user?"
+        lbl_prompt.text = "\(BlockedUser) created this game. If you dispute this game you can block the user and they will no longer be able to create games with your username. Additionally, the game will be deleted and .1 will be returned to your rank. Do you wish to block this user?"
         
         
         lbl_prompt.textAlignment = .center
@@ -259,7 +265,7 @@ class BlockScreenViewController: UIViewController {
 
         // Calculate the y position to place the button slightly higher
     
-        let yPosition = screenHeight - buttonHeight - 145 // Adjust 20 to your desired height
+        let yPosition = screenHeight - buttonHeight - 160 // Adjust 20 to your desired height
 
         // Set the frame of the button with the calculated values
         BlockButton.frame = CGRect(x: xPosition, y: yPosition, width: buttonWidth, height: buttonHeight)
@@ -276,12 +282,53 @@ class BlockScreenViewController: UIViewController {
         
     } //end of load
     
-    @objc func buttonTapped() {
+    
+        
+ 
+       
+        
+       
+    
+    @IBAction func buttonTapped(_ sender: UIButton) {
+        
+        
+      
+        
+        
         // Do the update to the Block table
+        let uid = Auth.auth().currentUser!.email
         let db = Firestore.firestore()
         let BlockRef = db.collection("Agressv_Blocked").document()
         
         BlockRef.setData(["Plaintiff_Email" : currentUserEmail, "Blocked_Email": BlockedUserEmail, "Plaintiff_Username": currentUserUsername, "Blocked_Username": BlockedUser])
+        
+        
+      //DELETE SELECTED GAME
+        let GameRef = Firestore.firestore().collection("Agressv_Games")
+        let documentIDToDelete = GameID
+        // Delete the document with the specified ID
+        GameRef.document(documentIDToDelete).delete { error in
+            if let error = error {
+                print("Error deleting document: \(error)")
+            } else {
+                print("Document successfully deleted")
+            }
+        }
+        
+        //INCREMENT BACK USER'S .1 FOR THE LOSS
+     
+        let User_ref = db.collection("Agressv_Users").document(uid!)
+     
+            if self.GameType == "Singles"{
+                User_ref.updateData([
+                    "Singles_Rank": FieldValue.increment(0.1)])
+            } else if self.GameType == "Doubles"
+            {
+                User_ref.updateData([
+                    "Doubles_Rank": FieldValue.increment(0.1)])
+            }
+        
+    
         
         //let user know it's done
         
