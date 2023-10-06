@@ -14,11 +14,13 @@ class BlockScreenViewController: UIViewController {
     var currentUserUsername: String = ""
     var currentUserEmail: String = ""
     var BlockedUser: String = SharedDataBlock.sharedblock.Game_Creator_forBlock
+    var BlockedUserEmail: String = ""
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        func getcurrentuser() {
+        func getcurrentusername() {
             let db = Firestore.firestore()
             let uid = Auth.auth().currentUser!.email
             let docRef = db.collection("Agressv_Users").document(uid!)
@@ -33,8 +35,6 @@ class BlockScreenViewController: UIViewController {
                     //                    let Current_User_As_String = String(describing: CurrentUser!)
                     if let username = document?["Username"] as? String,
                        let doublesRank = document?["Doubles_Rank"] as? Double {
-                        let formattedRank = String(format: "%.1f", doublesRank)
-                        let userWithFormattedRank = "\(username) - \(formattedRank)"
                         let norank = "\(username)"
                         
                         DispatchQueue.main.async {
@@ -47,8 +47,66 @@ class BlockScreenViewController: UIViewController {
                 }
             }
         }
-        print(getcurrentuser())
+        print(getcurrentusername())
+    
         
+        func GetBlockedUser() {
+            let db = Firestore.firestore()
+            let uid = BlockedUser
+            let query = db.collection("Agressv_Users").whereField("Username", isEqualTo: uid)
+        
+            query.getDocuments { (querySnapshot, error) in
+                if error != nil {
+                    print("error")
+                } else {
+                    for document in querySnapshot!.documents {
+                        // Access the value of field2 from the document
+                        let BlockedUserEmail = document.data()["Email"] as? String
+                        if let BlockedUserEmail = BlockedUserEmail {
+                            DispatchQueue.main.async {
+                                self.BlockedUserEmail = BlockedUserEmail
+                            }
+                           
+                        } else {
+                            return
+                        }
+                        
+                        
+                        
+                        
+                    }
+                }
+            }
+        }
+        print(GetBlockedUser())
+        
+        func GetCurrentUserEmail() {
+            let db = Firestore.firestore()
+            let uid = currentUserUsername
+            let query = db.collection("Agressv_Users").whereField("Username", isEqualTo: uid)
+
+            query.getDocuments { (querySnapshot, error) in
+                if error != nil {
+                    print("error")
+                } else {
+                    for document in querySnapshot!.documents {
+                        // Access the value of field2 from the document
+                        let CurrentUserEmail = document.data()["Email"] as? String
+                        DispatchQueue.main.async {
+                            self.currentUserEmail = CurrentUserEmail!
+                        }
+                           
+
+
+                        }
+
+
+
+
+                    }
+                }
+            }
+        print(GetCurrentUserEmail())
         
         // Create a UIColor with the desired light blueish gray color
         let lightBlueishGrayColor = UIColor(red: 173/255, green: 216/255, blue: 230/255, alpha: 1.0)
@@ -220,9 +278,10 @@ class BlockScreenViewController: UIViewController {
     
     @objc func buttonTapped() {
         // Do the update to the Block table
+        let db = Firestore.firestore()
+        let BlockRef = db.collection("Agressv_Blocked").document()
         
-        
-        
+        BlockRef.setData(["Plaintiff_Email" : currentUserEmail, "Blocked_Email": BlockedUserEmail, "Plaintiff_Username": currentUserUsername, "Blocked_Username": BlockedUser])
         
         //let user know it's done
         

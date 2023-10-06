@@ -40,27 +40,81 @@ class SinglesSearchOppVC: UIViewController {
         //end gradient background view
         
         
+//        func fetchUsernames(completion: @escaping (Error?) -> Void) {
+//            let uid = Auth.auth().currentUser!.email
+//            let db = Firestore.firestore()
+//            let usersCollection = db.collection("Agressv_Users").whereField("Email", isNotEqualTo: uid!)
+//
+//            usersCollection.getDocuments { (querySnapshot, error) in
+//                if let error = error {
+//                    completion(error)
+//                    return
+//                }
+//
+//                for document in querySnapshot!.documents {
+//                    if let username = document["Username"] as? String,
+//                                   let doublesRank = document["Singles_Rank"] as? Double {
+//                                    let formattedRank = String(format: "%.1f", doublesRank)
+//                                    let userWithFormattedRank = "\(username) - \(formattedRank)"
+//                                    self.dataSourceArraySinglesOpp.append(userWithFormattedRank)
+//                    }
+//                }
+//
+//                completion(nil)
+//            }
+//        }
+        
         func fetchUsernames(completion: @escaping (Error?) -> Void) {
-            let uid = Auth.auth().currentUser!.email
-            let db = Firestore.firestore()
-            let usersCollection = db.collection("Agressv_Users").whereField("Email", isNotEqualTo: uid!)
+            // Get the current user's email
+            guard let currentUserEmail = Auth.auth().currentUser?.email else {
+                let error = NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "Current user email is nil"])
+                completion(error)
+                return
+            }
 
-            usersCollection.getDocuments { (querySnapshot, error) in
+            let db = Firestore.firestore()
+            let blockedCollection = db.collection("Agressv_Blocked").whereField("Blocked_Email", isEqualTo: currentUserEmail)
+
+            // Create an array to store Plaintiff_Usernames
+            var plaintiffUsernames: [String] = []
+
+            blockedCollection.getDocuments { (querySnapshot, error) in
                 if let error = error {
                     completion(error)
                     return
                 }
 
+                // Retrieve Plaintiff_Username values and populate the plaintiffUsernames array
                 for document in querySnapshot!.documents {
-                    if let username = document["Username"] as? String,
-                                   let doublesRank = document["Singles_Rank"] as? Double {
-                                    let formattedRank = String(format: "%.1f", doublesRank)
-                                    let userWithFormattedRank = "\(username) - \(formattedRank)"
-                                    self.dataSourceArraySinglesOpp.append(userWithFormattedRank)
+                    if let plaintiffUsername = document["Plaintiff_Username"] as? String {
+                        plaintiffUsernames.append(plaintiffUsername)
                     }
                 }
 
-                completion(nil)
+                // Fetch data from "Agressv_Users" collection and remove Plaintiff_Usernames from dataSourceArrayPartner
+                let usersCollection = db.collection("Agressv_Users").whereField("Email", isNotEqualTo: currentUserEmail)
+
+                usersCollection.getDocuments { (querySnapshot, error) in
+                    if let error = error {
+                        completion(error)
+                        return
+                    }
+
+                    for document in querySnapshot!.documents {
+                        if let username = document["Username"] as? String,
+                           let doublesRank = document["Doubles_Rank"] as? Double {
+                            let formattedRank = String(format: "%.1f", doublesRank)
+                            let userWithFormattedRank = "\(username) - \(formattedRank)"
+
+                            // Check if the username is not in plaintiffUsernames and add it to dataSourceArrayPartner
+                            if !plaintiffUsernames.contains(username) {
+                                self.dataSourceArraySinglesOpp.append(userWithFormattedRank)
+                            }
+                        }
+                    }
+
+                    completion(nil)
+                }
             }
         }
         
