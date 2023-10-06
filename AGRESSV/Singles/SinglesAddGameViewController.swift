@@ -559,12 +559,16 @@ class SinglesAddGameViewController: UIViewController {
         }
 
 
-
+        User_ref.updateData([
+            "Singles_Games_Played": FieldValue.increment(Int64(1))])
+        
+        OppOne_ref.updateData([
+            "Singles_Games_Played": FieldValue.increment(Int64(1))])
+        
 
         Game_ref.setData(["Game_Result" : WL_Selection, "Game_Date" : Today, "Game_Creator": uid!, "Game_Type": "Singles", "Game_Partner": "", "Game_Opponent_One": selectedCellValueOppOneEmail, "Game_Opponent_Two": "", "Game_Creator_Username": CurrentUser_Username_NoRank, "Game_Opponent_One_Username": OppOneCellValue_NoRank, "Game_Result_Opposite_For_UserView": Selection_Opposite])
 
-        User_ref.updateData([
-            "Singles_Games_Played": FieldValue.increment(Int64(1))])
+        
 
         //Partner_ref
         //          Partner_ref.updateData([

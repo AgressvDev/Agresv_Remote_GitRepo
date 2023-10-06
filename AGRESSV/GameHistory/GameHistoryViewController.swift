@@ -12,15 +12,15 @@ import FirebaseAuth
 class GameHistoryViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
     struct GameData {
-        var gameCreatorUsername: String?
-        var gameDate: Timestamp?
-        var gamePartnerUsername: String?
-        var gameOpponentOneUsername: String?
-        var gameOpponentTwoUsername: String?
-        var gameResult: String?
-        var Game_Result_Opposite_For_UserView: String?
+        var gameCreatorUsername: String = ""
+        var gameDate: Timestamp!
+        var gamePartnerUsername: String = ""
+        var gameOpponentOneUsername: String = ""
+        var gameOpponentTwoUsername: String = ""
+        var gameResult: String = ""
+        var Game_Result_Opposite_For_UserView: String = ""
         var gameID: String
-        var gameType: String?
+        var gameType: String = ""
     }
 
     var currentUserUsername: String = ""
@@ -66,12 +66,12 @@ class GameHistoryViewController: UIViewController, UITableViewDelegate, UITableV
                     //                    let Current_User_As_String = String(describing: CurrentUser!)
                      let username = document?["Username"] as? String
                        
-                    let norank = "\(String(describing: username))"
+                    //let norank = "\(String(describing: username))"
                         
                         DispatchQueue.main.async {
                            
-                            self.currentUserUsername = norank
-                            
+                            self.currentUserUsername = username!
+                            self.fetchDataFromFirestore()
                         }
                        
                     
@@ -116,7 +116,7 @@ class GameHistoryViewController: UIViewController, UITableViewDelegate, UITableV
         
         
         // Call a function to fetch data from Firestore
-                fetchDataFromFirestore()
+                
         
         
     } //end of load
@@ -150,27 +150,40 @@ class GameHistoryViewController: UIViewController, UITableViewDelegate, UITableV
                                            self.originalDocuments = documents
                                            self.games = documents.compactMap { document in
                                                let gameData = GameData(
-                                                   gameCreatorUsername: document["Game_Creator_Username"] as? String,
+                                                   gameCreatorUsername: document["Game_Creator_Username"] as? String ?? "",
                                                    gameDate: document["Game_Date"] as? Timestamp,
-                                                   gamePartnerUsername: document["Game_Partner_Username"] as? String,
-                                                   gameOpponentOneUsername: document["Game_Opponent_One_Username"] as? String,
-                                                   gameOpponentTwoUsername: document["Game_Opponent_Two_Username"] as? String,
-                                                   gameResult: document["Game_Result"] as? String,
-                                                   Game_Result_Opposite_For_UserView: document["Game_Result_Opposite_For_UserView"] as? String,
+                                                   gamePartnerUsername: document["Game_Partner_Username"] as? String ?? "",
+                                                   gameOpponentOneUsername: document["Game_Opponent_One_Username"] as? String ?? "",
+                                                   gameOpponentTwoUsername: document["Game_Opponent_Two_Username"] as? String ?? "",
+                                                   gameResult: document["Game_Result"] as? String ?? "",
+                                                   Game_Result_Opposite_For_UserView: document["Game_Result_Opposite_For_UserView"] as? String ?? "",
                                                    gameID: document.documentID,
-                                                   gameType: document["Game_Type"] as? String
+                                                   gameType: document["Game_Type"] as? String ?? ""
                                                    
                                                )
+                                              print(gameData)
                                                return gameData
+                                               
                                            }
-                                           // Update Game_Result conditionally for games where Game_Creator is not the current user
-                                                       for index in 0..<self.games.count {
-                                                           if self.games[index].gameCreatorUsername == self.currentUserUsername {
-                                                               if self.games[index].gameResult == "W" {
+                                           for index in 0..<self.games.count {
+                                               let creatorUsername = self.games[index].gameCreatorUsername
+                                               let partnerUsername = self.games[index].gamePartnerUsername
+                                               
+                                               print("Comparing game \(index):")
+                                               print("Current User: \(self.currentUserUsername)")
+                                               print("Creator Username: \(creatorUsername)")
+                                               print("Partner Username: \(partnerUsername)")
+                                               
+                                               if creatorUsername != self.currentUserUsername && partnerUsername != self.currentUserUsername {
+                                                           
+                                                               if self.games[index].gameResult == "W"
+                                                                    {
                                                                    self.games[index].gameResult = "L"
-                                                               } else if self.games[index].gameResult == "L" {
+                                                                    }
+                                                               else if self.games[index].gameResult == "L"
+                                                                    {
                                                                    self.games[index].gameResult = "W"
-                                                               }
+                                                                    }
                                                            }
                                                        }
 
@@ -215,22 +228,22 @@ class GameHistoryViewController: UIViewController, UITableViewDelegate, UITableV
                       attributedText.append(NSAttributedString(string: "Logged By: ", attributes: keyAttributes))
                       
                       // Always append the game creator's username, even if it's nil or empty
-                      attributedText.append(NSAttributedString(string: "\(game.gameCreatorUsername ?? "N/A")\n", attributes: valueAttributes))
+                      attributedText.append(NSAttributedString(string: "\(game.gameCreatorUsername )\n", attributes: valueAttributes))
                       
                       attributedText.append(NSAttributedString(string: "Game Type: ", attributes: keyAttributes))
-                      attributedText.append(NSAttributedString(string: "\(game.gameType ?? "")\n", attributes: valueAttributes))
+                      attributedText.append(NSAttributedString(string: "\(game.gameType )\n", attributes: valueAttributes))
                       
                       attributedText.append(NSAttributedString(string: "Date: ", attributes: keyAttributes))
                       attributedText.append(NSAttributedString(string: "\(dateFormatter.string(from: gameDate))\n", attributes: valueAttributes))
                       
                       attributedText.append(NSAttributedString(string: "Partner Username: ", attributes: keyAttributes))
-                      attributedText.append(NSAttributedString(string: "\(game.gamePartnerUsername ?? "")\n", attributes: valueAttributes))
+                      attributedText.append(NSAttributedString(string: "\(game.gamePartnerUsername )\n", attributes: valueAttributes))
                       
                       attributedText.append(NSAttributedString(string: "Opponent One Username: ", attributes: keyAttributes))
-                      attributedText.append(NSAttributedString(string: "\(game.gameOpponentOneUsername ?? "")\n", attributes: valueAttributes))
+                      attributedText.append(NSAttributedString(string: "\(game.gameOpponentOneUsername )\n", attributes: valueAttributes))
                       
                       attributedText.append(NSAttributedString(string: "Opponent Two Username: ", attributes: keyAttributes))
-                      attributedText.append(NSAttributedString(string: "\(game.gameOpponentTwoUsername ?? "")\n", attributes: valueAttributes))
+                      attributedText.append(NSAttributedString(string: "\(game.gameOpponentTwoUsername )\n", attributes: valueAttributes))
                       
                       // Use the swapped result for the current user's game result
                       var resultAttributes: [NSAttributedString.Key: Any] = [
@@ -245,7 +258,7 @@ class GameHistoryViewController: UIViewController, UITableViewDelegate, UITableV
                       attributedText.append(NSAttributedString(string: "Your Game Result: ", attributes: keyAttributes))
                       
                       // Always append the game result, even if it's nil or empty
-                      attributedText.append(NSAttributedString(string: "\(game.gameResult ?? "N/A")\n", attributes: resultAttributes))
+                      attributedText.append(NSAttributedString(string: "\(game.gameResult )\n", attributes: resultAttributes))
                       
                       cell.textLabel?.attributedText = attributedText
                   }

@@ -16,7 +16,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="AgressvLogoSmallWhite" translatesAutoresizingMaskIntoConstraints="NO" id="af5-gV-YLO">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="AgressvLogoBlueWhite" translatesAutoresizingMaskIntoConstraints="NO" id="af5-gV-YLO">
                                 <rect key="frame" x="30" y="192" width="333" height="141"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="141" id="OYi-02-iMe"/>
@@ -748,7 +748,7 @@
         <segue reference="ceE-gP-x9o"/>
     </inferredMetricsTieBreakers>
     <resources>
-        <image name="AgressvLogoSmallWhite" width="452" height="178"/>
+        <image name="AgressvLogoBlueWhite" width="659" height="252"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

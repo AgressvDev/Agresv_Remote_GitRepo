@@ -741,7 +741,16 @@ class AddGameViewController: UIViewController {
                    Partner_PercentDiff_Increment = 0.1
                }
            }
+        else if Opponents_Combined_Rank == CurrentUserAndPartner_Combined_Rank
+        {
+            CurrentUser_PercentDiff_Increment = 0.1
+            Partner_PercentDiff_Increment = 0.1
+            OppOne_PercentDiff_Increment = 0.1
+            OppTwo_PercentDiff_Increment = 0.1
+        }
+        
        }
+           
 
     
     var WL_Selection = "W"
@@ -802,6 +811,7 @@ class AddGameViewController: UIViewController {
 
             User_ref.updateData([
                 "Doubles_Rank": FieldValue.increment(CurrentUser_PercentDiff_Increment)])
+            
 
             Partner_ref.updateData([
                 "Doubles_Games_Wins": FieldValue.increment(Int64(1))])
@@ -880,13 +890,22 @@ class AddGameViewController: UIViewController {
             }
         }
 
-
+        User_ref.updateData([
+            "Doubles_Games_Played": FieldValue.increment(Int64(1))])
+        
+        Partner_ref.updateData([
+            "Doubles_Games_Played": FieldValue.increment(Int64(1))])
+        
+        OppOne_ref.updateData([
+            "Doubles_Games_Played": FieldValue.increment(Int64(1))])
+        
+        OppTwo_ref.updateData([
+            "Doubles_Games_Played": FieldValue.increment(Int64(1))])
 
 
         Game_ref.setData(["Game_Result" : WL_Selection, "Game_Date" : Today, "Game_Creator": uid!, "Game_Type": "Doubles", "Game_Partner": selectedCellValueEmail, "Game_Opponent_One": selectedCellValueOppOneEmail, "Game_Opponent_Two": selectedCellValueOppTwoEmail, "Game_Partner_Username": PartnerCellValue_NoRank, "Game_Opponent_One_Username": OppOneCellValue_NoRank, "Game_Opponent_Two_Username": OppTwoCellValue_NoRank, "Game_Creator_Username": CurrentUser_Username_NoRank, "Game_Result_Opposite_For_UserView": Selection_Opposite])
 
-        User_ref.updateData([
-            "Doubles_Games_Played": FieldValue.increment(Int64(1))])
+        
 
         //Partner_ref
         //          Partner_ref.updateData([
