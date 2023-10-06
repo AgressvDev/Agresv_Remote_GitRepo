@@ -6,15 +6,50 @@
 //
 
 import UIKit
+import Firebase
+import FirebaseFirestore
 
 class BlockScreenViewController: UIViewController {
 
-    
+    var currentUserUsername: String = ""
+    var currentUserEmail: String = ""
     var BlockedUser: String = SharedDataBlock.sharedblock.Game_Creator_forBlock
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        func getcurrentuser() {
+            let db = Firestore.firestore()
+            let uid = Auth.auth().currentUser!.email
+            let docRef = db.collection("Agressv_Users").document(uid!)
+            
+            docRef.getDocument { (document, error) in
+                if let err = error {
+                    print("Error getting documents: \(err)")
+                } else {
+                    print("\(document!.documentID) => \(String(describing: document!.data()))")
+                    
+                    //                    let CurrentUser = document!.data()!["Username"]
+                    //                    let Current_User_As_String = String(describing: CurrentUser!)
+                    if let username = document?["Username"] as? String,
+                       let doublesRank = document?["Doubles_Rank"] as? Double {
+                        let formattedRank = String(format: "%.1f", doublesRank)
+                        let userWithFormattedRank = "\(username) - \(formattedRank)"
+                        let norank = "\(username)"
+                        
+                        DispatchQueue.main.async {
+                           
+                            self.currentUserUsername = norank
+                            
+                        }
+                       
+                    }
+                }
+            }
+        }
+        print(getcurrentuser())
+        
+        
         // Create a UIColor with the desired light blueish gray color
         let lightBlueishGrayColor = UIColor(red: 173/255, green: 216/255, blue: 230/255, alpha: 1.0)
         
@@ -186,6 +221,10 @@ class BlockScreenViewController: UIViewController {
     @objc func buttonTapped() {
         // Do the update to the Block table
         
+        
+        
+        
+        //let user know it's done
         
         let dialogMessage = UIAlertController(title: "Success!", message: "This user can no longer create games with your username.", preferredStyle: .alert)
 
