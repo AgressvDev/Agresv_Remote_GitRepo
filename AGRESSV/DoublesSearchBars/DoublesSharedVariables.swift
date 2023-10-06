@@ -20,3 +20,4 @@ class SharedDataNoRank {
     var OppOneSelection_NoRank: String!
     var OppTwoSelection_NoRank: String!
 }
+

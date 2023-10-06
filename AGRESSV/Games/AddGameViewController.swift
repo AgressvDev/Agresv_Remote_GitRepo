@@ -745,6 +745,7 @@ class AddGameViewController: UIViewController {
 
     
     var WL_Selection = "W"
+    var Selection_Opposite = ""
     
     var Today = Date()
  
@@ -759,6 +760,7 @@ class AddGameViewController: UIViewController {
 
             self.WL_Selection = "W"
             
+            
           
             }
             else if sender.selectedSegmentIndex == 1
@@ -766,7 +768,7 @@ class AddGameViewController: UIViewController {
             {
             
             self.WL_Selection = "L"
-          
+                
                         
             }
         }
@@ -793,7 +795,7 @@ class AddGameViewController: UIViewController {
 
 
         if WL_Selection == "W" {
-
+            self.Selection_Opposite = "L"
             //increment winning side
             User_ref.updateData([
                 "Doubles_Games_Wins": FieldValue.increment(Int64(1))])
@@ -838,7 +840,7 @@ class AddGameViewController: UIViewController {
 
         else if WL_Selection == "L"{
 
-
+            self.Selection_Opposite = "W"
             //increment winning side
             OppOne_ref.updateData([
                 "Doubles_Games_Wins": FieldValue.increment(Int64(1))])
@@ -881,7 +883,7 @@ class AddGameViewController: UIViewController {
 
 
 
-        Game_ref.setData(["Game_Result" : WL_Selection, "Game_Date" : Today, "Game_Creator": uid!, "Game_Type": "Doubles", "Game_Partner": selectedCellValueEmail, "Game_Opponent_One": selectedCellValueOppOneEmail, "Game_Opponent_Two": selectedCellValueOppTwoEmail, "Game_Partner_Username": PartnerCellValue_NoRank, "Game_Opponent_One_Username": OppOneCellValue_NoRank, "Game_Opponent_Two_Username": OppTwoCellValue_NoRank, "Game_Creator_Username": CurrentUser_Username_NoRank])
+        Game_ref.setData(["Game_Result" : WL_Selection, "Game_Date" : Today, "Game_Creator": uid!, "Game_Type": "Doubles", "Game_Partner": selectedCellValueEmail, "Game_Opponent_One": selectedCellValueOppOneEmail, "Game_Opponent_Two": selectedCellValueOppTwoEmail, "Game_Partner_Username": PartnerCellValue_NoRank, "Game_Opponent_One_Username": OppOneCellValue_NoRank, "Game_Opponent_Two_Username": OppTwoCellValue_NoRank, "Game_Creator_Username": CurrentUser_Username_NoRank, "Game_Result_Opposite_For_UserView": Selection_Opposite])
 
         User_ref.updateData([
             "Doubles_Games_Played": FieldValue.increment(Int64(1))])

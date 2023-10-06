@@ -160,7 +160,7 @@
             <objects>
                 <viewController storyboardIdentifier="HomeScreenID" title="HomeScreen" id="qMP-bG-fLV" customClass="HomeScreenViewController" customModule="AGRESSV" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="uBD-oD-nkk">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <viewLayoutGuide key="safeArea" id="SdD-XJ-Noq"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -250,6 +250,24 @@
                 </searchBar>
             </objects>
             <point key="canvasLocation" x="5340" y="491"/>
+        </scene>
+        <!--Block Screen View Controller-->
+        <scene sceneID="8Df-b7-wpn">
+            <objects>
+                <viewController storyboardIdentifier="BlockScreenID" id="1EH-a1-WKi" customClass="BlockScreenViewController" customModule="AGRESSV" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="kkL-9A-BNs">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="Kgl-Wx-aeT"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                    <connections>
+                        <segue destination="qMP-bG-fLV" kind="show" identifier="BlockToHome" id="ceE-gP-x9o"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Mmt-WQ-L2z" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2608" y="1006"/>
         </scene>
         <!--Game History View Controller-->
         <scene sceneID="RZe-p1-xsS">
@@ -727,7 +745,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="8WD-Qb-5E7"/>
+        <segue reference="ceE-gP-x9o"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="AgressvLogoSmallWhite" width="452" height="178"/>

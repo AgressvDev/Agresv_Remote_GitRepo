@@ -467,7 +467,7 @@ class SinglesAddGameViewController: UIViewController {
     
     
     var WL_Selection = "W"
-    
+    var Selection_Opposite = ""
     var Today = Date()
     
     
@@ -509,7 +509,7 @@ class SinglesAddGameViewController: UIViewController {
 
 
         if WL_Selection == "W" {
-
+            self.Selection_Opposite = "L"
             //increment winning side
             User_ref.updateData([
                 "Singles_Games_Wins": FieldValue.increment(Int64(1))])
@@ -535,7 +535,7 @@ class SinglesAddGameViewController: UIViewController {
 
         else if WL_Selection == "L"{
 
-
+            self.Selection_Opposite = "W"
             //increment winning side
             OppOne_ref.updateData([
                 "Singles_Games_Wins": FieldValue.increment(Int64(1))])
@@ -561,7 +561,7 @@ class SinglesAddGameViewController: UIViewController {
 
 
 
-        Game_ref.setData(["Game_Result" : WL_Selection, "Game_Date" : Today, "Game_Creator": uid!, "Game_Type": "Singles", "Game_Partner": "", "Game_Opponent_One": selectedCellValueOppOneEmail, "Game_Opponent_Two": "", "Game_Creator_Username": CurrentUser_Username_NoRank, "Game_Opponent_One_Username": OppOneCellValue_NoRank])
+        Game_ref.setData(["Game_Result" : WL_Selection, "Game_Date" : Today, "Game_Creator": uid!, "Game_Type": "Singles", "Game_Partner": "", "Game_Opponent_One": selectedCellValueOppOneEmail, "Game_Opponent_Two": "", "Game_Creator_Username": CurrentUser_Username_NoRank, "Game_Opponent_One_Username": OppOneCellValue_NoRank, "Game_Result_Opposite_For_UserView": Selection_Opposite])
 
         User_ref.updateData([
             "Singles_Games_Played": FieldValue.increment(Int64(1))])

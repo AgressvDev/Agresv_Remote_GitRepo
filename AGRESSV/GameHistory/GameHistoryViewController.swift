@@ -18,9 +18,10 @@ class GameHistoryViewController: UIViewController, UITableViewDelegate, UITableV
         var gameOpponentOneUsername: String?
         var gameOpponentTwoUsername: String?
         var gameResult: String?
+        var Game_Result_Opposite_For_UserView: String?
     }
 
-    
+    var currentUserUsername: String = ""
     
     // Firestore reference
         let db = Firestore.firestore()
@@ -46,6 +47,39 @@ class GameHistoryViewController: UIViewController, UITableViewDelegate, UITableV
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
+        func getcurrentuser() {
+            let db = Firestore.firestore()
+            let uid = Auth.auth().currentUser!.email
+            let docRef = db.collection("Agressv_Users").document(uid!)
+            
+            docRef.getDocument { (document, error) in
+                if let err = error {
+                    print("Error getting documents: \(err)")
+                } else {
+                    print("\(document!.documentID) => \(String(describing: document!.data()))")
+                    
+                    //                    let CurrentUser = document!.data()!["Username"]
+                    //                    let Current_User_As_String = String(describing: CurrentUser!)
+                    if let username = document?["Username"] as? String,
+                       let doublesRank = document?["Doubles_Rank"] as? Double {
+                        let formattedRank = String(format: "%.1f", doublesRank)
+                        let userWithFormattedRank = "\(username) - \(formattedRank)"
+                        let norank = "\(username)"
+                        
+                        DispatchQueue.main.async {
+                           
+                            self.currentUserUsername = norank
+                            
+                        }
+                       
+                    }
+                }
+            }
+        }
+        print(getcurrentuser())
+        
 
         // Calculate scaling factors based on screen width and height
         let screenWidth = view.bounds.size.width
@@ -121,16 +155,29 @@ class GameHistoryViewController: UIViewController, UITableViewDelegate, UITableV
                                                    gamePartnerUsername: document["Game_Partner_Username"] as? String,
                                                    gameOpponentOneUsername: document["Game_Opponent_One_Username"] as? String,
                                                    gameOpponentTwoUsername: document["Game_Opponent_Two_Username"] as? String,
-                                                   gameResult: document["Game_Result"] as? String
+                                                   gameResult: document["Game_Result"] as? String,
+                                                   Game_Result_Opposite_For_UserView: document["Game_Result_Opposite_For_UserView"] as? String
                                                )
                                                return gameData
                                            }
-                                           self.Table_GameHistory.reloadData()
-                       }
-                   }
-           }
+                                           // Update Game_Result conditionally for games where Game_Creator is not the current user
+                                                       for index in 0..<self.games.count {
+                                                           if self.games[index].gameCreatorUsername != self.currentUserUsername {
+                                                               if self.games[index].gameResult == "W" {
+                                                                   self.games[index].gameResult = "L"
+                                                               } else if self.games[index].gameResult == "L" {
+                                                                   self.games[index].gameResult = "W"
+                                                               }
+                                                           }
+                                                       }
+
+                                                       // Reload the table view with the updated data
+                                                       self.Table_GameHistory.reloadData()
+                                                   }
+                                               }
+                                           }
            
-           // MARK: - UITableViewDataSource methods
+        
            func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
                return games.count
            }
@@ -138,9 +185,10 @@ class GameHistoryViewController: UIViewController, UITableViewDelegate, UITableV
            func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
                let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
                
-               let game = games[indexPath.row] // Get the game data
                
-               // Set the background color to a lighter grey
+               let game = games[indexPath.row] // Get the game data
+                  
+                  // Set the background color to a lighter grey
                   let lighterGreyColor = UIColor(red: 0.9, green: 0.9, blue: 0.9, alpha: 1.0)
                   cell.backgroundColor = lighterGreyColor
                   
@@ -155,41 +203,66 @@ class GameHistoryViewController: UIViewController, UITableViewDelegate, UITableV
                   // Customize the cell with the game data, including formatting the date
                   cell.textLabel?.numberOfLines = 0 // Allow multiline text
                   
+               
+               
+               
                   if let gameDate = game.gameDate?.dateValue() {
                       // Create an attributed string with different text attributes for keys and values
                       let attributedText = NSMutableAttributedString()
-                      attributedText.append(NSAttributedString(string: "Game Creator Username: ", attributes: keyAttributes))
-                      attributedText.append(NSAttributedString(string: "\(game.gameCreatorUsername ?? "")\n", attributes: valueAttributes))
+                      attributedText.append(NSAttributedString(string: "Logged By: ", attributes: keyAttributes))
                       
-                      attributedText.append(NSAttributedString(string: "Game Date: ", attributes: keyAttributes))
+                      // Always append the game creator's username, even if it's nil or empty
+                      attributedText.append(NSAttributedString(string: "\(game.gameCreatorUsername ?? "N/A")\n", attributes: valueAttributes))
+                      
+                      attributedText.append(NSAttributedString(string: "Date: ", attributes: keyAttributes))
                       attributedText.append(NSAttributedString(string: "\(dateFormatter.string(from: gameDate))\n", attributes: valueAttributes))
                       
-                      attributedText.append(NSAttributedString(string: "Game Partner Username: ", attributes: keyAttributes))
+                      attributedText.append(NSAttributedString(string: "Partner Username: ", attributes: keyAttributes))
                       attributedText.append(NSAttributedString(string: "\(game.gamePartnerUsername ?? "")\n", attributes: valueAttributes))
                       
-                      attributedText.append(NSAttributedString(string: "Game Opponent One Username: ", attributes: keyAttributes))
+                      attributedText.append(NSAttributedString(string: "Opponent One Username: ", attributes: keyAttributes))
                       attributedText.append(NSAttributedString(string: "\(game.gameOpponentOneUsername ?? "")\n", attributes: valueAttributes))
                       
-                      attributedText.append(NSAttributedString(string: "Game Opponent Two Username: ", attributes: keyAttributes))
+                      attributedText.append(NSAttributedString(string: "Opponent Two Username: ", attributes: keyAttributes))
                       attributedText.append(NSAttributedString(string: "\(game.gameOpponentTwoUsername ?? "")\n", attributes: valueAttributes))
                       
-                      let gameResult = game.gameResult ?? ""
+                      // Use the swapped result for the current user's game result
                       var resultAttributes: [NSAttributedString.Key: Any] = [
                           .foregroundColor: UIColor.black, // Default text color for Game_Result
                       ]
-                      if gameResult == "W" {
-                          resultAttributes[.foregroundColor] = UIColor(red: 0.0, green: 0.5, blue: 0.0, alpha: 1.0) 
-                      } else if gameResult == "L" {
+                      if game.gameResult == "W" {
+                          resultAttributes[.foregroundColor] = UIColor(red: 0.0, green: 0.5, blue: 0.0, alpha: 1.0)
+                      } else if game.gameResult == "L" {
                           resultAttributes[.foregroundColor] = UIColor.red
                       }
                       
-                      attributedText.append(NSAttributedString(string: "Game Result: ", attributes: keyAttributes))
-                      attributedText.append(NSAttributedString(string: "\(gameResult)\n", attributes: resultAttributes))
+                      attributedText.append(NSAttributedString(string: "Your Game Result: ", attributes: keyAttributes))
+                      
+                      // Always append the game result, even if it's nil or empty
+                      attributedText.append(NSAttributedString(string: "\(game.gameResult ?? "N/A")\n", attributes: resultAttributes))
                       
                       cell.textLabel?.attributedText = attributedText
                   }
-
-                       
-                       return cell
-           }
+                  
+                  return cell
+              }
+    
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let game = games[indexPath.row]
+        
+        // Get the Game_Creator email from the selected cell
+        let gameCreatorEmail = game.gameCreatorUsername
+        
+        // Store the Game_Creator email in the shared variable
+        SharedDataBlock.sharedblock.Game_Creator_forBlock = gameCreatorEmail
+        
+        // Create an instance of the destination view controller
+        if let blockScreen = storyboard?.instantiateViewController(withIdentifier: "BlockScreenID") as? BlockScreenViewController {
+            // Push to the destination view controller
+            navigationController?.pushViewController(blockScreen, animated: true)
+        }
+    }
+    
+    
        } //end of class
