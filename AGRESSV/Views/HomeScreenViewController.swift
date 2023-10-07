@@ -209,7 +209,8 @@ class HomeScreenViewController: UIViewController {
         let widthScalingFactor = screenWidth / 430.0 // Use a reference width, e.g., iPhone 6/6s/7/8 width
         let heightScalingFactor = screenHeight / 932.0 // Use a reference height, e.g., iPhone 6/6s/7/8 height
         let scalingFactor = min(widthScalingFactor, heightScalingFactor)
-        
+        let marginPercentage: CGFloat = 0.07
+        let marginPercentageHistory: CGFloat = 0.35
         
         //BACKGROUND
         // Create UIImageView for the background image
@@ -240,103 +241,7 @@ class HomeScreenViewController: UIViewController {
         //END BACKGROUND
         
        
-        // GAME HISTORY BUTTON
         
-        // Create a UIButton with a custom type
-                let imageButton = UIButton(type: .custom)
-                
-        // Set the frame (position and size) of the button
-                imageButton.frame = CGRect(x: 125 * scalingFactor, y: 135 * scalingFactor, width: 50 * scalingFactor, height: 50 * scalingFactor) // Adjust the values for your desired position and size
-                
-                // Set the background image for the button
-                let buttonImage = UIImage(named: "GameHistoryIconWhite.png")
-                imageButton.setBackgroundImage(buttonImage, for: .normal)
-                
-                // Add an action to the button (what happens when it's tapped)
-                imageButton.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
-                
-                // Add the button to the view
-                view.addSubview(imageButton)
-        
-        
-        // Create a UIButton with a custom type
-                let newgamebutton = UIButton(type: .custom)
-        
-        // Set the frame (position and size) of the button
-                newgamebutton.frame = CGRect(x: 235 * scalingFactor, y: 135 * scalingFactor, width: 50 * scalingFactor, height: 50 * scalingFactor) // Adjust the values for your desired position and size
-                
-                // Set the background image for the button
-                let newgameimagebutton = UIImage(named: "NewGameIcon.png")
-        newgamebutton.setBackgroundImage(newgameimagebutton, for: .normal)
-                
-        // Add an action to the button to perform a segue
-        newgamebutton.addTarget(self, action: #selector(startNewGame), for: .touchUpInside)
-                
-                // Add the button to the view
-                view.addSubview(newgamebutton)
-        
-        // Create the label
-        let lbl_NewGame = UILabel()
-        lbl_NewGame.text = "New Game"
-        lbl_NewGame.textColor = .white
-        lbl_NewGame.translatesAutoresizingMaskIntoConstraints = false // Enable Auto Layout
-        lbl_NewGame.numberOfLines = 0 // Allow multiple lines
-        // Add the label to the view hierarchy
-        view.addSubview(lbl_NewGame)
-        
-        // Calculate the adjusted font size based on the scalingFactor
-        let baseFontSize_lbl_NewGame: CGFloat = 13.0 // Set your base font size
-        let adjustedFontSize_lbl_NewGame = baseFontSize_lbl_NewGame * scalingFactor
-
-        // Set the font size for lbl_Playometer
-        lbl_NewGame.font = UIFont.systemFont(ofSize: adjustedFontSize_lbl_NewGame)
-        
-        // Define Auto Layout constraints to position and scale the label
-//        NSLayoutConstraint.activate([
-//            lbl_Playometer.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 40), // Left side of the screen
-//            lbl_Playometer.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -280), // A little higher than the bottom
-//            lbl_Playometer.widthAnchor.constraint(equalToConstant: 100 * scalingFactor), // Adjust the reference size as needed
-//            lbl_Playometer.heightAnchor.constraint(equalToConstant: 30 * scalingFactor), // Adjust the reference size as needed
-//        ])
-        
-        // Define Auto Layout constraints to position and allow the label to expand its width based on content
-                NSLayoutConstraint.activate([
-                    lbl_NewGame.leadingAnchor.constraint(equalTo: newgamebutton.leadingAnchor, constant: 5 * scalingFactor), // Left side of the screen
-                    lbl_NewGame.bottomAnchor.constraint(equalTo: newgamebutton.bottomAnchor, constant: 15 * scalingFactor), // A little higher than the bottom
-                ])
-        
-        
-        // Create the label
-        let lbl_GameHistory = UILabel()
-        lbl_GameHistory.text = "History"
-        lbl_GameHistory.textColor = .white
-        lbl_GameHistory.translatesAutoresizingMaskIntoConstraints = false // Enable Auto Layout
-        lbl_GameHistory.numberOfLines = 0 // Allow multiple lines
-        // Add the label to the view hierarchy
-        view.addSubview(lbl_GameHistory)
-        
-        // Calculate the adjusted font size based on the scalingFactor
-        let baseFontSize_lbl_GameHistory: CGFloat = 13.0 // Set your base font size
-        let adjustedFontSize_lbl_GameHistory = baseFontSize_lbl_GameHistory * scalingFactor
-
-        // Set the font size for lbl_Playometer
-        lbl_GameHistory.font = UIFont.systemFont(ofSize: adjustedFontSize_lbl_GameHistory)
-        
-        // Define Auto Layout constraints to position and scale the label
-//        NSLayoutConstraint.activate([
-//            lbl_Playometer.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 40), // Left side of the screen
-//            lbl_Playometer.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -280), // A little higher than the bottom
-//            lbl_Playometer.widthAnchor.constraint(equalToConstant: 100 * scalingFactor), // Adjust the reference size as needed
-//            lbl_Playometer.heightAnchor.constraint(equalToConstant: 30 * scalingFactor), // Adjust the reference size as needed
-//        ])
-        
-        // Define Auto Layout constraints to position and allow the label to expand its width based on content
-                NSLayoutConstraint.activate([
-                    lbl_GameHistory.leadingAnchor.constraint(equalTo: imageButton.leadingAnchor, constant: 5 * scalingFactor), // Left side of the screen
-                    lbl_GameHistory.bottomAnchor.constraint(equalTo: imageButton.bottomAnchor, constant: 15 * scalingFactor), // A little higher than the bottom
-                ])
-        
-        //END GAME HISTORY BUTTON
         
         
 //        //LABELS and IMAGES
@@ -539,7 +444,12 @@ class HomeScreenViewController: UIViewController {
 //                view.bringSubviewToFront(btn_NewGame)
 //                btn_NewGame.layer.zPosition = 4
         
-        if let dobermanleft = UIImage(named: "dobermanpsdleft.png") {
+        
+        
+        
+       
+        
+        let dobermanleft = UIImage(named: "DogLfilled.png")
             let myImageViewdl = UIImageView()
             myImageViewdl.contentMode = .scaleAspectFit
             myImageViewdl.image = dobermanleft
@@ -559,9 +469,9 @@ class HomeScreenViewController: UIViewController {
             ])
 
 
-        }
         
-        if let dobermanright = UIImage(named: "dobermanpsd.png") {
+        
+        let dobermanright = UIImage(named: "DogRfilled.png")
             let myImageViewd2 = UIImageView()
             myImageViewd2.contentMode = .scaleAspectFit
             myImageViewd2.image = dobermanright
@@ -581,28 +491,136 @@ class HomeScreenViewController: UIViewController {
             ])
             
       
-        }
         
-//        if let blackcircle = UIImage(named: "blackcircle.png") {
-//            let blackcircleimamge = UIImageView()
-//            blackcircleimamge.contentMode = .scaleAspectFit
-//            blackcircleimamge.image = blackcircle
-//            blackcircleimamge.translatesAutoresizingMaskIntoConstraints = false // Enable Auto Layout
+        
+        // GAME HISTORY BUTTON
+        
+        // Create a UIButton with a custom type
+        let historybutton = UIButton(type: .custom)
+
+        // Set the background image for the button
+        let buttonImage = UIImage(named: "GameHistoryIconWhite.png")
+        historybutton.setBackgroundImage(buttonImage, for: .normal)
+
+        // Enable Auto Layout for the button
+        historybutton.translatesAutoresizingMaskIntoConstraints = false
+
+        // Add an action to the button (what happens when it's tapped)
+        historybutton.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
+
+        // Add the button to the view
+        view.addSubview(historybutton)
+
+        // Define Auto Layout constraints for the button
+        NSLayoutConstraint.activate([
+            historybutton.leadingAnchor.constraint(equalTo: myImageViewdl.trailingAnchor, constant: -20 * scalingFactor),
+            historybutton.bottomAnchor.constraint(equalTo: myImageViewdl.topAnchor, constant: -20 * scalingFactor),
+            historybutton.widthAnchor.constraint(equalToConstant: 50 * scalingFactor),
+            historybutton.heightAnchor.constraint(equalToConstant: 50 * scalingFactor)
+        ])
+
+        
+        
+        
+        // Create a UIButton with a custom type
+        let newgamebutton = UIButton(type: .custom)
+
+        // Set the background image for the button
+        let buttonImageng = UIImage(named: "NewGameIcon.png")
+        newgamebutton.setBackgroundImage(buttonImageng, for: .normal)
+
+        // Enable Auto Layout for the button
+        newgamebutton.translatesAutoresizingMaskIntoConstraints = false
+
+        // Add an action to the button to perform a segue
+        newgamebutton.addTarget(self, action: #selector(startNewGame), for: .touchUpInside)
+
+        // Add the button to the view
+        view.addSubview(newgamebutton)
+
+        // Define Auto Layout constraints for the button
+        NSLayoutConstraint.activate([
+            newgamebutton.trailingAnchor.constraint(equalTo: myImageViewd2.leadingAnchor, constant: -5 * scalingFactor),
+            newgamebutton.bottomAnchor.constraint(equalTo: myImageViewd2.topAnchor, constant: -20 * scalingFactor),
+            newgamebutton.widthAnchor.constraint(equalToConstant: 50 * scalingFactor),
+            newgamebutton.heightAnchor.constraint(equalToConstant: 50 * scalingFactor)
+        ])
+//        // Create a UIButton with a custom type
+//                let newgamebutton = UIButton(type: .custom)
 //
-//            // Add the image view to the view hierarchy
-//            view.addSubview(blackcircleimamge)
+//        // Set the frame (position and size) of the button
+//                newgamebutton.frame = CGRect(x: 235 * scalingFactor, y: 135 * scalingFactor, width: 50 * scalingFactor, height: 50 * scalingFactor) // Adjust the values for your desired position and size
 //
+//                // Set the background image for the button
+//                let newgameimagebutton = UIImage(named: "NewGameIcon.png")
+//        newgamebutton.setBackgroundImage(newgameimagebutton, for: .normal)
 //
-//            // Define Auto Layout constraints to position and scale the image
-//            NSLayoutConstraint.activate([
-//                blackcircleimamge.centerXAnchor.constraint(equalTo: MainUNLabel.centerXAnchor, constant: 1 * scalingFactor),
-//                blackcircleimamge.bottomAnchor.constraint(equalTo: MainUNLabel.bottomAnchor, constant: -100 * scalingFactor),
-//                blackcircleimamge.widthAnchor.constraint(equalToConstant: 150 * scalingFactor), // Adjust the reference size as needed
-//                blackcircleimamge.heightAnchor.constraint(equalToConstant: 150 * scalingFactor), // Adjust the reference size as needed
-//            ])
+//        // Add an action to the button to perform a segue
+//        newgamebutton.addTarget(self, action: #selector(startNewGame), for: .touchUpInside)
 //
-//
-//        }
+//                // Add the button to the view
+//                view.addSubview(newgamebutton)
+        
+        // Create the label
+        let lbl_NewGame = UILabel()
+        lbl_NewGame.text = "New Game"
+        lbl_NewGame.textColor = .white
+        lbl_NewGame.translatesAutoresizingMaskIntoConstraints = false // Enable Auto Layout
+        lbl_NewGame.numberOfLines = 0 // Allow multiple lines
+        // Add the label to the view hierarchy
+        view.addSubview(lbl_NewGame)
+        
+        // Calculate the adjusted font size based on the scalingFactor
+        let baseFontSize_lbl_NewGame: CGFloat = 13.0 // Set your base font size
+        let adjustedFontSize_lbl_NewGame = baseFontSize_lbl_NewGame * scalingFactor
+
+        // Set the font size for lbl_Playometer
+        lbl_NewGame.font = UIFont.systemFont(ofSize: adjustedFontSize_lbl_NewGame)
+        
+        // Define Auto Layout constraints to position and scale the label
+//        NSLayoutConstraint.activate([
+//            lbl_Playometer.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 40), // Left side of the screen
+//            lbl_Playometer.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -280), // A little higher than the bottom
+//            lbl_Playometer.widthAnchor.constraint(equalToConstant: 100 * scalingFactor), // Adjust the reference size as needed
+//            lbl_Playometer.heightAnchor.constraint(equalToConstant: 30 * scalingFactor), // Adjust the reference size as needed
+//        ])
+        
+        // Define Auto Layout constraints to position and allow the label to expand its width based on content
+                NSLayoutConstraint.activate([
+                    lbl_NewGame.leadingAnchor.constraint(equalTo: newgamebutton.leadingAnchor, constant: 5 * scalingFactor), // Left side of the screen
+                    lbl_NewGame.bottomAnchor.constraint(equalTo: newgamebutton.bottomAnchor, constant: 15 * scalingFactor), // A little higher than the bottom
+                ])
+        
+        
+        // Create the label
+        let lbl_GameHistory = UILabel()
+        lbl_GameHistory.text = "History"
+        lbl_GameHistory.textColor = .white
+        lbl_GameHistory.translatesAutoresizingMaskIntoConstraints = false // Enable Auto Layout
+        lbl_GameHistory.numberOfLines = 0 // Allow multiple lines
+        // Add the label to the view hierarchy
+        view.addSubview(lbl_GameHistory)
+        
+        // Calculate the adjusted font size based on the scalingFactor
+        let baseFontSize_lbl_GameHistory: CGFloat = 13.0 // Set your base font size
+        let adjustedFontSize_lbl_GameHistory = baseFontSize_lbl_GameHistory * scalingFactor
+
+        // Set the font size for lbl_Playometer
+        lbl_GameHistory.font = UIFont.systemFont(ofSize: adjustedFontSize_lbl_GameHistory)
+        
+        // Define Auto Layout constraints to position and scale the label
+//        NSLayoutConstraint.activate([
+//            lbl_Playometer.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 40), // Left side of the screen
+//            lbl_Playometer.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -280), // A little higher than the bottom
+//            lbl_Playometer.widthAnchor.constraint(equalToConstant: 100 * scalingFactor), // Adjust the reference size as needed
+//            lbl_Playometer.heightAnchor.constraint(equalToConstant: 30 * scalingFactor), // Adjust the reference size as needed
+//        ])
+        
+        // Define Auto Layout constraints to position and allow the label to expand its width based on content
+                NSLayoutConstraint.activate([
+                    lbl_GameHistory.leadingAnchor.constraint(equalTo: historybutton.leadingAnchor, constant: 5 * scalingFactor), // Left side of the screen
+                    lbl_GameHistory.bottomAnchor.constraint(equalTo: historybutton.bottomAnchor, constant: 15 * scalingFactor), // A little higher than the bottom
+                ])
         
         let fontSize: CGFloat = 25.0 // Set your default font size
         let MainfontSize: CGFloat = 30.0 // Set your default font size
@@ -628,7 +646,7 @@ class HomeScreenViewController: UIViewController {
         
         
         // Create a constraint to position the label horizontally (x percent away from the edges)
-                let marginPercentage: CGFloat = 0.07 // Adjust this value as needed
+             
                 NSLayoutConstraint.activate([
                     MainUNLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: view.bounds.width * marginPercentage),
                     MainUNLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -view.bounds.width * marginPercentage),

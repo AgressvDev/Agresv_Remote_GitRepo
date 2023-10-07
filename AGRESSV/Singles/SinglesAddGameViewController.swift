@@ -124,7 +124,7 @@ class SinglesAddGameViewController: UIViewController {
         
         
         
-        if let dobermanleft = UIImage(named: "dobermanpsdleft.png") {
+        if let dobermanleft = UIImage(named: "DogLfilled.png") {
             let myImageViewdl = UIImageView()
             myImageViewdl.contentMode = .scaleAspectFit
             myImageViewdl.image = dobermanleft
@@ -148,7 +148,7 @@ class SinglesAddGameViewController: UIViewController {
         
         
         
-        if let dobermanright = UIImage(named: "dobermanpsd.png") {
+        if let dobermanright = UIImage(named: "DogRfilled.png") {
             let myImageViewdl = UIImageView()
             myImageViewdl.contentMode = .scaleAspectFit
             myImageViewdl.image = dobermanright

@@ -122,7 +122,7 @@ class AddGameViewController: UIViewController {
         button.addTarget(self, action: #selector(btn_Log(_:)), for: .touchUpInside)
         
         
-        if let dobermanleft = UIImage(named: "dobermanpsdleft.png") {
+        if let dobermanleft = UIImage(named: "DogLfilled.png") {
             let myImageViewdl = UIImageView()
             myImageViewdl.contentMode = .scaleAspectFit
             myImageViewdl.image = dobermanleft
@@ -144,7 +144,7 @@ class AddGameViewController: UIViewController {
       
         }
         
-        if let dobermanleft2 = UIImage(named: "dobermanpsdleft.png") {
+        if let dobermanleft2 = UIImage(named: "DogLfilled.png") {
             let myImageViewdl = UIImageView()
             myImageViewdl.contentMode = .scaleAspectFit
             myImageViewdl.image = dobermanleft2
@@ -166,7 +166,7 @@ class AddGameViewController: UIViewController {
       
         }
         
-        if let dobermanright = UIImage(named: "dobermanpsd.png") {
+        if let dobermanright = UIImage(named: "DogRfilled.png") {
             let myImageViewdl = UIImageView()
             myImageViewdl.contentMode = .scaleAspectFit
             myImageViewdl.image = dobermanright
@@ -188,7 +188,7 @@ class AddGameViewController: UIViewController {
       
         }
         
-        if let dobermanright2 = UIImage(named: "dobermanpsd.png") {
+        if let dobermanright2 = UIImage(named: "DogRfilled.png") {
             let myImageViewdl = UIImageView()
             myImageViewdl.contentMode = .scaleAspectFit
             myImageViewdl.image = dobermanright2
