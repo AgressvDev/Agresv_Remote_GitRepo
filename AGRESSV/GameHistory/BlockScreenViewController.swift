@@ -322,10 +322,19 @@ class BlockScreenViewController: UIViewController {
             if self.GameType == "Singles"{
                 User_ref.updateData([
                     "Singles_Rank": FieldValue.increment(0.1)])
+                User_ref.updateData([
+                    "Singles_Games_Played": FieldValue.increment(Int64(-1))])
+                User_ref.updateData([
+                    "Singles_Games_Losses": FieldValue.increment(Int64(-1))])
+                
             } else if self.GameType == "Doubles"
             {
                 User_ref.updateData([
                     "Doubles_Rank": FieldValue.increment(0.1)])
+                User_ref.updateData([
+                    "Doubles_Games_Played": FieldValue.increment(Int64(-1))])
+                User_ref.updateData([
+                    "Doubles_Games_Losses": FieldValue.increment(Int64(-1))])
             }
         
     
