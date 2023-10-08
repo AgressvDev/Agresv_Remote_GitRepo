@@ -459,7 +459,12 @@ class SinglesAddGameViewController: UIViewController {
                if CurrentUser_PercentDiff_Increment <= 0.1 {
                    CurrentUser_PercentDiff_Increment = 0.1
                }
-               
+               else if CurrentUserSinglesRank == OppOneSinglesRank
+               {
+                   CurrentUser_PercentDiff_Increment = 0.1
+                   OppOne_PercentDiff_Increment = 0.1
+                  
+               }
            }
        }
     
