@@ -11,7 +11,7 @@
         <!--MainScreen-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController title="MainScreen" id="BYZ-38-t0r" customClass="ViewController" customModule="AGRESSV" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="MainPageID" title="MainScreen" id="BYZ-38-t0r" customClass="ViewController" customModule="AGRESSV" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -160,7 +160,7 @@
             <objects>
                 <viewController storyboardIdentifier="HomeScreenID" title="HomeScreen" id="qMP-bG-fLV" customClass="HomeScreenViewController" customModule="AGRESSV" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="uBD-oD-nkk">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="842"/>
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <viewLayoutGuide key="safeArea" id="SdD-XJ-Noq"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -268,6 +268,21 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Mmt-WQ-L2z" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2608" y="1006"/>
+        </scene>
+        <!--AccountSettings-->
+        <scene sceneID="rwM-ah-52q">
+            <objects>
+                <viewController storyboardIdentifier="AccountSettingsID" title="AccountSettings" id="Up1-Dy-qs2" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Us5-j0-CLX">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="ZP4-ia-gvW"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="bw6-eU-ZoD" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3906" y="1287"/>
         </scene>
         <!--Game History View Controller-->
         <scene sceneID="RZe-p1-xsS">
@@ -745,7 +760,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="ceE-gP-x9o"/>
+        <segue reference="8WD-Qb-5E7"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="AgressvLogoBlueWhite" width="659" height="252"/>

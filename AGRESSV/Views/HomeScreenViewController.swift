@@ -210,7 +210,75 @@ class HomeScreenViewController: UIViewController {
         let heightScalingFactor = screenHeight / 932.0 // Use a reference height, e.g., iPhone 6/6s/7/8 height
         let scalingFactor = min(widthScalingFactor, heightScalingFactor)
         let marginPercentage: CGFloat = 0.07
-        let marginPercentageHistory: CGFloat = 0.35
+        let marginPercentagesignout: CGFloat = 0.06
+        let marginPercentagesignoutTOP: CGFloat = 0.01
+        //Sign Out button
+        
+        let signOutButton: UIButton = {
+                let button = UIButton()
+                button.translatesAutoresizingMaskIntoConstraints = false
+                button.setTitle("Sign Out", for: .normal)
+                button.setTitleColor(.lightGray, for: .normal)
+                button.titleLabel?.font = UIFont.systemFont(ofSize: scalingFactor * 13)
+            
+            
+                return button
+            }()
+        
+        // Add the sign-out button to the view
+                view.addSubview(signOutButton)
+        
+       
+        
+      
+        
+        signOutButton.isUserInteractionEnabled = true
+                // Set constraints for the sign-out button
+                NSLayoutConstraint.activate([
+                    signOutButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: marginPercentagesignoutTOP * screenHeight),
+                    signOutButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -marginPercentagesignout * screenWidth)
+                ])
+        
+        // Add a target for the sign-out button
+        signOutButton.addTarget(self, action: #selector(signOut), for: .touchUpInside)
+        
+        //end sign out button
+       
+
+        
+        //ACCOUNT SETTINSG
+        let AccountSettings: UIButton = {
+                let button = UIButton()
+                button.translatesAutoresizingMaskIntoConstraints = false
+                button.setTitle("Account Settings", for: .normal)
+                button.setTitleColor(.lightGray, for: .normal)
+                button.titleLabel?.font = UIFont.systemFont(ofSize: scalingFactor * 13)
+            
+            
+                return button
+            }()
+        
+        // Add the sign-out button to the view
+                view.addSubview(AccountSettings)
+        
+       
+        
+      
+        
+        AccountSettings.isUserInteractionEnabled = true
+                // Set constraints for the sign-out button
+                NSLayoutConstraint.activate([
+                    AccountSettings.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: marginPercentagesignoutTOP * screenHeight),
+                    AccountSettings.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: marginPercentagesignout * screenWidth)
+                ])
+        
+        // Add a target for the sign-out button
+        AccountSettings.addTarget(self, action: #selector(openAccountSettings), for: .touchUpInside)
+              
+        //END ACCOUNT SETTINGS
+        
+        
+        
         
         //BACKGROUND
         // Create UIImageView for the background image
@@ -1116,6 +1184,27 @@ class HomeScreenViewController: UIViewController {
         } //end of loading bracket
         
     
+    @objc func signOut() {
+        let firebaseAuth = Auth.auth()
+        do {
+            try firebaseAuth.signOut()
+            print("User signed out successfully")
+            
+            // Navigate back to HomeScreenViewController
+            if let viewControllers = self.navigationController?.viewControllers {
+                for viewController in viewControllers {
+                    if viewController is ViewController {
+                        self.navigationController?.popToViewController(viewController, animated: true)
+                        return // Exit the loop
+                    }
+                }
+            }
+        } catch let signOutError as NSError {
+            print("Error signing out: \(signOutError)")
+        }
+    }
+   
+    
     func AddFireMessage() {
         
         //GAUGE METER MESSAGE FOR 32 GAMES AND OVER
@@ -1232,6 +1321,17 @@ class HomeScreenViewController: UIViewController {
         
         // Push to the SecondViewController
         navigationController?.pushViewController(GameHistoryVC, animated: true)
+        }
+    
+    
+    @objc func openAccountSettings() {
+            // Handle the button click and open the "AccountSettingsViewController" here
+            let accountSettingsVC = AccountSettingsViewController()
+            // Present or push the view controller as needed
+            // For example:
+             navigationController?.pushViewController(accountSettingsVC, animated: true)
+            // or
+            // present(accountSettingsVC, animated: true, completion: nil)
         }
     
     

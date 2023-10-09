@@ -71,7 +71,7 @@ class LoginViewController: UIViewController {
 //        self.view.layer.insertSublayer(gradientLayer, at: 0)
         
        
-                
+       
                 
                 
         // Create a button
@@ -105,6 +105,8 @@ class LoginViewController: UIViewController {
             
             
     } //end of load
+    
+   
     
     @IBAction func btn_ForgotPasswordAction(_ sender: UIButton) {
         
