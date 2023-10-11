@@ -20,6 +20,22 @@ class LoginViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
             
+        if self.traitCollection.userInterfaceStyle == .light {
+            // User is in light mode
+            EmailTextField.attributedPlaceholder = NSAttributedString(string: EmailTextField.placeholder ?? "", attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightGray])
+            PasswordTextField.attributedPlaceholder = NSAttributedString(string: PasswordTextField.placeholder ?? "", attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightGray])
+            
+            EmailTextField.textColor = .white
+            PasswordTextField.textColor = .white
+            // You can perform actions specific to light mode here
+        } else {
+            // User is in dark mode
+            EmailTextField.attributedPlaceholder = NSAttributedString(string: EmailTextField.placeholder ?? "", attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightGray])
+            PasswordTextField.attributedPlaceholder = NSAttributedString(string: PasswordTextField.placeholder ?? "", attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightGray])
+            
+            EmailTextField.textColor = .white
+            PasswordTextField.textColor = .white
+        }
         
         // Calculate scaling factors based on screen width and height
         let screenWidth = view.bounds.size.width

@@ -34,7 +34,7 @@ class DoublesSearchVCNew: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-       
+        
         
         // Calculate scaling factors based on screen width and height
         let screenWidth = view.bounds.size.width

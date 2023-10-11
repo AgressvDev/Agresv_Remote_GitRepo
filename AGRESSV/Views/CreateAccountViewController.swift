@@ -22,6 +22,26 @@ class CreateAccountViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        if self.traitCollection.userInterfaceStyle == .light {
+            // User is in light mode
+            CreateEmailTextField.attributedPlaceholder = NSAttributedString(string: CreateEmailTextField.placeholder ?? "", attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightGray])
+            CreatePasswordTextField.attributedPlaceholder = NSAttributedString(string: CreatePasswordTextField.placeholder ?? "", attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightGray])
+            CreateUsernameTextField.attributedPlaceholder = NSAttributedString(string: CreateUsernameTextField.placeholder ?? "", attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightGray])
+            
+            CreateEmailTextField.textColor = .white
+            CreatePasswordTextField.textColor = .white
+            CreateUsernameTextField.textColor = .white
+            // You can perform actions specific to light mode here
+        } else {
+            // User is in dark mode
+            CreateEmailTextField.attributedPlaceholder = NSAttributedString(string: CreateEmailTextField.placeholder ?? "", attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightGray])
+            CreatePasswordTextField.attributedPlaceholder = NSAttributedString(string: CreatePasswordTextField.placeholder ?? "", attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightGray])
+            CreateUsernameTextField.attributedPlaceholder = NSAttributedString(string: CreateUsernameTextField.placeholder ?? "", attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightGray])
+            
+            CreateEmailTextField.textColor = .white
+            CreatePasswordTextField.textColor = .white
+            CreateUsernameTextField.textColor = .white
+        }
         
         // Calculate scaling factors based on screen width and height
         let screenWidth = view.bounds.size.width
