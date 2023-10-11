@@ -1307,12 +1307,26 @@ class HomeScreenViewController: UIViewController {
 
 
     @objc func startNewGame() {
-        // Create an instance of opp two VC
-        let DoublesOrSinglesVC = storyboard?.instantiateViewController(withIdentifier: "DoublesORSinglesID") as! NewGameViewController
-        
-        // Push to the SecondViewController
-        navigationController?.pushViewController(DoublesOrSinglesVC, animated: true)
+        // Create an alert controller
+        let alertController = UIAlertController(title: "Game Logger Confirmation", message: "Pick one player to log this game. It will then appear in the history for all players involved and adjust all rankings. If you are the elected game logger, click Continue.", preferredStyle: .alert)
+
+        // Create a "Continue" action
+        let continueAction = UIAlertAction(title: "Continue", style: .default) { (action) in
+            // Move to the GameHistoryVC
+            let DoublesOrSinglesVC = self.storyboard?.instantiateViewController(withIdentifier: "DoublesORSinglesID") as! NewGameViewController
+            self.navigationController?.pushViewController(DoublesOrSinglesVC, animated: true)
         }
+
+        // Create a "Cancel" action
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+
+        // Add the actions to the alert controller
+        alertController.addAction(continueAction)
+        alertController.addAction(cancelAction)
+
+        // Present the alert controller
+        present(alertController, animated: true, completion: nil)
+    }
     
     
     @objc func buttonTapped() {
