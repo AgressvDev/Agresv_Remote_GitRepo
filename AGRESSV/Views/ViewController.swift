@@ -56,8 +56,8 @@ class ViewController: UIViewController {
 
         //END BACKGROUND
         
-        LoginFirstButton.setTitle("L  o  g  i  n", for: .normal)
-        
+        LoginFirstButton.setTitle("Login", for: .normal)
+        LoginFirstButton.layer.cornerRadius = 15
         
         }
         
