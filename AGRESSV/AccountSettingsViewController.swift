@@ -58,7 +58,7 @@ class AccountSettingsViewController: UIViewController {
         contactUsButton.addTarget(self, action: #selector(moveToContactUsVC), for: .touchUpInside)
 
         // Calculate and set the adjusted font size
-        let originalFontSizeContactUs: CGFloat = 17.0 // Set your desired original font size
+        let originalFontSizeContactUs: CGFloat = 25.0 // Set your desired original font size
         let adjustedFontSizeContactUs = originalFontSizeContactUs * scalingFactor
         contactUsButton.titleLabel?.font = UIFont.systemFont(ofSize: adjustedFontSizeContactUs)
 
@@ -79,7 +79,7 @@ class AccountSettingsViewController: UIViewController {
         view.bringSubviewToFront(btn_DeleteAccount)
 
         // Calculate and set the adjusted font size
-        let originalFontSizeDA: CGFloat = 17.0 // Set your desired original font size
+        let originalFontSizeDA: CGFloat = 25.0 // Set your desired original font size
         let adjustedFontSizeDA = originalFontSizeDA * scalingFactor
         btn_DeleteAccount.titleLabel?.font = UIFont.systemFont(ofSize: adjustedFontSizeDA)
 
@@ -100,7 +100,7 @@ class AccountSettingsViewController: UIViewController {
             button.translatesAutoresizingMaskIntoConstraints = false
             button.setTitle("Sign Out", for: .normal)
             button.setTitleColor(.white, for: .normal)
-            button.titleLabel?.font = UIFont.systemFont(ofSize: scalingFactor * 17)
+            button.titleLabel?.font = UIFont.systemFont(ofSize: scalingFactor * 25)
             return button
         }()
 
