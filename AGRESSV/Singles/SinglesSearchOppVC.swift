@@ -244,7 +244,7 @@ extension SinglesSearchOppVC: UITableViewDelegate, UITableViewDataSource {
             
             if singlesRank > 8.5 {
                 if singlesRank == Highest_Score_Singles {
-                    let imageView = UIImageView(image: UIImage(named: "BlackRibbonSingles.png"))
+                    let imageView = UIImageView(image: UIImage(named: "BlueRibbon.png"))
                     imageView.frame = CGRect(x: cell.contentView.frame.width - 40, y: 10, width: 30, height: 30)
                     cell.contentView.addSubview(imageView)
                 }

@@ -270,7 +270,7 @@ extension OppOneViewController: UITableViewDelegate, UITableViewDataSource {
             
             if doublesRank > 8.5 {
                 if doublesRank == Highest_Score_Doubles {
-                    let imageView = UIImageView(image: UIImage(named: "BlackRibbonDoubles.png"))
+                    let imageView = UIImageView(image: UIImage(named: "BlueRibbon.png"))
                     imageView.frame = CGRect(x: cell.contentView.frame.width - 40, y: 10, width: 30, height: 30)
                     cell.contentView.addSubview(imageView)
                 }
