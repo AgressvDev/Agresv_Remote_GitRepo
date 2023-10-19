@@ -31,10 +31,35 @@ class DoublesSearchVCNew: UIViewController {
     var searching = false
     
     
+    var Highest_Score_Doubles: Double = 0.0
+   
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
+        func GetHighScores() {
+            
+            let db = Firestore.firestore()
+          
+            let agressvUsersRef = db.collection("Agressv_Users")
+            
+            // Query to get the documents with max Doubles_Rank and max Singles_Rank
+            agressvUsersRef
+                .order(by: "Doubles_Rank", descending: true)
+                .limit(to: 1)
+                .getDocuments { (doublesRankQuerySnapshot, error) in
+                    if let err = error {
+                        print("Error getting documents: \(err)")
+                    } else {
+                        let maxDoublesRank = doublesRankQuerySnapshot?.documents.first?["Doubles_Rank"] as? Double
+                        
+                        self.Highest_Score_Doubles = maxDoublesRank!
+                        print(self.Highest_Score_Doubles)
+                    }
+                    
+                }
+        }
+        print(GetHighScores())
         
         // Calculate scaling factors based on screen width and height
         let screenWidth = view.bounds.size.width
@@ -216,17 +241,33 @@ extension DoublesSearchVCNew: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        let customColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 0.1)
-        cell.textLabel?.font = UIFont.systemFont(ofSize: 18.0)
-        cell.contentView.backgroundColor = customColor
+               let customColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 0.1)
+               cell.textLabel?.font = UIFont.systemFont(ofSize: 18.0)
+               cell.contentView.backgroundColor = customColor
 
-        if searching {
-            cell.textLabel?.text = filteredDataSourceArrayPartner[indexPath.row]
-        } else {
-            cell.textLabel?.text = dataSourceArrayPartner[indexPath.row]
-        }
+               var text = dataSourceArrayPartner[indexPath.row] // By default, set the cell's text
 
-        return cell
+                   if searching {
+                       text = filteredDataSourceArrayPartner[indexPath.row]
+                   }
+
+                   cell.textLabel?.text = text
+
+               if let _ = text.components(separatedBy: " - ").first,
+                   let doublesRankString = text.components(separatedBy: " - ").last,
+                   let doublesRank = Double(doublesRankString) {
+                   
+                   if doublesRank > 8.5 {
+                       if doublesRank == Highest_Score_Doubles {
+                           let imageView = UIImageView(image: UIImage(named: "BlackRibbonDoubles.png"))
+                           imageView.frame = CGRect(x: cell.contentView.frame.width - 40, y: 10, width: 30, height: 30)
+                           cell.contentView.addSubview(imageView)
+                       }
+                       
+                   }
+               }
+
+                   return cell
     }
 }
 

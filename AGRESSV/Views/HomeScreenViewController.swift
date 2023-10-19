@@ -53,8 +53,10 @@ class HomeScreenViewController: UIViewController {
  
     
  
-    
-    
+    var Highest_Score_Doubles: Double = 0.0
+    var Highest_Score_Singles: Double = 0.0
+    var Player_DoublesRank: Double = 0.0
+    var Player_SinglesRank: Double = 0.0
     
     // Create a UILabel
   
@@ -960,14 +962,15 @@ class HomeScreenViewController: UIViewController {
                         let Doubles_Rank_As_String = String(describing: Doubles_Rank!)
                         let Int_Doubles_Rank = Double(Doubles_Rank_As_String)
                         self.NewDoublesRankLabel.text = String(format: "%.1f", Int_Doubles_Rank!)
-
+                        self.Player_DoublesRank = Int_Doubles_Rank!
 
                         //Singles Rank number to string conversion
                         let Singles_Rank = document!.data()!["Singles_Rank"]
                         let Singles_Rank_As_String = String(describing: Singles_Rank!)
                         let Int_Singles_Rank = Double(Singles_Rank_As_String)
                         self.NewSinglesRankLabel.text = String(format: "%.1f", Int_Singles_Rank!)
-
+                        self.Player_SinglesRank = Int_Singles_Rank!
+                        
                         //Doubles Wins number to string conversion
                         let DoublesWins = document!.data()!["Doubles_Games_Wins"]
                         let DoublesWins_As_String = String(describing: DoublesWins!)
@@ -1060,88 +1063,215 @@ class HomeScreenViewController: UIViewController {
         
         
         
-            //POSITION ALL LABELS
-
-//            let DogLeft = UIImage(named: "dobermanpsdleft.png")
-//            let DogLeftView:UIImageView = UIImageView()
-//            DogLeftView.contentMode = UIView.ContentMode.scaleAspectFit
-//            DogLeftView.frame.size.width = 140
-//            DogLeftView.frame.size.height = 140
-//            //myImageView.center = self.view.center
-//            DogLeftView.center = CGPoint(x: 70, y: 200)
-//            DogLeftView.image = DogLeft
-//            view.addSubview(DogLeftView)
-//
-//            let DogRight = UIImage(named: "dobermanpsd.png")
-//            let DogRightView:UIImageView = UIImageView()
-//            DogRightView.contentMode = UIView.ContentMode.scaleAspectFit
-//            DogRightView.frame.size.width = 140
-//            DogRightView.frame.size.height = 140
-//            //myImageView.center = self.view.center
-//            DogRightView.center = CGPoint(x: 360, y: 200)
-//            DogRightView.image = DogRight
-//            view.addSubview(DogRightView)
-//
-//            let BlackCircle = UIImage(named: "blackcircle.png")
-//            let myImageView:UIImageView = UIImageView()
-//            myImageView.contentMode = UIView.ContentMode.scaleAspectFit
-//            myImageView.frame.size.width = 140
-//            myImageView.frame.size.height = 140
-//            //myImageView.center = self.view.center
-//            myImageView.center = CGPoint(x: 211, y: 160)
-//            myImageView.image = BlackCircle
-//            view.addSubview(myImageView)
-
-            //btn_NewGame.frame.origin = CGPoint(x:157, y:144)
-            
-
-
-            //MainUNLabel.frame.origin = CGPoint(x: 30, y:240)
-            //MainUNLabel.frame.size.width = 370
-
-
-            //lbl_DoublesHeader.frame.origin = CGPoint(x: 65, y:320)
-            //lbl_SinglesHeader.frame.origin = CGPoint(x: 285, y:320)
-
-
-            //NewDoublesRankLabel.frame.origin = CGPoint(x:65, y:370)
-            //NewDoublesRankLabel.frame.size.width = 80
-            //NewDoublesRankLabel.frame.size.height = 80
-
-
-            //NewSinglesRankLabel.frame.origin = CGPoint(x:285, y:370)
-            //NewSinglesRankLabel.frame.size.width = 80
-            //NewSinglesRankLabel.frame.size.height = 80
-
-
-            //DW_letter.frame.origin = CGPoint(x:65, y:480)
-            //DL_Letter.frame.origin = CGPoint(x:65, y:520)
-            //SW_Letter.frame.origin = CGPoint(x:285, y:480)
-            //SL_Letter.frame.origin = CGPoint(x:285, y:520)
-
-
-//            DoublesWinsLabel.frame.origin = CGPoint(x:95, y:480)
-//            DoublesLossesLabel.frame.origin = CGPoint(x:95, y:520)
-//            SinglesWinsLabel.frame.origin = CGPoint(x:315, y:480)
-//            SinglesLossesLabel.frame.origin = CGPoint(x:315, y:520)
-
-
-            //lbl_Playometer.frame.origin = CGPoint(x:65, y:595)
-            //lbl_GamesPlayed.frame.origin = CGPoint(x:65, y:615)
+           //change Dogs to Gold if player is Ranked #1 and add Label "You are a Golden Dog, currently ranked #1"
         
-
-            //lbl_PlayMoreGames.frame.origin = CGPoint(x:120, y: 715)
-
-//            let AgressvLogo = UIImage(named: "AgressvLogoSmall.png")
-//            let AgressvBtmLogo:UIImageView = UIImageView()
-//            AgressvBtmLogo.contentMode = UIView.ContentMode.scaleAspectFit
-//            AgressvBtmLogo.frame.size.width = 350
-//            AgressvBtmLogo.frame.size.height = 350
-//            //myImageView.center = self.view.center
-//            AgressvBtmLogo.center = CGPoint(x: 217, y: 800)
-//            AgressvBtmLogo.image = AgressvLogo
-//            view.addSubview(AgressvBtmLogo)
+        
+        func GetHighScores() {
             
+            let agressvUsersRef = db.collection("Agressv_Users")
+
+            // Query to get the documents with max Doubles_Rank and max Singles_Rank
+            agressvUsersRef
+                .order(by: "Doubles_Rank", descending: true)
+                .limit(to: 1)
+                .getDocuments { (doublesRankQuerySnapshot, error) in
+                    if let err = error {
+                        print("Error getting documents: \(err)")
+                    } else {
+                        let maxDoublesRank = doublesRankQuerySnapshot?.documents.first?["Doubles_Rank"] as? Double
+                       
+                        self.Highest_Score_Doubles = maxDoublesRank!
+                        print(self.Highest_Score_Doubles)
+                        // Query to get the documents with max Singles_Rank
+                        agressvUsersRef
+                            .order(by: "Singles_Rank", descending: true)
+                            .limit(to: 1)
+                            .getDocuments { (singlesRankQuerySnapshot, error) in
+                                if let err = error {
+                                    print("Error getting documents: \(err)")
+                                } else {
+                                    let maxSinglesRank = singlesRankQuerySnapshot?.documents.first?["Singles_Rank"] as? Double
+                                    
+                                    
+                                    self.Highest_Score_Singles = maxSinglesRank!
+                                    print(self.Highest_Score_Singles)
+                                    
+                                    
+                                    
+                                    // Now you have the highest score in the variable Highest_Score
+                                    if self.Highest_Score_Doubles > 8.5 {
+                                        if
+                                            self.Player_DoublesRank == self.Highest_Score_Doubles
+                                        {
+                                            print("HIGHEST SCORE IS GREATER THAN 8.5 AND PLAYER IS IT SO GOLDEN DOG!!!!!")
+                                            myImageViewdl.image = UIImage(named: "DogLfilledGolden.png")
+                                            let customMustardYellow = UIColor.mustardYellow()
+                                            self.NewDoublesRankLabel.backgroundColor = customMustardYellow
+                                            
+                                            // Create a label
+                                            let GoldenDogLabel = UILabel()
+                                            
+                                            // Set the label's text and font color
+                                            GoldenDogLabel.text = "You are a Golden Dog,\ncurrently ranked #1 !!"
+                                            GoldenDogLabel.textColor = customMustardYellow // Assuming you have defined your custom mustard yellow color
+                                            
+                                            // Set the font and font size
+                                            let baseFontSize: CGFloat = 15.0
+                                            let adjustedFontSize = baseFontSize * scalingFactor
+                                            
+                                            if let impactFont = UIFont(name: "Impact", size: adjustedFontSize) {
+                                                GoldenDogLabel.font = impactFont
+                                            } else {
+                                                // Handle the case where the "Impact" font cannot be loaded (e.g., use a fallback font)
+                                                GoldenDogLabel.font = UIFont.systemFont(ofSize: adjustedFontSize)
+                                            }
+                                            
+                                            // Configure other label properties
+                                            GoldenDogLabel.backgroundColor = UIColor.clear // No background
+                                            GoldenDogLabel.textAlignment = .center // Center align the text
+                                            GoldenDogLabel.numberOfLines = 0
+                                            
+                                            self.view.addSubview(GoldenDogLabel)
+                                            
+                                            // Add constraints to position the label and control its size
+                                            GoldenDogLabel.translatesAutoresizingMaskIntoConstraints = false
+                                            
+                                            NSLayoutConstraint.activate([
+                                                GoldenDogLabel.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
+                                                GoldenDogLabel.bottomAnchor.constraint(equalTo: self.MainUNLabel.topAnchor, constant: -20 * scalingFactor) // Adjust the vertical spacing as needed
+                                            ])
+                                            //ADD BLACK RIBBON
+                                            let BlackRibbon_Doubles = UIImage(named: "BlackRibbonDoubles.png")
+                                            let BlackRibbonDoubles = UIImageView()
+                                            BlackRibbonDoubles.contentMode = .scaleAspectFit
+                                            BlackRibbonDoubles.image = BlackRibbon_Doubles
+                                            BlackRibbonDoubles.translatesAutoresizingMaskIntoConstraints = false // Enable Auto Layout
+                                            
+                                            // Add the image view to the view hierarchy
+                                            self.view.addSubview(BlackRibbonDoubles)
+                                            self.view.bringSubviewToFront(BlackRibbonDoubles)
+                                            
+                                            BlackRibbonDoubles.layer.zPosition = 5
+                                            
+                                            NSLayoutConstraint.activate([
+                                                BlackRibbonDoubles.trailingAnchor.constraint(equalTo: self.NewDoublesRankLabel.leadingAnchor, constant: -10 * scalingFactor),
+                                                BlackRibbonDoubles.centerYAnchor.constraint(equalTo: self.NewDoublesRankLabel.centerYAnchor),
+                                                BlackRibbonDoubles.widthAnchor.constraint(equalToConstant: 50 * scalingFactor), // Adjust the reference size as needed
+                                                BlackRibbonDoubles.heightAnchor.constraint(equalToConstant: 50 * scalingFactor), // Adjust the reference size as needed
+                                            ])
+                                            
+                                            
+                                        }
+                                        else
+                                        {
+                                            print("HIGHEST SCORE IS GREATER THAN 8.5 BUUTTT PLAYER IS NOT EVALUATING TO IT")
+                                        }
+                                    }
+                                    else
+                                    {
+                                        print("HIGHEST SCORE NOT EVALUATING TO > 8.5")
+                                    }
+                                    
+                                    
+                                    if self.Highest_Score_Singles > 8.5 {
+                                        if
+                                            self.Player_SinglesRank == self.Highest_Score_Singles
+                                        {
+                                            print("HIGHEST SCORE IS GREATER THAN 8.5 AND PLAYER IS IT SO GOLDEN DOG!!!!!")
+                                            myImageViewd2.image = UIImage(named: "DogRfilledGolden.png")
+                                            let customMustardYellow = UIColor.mustardYellow()
+                                            self.NewSinglesRankLabel.backgroundColor = customMustardYellow
+                                            
+                                            // Create a label
+                                            let GoldenDogLabel = UILabel()
+                                            
+                                            // Set the label's text and font color
+                                            GoldenDogLabel.text = "You are a Golden Dog,\ncurrently ranked #1 !!"
+                                            GoldenDogLabel.textColor = customMustardYellow // Assuming you have defined your custom mustard yellow color
+                                            
+                                            // Set the font and font size
+                                            let baseFontSize: CGFloat = 15.0
+                                            let adjustedFontSize = baseFontSize * scalingFactor
+                                            
+                                            if let impactFont = UIFont(name: "Impact", size: adjustedFontSize) {
+                                                GoldenDogLabel.font = impactFont
+                                            } else {
+                                                // Handle the case where the "Impact" font cannot be loaded (e.g., use a fallback font)
+                                                GoldenDogLabel.font = UIFont.systemFont(ofSize: adjustedFontSize)
+                                            }
+                                            
+                                            // Configure other label properties
+                                            GoldenDogLabel.backgroundColor = UIColor.clear // No background
+                                            GoldenDogLabel.textAlignment = .center // Center align the text
+                                            GoldenDogLabel.numberOfLines = 0
+                                            
+                                            self.view.addSubview(GoldenDogLabel)
+                                            
+                                            // Add constraints to position the label and control its size
+                                            GoldenDogLabel.translatesAutoresizingMaskIntoConstraints = false
+                                            
+                                            NSLayoutConstraint.activate([
+                                                GoldenDogLabel.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
+                                                GoldenDogLabel.bottomAnchor.constraint(equalTo: self.MainUNLabel.topAnchor, constant: -20 * scalingFactor) // Adjust the vertical spacing as needed
+                                            ])
+                                            //ADD BLACK RIBBON
+                                            let BlackRibbon_Doubles = UIImage(named: "BlackRibbonSingles.png")
+                                            let BlackRibbonDoubles = UIImageView()
+                                            BlackRibbonDoubles.contentMode = .scaleAspectFit
+                                            BlackRibbonDoubles.image = BlackRibbon_Doubles
+                                            BlackRibbonDoubles.translatesAutoresizingMaskIntoConstraints = false // Enable Auto Layout
+                                            
+                                            // Add the image view to the view hierarchy
+                                            self.view.addSubview(BlackRibbonDoubles)
+                                            self.view.bringSubviewToFront(BlackRibbonDoubles)
+                                            
+                                            BlackRibbonDoubles.layer.zPosition = 5
+                                            
+                                            NSLayoutConstraint.activate([
+                                                BlackRibbonDoubles.trailingAnchor.constraint(equalTo: self.NewSinglesRankLabel.leadingAnchor, constant: -10 * scalingFactor),
+                                                BlackRibbonDoubles.centerYAnchor.constraint(equalTo: self.NewSinglesRankLabel.centerYAnchor),
+                                                BlackRibbonDoubles.widthAnchor.constraint(equalToConstant: 50 * scalingFactor), // Adjust the reference size as needed
+                                                BlackRibbonDoubles.heightAnchor.constraint(equalToConstant: 50 * scalingFactor), // Adjust the reference size as needed
+                                            ])
+                                            
+                                            
+                                        }
+                                        else
+                                        {
+                                            print("HIGHEST SCORE IS GREATER THAN 8.5 BUUTTT PLAYER IS NOT EVALUATING TO IT")
+                                        }
+                                    }
+                                    else
+                                    {
+                                        print("HIGHEST SCORE NOT EVALUATING TO > 8.5")
+                                    }
+                                    
+                                    if self.Highest_Score_Doubles > 8.5
+                                    {
+                                        if self.Highest_Score_Singles > 8.5
+                                        {
+                                            
+                                        
+                                        if self.Highest_Score_Doubles == self.Player_DoublesRank
+                                            {
+                                            if self.Highest_Score_Singles == self.Player_SinglesRank
+                                                    {
+                                            backgroundImage.image = UIImage(named: "ChampBackground.png")
+                                                    }
+                                           
+                                            }
+                                    }
+                                    }
+                                    else {}
+                                }
+                            }
+                    }
+                }
+        }
+
+        print(GetHighScores())
+       
+        
 
         
         
@@ -1178,7 +1308,7 @@ class HomeScreenViewController: UIViewController {
                
             
                 // Check if gaugeactualcount is greater than or equal to 32
-                if gaugeactualcount >= 32 {
+                if gaugeactualcount >= 6 {
                     
                     // Calculate the adjusted font size based on the scalingFactor
                     let baseFontSizeActualGaugeCount: CGFloat = 13.0 // Set your base font size
@@ -1309,6 +1439,9 @@ class HomeScreenViewController: UIViewController {
     
     
     
-    
-    
+extension UIColor {
+    static func mustardYellow() -> UIColor {
+        return UIColor(red: 255.0/255.0, green: 219.0/255.0, blue: 88.0/255.0, alpha: 1.0)
+    }
+}
 

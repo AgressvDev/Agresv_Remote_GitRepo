@@ -29,9 +29,36 @@ class OppOneViewController: UIViewController {
     var filtereddataSourceArrayOppOne = [String]()
     var oppsearching = false
     
+    var Highest_Score_Doubles: Double = 0.0
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
+        func GetHighScores() {
+            
+            let db = Firestore.firestore()
+          
+            let agressvUsersRef = db.collection("Agressv_Users")
+            
+            // Query to get the documents with max Doubles_Rank and max Singles_Rank
+            agressvUsersRef
+                .order(by: "Doubles_Rank", descending: true)
+                .limit(to: 1)
+                .getDocuments { (doublesRankQuerySnapshot, error) in
+                    if let err = error {
+                        print("Error getting documents: \(err)")
+                    } else {
+                        let maxDoublesRank = doublesRankQuerySnapshot?.documents.first?["Doubles_Rank"] as? Double
+                        
+                        self.Highest_Score_Doubles = maxDoublesRank!
+                        print(self.Highest_Score_Doubles)
+                    }
+                    
+                }
+        }
+        print(GetHighScores())
 
         //Gradient background
          
@@ -229,15 +256,28 @@ extension OppOneViewController: UITableViewDelegate, UITableViewDataSource {
         cell.contentView.backgroundColor = customColor
         
         
-        if oppsearching {
-            cell.textLabel?.text = filtereddataSourceArrayOppOne[indexPath.row]
+        var text = dataSourceArrayOppOne[indexPath.row] // By default, set the cell's text
+
+            if oppsearching {
+                text = filtereddataSourceArrayOppOne[indexPath.row]
+            }
+
+            cell.textLabel?.text = text
+
+        if let _ = text.components(separatedBy: " - ").first,
+            let doublesRankString = text.components(separatedBy: " - ").last,
+            let doublesRank = Double(doublesRankString) {
             
+            if doublesRank > 8.5 {
+                if doublesRank == Highest_Score_Doubles {
+                    let imageView = UIImageView(image: UIImage(named: "BlackRibbonDoubles.png"))
+                    imageView.frame = CGRect(x: cell.contentView.frame.width - 40, y: 10, width: 30, height: 30)
+                    cell.contentView.addSubview(imageView)
+                }
+                
+            }
         }
-        else {
-            cell.textLabel?.text = dataSourceArrayOppOne[indexPath.row]
-          
-        }
-            
+
             return cell
 
 
