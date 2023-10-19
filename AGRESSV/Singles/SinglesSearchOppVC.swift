@@ -21,8 +21,35 @@ class SinglesSearchOppVC: UIViewController {
     
     var searching = false
     
+    var Highest_Score_Singles: Double = 0.0
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
+        func GetHighScores() {
+            
+            let db = Firestore.firestore()
+          
+            let agressvUsersRef = db.collection("Agressv_Users")
+            
+            // Query to get the documents with max Doubles_Rank and max Singles_Rank
+            agressvUsersRef
+                .order(by: "Singles_Rank", descending: true)
+                .limit(to: 1)
+                .getDocuments { (doublesRankQuerySnapshot, error) in
+                    if let err = error {
+                        print("Error getting documents: \(err)")
+                    } else {
+                        let maxSinglesRank = doublesRankQuerySnapshot?.documents.first?["Singles_Rank"] as? Double
+                        
+                        self.Highest_Score_Singles = maxSinglesRank!
+                        print(self.Highest_Score_Singles)
+                    }
+                    
+                }
+        }
+        print(GetHighScores())
 
         //Gradient background
          
@@ -102,8 +129,8 @@ class SinglesSearchOppVC: UIViewController {
 
                     for document in querySnapshot!.documents {
                         if let username = document["Username"] as? String,
-                           let doublesRank = document["Doubles_Rank"] as? Double {
-                            let formattedRank = String(format: "%.1f", doublesRank)
+                           let singlesRank = document["Singles_Rank"] as? Double {
+                            let formattedRank = String(format: "%.1f", singlesRank)
                             let userWithFormattedRank = "\(username) - \(formattedRank)"
 
                             // Check if the username is not in plaintiffUsernames and add it to dataSourceArrayPartner
@@ -203,13 +230,29 @@ extension SinglesSearchOppVC: UITableViewDelegate, UITableViewDataSource {
         cell.textLabel?.font = UIFont.systemFont(ofSize: 18.0)
         cell.contentView.backgroundColor = customColor
 
-        if searching {
-            cell.textLabel?.text = filteredDataSourceArraySinglesOpp[indexPath.row]
-        } else {
-            cell.textLabel?.text = dataSourceArraySinglesOpp[indexPath.row]
+        var text = dataSourceArraySinglesOpp[indexPath.row] // By default, set the cell's text
+
+            if searching {
+                text = filteredDataSourceArraySinglesOpp[indexPath.row]
+            }
+
+            cell.textLabel?.text = text
+
+        if let _ = text.components(separatedBy: " - ").first,
+            let SinglesRankString = text.components(separatedBy: " - ").last,
+            let singlesRank = Double(SinglesRankString) {
+            
+            if singlesRank > 8.5 {
+                if singlesRank == Highest_Score_Singles {
+                    let imageView = UIImageView(image: UIImage(named: "BlackRibbonSingles.png"))
+                    imageView.frame = CGRect(x: cell.contentView.frame.width - 40, y: 10, width: 30, height: 30)
+                    cell.contentView.addSubview(imageView)
+                }
+                
+            }
         }
 
-        return cell
+            return cell
     }
 }
 
