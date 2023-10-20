@@ -37,13 +37,14 @@ class SinglesSearchOppVC: UIViewController {
             agressvUsersRef
                 .order(by: "Singles_Rank", descending: true)
                 .limit(to: 1)
-                .getDocuments { (doublesRankQuerySnapshot, error) in
+                .getDocuments { (singlesRankQuerySnapshot, error) in
                     if let err = error {
                         print("Error getting documents: \(err)")
                     } else {
-                        let maxSinglesRank = doublesRankQuerySnapshot?.documents.first?["Singles_Rank"] as? Double
+                        let maxSinglesRank = singlesRankQuerySnapshot?.documents.first?["Singles_Rank"] as? Double
+                        let roundedValueSingles = round(maxSinglesRank! * 10) / 10.0
                         
-                        self.Highest_Score_Singles = maxSinglesRank!
+                        self.Highest_Score_Singles = roundedValueSingles
                         print(self.Highest_Score_Singles)
                     }
                     
@@ -230,6 +231,11 @@ extension SinglesSearchOppVC: UITableViewDelegate, UITableViewDataSource {
         cell.textLabel?.font = UIFont.systemFont(ofSize: 18.0)
         cell.contentView.backgroundColor = customColor
 
+        // Reset the cell's content view to remove any previously added image views
+            for subview in cell.contentView.subviews {
+                subview.removeFromSuperview()
+            }
+        
         var text = dataSourceArraySinglesOpp[indexPath.row] // By default, set the cell's text
 
             if searching {

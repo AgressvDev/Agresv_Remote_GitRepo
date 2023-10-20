@@ -878,6 +878,7 @@ class HomeScreenViewController: UIViewController {
                     //self.lbl_testcount.frame.origin = CGPoint(x:225, y:612)
                     //self.lbl_testcount.textColor = UIColor.systemGray
                     //self.lbl_testcount.font = UIFont.systemFont(ofSize: 12)
+                    
                     self.lbl_testcount.text = self.labelgaugecount
                     self.gaugeactualcount = count
                     self.gaugemetercount = String(count)
@@ -962,14 +963,16 @@ class HomeScreenViewController: UIViewController {
                         let Doubles_Rank_As_String = String(describing: Doubles_Rank!)
                         let Int_Doubles_Rank = Double(Doubles_Rank_As_String)
                         self.NewDoublesRankLabel.text = String(format: "%.1f", Int_Doubles_Rank!)
-                        self.Player_DoublesRank = Int_Doubles_Rank!
+                        let rounded_int_doubles_rank = round(Int_Doubles_Rank! * 10) / 10.0
+                        self.Player_DoublesRank = rounded_int_doubles_rank
 
                         //Singles Rank number to string conversion
                         let Singles_Rank = document!.data()!["Singles_Rank"]
                         let Singles_Rank_As_String = String(describing: Singles_Rank!)
                         let Int_Singles_Rank = Double(Singles_Rank_As_String)
                         self.NewSinglesRankLabel.text = String(format: "%.1f", Int_Singles_Rank!)
-                        self.Player_SinglesRank = Int_Singles_Rank!
+                        let rounded_int_singles_rank = round(Int_Singles_Rank! * 10) / 10.0
+                        self.Player_SinglesRank = rounded_int_singles_rank
                         
                         //Doubles Wins number to string conversion
                         let DoublesWins = document!.data()!["Doubles_Games_Wins"]
@@ -1079,8 +1082,10 @@ class HomeScreenViewController: UIViewController {
                         print("Error getting documents: \(err)")
                     } else {
                         let maxDoublesRank = doublesRankQuerySnapshot?.documents.first?["Doubles_Rank"] as? Double
-                       
-                        self.Highest_Score_Doubles = maxDoublesRank!
+                        let roundedValue = round(maxDoublesRank! * 10) / 10.0
+                        
+                        
+                        self.Highest_Score_Doubles = roundedValue
                         print(self.Highest_Score_Doubles)
                         // Query to get the documents with max Singles_Rank
                         agressvUsersRef
@@ -1091,9 +1096,9 @@ class HomeScreenViewController: UIViewController {
                                     print("Error getting documents: \(err)")
                                 } else {
                                     let maxSinglesRank = singlesRankQuerySnapshot?.documents.first?["Singles_Rank"] as? Double
+                                    let roundedValueSingles = round(maxSinglesRank! * 10) / 10.0
                                     
-                                    
-                                    self.Highest_Score_Singles = maxSinglesRank!
+                                    self.Highest_Score_Singles = roundedValueSingles
                                     print(self.Highest_Score_Singles)
                                     
                                     
@@ -1308,7 +1313,7 @@ class HomeScreenViewController: UIViewController {
                
             
                 // Check if gaugeactualcount is greater than or equal to 32
-                if gaugeactualcount >= 6 {
+                if gaugeactualcount >= 14 {
                     
                     // Calculate the adjusted font size based on the scalingFactor
                     let baseFontSizeActualGaugeCount: CGFloat = 13.0 // Set your base font size

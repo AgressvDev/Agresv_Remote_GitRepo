@@ -52,8 +52,10 @@ class DoublesSearchVCNew: UIViewController {
                         print("Error getting documents: \(err)")
                     } else {
                         let maxDoublesRank = doublesRankQuerySnapshot?.documents.first?["Doubles_Rank"] as? Double
+                        let roundedValue = round(maxDoublesRank! * 10) / 10.0
                         
-                        self.Highest_Score_Doubles = maxDoublesRank!
+                        
+                        self.Highest_Score_Doubles = roundedValue
                         print(self.Highest_Score_Doubles)
                     }
                     
@@ -245,27 +247,31 @@ extension DoublesSearchVCNew: UITableViewDelegate, UITableViewDataSource {
                cell.textLabel?.font = UIFont.systemFont(ofSize: 18.0)
                cell.contentView.backgroundColor = customColor
 
-               var text = dataSourceArrayPartner[indexPath.row] // By default, set the cell's text
+        // Reset the cell's content view to remove any previously added image views
+            for subview in cell.contentView.subviews {
+                subview.removeFromSuperview()
+            }
 
-                   if searching {
-                       text = filteredDataSourceArrayPartner[indexPath.row]
-                   }
+            var text = dataSourceArrayPartner[indexPath.row] // By default, set the cell's text
 
-                   cell.textLabel?.text = text
+            if searching {
+                text = filteredDataSourceArrayPartner[indexPath.row]
+            }
 
-               if let _ = text.components(separatedBy: " - ").first,
-                   let doublesRankString = text.components(separatedBy: " - ").last,
-                   let doublesRank = Double(doublesRankString) {
-                   
-                   if doublesRank > 8.5 {
-                       if doublesRank == Highest_Score_Doubles {
-                           let imageView = UIImageView(image: UIImage(named: "BlueRibbon.png"))
-                           imageView.frame = CGRect(x: cell.contentView.frame.width - 40, y: 10, width: 30, height: 30)
-                           cell.contentView.addSubview(imageView)
-                       }
-                       
-                   }
-               }
+            cell.textLabel?.text = text
+
+            if let _ = text.components(separatedBy: " - ").first,
+                let doublesRankString = text.components(separatedBy: " - ").last,
+                let doublesRank = Double(doublesRankString) {
+
+                if doublesRank > 8.5 {
+                    if doublesRank == Highest_Score_Doubles {
+                        let imageView = UIImageView(image: UIImage(named: "BlueRibbon.png"))
+                        imageView.frame = CGRect(x: cell.contentView.frame.width - 40, y: 10, width: 30, height: 30)
+                        cell.contentView.addSubview(imageView)
+                    }
+                }
+            }
 
                    return cell
     }

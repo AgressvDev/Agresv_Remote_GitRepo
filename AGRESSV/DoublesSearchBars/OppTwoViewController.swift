@@ -47,8 +47,10 @@ class OppTwoViewController: UIViewController {
                         print("Error getting documents: \(err)")
                     } else {
                         let maxDoublesRank = doublesRankQuerySnapshot?.documents.first?["Doubles_Rank"] as? Double
+                        let roundedValue = round(maxDoublesRank! * 10) / 10.0
                         
-                        self.Highest_Score_Doubles = maxDoublesRank!
+                        
+                        self.Highest_Score_Doubles = roundedValue
                         print(self.Highest_Score_Doubles)
                     }
                     
@@ -250,6 +252,10 @@ extension OppTwoViewController: UITableViewDelegate, UITableViewDataSource {
         cell.textLabel?.font = UIFont.systemFont(ofSize: 18.0)
         cell.contentView.backgroundColor = customColor
         
+        // Reset the cell's content view to remove any previously added image views
+            for subview in cell.contentView.subviews {
+                subview.removeFromSuperview()
+            }
         
         var text = dataSourceArrayOppTwo[indexPath.row] // By default, set the cell's text
 
