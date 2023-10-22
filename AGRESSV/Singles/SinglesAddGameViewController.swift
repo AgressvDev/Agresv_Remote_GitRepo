@@ -440,7 +440,7 @@ class SinglesAddGameViewController: UIViewController {
            let higherNumber = max(CurrentUserSinglesRank, OppOneSinglesRank)
 
            // Calculate the percent difference
-           let percentDifference = abs((CurrentUserSinglesRank - OppOneSinglesRank) / higherNumber * 100.0) / 100
+        let percentDifference = abs((CurrentUserSinglesRank - OppOneSinglesRank) / higherNumber * 100.0) / 100 / 1.75 //divide by 1.75 because percent diff feels too high for one win
 
            if CurrentUserSinglesRank > OppOneSinglesRank {
                // Perform calculations based on your conditions
