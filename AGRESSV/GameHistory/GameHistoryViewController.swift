@@ -201,8 +201,17 @@ class GameHistoryViewController: UIViewController, UITableViewDelegate, UITableV
            func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
                let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
                
-               
-               let game = games[indexPath.row] // Get the game data
+               // Sort the games array by Date in descending order
+                   let sortedGames = games.sorted { (game1, game2) -> Bool in
+                       if let date1 = game1.gameDate?.dateValue(),
+                          let date2 = game2.gameDate?.dateValue() {
+                           return date1 > date2
+                       }
+                       return false
+                   }
+
+                   let game = sortedGames[indexPath.row]
+               //let game = games[indexPath.row] // Get the game data
                   
                   // Set the background color to a lighter grey
                   let lighterGreyColor = UIColor(red: 0.9, green: 0.9, blue: 0.9, alpha: 1.0)
