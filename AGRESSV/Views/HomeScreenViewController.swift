@@ -214,16 +214,7 @@ class HomeScreenViewController: UIViewController {
         let marginPercentage: CGFloat = 0.07
       
      
-        
-        
-       
-
-        
-       
-        
-       
-              
-        //END ACCOUNT SETTINGS
+    
         
         
         
@@ -259,27 +250,7 @@ class HomeScreenViewController: UIViewController {
        
         
         
-        
-//        //LABELS and IMAGES
-//
-//        let btn_NewGame = UIButton(type: .system)
-//        btn_NewGame.translatesAutoresizingMaskIntoConstraints = false
-//        btn_NewGame.setTitle("New Game", for: .normal)
-//        btn_NewGame.titleLabel?.font = UIFont.systemFont(ofSize: 20)
-//        btn_NewGame.setTitleColor(UIColor.white, for: .normal)
-//
-//        // Add an action to the button to perform a segue
-//        btn_NewGame.addTarget(self, action: #selector(startNewGame), for: .touchUpInside)
-//
-//        // Calculate the adjusted font size based on the scalingFactor
-//        let baseFontSizeNewGame: CGFloat = 20.0 // Set your base font size
-//        let adjustedFontSizeNewGame = baseFontSizeNewGame * scalingFactor
-//
-//        // Set the font size for lbl_Playometer
-//        btn_NewGame.titleLabel?.font = UIFont.systemFont(ofSize: adjustedFontSizeNewGame)
-//        // Add the button to the view hierarchy
-//        view.addSubview(btn_NewGame)
-//        view.bringSubviewToFront(btn_NewGame)
+
         
         // Load the image
         if let AgressvLogo = UIImage(named: "AgressvLogoSmallWhite.png") {
@@ -323,13 +294,7 @@ class HomeScreenViewController: UIViewController {
         // Set the font size for lbl_Playometer
         lbl_Playometer.font = UIFont.systemFont(ofSize: adjustedFontSize)
         
-        // Define Auto Layout constraints to position and scale the label
-//        NSLayoutConstraint.activate([
-//            lbl_Playometer.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 40), // Left side of the screen
-//            lbl_Playometer.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -280), // A little higher than the bottom
-//            lbl_Playometer.widthAnchor.constraint(equalToConstant: 100 * scalingFactor), // Adjust the reference size as needed
-//            lbl_Playometer.heightAnchor.constraint(equalToConstant: 30 * scalingFactor), // Adjust the reference size as needed
-//        ])
+
         
         // Define Auto Layout constraints to position and allow the label to expand its width based on content
                 NSLayoutConstraint.activate([
@@ -561,21 +526,7 @@ class HomeScreenViewController: UIViewController {
             newgamebutton.widthAnchor.constraint(equalToConstant: 50 * scalingFactor),
             newgamebutton.heightAnchor.constraint(equalToConstant: 50 * scalingFactor)
         ])
-//        // Create a UIButton with a custom type
-//                let newgamebutton = UIButton(type: .custom)
-//
-//        // Set the frame (position and size) of the button
-//                newgamebutton.frame = CGRect(x: 235 * scalingFactor, y: 135 * scalingFactor, width: 50 * scalingFactor, height: 50 * scalingFactor) // Adjust the values for your desired position and size
-//
-//                // Set the background image for the button
-//                let newgameimagebutton = UIImage(named: "NewGameIcon.png")
-//        newgamebutton.setBackgroundImage(newgameimagebutton, for: .normal)
-//
-//        // Add an action to the button to perform a segue
-//        newgamebutton.addTarget(self, action: #selector(startNewGame), for: .touchUpInside)
-//
-//                // Add the button to the view
-//                view.addSubview(newgamebutton)
+
         
         // Create the label
         let lbl_NewGame = UILabel()

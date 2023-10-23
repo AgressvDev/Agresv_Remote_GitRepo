@@ -231,28 +231,38 @@ class GameHistoryViewController: UIViewController, UITableViewDelegate, UITableV
                
                
                
-                  if let gameDate = game.gameDate?.dateValue() {
-                      // Create an attributed string with different text attributes for keys and values
-                      let attributedText = NSMutableAttributedString()
-                      attributedText.append(NSAttributedString(string: "Logged By: ", attributes: keyAttributes))
-                      
-                      // Always append the game creator's username, even if it's nil or empty
-                      attributedText.append(NSAttributedString(string: "\(game.gameCreatorUsername )\n", attributes: valueAttributes))
-                      
-                      attributedText.append(NSAttributedString(string: "Game Type: ", attributes: keyAttributes))
-                      attributedText.append(NSAttributedString(string: "\(game.gameType )\n", attributes: valueAttributes))
-                      
-                      attributedText.append(NSAttributedString(string: "Date: ", attributes: keyAttributes))
-                      attributedText.append(NSAttributedString(string: "\(dateFormatter.string(from: gameDate))\n", attributes: valueAttributes))
-                      
-                      attributedText.append(NSAttributedString(string: "Partner Username: ", attributes: keyAttributes))
-                      attributedText.append(NSAttributedString(string: "\(game.gamePartnerUsername )\n", attributes: valueAttributes))
-                      
-                      attributedText.append(NSAttributedString(string: "Opponent One Username: ", attributes: keyAttributes))
-                      attributedText.append(NSAttributedString(string: "\(game.gameOpponentOneUsername )\n", attributes: valueAttributes))
-                      
-                      attributedText.append(NSAttributedString(string: "Opponent Two Username: ", attributes: keyAttributes))
-                      attributedText.append(NSAttributedString(string: "\(game.gameOpponentTwoUsername )\n", attributes: valueAttributes))
+               if let gameDate = game.gameDate?.dateValue() {
+                       // Create an attributed string with different text attributes for keys and values
+                       let attributedText = NSMutableAttributedString()
+                       attributedText.append(NSAttributedString(string: "Logged By: ", attributes: keyAttributes))
+                       
+                       // Always append the game creator's username, even if it's nil or empty
+                       attributedText.append(NSAttributedString(string: "\(game.gameCreatorUsername )\n", attributes: valueAttributes))
+                       
+                       attributedText.append(NSAttributedString(string: "Game Type: ", attributes: keyAttributes))
+                       attributedText.append(NSAttributedString(string: "\(game.gameType )\n", attributes: valueAttributes))
+                       
+                       attributedText.append(NSAttributedString(string: "Date: ", attributes: keyAttributes))
+                       attributedText.append(NSAttributedString(string: "\(dateFormatter.string(from: gameDate))\n", attributes: valueAttributes))
+                   
+                   if game.gameType != "Singles" {
+                                   // If it's not "Singles," show Partner Username first
+                                   attributedText.append(NSAttributedString(string: "Partner Username: ", attributes: keyAttributes))
+                                   attributedText.append(NSAttributedString(string: "\(game.gamePartnerUsername )\n", attributes: valueAttributes))
+                                   
+                                   attributedText.append(NSAttributedString(string: "Opponent One Username: ", attributes: keyAttributes))
+                                   attributedText.append(NSAttributedString(string: "\(game.gameOpponentOneUsername )\n", attributes: valueAttributes))
+                                   
+                                   attributedText.append(NSAttributedString(string: "Opponent Two Username: ", attributes: keyAttributes))
+                                   attributedText.append(NSAttributedString(string: "\(game.gameOpponentTwoUsername )\n", attributes: valueAttributes))
+                               } else {
+                                   // If it's "Singles," show Opponent One 
+                                   attributedText.append(NSAttributedString(string: "Opponent One Username: ", attributes: keyAttributes))
+                                   attributedText.append(NSAttributedString(string: "\(game.gameOpponentOneUsername )\n", attributes: valueAttributes))
+                                   
+                               }
+                       
+                       
                       
                       // Use the swapped result for the current user's game result
                       var resultAttributes: [NSAttributedString.Key: Any] = [
