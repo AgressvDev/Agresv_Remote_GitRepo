@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="eUc-tI-3NJ">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -325,14 +326,23 @@
                                     <outlet property="delegate" destination="BS9-lG-8hD" id="pyb-7H-n4U"/>
                                 </connections>
                             </tableView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Game History" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OVO-P8-fDf">
+                                <rect key="frame" x="112" y="59" width="168" height="24"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Xxz-XV-X0a"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="Y8n-P7-6VB" firstAttribute="leading" secondItem="Xxz-XV-X0a" secondAttribute="leading" constant="16" id="Bss-Nr-e3o"/>
                             <constraint firstItem="Xxz-XV-X0a" firstAttribute="trailing" secondItem="Y8n-P7-6VB" secondAttribute="trailing" constant="16" id="KiP-dY-Mkt"/>
+                            <constraint firstItem="OVO-P8-fDf" firstAttribute="top" secondItem="Xxz-XV-X0a" secondAttribute="top" id="MR1-cT-zWC"/>
                             <constraint firstItem="Y8n-P7-6VB" firstAttribute="top" secondItem="Xxz-XV-X0a" secondAttribute="top" constant="80" id="Neg-mt-21u"/>
                             <constraint firstAttribute="bottom" secondItem="Y8n-P7-6VB" secondAttribute="bottom" id="bGp-00-vcg"/>
+                            <constraint firstItem="OVO-P8-fDf" firstAttribute="leading" secondItem="Xxz-XV-X0a" secondAttribute="leading" constant="112" id="oAg-zt-MMl"/>
+                            <constraint firstItem="OVO-P8-fDf" firstAttribute="centerX" secondItem="Y8n-P7-6VB" secondAttribute="centerX" id="tCD-N3-Q1e"/>
                         </constraints>
                     </view>
                     <connections>
@@ -341,7 +351,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jLJ-Ve-ljr" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3393" y="-415"/>
+            <point key="canvasLocation" x="3391.6030534351144" y="-415.49295774647891"/>
         </scene>
         <!--DoublesORSinglesVC-->
         <scene sceneID="UNf-3L-ltp">
