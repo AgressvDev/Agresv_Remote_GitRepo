@@ -32,6 +32,7 @@
 		4573B8BB2A91A868009FAE1E /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 4573B8BA2A91A868009FAE1E /* FirebaseAuth */; };
 		45A1DF4D2AA3F58D00191437 /* NewGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45A1DF4C2AA3F58D00191437 /* NewGameViewController.swift */; };
 		45B2195F2ADB9E240081AA5F /* ContactUsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45B2195E2ADB9E240081AA5F /* ContactUsViewController.swift */; };
+		45E6DC012AE7323A00345671 /* BadgesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E6DC002AE7323900345671 /* BadgesViewController.swift */; };
 		45ECA1D92AD4AC4D00A706C9 /* AccountSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45ECA1D82AD4AC4D00A706C9 /* AccountSettingsViewController.swift */; };
 		45EE444A2AAAC1DA00319597 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45EE44492AAAC1DA00319597 /* ViewController.swift */; };
 		45F489262A9D7A4C0043238C /* GaugeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F489252A9D7A4C0043238C /* GaugeView.swift */; };
@@ -83,6 +84,7 @@
 		4573B8B72A91A636009FAE1E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		45A1DF4C2AA3F58D00191437 /* NewGameViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewGameViewController.swift; sourceTree = "<group>"; };
 		45B2195E2ADB9E240081AA5F /* ContactUsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactUsViewController.swift; sourceTree = "<group>"; };
+		45E6DC002AE7323900345671 /* BadgesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BadgesViewController.swift; sourceTree = "<group>"; };
 		45ECA1D82AD4AC4D00A706C9 /* AccountSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSettingsViewController.swift; sourceTree = "<group>"; };
 		45EE44492AAAC1DA00319597 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		45F489252A9D7A4C0043238C /* GaugeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GaugeView.swift; sourceTree = "<group>"; };
@@ -143,6 +145,7 @@
 				450A49792A8EC94D00DEB7CF /* Main.storyboard */,
 				45B2195E2ADB9E240081AA5F /* ContactUsViewController.swift */,
 				45ECA1D82AD4AC4D00A706C9 /* AccountSettingsViewController.swift */,
+				45E6DBFF2AE7322200345671 /* Badges */,
 				45540EE72ACF49C900F2C932 /* GameHistory */,
 				455BDA282ACA3D6C003B2EBF /* Singles */,
 				45271D0D2AC121EA006A3050 /* DoublesSearchBars */,
@@ -209,6 +212,14 @@
 				45F7AB982AB669E700D1DA2C /* GamesCount.swift */,
 			);
 			path = Playometer;
+			sourceTree = "<group>";
+		};
+		45E6DBFF2AE7322200345671 /* Badges */ = {
+			isa = PBXGroup;
+			children = (
+				45E6DC002AE7323900345671 /* BadgesViewController.swift */,
+			);
+			path = Badges;
 			sourceTree = "<group>";
 		};
 		45FFBE5A2A96F26F004AB0D3 /* Views */ = {
@@ -383,6 +394,7 @@
 				45B2195F2ADB9E240081AA5F /* ContactUsViewController.swift in Sources */,
 				45F7AB992AB669E700D1DA2C /* GamesCount.swift in Sources */,
 				450A49762A8EC94D00DEB7CF /* SceneDelegate.swift in Sources */,
+				45E6DC012AE7323A00345671 /* BadgesViewController.swift in Sources */,
 				455BDA2C2ACA4098003B2EBF /* SinglesAddGameViewController.swift in Sources */,
 				45271D0F2AC1241F006A3050 /* DoublesSearchVCNew.swift in Sources */,
 				45F489262A9D7A4C0043238C /* GaugeView.swift in Sources */,

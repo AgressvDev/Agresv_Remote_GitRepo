@@ -299,6 +299,21 @@
             </objects>
             <point key="canvasLocation" x="4795" y="1288"/>
         </scene>
+        <!--Badges View Controller-->
+        <scene sceneID="Ymd-V1-rxL">
+            <objects>
+                <viewController storyboardIdentifier="BadgesID" id="S91-Ma-6bf" customClass="BadgesViewController" customModule="AGRESSV" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="fvz-Jw-qdz">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="4Hn-HY-UIf"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="3a5-qy-fvC" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3366" y="-1319"/>
+        </scene>
         <!--Game History View Controller-->
         <scene sceneID="RZe-p1-xsS">
             <objects>

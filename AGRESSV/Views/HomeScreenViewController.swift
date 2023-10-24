@@ -1557,8 +1557,11 @@ class HomeScreenViewController: UIViewController {
         }
 
 @objc func badgesButtonTapped() {
-        // Handle the "Badges" button tap
-        print("Badges button tapped")
+    // Create an instance of opp two VC
+    let BadgesVC = storyboard?.instantiateViewController(withIdentifier: "BadgesID") as! BadgesViewController
+    
+    // Push to the SecondViewController
+    navigationController?.pushViewController(BadgesVC, animated: true)
     }
     
     
