@@ -719,41 +719,7 @@ class AddGameViewController: UIViewController {
         
     } //end of load
     
-    func GetCurrentUserRankSecond() {
-        let db = Firestore.firestore()
-        
-        // Get the current user's email
-        guard let uid = Auth.auth().currentUser?.email else {
-            print("No current user")
-            return
-        }
-        
-        let documentRef = db.collection("Agressv_Users").document(uid)
-
-        documentRef.getDocument { (documentSnapshot, error) in
-            if let error = error {
-                print("Error: \(error)")
-            } else {
-                if let document = documentSnapshot, document.exists {
-                    if let doublesRank = document.data()?["Doubles_Rank"] as? Double {
-                        // Convert the Double to a String
-//                            let doublesRankAsString = String(format: "%.1f", doublesRank)
-//                            self.CurrentUserDoublesRank = doublesRankAsString
-                        let currentUserRank = (doublesRank * 10.0).rounded() / 10.0
-                        // Update the label here (on the main thread)
-                        DispatchQueue.main.async {
-                            // Assuming you have a label called lbl_CurrentUserRank
-                            self.CurrentUserDoublesRank = currentUserRank
-                        }
-                    } else {
-                        print("Doubles_Rank is not a valid number in the document")
-                    }
-                } else {
-                    print("Document does not exist")
-                }
-            }
-        }
-    }
+    
     
     func GetSinglesRanks(completion: @escaping () -> Void) {
             let db = Firestore.firestore()
@@ -941,176 +907,11 @@ class AddGameViewController: UIViewController {
     }
     
     
-    func GetHighScores(completion: @escaping () -> Void) {
-        let db = Firestore.firestore()
-        let agressvUsersRef = db.collection("Agressv_Users")
-        
-        
-        // Query to get the documents with max Doubles_Rank and max Singles_Rank
-        agressvUsersRef
-            .order(by: "Doubles_Rank", descending: true)
-            .limit(to: 1)
-            .getDocuments { (doublesRankQuerySnapshot, error) in
-                if let err = error {
-                    print("Error getting documents: \(err)")
-                } else {
-                    let maxDoublesRank = doublesRankQuerySnapshot?.documents.first?["Doubles_Rank"] as? Double
-                    let roundedValue = round(maxDoublesRank! * 10) / 10.0
-                    
-                    
-                    self.Highest_Score_Doubles = roundedValue
-                    print(self.Highest_Score_Doubles)
-                    // Query to get the documents with max Singles_Rank
-                    agressvUsersRef
-                        .order(by: "Singles_Rank", descending: true)
-                        .limit(to: 1)
-                        .getDocuments { (singlesRankQuerySnapshot, error) in
-                            if let err = error {
-                                print("Error getting documents: \(err)")
-                            } else {
-                                let maxSinglesRank = singlesRankQuerySnapshot?.documents.first?["Singles_Rank"] as? Double
-                                let roundedValueSingles = round(maxSinglesRank! * 10) / 10.0
-                                
-                                self.Highest_Score_Singles = roundedValueSingles
-                                print(self.Highest_Score_Singles)
-                                
-                                completion()
-                            }
-                            
-                        }
-                    
-                }
-                
-            }
-        
-    }
-    
-   
+  
+
 
     
-//    func GetCurrentUserRankAfter(completion: @escaping () -> Void) {
-//            let db = Firestore.firestore()
-//
-//
-//            // Get the current user's email
-//            guard let uid = Auth.auth().currentUser?.email else {
-//                print("No current user")
-//                return
-//            }
-//
-//            let Partner_uid = selectedCellValueEmail
-//            let Partner_ref = db.collection("Agressv_Users").document(Partner_uid)
-//
-//            let OppOne_uid = selectedCellValueOppOneEmail
-//            let OppOne_ref = db.collection("Agressv_Users").document(OppOne_uid)
-//
-//            let OppTwo_uid = selectedCellValueOppTwoEmail
-//            let OppTwo_ref = db.collection("Agressv_Users").document(OppTwo_uid)
-//
-//            let documentRef = db.collection("Agressv_Users").document(uid)
-//
-//            documentRef.getDocument { (documentSnapshot, error) in
-//                if let error = error {
-//                    print("Error: \(error)")
-//                } else {
-//                    if let document = documentSnapshot, document.exists {
-//                        if let doublesRank = document.data()?["Doubles_Rank"] as? Double {
-//                            // Convert the Double to a String
-//    //                            let doublesRankAsString = String(format: "%.1f", doublesRank)
-//    //                            self.CurrentUserDoublesRank = doublesRankAsString
-//                            let currentUserRank = (doublesRank * 10.0).rounded() / 10.0
-//                            // Update the label here (on the main thread)
-//                            DispatchQueue.main.async {
-//                                // Assuming you have a label called lbl_CurrentUserRank
-//                                self.current_user_after_log_doubles_rank = currentUserRank
-//
-//                            }
-//                        } else {
-//                            print("Doubles_Rank is not a valid number in the document")
-//                        }
-//                    } else {
-//                        print("Document does not exist")
-//                    }
-//                }
-//            }
-//
-//        Partner_ref.getDocument { (documentSnapshot, error) in
-//            if let error = error {
-//                print("Error: \(error)")
-//            } else {
-//                if let document = documentSnapshot, document.exists {
-//                    if let doublesRank = document.data()?["Doubles_Rank"] as? Double {
-//                        // Convert the Double to a String
-////                            let doublesRankAsString = String(format: "%.1f", doublesRank)
-////                            self.CurrentUserDoublesRank = doublesRankAsString
-//                        let currentUserRank = (doublesRank * 10.0).rounded() / 10.0
-//                        // Update the label here (on the main thread)
-//                        DispatchQueue.main.async {
-//                            // Assuming you have a label called lbl_CurrentUserRank
-//                            self.partner_user_after_log_doubles_rank = currentUserRank
-//
-//                        }
-//                    } else {
-//                        print("Doubles_Rank is not a valid number in the document")
-//                    }
-//                } else {
-//                    print("Document does not exist")
-//                }
-//            }
-//        }
-//
-//        OppOne_ref.getDocument { (documentSnapshot, error) in
-//            if let error = error {
-//                print("Error: \(error)")
-//            } else {
-//                if let document = documentSnapshot, document.exists {
-//                    if let doublesRank = document.data()?["Doubles_Rank"] as? Double {
-//                        // Convert the Double to a String
-////                            let doublesRankAsString = String(format: "%.1f", doublesRank)
-////                            self.CurrentUserDoublesRank = doublesRankAsString
-//                        let currentUserRank = (doublesRank * 10.0).rounded() / 10.0
-//                        // Update the label here (on the main thread)
-//                        DispatchQueue.main.async {
-//                            // Assuming you have a label called lbl_CurrentUserRank
-//                            self.oppone_user_after_log_doubles_rank = currentUserRank
-//
-//                        }
-//                    } else {
-//                        print("Doubles_Rank is not a valid number in the document")
-//                    }
-//                } else {
-//                    print("Document does not exist")
-//                }
-//            }
-//        }
-//
-//        OppTwo_ref.getDocument { (documentSnapshot, error) in
-//            if let error = error {
-//                print("Error: \(error)")
-//            } else {
-//                if let document = documentSnapshot, document.exists {
-//                    if let doublesRank = document.data()?["Doubles_Rank"] as? Double {
-//                        // Convert the Double to a String
-////                            let doublesRankAsString = String(format: "%.1f", doublesRank)
-////                            self.CurrentUserDoublesRank = doublesRankAsString
-//                        let currentUserRank = (doublesRank * 10.0).rounded() / 10.0
-//                        // Update the label here (on the main thread)
-//                        DispatchQueue.main.async {
-//                            // Assuming you have a label called lbl_CurrentUserRank
-//                            self.opptwo_user_after_log_doubles_rank = currentUserRank
-//                            completion()
-//                        }
-//                    } else {
-//                        print("Doubles_Rank is not a valid number in the document")
-//                    }
-//                } else {
-//                    print("Document does not exist")
-//                }
-//            }
-//        }
-//
-//
-//        }
+
 
     func GetCurrentUserRankAfter(completion: @escaping () -> Void) {
         let db = Firestore.firestore()
@@ -1470,7 +1271,7 @@ class AddGameViewController: UIViewController {
                         
                         //Badge logic
                     
-                    if !self.CurrentISHighestDoubles // REPLACE WITH if !CurrentUserHasHighestScore
+                    if !self.CurrentISHighestDoubles 
                             
                         {
                             
