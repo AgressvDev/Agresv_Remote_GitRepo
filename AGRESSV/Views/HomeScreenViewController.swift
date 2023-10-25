@@ -565,58 +565,8 @@ class HomeScreenViewController: UIViewController {
                     newGameButton.heightAnchor.constraint(equalToConstant: 50 * scalingFactor)
                 ])
         
-//        // GAME HISTORY BUTTON
-//
-//        // Create a UIButton with a custom type
-//        let historybutton = UIButton(type: .custom)
-//
-//        // Set the background image for the button
-//        let buttonImage = UIImage(named: "GameHistoryIconWhite.png")
-//        historybutton.setBackgroundImage(buttonImage, for: .normal)
-//
-//        // Enable Auto Layout for the button
-//        historybutton.translatesAutoresizingMaskIntoConstraints = false
-//
-//        // Add an action to the button (what happens when it's tapped)
-//        historybutton.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
-//
-//        // Add the button to the view
-//        view.addSubview(historybutton)
-//
-//        // Define Auto Layout constraints for the button
-//        NSLayoutConstraint.activate([
-//            historybutton.leadingAnchor.constraint(equalTo: myImageViewdl.trailingAnchor, constant: -20 * scalingFactor),
-//            historybutton.bottomAnchor.constraint(equalTo: myImageViewdl.topAnchor, constant: -20 * scalingFactor),
-//            historybutton.widthAnchor.constraint(equalToConstant: 50 * scalingFactor),
-//            historybutton.heightAnchor.constraint(equalToConstant: 50 * scalingFactor)
-//        ])
-//
-//
-//
-//
-//        // Create a UIButton with a custom type
-//        let newgamebutton = UIButton(type: .custom)
-//
-//        // Set the background image for the button
-//        let buttonImageng = UIImage(named: "NewGameIcon.png")
-//        newgamebutton.setBackgroundImage(buttonImageng, for: .normal)
-//
-//        // Enable Auto Layout for the button
-//        newgamebutton.translatesAutoresizingMaskIntoConstraints = false
-//
-//        // Add an action to the button to perform a segue
-//        newgamebutton.addTarget(self, action: #selector(startNewGame), for: .touchUpInside)
-//
-//        // Add the button to the view
-//        view.addSubview(newgamebutton)
-//
-//        // Define Auto Layout constraints for the button
-//        NSLayoutConstraint.activate([
-//            newgamebutton.trailingAnchor.constraint(equalTo: myImageViewd2.leadingAnchor, constant: -5 * scalingFactor),
-//            newgamebutton.bottomAnchor.constraint(equalTo: myImageViewd2.topAnchor, constant: -20 * scalingFactor),
-//            newgamebutton.widthAnchor.constraint(equalToConstant: 50 * scalingFactor),
-//            newgamebutton.heightAnchor.constraint(equalToConstant: 50 * scalingFactor)
-//        ])
+
+
 //
 //
         // Create the label
@@ -720,68 +670,8 @@ class HomeScreenViewController: UIViewController {
             lbl_Badges.heightAnchor.constraint(equalToConstant: 30 * scalingFactor) // Adjust the reference size as needed
         ])
 //
-//        // Define Auto Layout constraints to position and allow the label to expand its width based on content
-//                NSLayoutConstraint.activate([
-//                    lbl_NewGame.leadingAnchor.constraint(equalTo: newgamebutton.leadingAnchor, constant: 5 * scalingFactor), // Left side of the screen
-//                    lbl_NewGame.bottomAnchor.constraint(equalTo: newgamebutton.bottomAnchor, constant: 15 * scalingFactor), // A little higher than the bottom
-//                ])
-//
-//
-//
-//        // Create a UIButton with a custom type
-//        let AccountSettings = UIButton(type: .custom)
-//
-//        // Set the background image for the button
-//        let buttonImageAS = UIImage(named: "SettingsIcon.png")
-//        AccountSettings.setBackgroundImage(buttonImageAS, for: .normal)
-//
-//        // Enable Auto Layout for the button
-//        AccountSettings.translatesAutoresizingMaskIntoConstraints = false
-//
-//
-//        AccountSettings.addTarget(self, action: #selector(openAccountSettings), for: .touchUpInside)
-//
-//        // Add the button to the view
-//        view.addSubview(AccountSettings)
-//
-//        // Define Auto Layout constraints for the button
-//        NSLayoutConstraint.activate([
-//            AccountSettings.leadingAnchor.constraint(equalTo: newgamebutton.trailingAnchor, constant: 50 * scalingFactor),
-//            AccountSettings.bottomAnchor.constraint(equalTo: newgamebutton.topAnchor, constant: -35 * scalingFactor),
-//            AccountSettings.widthAnchor.constraint(equalToConstant: 25 * scalingFactor),
-//            AccountSettings.heightAnchor.constraint(equalToConstant: 25 * scalingFactor)
-//        ])
-//
-//
-//        // Create the label
-//        let lbl_GameHistory = UILabel()
-//        lbl_GameHistory.text = "History"
-//        lbl_GameHistory.textColor = .white
-//        lbl_GameHistory.translatesAutoresizingMaskIntoConstraints = false // Enable Auto Layout
-//        lbl_GameHistory.numberOfLines = 0 // Allow multiple lines
-//        // Add the label to the view hierarchy
-//        view.addSubview(lbl_GameHistory)
-//
-//        // Calculate the adjusted font size based on the scalingFactor
-//        let baseFontSize_lbl_GameHistory: CGFloat = 13.0 // Set your base font size
-//        let adjustedFontSize_lbl_GameHistory = baseFontSize_lbl_GameHistory * scalingFactor
-//
-//        // Set the font size for lbl_Playometer
-//        lbl_GameHistory.font = UIFont.systemFont(ofSize: adjustedFontSize_lbl_GameHistory)
-//
-//        // Define Auto Layout constraints to position and scale the label
-////        NSLayoutConstraint.activate([
-////            lbl_Playometer.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 40), // Left side of the screen
-////            lbl_Playometer.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -280), // A little higher than the bottom
-////            lbl_Playometer.widthAnchor.constraint(equalToConstant: 100 * scalingFactor), // Adjust the reference size as needed
-////            lbl_Playometer.heightAnchor.constraint(equalToConstant: 30 * scalingFactor), // Adjust the reference size as needed
-////        ])
-//
-//        // Define Auto Layout constraints to position and allow the label to expand its width based on content
-//                NSLayoutConstraint.activate([
-//                    lbl_GameHistory.leadingAnchor.constraint(equalTo: historybutton.leadingAnchor, constant: 5 * scalingFactor), // Left side of the screen
-//                    lbl_GameHistory.bottomAnchor.constraint(equalTo: historybutton.bottomAnchor, constant: 15 * scalingFactor), // A little higher than the bottom
-//                ])
+
+
         
         let fontSize: CGFloat = 25.0 // Set your default font size
         let MainfontSize: CGFloat = 30.0 // Set your default font size
@@ -795,13 +685,7 @@ class HomeScreenViewController: UIViewController {
                
             
         
-//        // Create Auto Layout constraints for the button's position and size
-//                NSLayoutConstraint.activate([
-//                    newgamebutton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-//                    newgamebutton.bottomAnchor.constraint(equalTo: MainUNLabel.topAnchor, constant: -75 * scalingFactor)
-//
-//                ])
-               
+
         
         
         
@@ -819,42 +703,8 @@ class HomeScreenViewController: UIViewController {
                     MainUNLabel.bottomAnchor.constraint(equalTo: NewDoublesRankLabel.topAnchor, constant: -45 * scalingFactor), // Adjust the vertical spacing as needed
                 ])
         
-//        // Define the initial width, height, and edge percentages
-//        var initialWidth: CGFloat = 365 // Set your initial width
-//        var initialHeight: CGFloat = 80.0  // Set your initial height
-//
-//        // Calculate the adjusted size based on the scalingFactor
-//            var adjustedWidth = initialWidth * widthScalingFactor
-//            var adjustedHeight = initialHeight * heightScalingFactor
-//
-//        if scalingFactor <= 0.95 {
-//
-//            initialWidth = 365
-//            initialHeight = 80
-//
-//             adjustedWidth = initialWidth * widthScalingFactor
-//             adjustedHeight = initialHeight * heightScalingFactor
-            
-           
-//            // Set the initial width and height of MainUNLabel
-//            NSLayoutConstraint.activate([
-//                    MainUNLabel.widthAnchor.constraint(equalToConstant: adjustedWidth),
-//                    MainUNLabel.heightAnchor.constraint(equalToConstant: adjustedHeight),
-//                    MainUNLabel.centerXAnchor.constraint(equalTo: NewSinglesRankLabel.centerXAnchor, constant: -130  * scalingFactor ),
-//                    MainUNLabel.topAnchor.constraint(equalTo: NewSinglesRankLabel.bottomAnchor, constant: -200  * scalingFactor)
-//
-//            ])
-//        }
-//
-//
-//        // Set the initial width and height of MainUNLabel
-//        NSLayoutConstraint.activate([
-//                MainUNLabel.widthAnchor.constraint(equalToConstant: adjustedWidth),
-//                MainUNLabel.heightAnchor.constraint(equalToConstant: adjustedHeight),
-//                MainUNLabel.centerXAnchor.constraint(equalTo: NewSinglesRankLabel.centerXAnchor, constant: -95  * scalingFactor),
-//                MainUNLabel.topAnchor.constraint(equalTo: NewSinglesRankLabel.bottomAnchor, constant: -220 * scalingFactor)
-//
-//        ])
+
+
         
                 NSLayoutConstraint.activate([
                     // Position NewDoublesRankLabel to the left of the center by a certain percentage
@@ -913,53 +763,7 @@ class HomeScreenViewController: UIViewController {
                     NewSinglesRankLabel.heightAnchor.constraint(equalToConstant: labelSize * scalingFactor)
                 ])
                
-//        NewDoublesRankLabel.translatesAutoresizingMaskIntoConstraints = false // Enable Auto Layout
-//
-//                // Add the label to the view hierarchy
-//                view.addSubview(NewDoublesRankLabel)
-//
-//        // Define Auto Layout constraints to set the frame and scale the label
-//                NSLayoutConstraint.activate([
-//                    NewDoublesRankLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 80 * scalingFactor),
-//                    NewDoublesRankLabel.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -500 * scalingFactor),
-//                    NewDoublesRankLabel.widthAnchor.constraint(equalToConstant: 80 * scalingFactor),
-//                    NewDoublesRankLabel.heightAnchor.constraint(equalToConstant: 80 * scalingFactor),
-//                ])
-//
-//
-//
-//
-//        NewDoublesRankLabel.layer.zPosition = 2
-//
-//        NewSinglesRankLabel.translatesAutoresizingMaskIntoConstraints = false // Enable Auto Layout
-//
-//                // Add the label to the view hierarchy
-//                view.addSubview(NewSinglesRankLabel)
-//
-//
-//        // Define Auto Layout constraints to position NewSinglesRankLabel to the right of NewDoublesRankLabel with increased spacing
-//        let spacing: CGFloat = 100 * scalingFactor // Increase the spacing here
-//
-//        NSLayoutConstraint.activate([
-//            // Align the top of NewSinglesRankLabel with the top of NewDoublesRankLabel
-//            NewSinglesRankLabel.topAnchor.constraint(equalTo: NewDoublesRankLabel.topAnchor),
-//
-//            // Set the leading (left) edge of NewSinglesRankLabel to the trailing (right) edge of NewDoublesRankLabel with increased spacing
-//            NewSinglesRankLabel.leadingAnchor.constraint(equalTo: NewDoublesRankLabel.trailingAnchor, constant: spacing),
-//
-//            // Set the width and height of NewSinglesRankLabel
-//            NewSinglesRankLabel.widthAnchor.constraint(equalToConstant: 80 * scalingFactor),
-//            NewSinglesRankLabel.heightAnchor.constraint(equalToConstant: 80 * scalingFactor),
-//
-//            // Align the bottom of NewSinglesRankLabel with the bottom of NewDoublesRankLabel
-//            NewSinglesRankLabel.bottomAnchor.constraint(equalTo: NewDoublesRankLabel.bottomAnchor),
-//        ])
-//
-//
-//
-//
-//
-//        NewSinglesRankLabel.layer.zPosition = 2
+
         
         
         //ADD GAUGE / PLAYOMETER
@@ -1189,8 +993,9 @@ class HomeScreenViewController: UIViewController {
         
         
         func GetHighScores() {
-            
+           
             let agressvUsersRef = db.collection("Agressv_Users")
+          
 
             // Query to get the documents with max Doubles_Rank and max Singles_Rank
             agressvUsersRef
@@ -1284,7 +1089,10 @@ class HomeScreenViewController: UIViewController {
                                                 BlackRibbonDoubles.heightAnchor.constraint(equalToConstant: 50 * scalingFactor), // Adjust the reference size as needed
                                             ])
                                             
+                                            //Increment 1 for Blue Ribbon_Doubles in Badges table
                                             
+                                        
+                                        
                                         }
                                         else
                                         {
@@ -1358,6 +1166,7 @@ class HomeScreenViewController: UIViewController {
                                                 BlackRibbonDoubles.heightAnchor.constraint(equalToConstant: 50 * scalingFactor), // Adjust the reference size as needed
                                             ])
                                             
+                                            //Increment 1 for Blue Ribbon_Singles in Badges table
                                             
                                         }
                                         else
@@ -1381,6 +1190,9 @@ class HomeScreenViewController: UIViewController {
                                             if self.Highest_Score_Singles == self.Player_SinglesRank
                                                     {
                                             backgroundImage.image = UIImage(named: "ChampBackground.png")
+                                                
+                                                //Increment 1 for Gold Ribbon in Badges Table
+                                               
                                                     }
                                            
                                             }

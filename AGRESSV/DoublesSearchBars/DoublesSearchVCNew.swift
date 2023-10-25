@@ -33,9 +33,17 @@ class DoublesSearchVCNew: UIViewController {
     
     var Highest_Score_Doubles: Double = 0.0
    
+    var isCurrentUserHighest: Bool = false
+    
+    var RedFang_Username: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
+        
+   
+        
         
         func GetHighScores() {
             
@@ -182,7 +190,10 @@ class DoublesSearchVCNew: UIViewController {
         
     } //end of loading
     
+
     
+   
+
     
 } //end of class
     
@@ -259,11 +270,12 @@ extension DoublesSearchVCNew: UITableViewDelegate, UITableViewDataSource {
             }
 
             cell.textLabel?.text = text
-
+        
+       
             if let _ = text.components(separatedBy: " - ").first,
-                let doublesRankString = text.components(separatedBy: " - ").last,
-                let doublesRank = Double(doublesRankString) {
-
+               let doublesRankString = text.components(separatedBy: " - ").last,
+               let doublesRank = Double(doublesRankString) {
+                
                 if doublesRank > 8.5 {
                     if doublesRank == Highest_Score_Doubles {
                         let imageView = UIImageView(image: UIImage(named: "BlueRibbon.png"))
@@ -272,7 +284,9 @@ extension DoublesSearchVCNew: UITableViewDelegate, UITableViewDataSource {
                     }
                 }
             }
-
+        
+        
+        
                    return cell
     }
 }

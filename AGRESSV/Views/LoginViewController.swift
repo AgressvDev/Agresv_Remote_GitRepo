@@ -117,8 +117,46 @@ class LoginViewController: UIViewController {
                 
                 
                 
-            
-            
+//        func addUser() {
+//            let db = Firestore.firestore()
+//
+//            // Reference to the target document in "Agressv_Badges" collection
+//            let targetDocumentRef = db.collection("Agressv_Badges")
+//
+//            // Query the "Agressv_Users" collection to get all documents
+//            db.collection("Agressv_Users").getDocuments { (querySnapshot, error) in
+//                if let error = error {
+//                    print("Error querying Agressv_Users collection: \(error)")
+//                } else {
+//                    for document in querySnapshot!.documents {
+//                        let email = document.documentID
+//                        let username = document.data()["Username"] as? String ?? ""
+//
+//                        // Create the data to set in the target document
+//                        let badgeData: [String: Any] = [
+//                            "Username": username,
+//                            "Blue_Ribbon_Doubles": 0,
+//                            "Blue_Ribbon_Singles": 0,
+//                            "Gold_Ribbon": 0,
+//                            "Red_Fangs": 0
+//                        ]
+//
+//                        // Set the data in the target document using the email as the document ID
+//                        targetDocumentRef.document(email).setData(badgeData) { error in
+//                            if let error = error {
+//                                print("Error adding document to target collection: \(error)")
+//                            } else {
+//                                print("Document added to target collection successfully for Email: \(email)")
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//
+//        // To call the function, simply use:
+//        addUser()
+
             
     } //end of load
     

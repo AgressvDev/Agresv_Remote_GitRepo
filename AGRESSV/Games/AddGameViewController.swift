@@ -16,17 +16,28 @@ class AddGameViewController: UIViewController {
     
    
     
-  
-    
- 
-    
 
     
+ //for Badge evaluations
+    var current_user_after_log_doubles_rank: Double = 0.0
+    var partner_user_after_log_doubles_rank: Double = 0.0
+    var oppone_user_after_log_doubles_rank: Double = 0.0
+    var opptwo_user_after_log_doubles_rank: Double = 0.0
 
+    var Highest_Score_Doubles: Double = 0.0
+    var Highest_Score_Singles: Double = 0.0
+    
+    var CurrentUserSinglesRank: Double = 0.0
+    var PartnerSinglesRank: Double = 0.0
+    var OppOneSinglesRank: Double = 0.0
+    var OppTwoSinglesRank: Double = 0.0
+    
+    var CurrentISHighestDoubles: Bool = false
+    var PartnerISHighestDoubles: Bool = false
+    var OppOneISHighestDoubles: Bool = false
+    var OppTwoISHighestDoubles: Bool = false
     
    //VARIABLES TO HOLD SUMS OF PLAYERS RANKINGS
-    var CurrentUserAndPartner_Combined_Rank: Double = 0.0
-    var Opponents_Combined_Rank: Double = 0.0
     var CurrentUser_PercentDiff_Increment: Double = 0.0
     var Partner_PercentDiff_Increment: Double = 0.0
     var OppOne_PercentDiff_Increment: Double = 0.0
@@ -490,7 +501,11 @@ class AddGameViewController: UIViewController {
                 }
             }
         }
+        
+        
+       
 
+        
         
         
         
@@ -679,6 +694,8 @@ class AddGameViewController: UIViewController {
   
         print(getcurrentuser())
         print(GetCurrentUserRank())
+      
+        
         
         print(GetPartnerEmail())
         print(GetOppOneEmail())
@@ -689,7 +706,7 @@ class AddGameViewController: UIViewController {
         print(GetOppTwoRank())
         
   
-        
+       
         
         lbl_Partner.text = selectedCellValue
         lbl_OppOne.text = selectedCellValueOppOne
@@ -702,9 +719,509 @@ class AddGameViewController: UIViewController {
         
     } //end of load
     
+    func GetCurrentUserRankSecond() {
+        let db = Firestore.firestore()
+        
+        // Get the current user's email
+        guard let uid = Auth.auth().currentUser?.email else {
+            print("No current user")
+            return
+        }
+        
+        let documentRef = db.collection("Agressv_Users").document(uid)
+
+        documentRef.getDocument { (documentSnapshot, error) in
+            if let error = error {
+                print("Error: \(error)")
+            } else {
+                if let document = documentSnapshot, document.exists {
+                    if let doublesRank = document.data()?["Doubles_Rank"] as? Double {
+                        // Convert the Double to a String
+//                            let doublesRankAsString = String(format: "%.1f", doublesRank)
+//                            self.CurrentUserDoublesRank = doublesRankAsString
+                        let currentUserRank = (doublesRank * 10.0).rounded() / 10.0
+                        // Update the label here (on the main thread)
+                        DispatchQueue.main.async {
+                            // Assuming you have a label called lbl_CurrentUserRank
+                            self.CurrentUserDoublesRank = currentUserRank
+                        }
+                    } else {
+                        print("Doubles_Rank is not a valid number in the document")
+                    }
+                } else {
+                    print("Document does not exist")
+                }
+            }
+        }
+    }
+    
+    func GetSinglesRanks(completion: @escaping () -> Void) {
+            let db = Firestore.firestore()
+                    
+            
+            // Get the current user's email
+            guard let uid = Auth.auth().currentUser?.email else {
+                print("No current user")
+                return
+            }
+        
+            let Partner_uid = selectedCellValueEmail
+            let Partner_ref = db.collection("Agressv_Users").document(Partner_uid)
+
+            let OppOne_uid = selectedCellValueOppOneEmail
+            let OppOne_ref = db.collection("Agressv_Users").document(OppOne_uid)
+            
+            let OppTwo_uid = selectedCellValueOppTwoEmail
+            let OppTwo_ref = db.collection("Agressv_Users").document(OppTwo_uid)
+            
+            let documentRef = db.collection("Agressv_Users").document(uid)
+
+            documentRef.getDocument { (documentSnapshot, error) in
+                if let error = error {
+                    print("Error: \(error)")
+                } else {
+                    if let document = documentSnapshot, document.exists {
+                        if let doublesRank = document.data()?["Singles_Rank"] as? Double {
+                            // Convert the Double to a String
+    //                            let doublesRankAsString = String(format: "%.1f", doublesRank)
+    //                            self.CurrentUserDoublesRank = doublesRankAsString
+                            let currentUserRank = (doublesRank * 10.0).rounded() / 10.0
+                            // Update the label here (on the main thread)
+                            DispatchQueue.main.async {
+                                // Assuming you have a label called lbl_CurrentUserRank
+                                self.CurrentUserSinglesRank = currentUserRank
+                                
+                            }
+                        } else {
+                            print("Doubles_Rank is not a valid number in the document")
+                        }
+                    } else {
+                        print("Document does not exist")
+                    }
+                }
+            }
+        
+        Partner_ref.getDocument { (documentSnapshot, error) in
+            if let error = error {
+                print("Error: \(error)")
+            } else {
+                if let document = documentSnapshot, document.exists {
+                    if let doublesRank = document.data()?["Singles_Rank"] as? Double {
+                        // Convert the Double to a String
+//                            let doublesRankAsString = String(format: "%.1f", doublesRank)
+//                            self.CurrentUserDoublesRank = doublesRankAsString
+                        let currentUserRank = (doublesRank * 10.0).rounded() / 10.0
+                        // Update the label here (on the main thread)
+                        DispatchQueue.main.async {
+                            // Assuming you have a label called lbl_CurrentUserRank
+                            self.PartnerSinglesRank = currentUserRank
+                            
+                        }
+                    } else {
+                        print("Doubles_Rank is not a valid number in the document")
+                    }
+                } else {
+                    print("Document does not exist")
+                }
+            }
+        }
+        
+        OppOne_ref.getDocument { (documentSnapshot, error) in
+            if let error = error {
+                print("Error: \(error)")
+            } else {
+                if let document = documentSnapshot, document.exists {
+                    if let doublesRank = document.data()?["Singles_Rank"] as? Double {
+                        // Convert the Double to a String
+//                            let doublesRankAsString = String(format: "%.1f", doublesRank)
+//                            self.CurrentUserDoublesRank = doublesRankAsString
+                        let currentUserRank = (doublesRank * 10.0).rounded() / 10.0
+                        // Update the label here (on the main thread)
+                        DispatchQueue.main.async {
+                            // Assuming you have a label called lbl_CurrentUserRank
+                            self.OppOneSinglesRank = currentUserRank
+                           
+                        }
+                    } else {
+                        print("Doubles_Rank is not a valid number in the document")
+                    }
+                } else {
+                    print("Document does not exist")
+                }
+            }
+        }
+        
+        OppTwo_ref.getDocument { (documentSnapshot, error) in
+            if let error = error {
+                print("Error: \(error)")
+            } else {
+                if let document = documentSnapshot, document.exists {
+                    if let doublesRank = document.data()?["Singles_Rank"] as? Double {
+                        // Convert the Double to a String
+//                            let doublesRankAsString = String(format: "%.1f", doublesRank)
+//                            self.CurrentUserDoublesRank = doublesRankAsString
+                        let currentUserRank = (doublesRank * 10.0).rounded() / 10.0
+                        // Update the label here (on the main thread)
+                        DispatchQueue.main.async {
+                            // Assuming you have a label called lbl_CurrentUserRank
+                            self.OppTwoSinglesRank = currentUserRank
+                            completion()
+                        }
+                    } else {
+                        print("Doubles_Rank is not a valid number in the document")
+                    }
+                } else {
+                    print("Document does not exist")
+                }
+            }
+        }
+        
+        }
+    
+    
+    func GetHighScoresInitial(completion: @escaping () -> Void) {
+        let db = Firestore.firestore()
+        let agressvUsersRef = db.collection("Agressv_Users")
+        
+        
+        // Query to get the documents with max Doubles_Rank and max Singles_Rank
+        agressvUsersRef
+            .order(by: "Doubles_Rank", descending: true)
+            .limit(to: 1)
+            .getDocuments { (doublesRankQuerySnapshot, error) in
+                if let err = error {
+                    print("Error getting documents: \(err)")
+                } else {
+                    let maxDoublesRank = doublesRankQuerySnapshot?.documents.first?["Doubles_Rank"] as? Double
+                    let roundedValue = round(maxDoublesRank! * 10) / 10.0
+                    
+                    
+                    self.Highest_Score_Doubles = roundedValue
+                    print(self.Highest_Score_Doubles)
+                    // Query to get the documents with max Singles_Rank
+                    agressvUsersRef
+                        .order(by: "Singles_Rank", descending: true)
+                        .limit(to: 1)
+                        .getDocuments { (singlesRankQuerySnapshot, error) in
+                            if let err = error {
+                                print("Error getting documents: \(err)")
+                            } else {
+                                let maxSinglesRank = singlesRankQuerySnapshot?.documents.first?["Singles_Rank"] as? Double
+                                let roundedValueSingles = round(maxSinglesRank! * 10) / 10.0
+                                
+                                self.Highest_Score_Singles = roundedValueSingles
+                                print(self.Highest_Score_Singles)
+                                
+                                if self.CurrentUserDoublesRank == self.Highest_Score_Doubles
+                                    {
+                                    self.CurrentISHighestDoubles = true
+                                    }
+                                if self.PartnerDoublesRank == self.Highest_Score_Doubles
+                                    {
+                                    self.PartnerISHighestDoubles = true
+                                    }
+                                if self.OppOneDoublesRank == self.Highest_Score_Doubles
+                                    {
+                                    self.OppOneISHighestDoubles = true
+                                    }
+                                if self.OppTwoDoublesRank == self.Highest_Score_Doubles
+                                    {
+                                    self.OppTwoISHighestDoubles = true
+                                    }
+                                
+                                completion()
+                            }
+                            
+                        }
+                    
+                }
+                
+            }
+        
+    }
+    
+    
+    func GetHighScores(completion: @escaping () -> Void) {
+        let db = Firestore.firestore()
+        let agressvUsersRef = db.collection("Agressv_Users")
+        
+        
+        // Query to get the documents with max Doubles_Rank and max Singles_Rank
+        agressvUsersRef
+            .order(by: "Doubles_Rank", descending: true)
+            .limit(to: 1)
+            .getDocuments { (doublesRankQuerySnapshot, error) in
+                if let err = error {
+                    print("Error getting documents: \(err)")
+                } else {
+                    let maxDoublesRank = doublesRankQuerySnapshot?.documents.first?["Doubles_Rank"] as? Double
+                    let roundedValue = round(maxDoublesRank! * 10) / 10.0
+                    
+                    
+                    self.Highest_Score_Doubles = roundedValue
+                    print(self.Highest_Score_Doubles)
+                    // Query to get the documents with max Singles_Rank
+                    agressvUsersRef
+                        .order(by: "Singles_Rank", descending: true)
+                        .limit(to: 1)
+                        .getDocuments { (singlesRankQuerySnapshot, error) in
+                            if let err = error {
+                                print("Error getting documents: \(err)")
+                            } else {
+                                let maxSinglesRank = singlesRankQuerySnapshot?.documents.first?["Singles_Rank"] as? Double
+                                let roundedValueSingles = round(maxSinglesRank! * 10) / 10.0
+                                
+                                self.Highest_Score_Singles = roundedValueSingles
+                                print(self.Highest_Score_Singles)
+                                
+                                completion()
+                            }
+                            
+                        }
+                    
+                }
+                
+            }
+        
+    }
+    
    
 
     
+//    func GetCurrentUserRankAfter(completion: @escaping () -> Void) {
+//            let db = Firestore.firestore()
+//
+//
+//            // Get the current user's email
+//            guard let uid = Auth.auth().currentUser?.email else {
+//                print("No current user")
+//                return
+//            }
+//
+//            let Partner_uid = selectedCellValueEmail
+//            let Partner_ref = db.collection("Agressv_Users").document(Partner_uid)
+//
+//            let OppOne_uid = selectedCellValueOppOneEmail
+//            let OppOne_ref = db.collection("Agressv_Users").document(OppOne_uid)
+//
+//            let OppTwo_uid = selectedCellValueOppTwoEmail
+//            let OppTwo_ref = db.collection("Agressv_Users").document(OppTwo_uid)
+//
+//            let documentRef = db.collection("Agressv_Users").document(uid)
+//
+//            documentRef.getDocument { (documentSnapshot, error) in
+//                if let error = error {
+//                    print("Error: \(error)")
+//                } else {
+//                    if let document = documentSnapshot, document.exists {
+//                        if let doublesRank = document.data()?["Doubles_Rank"] as? Double {
+//                            // Convert the Double to a String
+//    //                            let doublesRankAsString = String(format: "%.1f", doublesRank)
+//    //                            self.CurrentUserDoublesRank = doublesRankAsString
+//                            let currentUserRank = (doublesRank * 10.0).rounded() / 10.0
+//                            // Update the label here (on the main thread)
+//                            DispatchQueue.main.async {
+//                                // Assuming you have a label called lbl_CurrentUserRank
+//                                self.current_user_after_log_doubles_rank = currentUserRank
+//
+//                            }
+//                        } else {
+//                            print("Doubles_Rank is not a valid number in the document")
+//                        }
+//                    } else {
+//                        print("Document does not exist")
+//                    }
+//                }
+//            }
+//
+//        Partner_ref.getDocument { (documentSnapshot, error) in
+//            if let error = error {
+//                print("Error: \(error)")
+//            } else {
+//                if let document = documentSnapshot, document.exists {
+//                    if let doublesRank = document.data()?["Doubles_Rank"] as? Double {
+//                        // Convert the Double to a String
+////                            let doublesRankAsString = String(format: "%.1f", doublesRank)
+////                            self.CurrentUserDoublesRank = doublesRankAsString
+//                        let currentUserRank = (doublesRank * 10.0).rounded() / 10.0
+//                        // Update the label here (on the main thread)
+//                        DispatchQueue.main.async {
+//                            // Assuming you have a label called lbl_CurrentUserRank
+//                            self.partner_user_after_log_doubles_rank = currentUserRank
+//
+//                        }
+//                    } else {
+//                        print("Doubles_Rank is not a valid number in the document")
+//                    }
+//                } else {
+//                    print("Document does not exist")
+//                }
+//            }
+//        }
+//
+//        OppOne_ref.getDocument { (documentSnapshot, error) in
+//            if let error = error {
+//                print("Error: \(error)")
+//            } else {
+//                if let document = documentSnapshot, document.exists {
+//                    if let doublesRank = document.data()?["Doubles_Rank"] as? Double {
+//                        // Convert the Double to a String
+////                            let doublesRankAsString = String(format: "%.1f", doublesRank)
+////                            self.CurrentUserDoublesRank = doublesRankAsString
+//                        let currentUserRank = (doublesRank * 10.0).rounded() / 10.0
+//                        // Update the label here (on the main thread)
+//                        DispatchQueue.main.async {
+//                            // Assuming you have a label called lbl_CurrentUserRank
+//                            self.oppone_user_after_log_doubles_rank = currentUserRank
+//
+//                        }
+//                    } else {
+//                        print("Doubles_Rank is not a valid number in the document")
+//                    }
+//                } else {
+//                    print("Document does not exist")
+//                }
+//            }
+//        }
+//
+//        OppTwo_ref.getDocument { (documentSnapshot, error) in
+//            if let error = error {
+//                print("Error: \(error)")
+//            } else {
+//                if let document = documentSnapshot, document.exists {
+//                    if let doublesRank = document.data()?["Doubles_Rank"] as? Double {
+//                        // Convert the Double to a String
+////                            let doublesRankAsString = String(format: "%.1f", doublesRank)
+////                            self.CurrentUserDoublesRank = doublesRankAsString
+//                        let currentUserRank = (doublesRank * 10.0).rounded() / 10.0
+//                        // Update the label here (on the main thread)
+//                        DispatchQueue.main.async {
+//                            // Assuming you have a label called lbl_CurrentUserRank
+//                            self.opptwo_user_after_log_doubles_rank = currentUserRank
+//                            completion()
+//                        }
+//                    } else {
+//                        print("Doubles_Rank is not a valid number in the document")
+//                    }
+//                } else {
+//                    print("Document does not exist")
+//                }
+//            }
+//        }
+//
+//
+//        }
+
+    func GetCurrentUserRankAfter(completion: @escaping () -> Void) {
+        let db = Firestore.firestore()
+        var currentUserRank: Double?
+        var partnerRank: Double?
+        var oppOneRank: Double?
+        var oppTwoRank: Double?
+        
+        let dispatchGroup = DispatchGroup()
+        
+        // Get the current user's email
+        guard let uid = Auth.auth().currentUser?.email else {
+            print("No current user")
+            return
+        }
+        
+        let Partner_uid = selectedCellValueEmail
+        let Partner_ref = db.collection("Agressv_Users").document(Partner_uid)
+        
+        let OppOne_uid = selectedCellValueOppOneEmail
+        let OppOne_ref = db.collection("Agressv_Users").document(OppOne_uid)
+        
+        let OppTwo_uid = selectedCellValueOppTwoEmail
+        let OppTwo_ref = db.collection("Agressv_Users").document(OppTwo_uid)
+        
+        let documentRef = db.collection("Agressv_Users").document(uid)
+        
+        dispatchGroup.enter()
+        documentRef.getDocument { (documentSnapshot, error) in
+            defer { dispatchGroup.leave() }
+            if let error = error {
+                print("Error: \(error)")
+            } else {
+                if let document = documentSnapshot, document.exists {
+                    if let doublesRank = document.data()?["Doubles_Rank"] as? Double {
+                        currentUserRank = (doublesRank * 10.0).rounded() / 10.0
+                    } else {
+                        print("Doubles_Rank is not a valid number in the document")
+                    }
+                } else {
+                    print("Document does not exist")
+                }
+            }
+        }
+        
+        dispatchGroup.enter()
+        Partner_ref.getDocument { (documentSnapshot, error) in
+            defer { dispatchGroup.leave() }
+            if let error = error {
+                print("Error: \(error)")
+            } else {
+                if let document = documentSnapshot, document.exists {
+                    if let doublesRank = document.data()?["Doubles_Rank"] as? Double {
+                        partnerRank = (doublesRank * 10.0).rounded() / 10.0
+                    } else {
+                        print("Doubles_Rank is not a valid number in the document")
+                    }
+                } else {
+                    print("Document does not exist")
+                }
+            }
+        }
+        
+        dispatchGroup.enter()
+        OppOne_ref.getDocument { (documentSnapshot, error) in
+            defer { dispatchGroup.leave() }
+            if let error = error {
+                print("Error: \(error)")
+            } else {
+                if let document = documentSnapshot, document.exists {
+                    if let doublesRank = document.data()?["Doubles_Rank"] as? Double {
+                        oppOneRank = (doublesRank * 10.0).rounded() / 10.0
+                    } else {
+                        print("Doubles_Rank is not a valid number in the document")
+                    }
+                } else {
+                    print("Document does not exist")
+                }
+            }
+        }
+        
+        dispatchGroup.enter()
+        OppTwo_ref.getDocument { (documentSnapshot, error) in
+            defer { dispatchGroup.leave() }
+            if let error = error {
+                print("Error: \(error)")
+            } else {
+                if let document = documentSnapshot, document.exists {
+                    if let doublesRank = document.data()?["Doubles_Rank"] as? Double {
+                        oppTwoRank = (doublesRank * 10.0).rounded() / 10.0
+                    } else {
+                        print("Doubles_Rank is not a valid number in the document")
+                    }
+                } else {
+                    print("Document does not exist")
+                }
+            }
+        }
+        
+        dispatchGroup.notify(queue: .main) {
+            // All Firestore calls have completed here
+            if let currentUserRank = currentUserRank, let partnerRank = partnerRank, let oppOneRank = oppOneRank, let oppTwoRank = oppTwoRank {
+                self.current_user_after_log_doubles_rank = currentUserRank
+                self.partner_user_after_log_doubles_rank = partnerRank
+                self.oppone_user_after_log_doubles_rank = oppOneRank
+                self.opptwo_user_after_log_doubles_rank = oppTwoRank
+            }
+            completion()
+        }
+    }
+
     
     func performCalculations() {
            let CurrentUserAndPartner_Combined_Rank = CurrentUserDoublesRank + PartnerDoublesRank
@@ -791,42 +1308,52 @@ class AddGameViewController: UIViewController {
     @IBAction func btn_Log(_ sender: UIButton) {
         
         performCalculations()
-       
-
+        
+        
+        
+        
+        
+        GetSinglesRanks {
+            
+            self.GetHighScoresInitial {
+                
         let db = Firestore.firestore()
         let uid = Auth.auth().currentUser!.email
-        let Partner_ref = db.collection("Agressv_Users").document(selectedCellValueEmail)
-        let OppOne_ref = db.collection("Agressv_Users").document(selectedCellValueOppOneEmail)
-        let OppTwo_ref = db.collection("Agressv_Users").document(selectedCellValueOppTwoEmail)
+                let Partner_ref = db.collection("Agressv_Users").document(self.selectedCellValueEmail)
+                let OppOne_ref = db.collection("Agressv_Users").document(self.selectedCellValueOppOneEmail)
+                let OppTwo_ref = db.collection("Agressv_Users").document(self.selectedCellValueOppTwoEmail)
         let Game_ref = db.collection("Agressv_Games").document()
         let User_ref = db.collection("Agressv_Users").document(uid!)
-
-
-
-        if WL_Selection == "W" {
+        
+        let User_Badges_ref = db.collection("Agressv_Badges").document(uid!)
+                let Partner_Badges_ref = db.collection("Agressv_Badges").document(self.selectedCellValueEmail)
+                let OppOne_Badges_ref = db.collection("Agressv_Badges").document(self.selectedCellValueOppOneEmail)
+                let OppTwo_Badgres_ref = db.collection("Agressv_Badges").document(self.selectedCellValueOppTwoEmail)
+        
+                if self.WL_Selection == "W" {
             self.Selection_Opposite = "L"
             //increment winning side
             User_ref.updateData([
                 "Doubles_Games_Wins": FieldValue.increment(Int64(1))])
-
-            User_ref.updateData([
-                "Doubles_Rank": FieldValue.increment(CurrentUser_PercentDiff_Increment)])
             
-
+            User_ref.updateData([
+                "Doubles_Rank": FieldValue.increment(self.CurrentUser_PercentDiff_Increment)])
+            
+            
             Partner_ref.updateData([
                 "Doubles_Games_Wins": FieldValue.increment(Int64(1))])
-
+            
             Partner_ref.updateData([
-                "Doubles_Rank": FieldValue.increment(Partner_PercentDiff_Increment)])
-
+                "Doubles_Rank": FieldValue.increment(self.Partner_PercentDiff_Increment)])
+            
             //decrement losing side
             OppOne_ref.updateData([
                 "Doubles_Games_Losses": FieldValue.increment(Int64(1))])
-
+            
             OppTwo_ref.updateData([
                 "Doubles_Games_Losses": FieldValue.increment(Int64(1))])
-
-            if OppOneDoublesRank == 8.5 {
+            
+                    if self.OppOneDoublesRank == 8.5 {
                 //do not decrement
             }
             else
@@ -834,8 +1361,8 @@ class AddGameViewController: UIViewController {
                 OppOne_ref.updateData([
                     "Doubles_Rank": FieldValue.increment(-0.1)])
             }
-
-            if OppTwoDoublesRank == 8.5 {
+            
+                    if self.OppTwoDoublesRank == 8.5 {
                 //do not decrement
             }
             else
@@ -843,36 +1370,36 @@ class AddGameViewController: UIViewController {
                 OppTwo_ref.updateData([
                     "Doubles_Rank": FieldValue.increment(-0.1)])
             }
-
-
-
+            
+            
+            
         }
-
-        else if WL_Selection == "L"{
-
+        
+                else if self.WL_Selection == "L"{
+            
             self.Selection_Opposite = "W"
             //increment winning side
             OppOne_ref.updateData([
                 "Doubles_Games_Wins": FieldValue.increment(Int64(1))])
-
+            
             OppOne_ref.updateData([
-                "Doubles_Rank": FieldValue.increment(OppOne_PercentDiff_Increment)])
-
+                "Doubles_Rank": FieldValue.increment(self.OppOne_PercentDiff_Increment)])
+            
             OppTwo_ref.updateData([
                 "Doubles_Games_Wins": FieldValue.increment(Int64(1))])
-
+            
             OppTwo_ref.updateData([
-                "Doubles_Rank": FieldValue.increment(OppTwo_PercentDiff_Increment)])
-
+                "Doubles_Rank": FieldValue.increment(self.OppTwo_PercentDiff_Increment)])
+            
             //decrement losing side
             User_ref.updateData([
                 "Doubles_Games_Losses": FieldValue.increment(Int64(1))])
-
+            
             Partner_ref.updateData([
                 "Doubles_Games_Losses": FieldValue.increment(Int64(1))])
-
+            
             //if Doubles Rank is 8.5 do not decrement
-            if CurrentUserDoublesRank == 8.5 {
+                    if self.CurrentUserDoublesRank == 8.5 {
                 //do not decrement
             }
             else
@@ -880,7 +1407,7 @@ class AddGameViewController: UIViewController {
                 User_ref.updateData([
                     "Doubles_Rank": FieldValue.increment(-0.1)])
             }
-            if PartnerDoublesRank == 8.5 {
+                    if self.PartnerDoublesRank == 8.5 {
                 //do not decrement
             }
             else
@@ -889,7 +1416,7 @@ class AddGameViewController: UIViewController {
                     "Doubles_Rank": FieldValue.increment(-0.1)])
             }
         }
-
+        
         User_ref.updateData([
             "Doubles_Games_Played": FieldValue.increment(Int64(1))])
         
@@ -901,48 +1428,184 @@ class AddGameViewController: UIViewController {
         
         OppTwo_ref.updateData([
             "Doubles_Games_Played": FieldValue.increment(Int64(1))])
-
-
-        Game_ref.setData(["Game_Result" : WL_Selection, "Game_Date" : Today, "Game_Creator": uid!, "Game_Type": "Doubles", "Game_Partner": selectedCellValueEmail, "Game_Opponent_One": selectedCellValueOppOneEmail, "Game_Opponent_Two": selectedCellValueOppTwoEmail, "Game_Partner_Username": PartnerCellValue_NoRank, "Game_Opponent_One_Username": OppOneCellValue_NoRank, "Game_Opponent_Two_Username": OppTwoCellValue_NoRank, "Game_Creator_Username": CurrentUser_Username_NoRank, "Game_Result_Opposite_For_UserView": Selection_Opposite])
-
-        
-
-        //Partner_ref
-        //          Partner_ref.updateData([
-        //            "Doubles_Games_Played": FieldValue.increment(Int64(1))])
-
-        let dialogMessage = UIAlertController(title: "Success!", message: "Your game has been logged.", preferredStyle: .alert)
-
-        // Create OK button with action handler
-        let ok = UIAlertAction(title: "OK", style: .default, handler: { (action) -> Void in
-            print("Ok button tapped")
-
-            self.performSegue(withIdentifier: "LogGameGoHome", sender: self)
-        })
-
-
-
-
-        //let okAction = UIAlertAction(title: "OK", style: .default) { (action) in
-
-
-            //Add OK button to a dialog message
-            dialogMessage.addAction(ok)
-            // Present Alert to
-            self.present(dialogMessage, animated: true, completion: nil)
-
-            // Perform the segue to the target view controller
-
-
-        }
-        
-    
         
         
+                Game_ref.setData(["Game_Result" : self.WL_Selection, "Game_Date" : self.Today, "Game_Creator": uid!, "Game_Type": "Doubles", "Game_Partner": self.selectedCellValueEmail, "Game_Opponent_One": self.selectedCellValueOppOneEmail, "Game_Opponent_Two": self.selectedCellValueOppTwoEmail, "Game_Partner_Username": self.PartnerCellValue_NoRank, "Game_Opponent_One_Username": self.OppOneCellValue_NoRank, "Game_Opponent_Two_Username": self.OppTwoCellValue_NoRank, "Game_Creator_Username": self.CurrentUser_Username_NoRank, "Game_Result_Opposite_For_UserView": self.Selection_Opposite])
+        
+        
+                self.GetCurrentUserRankAfter{
+                    
+                    print("HIGH SCORE DOUBLES")
+                    print(self.Highest_Score_Doubles)
+                    print("HIGH SCORE SINGLES")
+                    print(self.Highest_Score_Singles)
+                    
+                    print("CURRENT USER PREVIOUS RANK")
+                    print(self.CurrentUserDoublesRank)
+                    print("CURRENT USER AFTER LOG RANK")
+                    print(self.current_user_after_log_doubles_rank)
+
+                    print("PARTNER USER PREVIOUS RANK")
+                    print(self.PartnerDoublesRank)
+                    print("PARTNER USER AFTER LOG RANK")
+                    print(self.partner_user_after_log_doubles_rank)
+                    print("PARTNER SINGLES RANK")
+                    print(self.PartnerSinglesRank)
+                    
+                    print("OPP ONE USER PREVIOUS RANK")
+                    print(self.OppOneDoublesRank)
+                    print("OPP ONE USER AFTER LOG RANK")
+                    print(self.oppone_user_after_log_doubles_rank)
+                    print("OPP ONE SINGLES RANK")
+                    print(self.OppOneSinglesRank)
+                    
+                    print("OPP TWO USER PREVIOUS RANK")
+                    print(self.OppTwoDoublesRank)
+                    print("OPP TWO USER AFTER LOG RANK")
+                    print(self.opptwo_user_after_log_doubles_rank)
+                    print("OPP TWO SINGLES RANK")
+                    print(self.OppTwoSinglesRank)
+                    
+                    
+                        
+                        //Badge logic
+                    
+                    if !self.CurrentISHighestDoubles // REPLACE WITH if !CurrentUserHasHighestScore
+                            
+                        {
+                            
+                            if self.current_user_after_log_doubles_rank > 8.5
+                            {
+                                if self.current_user_after_log_doubles_rank >= self.Highest_Score_Doubles
+                                {
+                                    print("INCREMENT 1 FOR BLUE RIBBON")
+                                    User_Badges_ref.updateData([
+                                        "Blue_Ribbon_Doubles": FieldValue.increment(Int64(1))])
+                                    
+                                    if self.CurrentUserSinglesRank > 8.5
+                                    {
+                                        if self.CurrentUserSinglesRank == self.Highest_Score_Singles
+                                        {
+                                            print("INCREMENT 1 FOR GOLD RIBBON")
+                                            User_Badges_ref.updateData([
+                                                "Gold_Ribbon": FieldValue.increment(Int64(1))])
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        
+                        
+                    if !self.PartnerISHighestDoubles
+                        {
+                            if self.partner_user_after_log_doubles_rank > 8.5
+                            {
+                                if self.partner_user_after_log_doubles_rank >= self.Highest_Score_Doubles
+                                {
+                                    print("PARTNER - INCREMENT 1 FOR BLUE RIBBON")
+                                    Partner_Badges_ref.updateData([
+                                        "Blue_Ribbon_Doubles": FieldValue.increment(Int64(1))])
+                                    
+                                    if self.PartnerSinglesRank > 8.5
+                                    {
+                                        if self.PartnerSinglesRank == self.Highest_Score_Singles
+                                        {
+                                            print("PARTNER - INCREMENT 1 FOR GOLD RIBBON")
+                                            Partner_Badges_ref.updateData([
+                                                "Gold_Ribbon": FieldValue.increment(Int64(1))])
+                                        }
+                                    }
+                                }
+                            }
+                            
+                        }
+                        
+                    if !self.OppTwoISHighestDoubles
+                        {
+                            if self.oppone_user_after_log_doubles_rank > 8.5
+                            {
+                                if self.oppone_user_after_log_doubles_rank >= self.Highest_Score_Doubles
+                                {
+                                    print("OPP ONE - INCREMENT 1 FOR BLUE RIBBON")
+                                    OppOne_Badges_ref.updateData([
+                                        "Blue_Ribbon_Doubles": FieldValue.increment(Int64(1))])
+                                    
+                                    if self.OppOneSinglesRank > 8.5
+                                    {
+                                        if self.OppOneSinglesRank == self.Highest_Score_Singles
+                                        {
+                                            print("OPP ONE - INCREMENT 1 FOR GOLD RIBBON")
+                                            OppOne_Badges_ref.updateData([
+                                                "Gold_Ribbon": FieldValue.increment(Int64(1))])
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        
+                    if !self.OppTwoISHighestDoubles
+                        {
+                            if self.opptwo_user_after_log_doubles_rank > 8.5
+                            {
+                                if self.opptwo_user_after_log_doubles_rank >= self.Highest_Score_Doubles
+                                {
+                                    print("OPP TWO - INCREMENT 1 FOR BLUE RIBBON")
+                                    OppTwo_Badgres_ref.updateData([
+                                        "Blue_Ribbon_Doubles": FieldValue.increment(Int64(1))])
+                                    
+                                    if self.OppTwoSinglesRank > 8.5
+                                    {
+                                        if self.OppTwoSinglesRank == self.Highest_Score_Singles
+                                        {
+                                            print("OPP TWO - INCREMENT 1 FOR GOLD RIBBON")
+                                            OppTwo_Badgres_ref.updateData([
+                                                "Gold_Ribbon": FieldValue.increment(Int64(1))])
+                                            
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    
+                            //end Badge logic
+                            
+                            
+                            
+                            
+                            let dialogMessage = UIAlertController(title: "Success!", message: "Your game has been logged.", preferredStyle: .alert)
+                            
+                            // Create OK button with action handler
+                            let ok = UIAlertAction(title: "OK", style: .default, handler: { (action) -> Void in
+                                print("Ok button tapped")
+                                
+                                self.performSegue(withIdentifier: "LogGameGoHome", sender: self)
+                            })
+                            
+                            
+                            
+                            
+                            //let okAction = UIAlertAction(title: "OK", style: .default) { (action) in
+                            
+                            
+                            //Add OK button to a dialog message
+                            dialogMessage.addAction(ok)
+                            // Present Alert to
+                            self.present(dialogMessage, animated: true, completion: nil)
+                            
+                            
+                            
+                            
+                        }
+                    }
+                    
+                }
+            }
+        
+        
     
     
     
-    
+
     
     
     
