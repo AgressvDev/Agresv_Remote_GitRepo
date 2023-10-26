@@ -22,36 +22,6 @@ class HomeScreenViewController: UIViewController {
 
     
 
-//
-//  var MainUNLabel: UILabel!
-//
-//    var lbl_DoublesHeader: UILabel!
-//     var lbl_SinglesHeader: UILabel!
-//
-//
-//   var NewDoublesRankLabel: UILabel!
-//   var NewSinglesRankLabel: UILabel!
-//
-//
-//    var DW_letter: UILabel!
-//    var DL_Letter: UILabel!
-//
-//   var SW_Letter: UILabel!
-//     var SL_Letter: UILabel!
-//
-//
-//   var DoublesWinsLabel: UILabel!
-//
-//    var DoublesLossesLabel: UILabel!
-//
-//var SinglesWinsLabel: UILabel!
-//
-//     var SinglesLossesLabel: UILabel!
-    
-    
-    
- 
-    
  
     var Highest_Score_Doubles: Double = 0.0
     var Highest_Score_Singles: Double = 0.0

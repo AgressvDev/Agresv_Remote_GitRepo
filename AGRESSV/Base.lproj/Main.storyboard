@@ -312,7 +312,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3a5-qy-fvC" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3366" y="-1319"/>
+            <point key="canvasLocation" x="3365.6488549618321" y="-1319.0140845070423"/>
         </scene>
         <!--Game History View Controller-->
         <scene sceneID="RZe-p1-xsS">
