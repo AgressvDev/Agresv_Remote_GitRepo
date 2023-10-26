@@ -12,6 +12,13 @@ import FirebaseFirestore
 class SinglesAddGameViewController: UIViewController {
     
     
+    var UserWithMostGames: String?
+    var currentuseremail: String = ""
+    
+    var CurrentISRedFangs: Bool = false
+    
+    var OppOneISRedFangs: Bool = false
+    
     
     //for Badge evaluations
     var current_user_after_log_singles_rank: Double = 0.0
@@ -45,6 +52,7 @@ class SinglesAddGameViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
         // Calculate scaling factors based on screen width and height
         let screenWidth = view.bounds.size.width
         let screenHeight = view.bounds.size.height
@@ -52,36 +60,6 @@ class SinglesAddGameViewController: UIViewController {
         let heightScalingFactor = screenHeight / 932.0 // Use a reference height, e.g., iPhone 6/6s/7/8 height
         let scalingFactor = min(widthScalingFactor, heightScalingFactor)
         let marginPercentage: CGFloat = 0.07
-        
-        
-        //BACKGROUND
-        // Create UIImageView for the background image
-        let backgroundImage = UIImageView()
-        
-        // Set the image to "AppBackgroundOne.png" from your asset catalog
-        backgroundImage.image = UIImage(named: "AppBackgroundOne")
-        
-        // Make sure the image doesn't stretch or distort
-        backgroundImage.contentMode = .scaleAspectFill
-        
-        // Add the UIImageView as a subview to the view
-        view.addSubview(backgroundImage)
-        view.sendSubviewToBack(backgroundImage)
-        
-        // Disable autoresizing mask constraints for the UIImageView
-        backgroundImage.translatesAutoresizingMaskIntoConstraints = false
-        
-        // Set constraints to cover the full screen using the scaling factor
-        // Define Auto Layout constraints to position and allow the label to expand its width based on content
-        NSLayoutConstraint.activate([
-            backgroundImage.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0 * scalingFactor), // Left side of the screen
-            backgroundImage.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0 * scalingFactor), // A little higher than the bottom
-            backgroundImage.topAnchor.constraint(equalTo: view.topAnchor, constant: 0 * scalingFactor),
-            backgroundImage.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0 * scalingFactor)
-        ])
-        
-        //END BACKGROUND
-        
         
         // Create a button
         let button = UIButton(type: .system)
@@ -136,6 +114,42 @@ class SinglesAddGameViewController: UIViewController {
             lbl_CurrentUser.bottomAnchor.constraint(equalTo: button.topAnchor, constant: -460 * scalingFactor), // Place it above the button with spacing
             lbl_CurrentUser.heightAnchor.constraint(equalToConstant: 40 * heightScalingFactor) // Adjust the height as needed
         ])
+        
+        
+        
+        
+        //BACKGROUND
+        // Create UIImageView for the background image
+        let backgroundImage = UIImageView()
+        
+        // Set the image to "AppBackgroundOne.png" from your asset catalog
+        backgroundImage.image = UIImage(named: "AppBackgroundOne")
+        
+        // Make sure the image doesn't stretch or distort
+        backgroundImage.contentMode = .scaleAspectFill
+        
+        // Add the UIImageView as a subview to the view
+        view.addSubview(backgroundImage)
+        view.sendSubviewToBack(backgroundImage)
+        
+        // Disable autoresizing mask constraints for the UIImageView
+        backgroundImage.translatesAutoresizingMaskIntoConstraints = false
+        
+        // Set constraints to cover the full screen using the scaling factor
+        // Define Auto Layout constraints to position and allow the label to expand its width based on content
+        NSLayoutConstraint.activate([
+            backgroundImage.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0 * scalingFactor), // Left side of the screen
+            backgroundImage.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0 * scalingFactor), // A little higher than the bottom
+            backgroundImage.topAnchor.constraint(equalTo: view.topAnchor, constant: 0 * scalingFactor),
+            backgroundImage.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0 * scalingFactor)
+        ])
+        
+        //END BACKGROUND
+        
+        
+        
+        
+        
         
         
         
@@ -441,12 +455,178 @@ class SinglesAddGameViewController: UIViewController {
         print(GetOppOneEmail())
         print(GetOppOneRank())
         
+        
+        
+        
+        
         lbl_OppOne.text = selectedCellValueOppOne
         
         
         
+        func findUserWithMostGamesInitial(completion: @escaping (String?) -> Void) {
+            
+            let db = Firestore.firestore()
+            let agressvGamesCollection = db.collection("Agressv_Games")
+            
+            var emailCounts = [String: Int]()
+            let fieldsToCheck = ["Game_Creator", "Game_Partner", "Game_Opponent_One", "Game_Opponent_Two"]
+            
+            let group = DispatchGroup()
+            
+            for field in fieldsToCheck {
+                group.enter()
+                agressvGamesCollection.whereField(field, isNotEqualTo: "").getDocuments { (querySnapshot, error) in
+                    if let error = error {
+                        print("Error fetching documents: \(error)")
+                    } else {
+                        for document in querySnapshot!.documents {
+                            if let email = document.data()[field] as? String {
+                                emailCounts[email, default: 0] += 1
+                            }
+                        }
+                    }
+                    group.leave()
+                }
+            }
+            
+            group.notify(queue: .main) {
+                if let mostFrequentEmail = emailCounts.max(by: { $0.1 < $1.1 })?.key {
+                    completion(mostFrequentEmail)
+                } else {
+                    completion(nil)
+                }
+            }
+        }
+        
+        
+        findUserWithMostGamesInitial { mostFrequentEmail in
+            if let email = mostFrequentEmail {
+                self.UserWithMostGames = email
+                print("INITIAL USER WITH MOST GAMES RED FANG!!!!!!: \(email)")
+                print(self.UserWithMostGames!)
+                GetCurrentUserEmailInitial
+                {
+                    
+                    print(self.currentuseremail)
+                    print(self.selectedCellValueOppOneEmail)
+                    
+                    if email == self.currentuseremail {
+                        self.CurrentISRedFangs = true
+                        print("CURRENT IS RED FANGS SET TO TRUE?")
+                        print(self.CurrentISRedFangs)
+                    }
+                    
+                    if email == self.selectedCellValueOppOneEmail {
+                        self.OppOneISRedFangs = true
+                        print("OPP ONE IS RED FANGS SET TO TRUE?")
+                        print(self.OppOneISRedFangs)
+                    }
+                    
+                }
+                }
+            }
+        
+    
+  
+        
+        func GetCurrentUserEmailInitial(completion: @escaping () -> Void) {
+            let db = Firestore.firestore()
+            let uid = CurrentUser_Username_NoRank
+            let query = db.collection("Agressv_Users").whereField("Username", isEqualTo: uid)
+
+            query.getDocuments { (querySnapshot, error) in
+                if let error = error {
+                    print("Error: \(error)")
+                } else {
+                    if let document = querySnapshot?.documents.first {
+                        // Access the value of "Email" field from the document
+                        let currentUserEmail = document.data()["Email"] as? String
+                        self.currentuseremail = currentUserEmail!
+                    } else {
+                        print("User not found")
+                    }
+                }
+                
+                completion()
+            }
+        }
+        
+        func printstuff() {
+            print("FUCK FUCK FUCK --- ")
+            print(currentuseremail)
+            print("Current User Doubles Rank:")
+            print(CurrentUserDoublesRank)
+            print("Current User email:")
+            print(currentuseremail)
+            print("Opp One display:")
+            print(selectedCellValueOppOne)
+            print("opp one rank: ")
+            print(OppOneDoublesRank)
+        }
+        
         
     } //end of load
+    
+    
+    func GetCurrentUserEmail(completion: @escaping () -> Void) {
+        let db = Firestore.firestore()
+        let uid = CurrentUser_Username_NoRank
+        let query = db.collection("Agressv_Users").whereField("Username", isEqualTo: uid)
+
+        query.getDocuments { (querySnapshot, error) in
+            if let error = error {
+                print("Error: \(error)")
+            } else {
+                if let document = querySnapshot?.documents.first {
+                    // Access the value of "Email" field from the document
+                    let currentUserEmail = document.data()["Email"] as? String
+                    self.currentuseremail = currentUserEmail!
+                } else {
+                    print("User not found")
+                }
+            }
+            
+            completion()
+        }
+    }
+
+    
+    func findUserWithMostGames(completion: @escaping (String?) -> Void) {
+        let db = Firestore.firestore()
+        let agressvGamesCollection = db.collection("Agressv_Games")
+        
+        var emailCounts = [String: Int]()
+        let fieldsToCheck = ["Game_Creator", "Game_Partner", "Game_Opponent_One", "Game_Opponent_Two"]
+        
+        let group = DispatchGroup()
+        
+        for field in fieldsToCheck {
+            group.enter()
+            agressvGamesCollection.whereField(field, isNotEqualTo: "").getDocuments { (querySnapshot, error) in
+                if let error = error {
+                    print("Error fetching documents: \(error)")
+                } else {
+                    for document in querySnapshot!.documents {
+                        if let email = document.data()[field] as? String {
+                            emailCounts[email, default: 0] += 1
+                        }
+                    }
+                }
+                group.leave()
+            }
+        }
+        
+        group.notify(queue: .main) {
+            if let mostFrequentEmail = emailCounts.max(by: { $0.1 < $1.1 })?.key {
+                completion(mostFrequentEmail)
+            } else {
+                completion(nil)
+            }
+        }
+    }
+    
+    
+    
     
     func GetDoublesRanks(completion: @escaping () -> Void) {
         let db = Firestore.firestore()
@@ -794,107 +974,145 @@ class SinglesAddGameViewController: UIViewController {
                 Game_ref.setData(["Game_Result" : self.WL_Selection, "Game_Date" : self.Today, "Game_Creator": uid!, "Game_Type": "Singles", "Game_Partner": "", "Game_Opponent_One": self.selectedCellValueOppOneEmail, "Game_Opponent_Two": "", "Game_Creator_Username": self.CurrentUser_Username_NoRank, "Game_Opponent_One_Username": self.OppOneCellValue_NoRank, "Game_Result_Opposite_For_UserView": self.Selection_Opposite])
                 
                 
+                
+                
+                
+                
                 self.GetCurrentUserRankAfter {
                     
-                    print("HIGH SCORE DOUBLES")
-                    print(self.Highest_Score_Doubles)
-                    print("HIGH SCORE SINGLES")
-                    print(self.Highest_Score_Singles)
-                    
-                    print("CURRENT USER PREVIOUS RANK")
-                    print(self.CurrentUserSinglesRank)
-                    print("CURRENT USER AFTER LOG RANK")
-                    print(self.current_user_after_log_singles_rank)
-                    
-                    print("OPP ONE USER PREVIOUS RANK")
-                    print(self.OppOneSinglesRank)
-                    print("OPP ONE USER AFTER LOG RANK")
-                    print(self.oppone_user_after_log_singles_rank)
-                    
-                    //Badge logic
-                
-                if !self.CurrentISHighestSingles 
+                    self.GetCurrentUserEmail {
                         
-                    {
-                        
-                        if self.current_user_after_log_singles_rank > 8.5
-                        {
-                            if self.current_user_after_log_singles_rank >= self.Highest_Score_Singles
+                        self.findUserWithMostGames
+                        { mostFrequentEmail in
+                            self.UserWithMostGames = mostFrequentEmail
+                            print(self.UserWithMostGames!)
+                            print(self.CurrentISRedFangs)
+                            print(self.currentuseremail)
+                            
+                            if !self.CurrentISRedFangs
                             {
-                                print("INCREMENT 1 FOR BLUE RIBBON")
-                                User_Badges_ref.updateData([
-                                    "Blue_Ribbon_Singles": FieldValue.increment(Int64(1))])
-                                
-                                if self.CurrentUserDoublesRank > 8.5
+                                if self.UserWithMostGames == self.currentuseremail
                                 {
-                                    if self.CurrentUserDoublesRank == self.Highest_Score_Doubles
-                                    {
-                                        print("INCREMENT 1 FOR GOLD RIBBON")
-                                        User_Badges_ref.updateData([
-                                            "Gold_Ribbon": FieldValue.increment(Int64(1))])
-                                    }
+                                    print("CURRENT USER - INCREMENT 1 RED FANG")
+                                    User_Badges_ref.updateData([
+                                        "Red_Fangs": FieldValue.increment(Int64(1))])
                                 }
                             }
-                        }
-                    }
-                    
-                    if !self.OppOneISHighestSingles
                             
-                        {
                             
-                            if self.oppone_user_after_log_singles_rank > 8.5
+                            
+                            if !self.OppOneISRedFangs
                             {
-                                if self.oppone_user_after_log_singles_rank >= self.Highest_Score_Singles
+                                if self.UserWithMostGames == self.selectedCellValueOppOneEmail
                                 {
-                                    print("INCREMENT 1 FOR BLUE RIBBON")
+                                    print("OPP ONE - INCREMENT 1 RED FANG")
                                     OppOne_Badges_ref.updateData([
-                                        "Blue_Ribbon_Singles": FieldValue.increment(Int64(1))])
-                                    
-                                    if self.OppOneDoublesRank > 8.5
+                                        "Red_Fangs": FieldValue.increment(Int64(1))])
+                                }
+                            }
+                            
+                            
+                            print("HIGH SCORE DOUBLES")
+                            print(self.Highest_Score_Doubles)
+                            print("HIGH SCORE SINGLES")
+                            print(self.Highest_Score_Singles)
+                            
+                            print("CURRENT USER PREVIOUS RANK")
+                            print(self.CurrentUserSinglesRank)
+                            print("CURRENT USER AFTER LOG RANK")
+                            print(self.current_user_after_log_singles_rank)
+                            
+                            print("OPP ONE USER PREVIOUS RANK")
+                            print(self.OppOneSinglesRank)
+                            print("OPP ONE USER AFTER LOG RANK")
+                            print(self.oppone_user_after_log_singles_rank)
+                            
+                            //Badge logic
+                            
+                            if !self.CurrentISHighestSingles
+                                
+                            {
+                                
+                                if self.current_user_after_log_singles_rank > 8.5
+                                {
+                                    if self.current_user_after_log_singles_rank >= self.Highest_Score_Singles
                                     {
-                                        if self.OppOneDoublesRank == self.Highest_Score_Doubles
+                                        print("INCREMENT 1 FOR BLUE RIBBON")
+                                        User_Badges_ref.updateData([
+                                            "Blue_Ribbon_Singles": FieldValue.increment(Int64(1))])
+                                        
+                                        if self.CurrentUserDoublesRank > 8.5
                                         {
-                                            print("INCREMENT 1 FOR GOLD RIBBON")
-                                            OppOne_Badges_ref.updateData([
-                                                "Gold_Ribbon": FieldValue.increment(Int64(1))])
+                                            if self.CurrentUserDoublesRank == self.Highest_Score_Doubles
+                                            {
+                                                print("INCREMENT 1 FOR GOLD RIBBON")
+                                                User_Badges_ref.updateData([
+                                                    "Gold_Ribbon": FieldValue.increment(Int64(1))])
+                                            }
                                         }
                                     }
                                 }
                             }
+                            
+                            if !self.OppOneISHighestSingles
+                                
+                            {
+                                
+                                if self.oppone_user_after_log_singles_rank > 8.5
+                                {
+                                    if self.oppone_user_after_log_singles_rank >= self.Highest_Score_Singles
+                                    {
+                                        print("INCREMENT 1 FOR BLUE RIBBON")
+                                        OppOne_Badges_ref.updateData([
+                                            "Blue_Ribbon_Singles": FieldValue.increment(Int64(1))])
+                                        
+                                        if self.OppOneDoublesRank > 8.5
+                                        {
+                                            if self.OppOneDoublesRank == self.Highest_Score_Doubles
+                                            {
+                                                print("INCREMENT 1 FOR GOLD RIBBON")
+                                                OppOne_Badges_ref.updateData([
+                                                    "Gold_Ribbon": FieldValue.increment(Int64(1))])
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            
+                            
+                            
+                            let dialogMessage = UIAlertController(title: "Success!", message: "Your game has been logged.", preferredStyle: .alert)
+                            
+                            // Create OK button with action handler
+                            let ok = UIAlertAction(title: "OK", style: .default, handler: { (action) -> Void in
+                                print("Ok button tapped")
+                                
+                                self.performSegue(withIdentifier: "LogGameGoHomeSingles", sender: self)
+                            })
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            //Add OK button to a dialog message
+                            dialogMessage.addAction(ok)
+                            // Present Alert to
+                            self.present(dialogMessage, animated: true, completion: nil)
+                            
+                            // Perform the segue to the target view controller
+                            
+                            
                         }
+                    }
                     
-               
-                
-                let dialogMessage = UIAlertController(title: "Success!", message: "Your game has been logged.", preferredStyle: .alert)
-                
-                // Create OK button with action handler
-                let ok = UIAlertAction(title: "OK", style: .default, handler: { (action) -> Void in
-                    print("Ok button tapped")
-                    
-                    self.performSegue(withIdentifier: "LogGameGoHomeSingles", sender: self)
-                })
-                
-                
-                
-                
-            
-                
-                
-                //Add OK button to a dialog message
-                dialogMessage.addAction(ok)
-                // Present Alert to
-                self.present(dialogMessage, animated: true, completion: nil)
-                
-                // Perform the segue to the target view controller
-                
+                }
                 
             }
         }
         
     }
-    
-}
-
 } //end of class
 
 

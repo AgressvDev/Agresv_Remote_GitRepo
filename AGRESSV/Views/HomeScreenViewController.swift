@@ -20,7 +20,9 @@ class HomeScreenViewController: UIViewController {
     
    
 
-    
+    var HasAchievedGoldRibbon: Bool = false
+    var HasAchievedBlueRibbon: Bool = false
+    var HasAchievedRedFangs: Bool = false
 
  
     var Highest_Score_Doubles: Double = 0.0
@@ -174,6 +176,35 @@ class HomeScreenViewController: UIViewController {
                 showLoadingView()
                 
        
+//        func deleteDocumentsInCollection() {
+//            let db = Firestore.firestore()
+//            let collectionReference = db.collection("Agressv_Games")
+//            let query = collectionReference.whereField("Game_Creator", isEqualTo: "staygold@gmail.com")
+//
+//            query.getDocuments { (querySnapshot, error) in
+//                if let error = error {
+//                    print("Error getting documents: \(error)")
+//                } else {
+//                    for document in querySnapshot!.documents {
+//                        let documentRef = collectionReference.document(document.documentID)
+//                        documentRef.delete { error in
+//                            if let error = error {
+//                                print("Error deleting document: \(error)")
+//                            } else {
+//                                print("Document successfully deleted.")
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//        print(deleteDocumentsInCollection())
+        
+    
+
+     
+
+        
         
         // Calculate scaling factors based on screen width and height
         let screenWidth = view.bounds.size.width
@@ -1177,9 +1208,104 @@ class HomeScreenViewController: UIViewController {
 
         print(GetHighScores())
        
+        //put gold ribbon top right
+        let img_GoldRibbon = UIImageView(image: UIImage(named: "GoldRibbon"))
+        img_GoldRibbon.translatesAutoresizingMaskIntoConstraints = false
+      
+    
+        //put gold ribbon top right
+        let img_BlueRibbon = UIImageView(image: UIImage(named: "BlueRibbon"))
+        img_BlueRibbon.translatesAutoresizingMaskIntoConstraints = false
+      
+      
         
-
+        //put gold ribbon top right
+        let img_RedFangs = UIImageView(image: UIImage(named: "RedFangs"))
+        img_RedFangs.translatesAutoresizingMaskIntoConstraints = false
+       
+    
+//RUN BADGES QUERY
         
+        func GetBadgeData() {
+            let db = Firestore.firestore()
+            let uid = Auth.auth().currentUser!.email
+            let docRef = db.collection("Agressv_Badges").document(uid!)
+            
+            docRef.getDocument { (document, error) in
+                if let err = error {
+                    print("Error getting documents: \(err)")
+                } else {
+                    print("\(document!.documentID) => \(String(describing: document!.data()))")
+                    
+                    //Doubles Wins number to string conversion
+                    if let GoldRibbonValue = document!.data()!["Gold_Ribbon"] as? Int,
+                    GoldRibbonValue > 0
+                        {
+                        self.HasAchievedGoldRibbon = true
+                        }
+                    
+                    if let blueRibbonDoublesValue = document!.data()!["Blue_Ribbon_Doubles"] as? Int,
+                        let blueRibbonSinglesValue = document!.data()!["Blue_Ribbon_Singles"] as? Int,
+                        blueRibbonDoublesValue > 0 || blueRibbonSinglesValue > 0 {
+                        self.HasAchievedBlueRibbon = true
+                    }
+                   
+                    if let RedFangsValue = document!.data()!["Red_Fangs"] as? Int,
+                       RedFangsValue > 0
+                        {
+                        self.HasAchievedRedFangs = true
+                        }
+                   
+                    
+                    if self.HasAchievedGoldRibbon {
+                        
+                        
+                        self.view.addSubview(img_GoldRibbon)
+                        
+                        NSLayoutConstraint.activate([
+                            img_GoldRibbon.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -30 * scalingFactor), // Anchor to the bottom of the view
+                            img_GoldRibbon.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 35 * scalingFactor),  // Anchor to the left of the view
+                            img_GoldRibbon.widthAnchor.constraint(equalToConstant: 40 * scalingFactor),
+                            img_GoldRibbon.heightAnchor.constraint(equalToConstant: 40 * scalingFactor)
+                        ])
+                        
+                    }
+                    if self.HasAchievedBlueRibbon {
+                        
+                        
+                        self.view.addSubview(img_BlueRibbon)
+                        
+                        // Position the label above the NewDoublesRankLabel
+                        NSLayoutConstraint.activate([
+                            img_BlueRibbon.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -30 * scalingFactor),
+                            img_BlueRibbon.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 70 * scalingFactor),
+                            img_BlueRibbon.widthAnchor.constraint(equalToConstant: 40 * scalingFactor),
+                            img_BlueRibbon.heightAnchor.constraint(equalToConstant: 40 * scalingFactor)
+                        ])
+                    }
+                    if self.HasAchievedRedFangs {
+                        //put red fangs top right
+                        self.view.addSubview(img_RedFangs)
+                        
+                        // Position the label above the NewDoublesRankLabel
+                        NSLayoutConstraint.activate([
+                            img_RedFangs.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -30 * scalingFactor),
+                            img_RedFangs.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 110 * scalingFactor),
+                            img_RedFangs.widthAnchor.constraint(equalToConstant: 40 * scalingFactor),
+                            img_RedFangs.heightAnchor.constraint(equalToConstant: 40 * scalingFactor)
+                        ])
+                    }
+                }
+                
+            }
+            
+        }
+        print(GetBadgeData())
+        
+        
+        
+        
+//END BADGES EVALUATION
         
         // Simulate loading for 2 seconds
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {

@@ -15,8 +15,16 @@ class AddGameViewController: UIViewController {
     
     
    
+ 
+    var UserWithMostGames: String?
+    
+    var CurrentISRedFangs: Bool = false
+    var PartnerISRedFangs: Bool = false
+    var OppOneISRedFangs: Bool = false
+    var OppTwoISRedFangs: Bool = false
     
 
+    var currentuseremail: String = ""
     
  //for Badge evaluations
     var current_user_after_log_doubles_rank: Double = 0.0
@@ -505,7 +513,29 @@ class AddGameViewController: UIViewController {
         
        
 
-        
+        func GetCurrentUserEmail() {
+            let db = Firestore.firestore()
+            let uid = CurrentUser_Username_NoRank
+            let query = db.collection("Agressv_Users").whereField("Username", isEqualTo: uid)
+
+            query.getDocuments { (querySnapshot, error) in
+                if error != nil {
+                    print("error")
+                } else {
+                    for document in querySnapshot!.documents {
+                        // Access the value of field2 from the document
+                        let CurrentUserEmail = document.data()["Email"] as? String
+                        
+                        self.currentuseremail = CurrentUserEmail!
+                        
+                        
+                    }
+                    
+                    
+                    
+                }
+            }
+        }
         
         
         
@@ -694,7 +724,7 @@ class AddGameViewController: UIViewController {
   
         print(getcurrentuser())
         print(GetCurrentUserRank())
-      
+      print(GetCurrentUserEmail())
         
         
         print(GetPartnerEmail())
@@ -714,12 +744,187 @@ class AddGameViewController: UIViewController {
         
        
         
-       
+        func findUserWithMostGamesInitial(completion: @escaping (String?) -> Void) {
+            
+            let db = Firestore.firestore()
+            let agressvGamesCollection = db.collection("Agressv_Games")
+            
+            var emailCounts = [String: Int]()
+            let fieldsToCheck = ["Game_Creator", "Game_Partner", "Game_Opponent_One", "Game_Opponent_Two"]
+            
+            let group = DispatchGroup()
+            
+            for field in fieldsToCheck {
+                group.enter()
+                agressvGamesCollection.whereField(field, isNotEqualTo: "").getDocuments { (querySnapshot, error) in
+                    if let error = error {
+                        print("Error fetching documents: \(error)")
+                    } else {
+                        for document in querySnapshot!.documents {
+                            if let email = document.data()[field] as? String {
+                                emailCounts[email, default: 0] += 1
+                            }
+                        }
+                    }
+                    group.leave()
+                }
+            }
+            
+            group.notify(queue: .main) {
+                if let mostFrequentEmail = emailCounts.max(by: { $0.1 < $1.1 })?.key {
+                    completion(mostFrequentEmail)
+                } else {
+                    completion(nil)
+                }
+            }
+        }
+        
+        
+        findUserWithMostGamesInitial { mostFrequentEmail in
+            if let email = mostFrequentEmail {
+                self.UserWithMostGames = email
+                print("INITIAL USER WITH MOST GAMES RED FANG!!!!!!: \(email)")
+                print(self.UserWithMostGames!)
+                GetCurrentUserEmailInitial
+                {
+                    
+                    print(self.currentuseremail)
+                    print(self.selectedCellValueOppOneEmail)
+                    
+                    if email == self.currentuseremail {
+                        self.CurrentISRedFangs = true
+                        print("CURRENT IS RED FANGS SET TO TRUE?")
+                        print(self.CurrentISRedFangs)
+                    }
+                    
+                    if email == self.selectedCellValueEmail {
+                        self.PartnerISRedFangs = true
+                        print("OPP ONE IS RED FANGS SET TO TRUE?")
+                        print(self.PartnerISRedFangs)
+                    }
+                    
+                    if email == self.selectedCellValueOppOneEmail {
+                        self.OppOneISRedFangs = true
+                        print("OPP ONE IS RED FANGS SET TO TRUE?")
+                        print(self.OppOneISRedFangs)
+                    }
+                    
+                    if email == self.selectedCellValueOppTwoEmail {
+                        self.OppTwoISRedFangs = true
+                        print("OPP ONE IS RED FANGS SET TO TRUE?")
+                        print(self.OppTwoISRedFangs)
+                    }
+                    
+                }
+                }
+            }
+        
+    
+  
+        
+        func GetCurrentUserEmailInitial(completion: @escaping () -> Void) {
+            let db = Firestore.firestore()
+            let uid = CurrentUser_Username_NoRank
+            let query = db.collection("Agressv_Users").whereField("Username", isEqualTo: uid)
+
+            query.getDocuments { (querySnapshot, error) in
+                if let error = error {
+                    print("Error: \(error)")
+                } else {
+                    if let document = querySnapshot?.documents.first {
+                        // Access the value of "Email" field from the document
+                        let currentUserEmail = document.data()["Email"] as? String
+                        self.currentuseremail = currentUserEmail!
+                    } else {
+                        print("User not found")
+                    }
+                }
+                
+                completion()
+            }
+        }
+        
+        func printstuff() {
+            print("FUCK FUCK FUCK --- ")
+            print(currentuseremail)
+            print("Current User Doubles Rank:")
+            print(CurrentUserDoublesRank)
+            print("Current User email:")
+            print(currentuseremail)
+            print("Opp One display:")
+            print(selectedCellValueOppOne)
+            print("opp one rank: ")
+            print(OppOneDoublesRank)
+        }
+        
+
         
         
     } //end of load
     
-    
+    func GetCurrentUserEmail(completion: @escaping () -> Void) {
+        let db = Firestore.firestore()
+        let uid = CurrentUser_Username_NoRank
+        let query = db.collection("Agressv_Users").whereField("Username", isEqualTo: uid)
+
+        query.getDocuments { (querySnapshot, error) in
+            if let error = error {
+                print("Error: \(error)")
+            } else {
+                if let document = querySnapshot?.documents.first {
+                    // Access the value of "Email" field from the document
+                    let currentUserEmail = document.data()["Email"] as? String
+                    self.currentuseremail = currentUserEmail!
+                } else {
+                    print("User not found")
+                }
+            }
+            
+            completion()
+        }
+    }
+
+
+ 
+    func findUserWithMostGames(completion: @escaping (String?) -> Void) {
+        let db = Firestore.firestore()
+        let agressvGamesCollection = db.collection("Agressv_Games")
+        
+        var emailCounts = [String: Int]()
+        let fieldsToCheck = ["Game_Creator", "Game_Partner", "Game_Opponent_One", "Game_Opponent_Two"]
+        
+        let group = DispatchGroup()
+        
+        for field in fieldsToCheck {
+            group.enter()
+            agressvGamesCollection.whereField(field, isNotEqualTo: "").getDocuments { (querySnapshot, error) in
+                if let error = error {
+                    print("Error fetching documents: \(error)")
+                } else {
+                    for document in querySnapshot!.documents {
+                        if let email = document.data()[field] as? String {
+                            emailCounts[email, default: 0] += 1
+                        }
+                    }
+                }
+                group.leave()
+            }
+        }
+        
+        group.notify(queue: .main) {
+            if let mostFrequentEmail = emailCounts.max(by: { $0.1 < $1.1 })?.key {
+                completion(mostFrequentEmail)
+            } else {
+                completion(nil)
+            }
+        }
+    }
+
+
+
+   
+
+
     
     func GetSinglesRanks(completion: @escaping () -> Void) {
             let db = Firestore.firestore()
@@ -1118,256 +1323,306 @@ class AddGameViewController: UIViewController {
             
             self.GetHighScoresInitial {
                 
-        let db = Firestore.firestore()
-        let uid = Auth.auth().currentUser!.email
+                let db = Firestore.firestore()
+                let uid = Auth.auth().currentUser!.email
                 let Partner_ref = db.collection("Agressv_Users").document(self.selectedCellValueEmail)
                 let OppOne_ref = db.collection("Agressv_Users").document(self.selectedCellValueOppOneEmail)
                 let OppTwo_ref = db.collection("Agressv_Users").document(self.selectedCellValueOppTwoEmail)
-        let Game_ref = db.collection("Agressv_Games").document()
-        let User_ref = db.collection("Agressv_Users").document(uid!)
-        
-        let User_Badges_ref = db.collection("Agressv_Badges").document(uid!)
+                let Game_ref = db.collection("Agressv_Games").document()
+                let User_ref = db.collection("Agressv_Users").document(uid!)
+                
+                let User_Badges_ref = db.collection("Agressv_Badges").document(uid!)
                 let Partner_Badges_ref = db.collection("Agressv_Badges").document(self.selectedCellValueEmail)
                 let OppOne_Badges_ref = db.collection("Agressv_Badges").document(self.selectedCellValueOppOneEmail)
                 let OppTwo_Badgres_ref = db.collection("Agressv_Badges").document(self.selectedCellValueOppTwoEmail)
-        
+                
                 if self.WL_Selection == "W" {
-            self.Selection_Opposite = "L"
-            //increment winning side
-            User_ref.updateData([
-                "Doubles_Games_Wins": FieldValue.increment(Int64(1))])
-            
-            User_ref.updateData([
-                "Doubles_Rank": FieldValue.increment(self.CurrentUser_PercentDiff_Increment)])
-            
-            
-            Partner_ref.updateData([
-                "Doubles_Games_Wins": FieldValue.increment(Int64(1))])
-            
-            Partner_ref.updateData([
-                "Doubles_Rank": FieldValue.increment(self.Partner_PercentDiff_Increment)])
-            
-            //decrement losing side
-            OppOne_ref.updateData([
-                "Doubles_Games_Losses": FieldValue.increment(Int64(1))])
-            
-            OppTwo_ref.updateData([
-                "Doubles_Games_Losses": FieldValue.increment(Int64(1))])
-            
+                    self.Selection_Opposite = "L"
+                    //increment winning side
+                    User_ref.updateData([
+                        "Doubles_Games_Wins": FieldValue.increment(Int64(1))])
+                    
+                    User_ref.updateData([
+                        "Doubles_Rank": FieldValue.increment(self.CurrentUser_PercentDiff_Increment)])
+                    
+                    
+                    Partner_ref.updateData([
+                        "Doubles_Games_Wins": FieldValue.increment(Int64(1))])
+                    
+                    Partner_ref.updateData([
+                        "Doubles_Rank": FieldValue.increment(self.Partner_PercentDiff_Increment)])
+                    
+                    //decrement losing side
+                    OppOne_ref.updateData([
+                        "Doubles_Games_Losses": FieldValue.increment(Int64(1))])
+                    
+                    OppTwo_ref.updateData([
+                        "Doubles_Games_Losses": FieldValue.increment(Int64(1))])
+                    
                     if self.OppOneDoublesRank == 8.5 {
-                //do not decrement
-            }
-            else
-            {
-                OppOne_ref.updateData([
-                    "Doubles_Rank": FieldValue.increment(-0.1)])
-            }
-            
+                        //do not decrement
+                    }
+                    else
+                    {
+                        OppOne_ref.updateData([
+                            "Doubles_Rank": FieldValue.increment(-0.1)])
+                    }
+                    
                     if self.OppTwoDoublesRank == 8.5 {
-                //do not decrement
-            }
-            else
-            {
-                OppTwo_ref.updateData([
-                    "Doubles_Rank": FieldValue.increment(-0.1)])
-            }
-            
-            
-            
-        }
-        
+                        //do not decrement
+                    }
+                    else
+                    {
+                        OppTwo_ref.updateData([
+                            "Doubles_Rank": FieldValue.increment(-0.1)])
+                    }
+                    
+                    
+                    
+                }
+                
                 else if self.WL_Selection == "L"{
-            
-            self.Selection_Opposite = "W"
-            //increment winning side
-            OppOne_ref.updateData([
-                "Doubles_Games_Wins": FieldValue.increment(Int64(1))])
-            
-            OppOne_ref.updateData([
-                "Doubles_Rank": FieldValue.increment(self.OppOne_PercentDiff_Increment)])
-            
-            OppTwo_ref.updateData([
-                "Doubles_Games_Wins": FieldValue.increment(Int64(1))])
-            
-            OppTwo_ref.updateData([
-                "Doubles_Rank": FieldValue.increment(self.OppTwo_PercentDiff_Increment)])
-            
-            //decrement losing side
-            User_ref.updateData([
-                "Doubles_Games_Losses": FieldValue.increment(Int64(1))])
-            
-            Partner_ref.updateData([
-                "Doubles_Games_Losses": FieldValue.increment(Int64(1))])
-            
-            //if Doubles Rank is 8.5 do not decrement
+                    
+                    self.Selection_Opposite = "W"
+                    //increment winning side
+                    OppOne_ref.updateData([
+                        "Doubles_Games_Wins": FieldValue.increment(Int64(1))])
+                    
+                    OppOne_ref.updateData([
+                        "Doubles_Rank": FieldValue.increment(self.OppOne_PercentDiff_Increment)])
+                    
+                    OppTwo_ref.updateData([
+                        "Doubles_Games_Wins": FieldValue.increment(Int64(1))])
+                    
+                    OppTwo_ref.updateData([
+                        "Doubles_Rank": FieldValue.increment(self.OppTwo_PercentDiff_Increment)])
+                    
+                    //decrement losing side
+                    User_ref.updateData([
+                        "Doubles_Games_Losses": FieldValue.increment(Int64(1))])
+                    
+                    Partner_ref.updateData([
+                        "Doubles_Games_Losses": FieldValue.increment(Int64(1))])
+                    
+                    //if Doubles Rank is 8.5 do not decrement
                     if self.CurrentUserDoublesRank == 8.5 {
-                //do not decrement
-            }
-            else
-            {
-                User_ref.updateData([
-                    "Doubles_Rank": FieldValue.increment(-0.1)])
-            }
+                        //do not decrement
+                    }
+                    else
+                    {
+                        User_ref.updateData([
+                            "Doubles_Rank": FieldValue.increment(-0.1)])
+                    }
                     if self.PartnerDoublesRank == 8.5 {
-                //do not decrement
-            }
-            else
-            {
+                        //do not decrement
+                    }
+                    else
+                    {
+                        Partner_ref.updateData([
+                            "Doubles_Rank": FieldValue.increment(-0.1)])
+                    }
+                }
+                
+                User_ref.updateData([
+                    "Doubles_Games_Played": FieldValue.increment(Int64(1))])
+                
                 Partner_ref.updateData([
-                    "Doubles_Rank": FieldValue.increment(-0.1)])
-            }
-        }
-        
-        User_ref.updateData([
-            "Doubles_Games_Played": FieldValue.increment(Int64(1))])
-        
-        Partner_ref.updateData([
-            "Doubles_Games_Played": FieldValue.increment(Int64(1))])
-        
-        OppOne_ref.updateData([
-            "Doubles_Games_Played": FieldValue.increment(Int64(1))])
-        
-        OppTwo_ref.updateData([
-            "Doubles_Games_Played": FieldValue.increment(Int64(1))])
-        
-        
+                    "Doubles_Games_Played": FieldValue.increment(Int64(1))])
+                
+                OppOne_ref.updateData([
+                    "Doubles_Games_Played": FieldValue.increment(Int64(1))])
+                
+                OppTwo_ref.updateData([
+                    "Doubles_Games_Played": FieldValue.increment(Int64(1))])
+                
+                
                 Game_ref.setData(["Game_Result" : self.WL_Selection, "Game_Date" : self.Today, "Game_Creator": uid!, "Game_Type": "Doubles", "Game_Partner": self.selectedCellValueEmail, "Game_Opponent_One": self.selectedCellValueOppOneEmail, "Game_Opponent_Two": self.selectedCellValueOppTwoEmail, "Game_Partner_Username": self.PartnerCellValue_NoRank, "Game_Opponent_One_Username": self.OppOneCellValue_NoRank, "Game_Opponent_Two_Username": self.OppTwoCellValue_NoRank, "Game_Creator_Username": self.CurrentUser_Username_NoRank, "Game_Result_Opposite_For_UserView": self.Selection_Opposite])
-        
-        
-                self.GetCurrentUserRankAfter{
+                
+                self.GetCurrentUserRankAfter {
                     
-                    print("HIGH SCORE DOUBLES")
-                    print(self.Highest_Score_Doubles)
-                    print("HIGH SCORE SINGLES")
-                    print(self.Highest_Score_Singles)
-                    
-                    print("CURRENT USER PREVIOUS RANK")
-                    print(self.CurrentUserDoublesRank)
-                    print("CURRENT USER AFTER LOG RANK")
-                    print(self.current_user_after_log_doubles_rank)
-
-                    print("PARTNER USER PREVIOUS RANK")
-                    print(self.PartnerDoublesRank)
-                    print("PARTNER USER AFTER LOG RANK")
-                    print(self.partner_user_after_log_doubles_rank)
-                    print("PARTNER SINGLES RANK")
-                    print(self.PartnerSinglesRank)
-                    
-                    print("OPP ONE USER PREVIOUS RANK")
-                    print(self.OppOneDoublesRank)
-                    print("OPP ONE USER AFTER LOG RANK")
-                    print(self.oppone_user_after_log_doubles_rank)
-                    print("OPP ONE SINGLES RANK")
-                    print(self.OppOneSinglesRank)
-                    
-                    print("OPP TWO USER PREVIOUS RANK")
-                    print(self.OppTwoDoublesRank)
-                    print("OPP TWO USER AFTER LOG RANK")
-                    print(self.opptwo_user_after_log_doubles_rank)
-                    print("OPP TWO SINGLES RANK")
-                    print(self.OppTwoSinglesRank)
-                    
-                    
+                    self.GetCurrentUserEmail {
                         
-                        //Badge logic
-                    
-                    if !self.CurrentISHighestDoubles 
+                        self.findUserWithMostGames
+                        { mostFrequentEmail in
+                            self.UserWithMostGames = mostFrequentEmail
                             
-                        {
-                            
-                            if self.current_user_after_log_doubles_rank > 8.5
+                            if !self.CurrentISRedFangs
                             {
-                                if self.current_user_after_log_doubles_rank >= self.Highest_Score_Doubles
+                                if self.UserWithMostGames == self.currentuseremail
                                 {
-                                    print("INCREMENT 1 FOR BLUE RIBBON")
+                                    //increment 1 red fangs
                                     User_Badges_ref.updateData([
-                                        "Blue_Ribbon_Doubles": FieldValue.increment(Int64(1))])
-                                    
-                                    if self.CurrentUserSinglesRank > 8.5
-                                    {
-                                        if self.CurrentUserSinglesRank == self.Highest_Score_Singles
-                                        {
-                                            print("INCREMENT 1 FOR GOLD RIBBON")
-                                            User_Badges_ref.updateData([
-                                                "Gold_Ribbon": FieldValue.increment(Int64(1))])
-                                        }
-                                    }
+                                        "Red_Fangs": FieldValue.increment(Int64(1))])
                                 }
                             }
-                        }
-                        
-                        
-                    if !self.PartnerISHighestDoubles
-                        {
-                            if self.partner_user_after_log_doubles_rank > 8.5
+                            
+                            if !self.PartnerISRedFangs
                             {
-                                if self.partner_user_after_log_doubles_rank >= self.Highest_Score_Doubles
+                                if self.UserWithMostGames == self.selectedCellValueEmail
                                 {
-                                    print("PARTNER - INCREMENT 1 FOR BLUE RIBBON")
+                                    //increment 1 red fangs
                                     Partner_Badges_ref.updateData([
-                                        "Blue_Ribbon_Doubles": FieldValue.increment(Int64(1))])
-                                    
-                                    if self.PartnerSinglesRank > 8.5
+                                        "Red_Fangs": FieldValue.increment(Int64(1))])
+                                }
+                            }
+                            
+                            if !self.OppOneISRedFangs
+                            {
+                                if self.UserWithMostGames == self.selectedCellValueOppOneEmail
+                                {
+                                    //increment 1 red fangs
+                                    OppOne_Badges_ref.updateData([
+                                        "Red_Fangs": FieldValue.increment(Int64(1))])
+                                }
+                            }
+                            
+                            if !self.OppTwoISRedFangs
+                            {
+                                if self.UserWithMostGames == self.selectedCellValueOppTwoEmail
+                                {
+                                    //increment 1 red fangs
+                                    OppTwo_Badgres_ref.updateData([
+                                        "Red_Fangs": FieldValue.increment(Int64(1))])
+                                }
+                            }
+                            
+                            
+                            
+                            
+                            
+                            
+                            print("HIGH SCORE DOUBLES")
+                            print(self.Highest_Score_Doubles)
+                            print("HIGH SCORE SINGLES")
+                            print(self.Highest_Score_Singles)
+                            
+                            print("CURRENT USER PREVIOUS RANK")
+                            print(self.CurrentUserDoublesRank)
+                            print("CURRENT USER AFTER LOG RANK")
+                            print(self.current_user_after_log_doubles_rank)
+                            
+                            print("PARTNER USER PREVIOUS RANK")
+                            print(self.PartnerDoublesRank)
+                            print("PARTNER USER AFTER LOG RANK")
+                            print(self.partner_user_after_log_doubles_rank)
+                            print("PARTNER SINGLES RANK")
+                            print(self.PartnerSinglesRank)
+                            
+                            print("OPP ONE USER PREVIOUS RANK")
+                            print(self.OppOneDoublesRank)
+                            print("OPP ONE USER AFTER LOG RANK")
+                            print(self.oppone_user_after_log_doubles_rank)
+                            print("OPP ONE SINGLES RANK")
+                            print(self.OppOneSinglesRank)
+                            
+                            print("OPP TWO USER PREVIOUS RANK")
+                            print(self.OppTwoDoublesRank)
+                            print("OPP TWO USER AFTER LOG RANK")
+                            print(self.opptwo_user_after_log_doubles_rank)
+                            print("OPP TWO SINGLES RANK")
+                            print(self.OppTwoSinglesRank)
+                            
+                            
+                            
+                            //Badge logic
+                            
+                            if !self.CurrentISHighestDoubles
+                                
+                            {
+                                
+                                if self.current_user_after_log_doubles_rank > 8.5
+                                {
+                                    if self.current_user_after_log_doubles_rank >= self.Highest_Score_Doubles
                                     {
-                                        if self.PartnerSinglesRank == self.Highest_Score_Singles
+                                        print("INCREMENT 1 FOR BLUE RIBBON")
+                                        User_Badges_ref.updateData([
+                                            "Blue_Ribbon_Doubles": FieldValue.increment(Int64(1))])
+                                        
+                                        if self.CurrentUserSinglesRank > 8.5
                                         {
-                                            print("PARTNER - INCREMENT 1 FOR GOLD RIBBON")
-                                            Partner_Badges_ref.updateData([
-                                                "Gold_Ribbon": FieldValue.increment(Int64(1))])
+                                            if self.CurrentUserSinglesRank == self.Highest_Score_Singles
+                                            {
+                                                print("INCREMENT 1 FOR GOLD RIBBON")
+                                                User_Badges_ref.updateData([
+                                                    "Gold_Ribbon": FieldValue.increment(Int64(1))])
+                                            }
                                         }
                                     }
                                 }
                             }
                             
-                        }
-                        
-                    if !self.OppTwoISHighestDoubles
-                        {
-                            if self.oppone_user_after_log_doubles_rank > 8.5
+                            
+                            if !self.PartnerISHighestDoubles
                             {
-                                if self.oppone_user_after_log_doubles_rank >= self.Highest_Score_Doubles
+                                if self.partner_user_after_log_doubles_rank > 8.5
                                 {
-                                    print("OPP ONE - INCREMENT 1 FOR BLUE RIBBON")
-                                    OppOne_Badges_ref.updateData([
-                                        "Blue_Ribbon_Doubles": FieldValue.increment(Int64(1))])
-                                    
-                                    if self.OppOneSinglesRank > 8.5
+                                    if self.partner_user_after_log_doubles_rank >= self.Highest_Score_Doubles
                                     {
-                                        if self.OppOneSinglesRank == self.Highest_Score_Singles
+                                        print("PARTNER - INCREMENT 1 FOR BLUE RIBBON")
+                                        Partner_Badges_ref.updateData([
+                                            "Blue_Ribbon_Doubles": FieldValue.increment(Int64(1))])
+                                        
+                                        if self.PartnerSinglesRank > 8.5
                                         {
-                                            print("OPP ONE - INCREMENT 1 FOR GOLD RIBBON")
-                                            OppOne_Badges_ref.updateData([
-                                                "Gold_Ribbon": FieldValue.increment(Int64(1))])
+                                            if self.PartnerSinglesRank == self.Highest_Score_Singles
+                                            {
+                                                print("PARTNER - INCREMENT 1 FOR GOLD RIBBON")
+                                                Partner_Badges_ref.updateData([
+                                                    "Gold_Ribbon": FieldValue.increment(Int64(1))])
+                                            }
+                                        }
+                                    }
+                                }
+                                
+                            }
+                            
+                            if !self.OppTwoISHighestDoubles
+                            {
+                                if self.oppone_user_after_log_doubles_rank > 8.5
+                                {
+                                    if self.oppone_user_after_log_doubles_rank >= self.Highest_Score_Doubles
+                                    {
+                                        print("OPP ONE - INCREMENT 1 FOR BLUE RIBBON")
+                                        OppOne_Badges_ref.updateData([
+                                            "Blue_Ribbon_Doubles": FieldValue.increment(Int64(1))])
+                                        
+                                        if self.OppOneSinglesRank > 8.5
+                                        {
+                                            if self.OppOneSinglesRank == self.Highest_Score_Singles
+                                            {
+                                                print("OPP ONE - INCREMENT 1 FOR GOLD RIBBON")
+                                                OppOne_Badges_ref.updateData([
+                                                    "Gold_Ribbon": FieldValue.increment(Int64(1))])
+                                            }
                                         }
                                     }
                                 }
                             }
-                        }
-                        
-                    if !self.OppTwoISHighestDoubles
-                        {
-                            if self.opptwo_user_after_log_doubles_rank > 8.5
+                            
+                            if !self.OppTwoISHighestDoubles
                             {
-                                if self.opptwo_user_after_log_doubles_rank >= self.Highest_Score_Doubles
+                                if self.opptwo_user_after_log_doubles_rank > 8.5
                                 {
-                                    print("OPP TWO - INCREMENT 1 FOR BLUE RIBBON")
-                                    OppTwo_Badgres_ref.updateData([
-                                        "Blue_Ribbon_Doubles": FieldValue.increment(Int64(1))])
-                                    
-                                    if self.OppTwoSinglesRank > 8.5
+                                    if self.opptwo_user_after_log_doubles_rank >= self.Highest_Score_Doubles
                                     {
-                                        if self.OppTwoSinglesRank == self.Highest_Score_Singles
+                                        print("OPP TWO - INCREMENT 1 FOR BLUE RIBBON")
+                                        OppTwo_Badgres_ref.updateData([
+                                            "Blue_Ribbon_Doubles": FieldValue.increment(Int64(1))])
+                                        
+                                        if self.OppTwoSinglesRank > 8.5
                                         {
-                                            print("OPP TWO - INCREMENT 1 FOR GOLD RIBBON")
-                                            OppTwo_Badgres_ref.updateData([
-                                                "Gold_Ribbon": FieldValue.increment(Int64(1))])
-                                            
+                                            if self.OppTwoSinglesRank == self.Highest_Score_Singles
+                                            {
+                                                print("OPP TWO - INCREMENT 1 FOR GOLD RIBBON")
+                                                OppTwo_Badgres_ref.updateData([
+                                                    "Gold_Ribbon": FieldValue.increment(Int64(1))])
+                                                
+                                            }
                                         }
                                     }
                                 }
                             }
-                        }
-                    
+                            
                             //end Badge logic
                             
                             
@@ -1401,9 +1656,10 @@ class AddGameViewController: UIViewController {
                     
                 }
             }
+            
+        }
         
-        
-    
+    }
     
     
 

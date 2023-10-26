@@ -11,43 +11,11 @@ import FirebaseFirestore
 
 class BadgesViewController: UIViewController {
     
-    let lbl_GoldRibbon_Value: UILabel = {
-        let label = UILabel()
-        label.textAlignment = .center
-        label.font = UIFont(name: "Impact", size: 20)
-        label.textColor = .black // Set your desired text color
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
+    
 
-    let lbl_BlueRibbonDoubles_Value: UILabel = {
-        let label = UILabel()
-        label.textAlignment = .center
-        label.font = UIFont(name: "Impact", size: 20)
-        label.textColor = .black // Set your desired text color
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
     
-    let lbl_BlueRibbonSingles_Value: UILabel = {
-        let label = UILabel()
-        label.textAlignment = .center
-        label.font = UIFont(name: "Impact", size: 20)
-        label.textColor = .black // Set your desired text color
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
-    
-    
-    let lbl_RedFangs_Value: UILabel = {
-        let label = UILabel()
-        label.textAlignment = .center
-        label.font = UIFont(name: "Impact", size: 20)
-        label.textColor = .black // Set your desired text color
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
 
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -64,40 +32,7 @@ class BadgesViewController: UIViewController {
 
 
         
-        func GetBadgeData() {
-            let db = Firestore.firestore()
-            let uid = Auth.auth().currentUser!.email
-            let docRef = db.collection("Agressv_Badges").document(uid!)
-            
-            docRef.getDocument { (document, error) in
-                if let err = error {
-                    print("Error getting documents: \(err)")
-                } else {
-                    print("\(document!.documentID) => \(String(describing: document!.data()))")
-                    
-                    //Doubles Wins number to string conversion
-                    let GoldRibbonValue = document!.data()!["Gold_Ribbon"]
-                    let GoldRibbonValue_As_String = String(describing: GoldRibbonValue!)
-                    self.lbl_GoldRibbon_Value.text = GoldRibbonValue_As_String
-                    
-                    let BlueRibbonDoubles_Value = document!.data()!["Blue_Ribbon_Doubles"]
-                    let BlueRibbonDoubles_Value_As_String = String(describing: BlueRibbonDoubles_Value!)
-                    self.lbl_BlueRibbonDoubles_Value.text = BlueRibbonDoubles_Value_As_String
-                    
-                    let BlueRibbonSingles_Value = document!.data()!["Blue_Ribbon_Singles"]
-                    let BlueRibbonSingles_Value_As_String = String(describing: BlueRibbonSingles_Value!)
-                    self.lbl_BlueRibbonSingles_Value.text = BlueRibbonSingles_Value_As_String
-                    
-                    let RedFangsValue = document!.data()!["Red_Fangs"]
-                    let RedFangsValue_As_String = String(describing: RedFangsValue!)
-                    self.lbl_RedFangs_Value.text = RedFangsValue_As_String
-                }
-                
-            }
-            
-        }
-        print(GetBadgeData())
-   
+        
         //BACKGROUND
         // Create UIImageView for the background image
                let backgroundImage = UIImageView()
@@ -140,7 +75,7 @@ class BadgesViewController: UIViewController {
        NSLayoutConstraint.activate([
           
         goldRibbon.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 45 * scalingFactor),
-        goldRibbon.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 25 * scalingFactor),
+        goldRibbon.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 55 * scalingFactor),
         goldRibbon.widthAnchor.constraint(equalToConstant: 95 * scalingFactor), // Adjust the reference size as needed
         goldRibbon.heightAnchor.constraint(equalToConstant: 95 * scalingFactor) // Adjust the reference size as needed
        ])
@@ -309,7 +244,7 @@ class BadgesViewController: UIViewController {
                let badgeStatsLabel = UILabel()
                badgeStatsLabel.text = "Your Badge Stats:"
                badgeStatsLabel.translatesAutoresizingMaskIntoConstraints = false // Disable autoresizing mask constraints
-
+               badgeStatsLabel.textColor = .black
         
         
         // Calculate the adjusted font size based on the scalingFactor
@@ -324,8 +259,8 @@ class BadgesViewController: UIViewController {
         
         
         NSLayoutConstraint.activate([
-            badgeStatsLabel.topAnchor.constraint(equalTo: RedFangs.bottomAnchor, constant: 40 * scalingFactor),
-            badgeStatsLabel.leadingAnchor.constraint(equalTo: RedFangs.leadingAnchor, constant: 40 * scalingFactor)
+            badgeStatsLabel.topAnchor.constraint(equalTo: RedFangs.bottomAnchor, constant: 65 * scalingFactor),
+            badgeStatsLabel.leadingAnchor.constraint(equalTo: goldRibbon.leadingAnchor)
             
         ])
         
@@ -334,7 +269,7 @@ class BadgesViewController: UIViewController {
                let GoldRibbonStatLabel = UILabel()
         GoldRibbonStatLabel.text = "Gold Ribbon:"
         GoldRibbonStatLabel.translatesAutoresizingMaskIntoConstraints = false // Disable autoresizing mask constraints
-
+        GoldRibbonStatLabel.textColor = .black
         
         
         // Calculate the adjusted font size based on the scalingFactor
@@ -358,7 +293,7 @@ class BadgesViewController: UIViewController {
         let BlueRibbonDoublesStatLabel = UILabel()
         BlueRibbonDoublesStatLabel.text = "Blue Ribbon (Doubles):"
         BlueRibbonDoublesStatLabel.translatesAutoresizingMaskIntoConstraints = false // Disable autoresizing mask constraints
-
+        BlueRibbonDoublesStatLabel.textColor = .black
  
  
  // Calculate the adjusted font size based on the scalingFactor
@@ -382,7 +317,7 @@ class BadgesViewController: UIViewController {
         let BlueRibbonSinglesStatLabel = UILabel()
         BlueRibbonSinglesStatLabel.text = "Blue Ribbon (Singles):"
         BlueRibbonSinglesStatLabel.translatesAutoresizingMaskIntoConstraints = false // Disable autoresizing mask constraints
-
+        BlueRibbonSinglesStatLabel.textColor = .black
  
  
  // Calculate the adjusted font size based on the scalingFactor
@@ -406,7 +341,7 @@ class BadgesViewController: UIViewController {
         let RedFangsStatLabel = UILabel()
         RedFangsStatLabel.text = "Red Fangs:"
         RedFangsStatLabel.translatesAutoresizingMaskIntoConstraints = false // Disable autoresizing mask constraints
-
+        RedFangsStatLabel.textColor = .black
  
  
  // Calculate the adjusted font size based on the scalingFactor
@@ -427,6 +362,67 @@ class BadgesViewController: UIViewController {
  ])
         
         
+        let lbl_badgeinfo = UILabel()
+        lbl_badgeinfo.text = "If you achieve a badge it will stay on your home screen"
+        lbl_badgeinfo.translatesAutoresizingMaskIntoConstraints = false // Disable autoresizing mask constraints
+        lbl_badgeinfo.textColor = .black
+        
+ 
+ // Calculate the adjusted font size based on the scalingFactor
+ let baseFontSize_lbl_badgeinfo: CGFloat = 13.0 // Set your base font size
+ let adjustedFontSize_lbl_badgeinfo = baseFontSize_lbl_badgeinfo * scalingFactor
+
+       
+        // Create an italic variant of the system font
+        let italicFont = UIFont.italicSystemFont(ofSize: adjustedFontSize_lbl_badgeinfo)
+
+        lbl_badgeinfo.font = italicFont // Set the italic font
+        // Add the label to the view
+        view.addSubview(lbl_badgeinfo)
+ 
+ 
+ 
+        NSLayoutConstraint.activate([
+            lbl_badgeinfo.topAnchor.constraint(equalTo: RedFangsStatLabel.bottomAnchor, constant: 30 * scalingFactor),
+            lbl_badgeinfo.centerXAnchor.constraint(equalTo: view.centerXAnchor) // Center horizontally
+        ])
+        
+        let lbl_GoldRibbon_Value: UILabel = {
+            let label = UILabel()
+            label.textAlignment = .center
+            label.font = UIFont(name: "Impact", size: 20)
+            label.textColor = .black // Set your desired text color
+            label.translatesAutoresizingMaskIntoConstraints = false
+            return label
+        }()
+        
+        let lbl_BlueRibbonDoubles_Value: UILabel = {
+            let label = UILabel()
+            label.textAlignment = .center
+            label.font = UIFont(name: "Impact", size: 20)
+            label.textColor = .black // Set your desired text color
+            label.translatesAutoresizingMaskIntoConstraints = false
+            return label
+        }()
+        
+        let lbl_BlueRibbonSingles_Value: UILabel = {
+            let label = UILabel()
+            label.textAlignment = .center
+            label.font = UIFont(name: "Impact", size: 20)
+            label.textColor = .black // Set your desired text color
+            label.translatesAutoresizingMaskIntoConstraints = false
+            return label
+        }()
+        
+        
+        let lbl_RedFangs_Value: UILabel = {
+            let label = UILabel()
+            label.textAlignment = .center
+            label.font = UIFont(name: "Impact", size: 20)
+            label.textColor = .black // Set your desired text color
+            label.translatesAutoresizingMaskIntoConstraints = false
+            return label
+        }()
         
         view.addSubview(lbl_GoldRibbon_Value)
         
@@ -461,7 +457,45 @@ class BadgesViewController: UIViewController {
         ])
         
  
+        lbl_GoldRibbon_Value.textColor = UIColor.black
+        lbl_BlueRibbonDoubles_Value.textColor = UIColor.black
+        lbl_BlueRibbonSingles_Value.textColor = UIColor.black
+        lbl_RedFangs_Value.textColor = UIColor.black
         
+        func GetBadgeData() {
+            let db = Firestore.firestore()
+            let uid = Auth.auth().currentUser!.email
+            let docRef = db.collection("Agressv_Badges").document(uid!)
+            
+            docRef.getDocument { (document, error) in
+                if let err = error {
+                    print("Error getting documents: \(err)")
+                } else {
+                    print("\(document!.documentID) => \(String(describing: document!.data()))")
+                    
+                    //Doubles Wins number to string conversion
+                    let GoldRibbonValue = document!.data()!["Gold_Ribbon"]
+                    let GoldRibbonValue_As_String = String(describing: GoldRibbonValue!)
+                    lbl_GoldRibbon_Value.text = GoldRibbonValue_As_String
+                    
+                    let BlueRibbonDoubles_Value = document!.data()!["Blue_Ribbon_Doubles"]
+                    let BlueRibbonDoubles_Value_As_String = String(describing: BlueRibbonDoubles_Value!)
+                    lbl_BlueRibbonDoubles_Value.text = BlueRibbonDoubles_Value_As_String
+                    
+                    let BlueRibbonSingles_Value = document!.data()!["Blue_Ribbon_Singles"]
+                    let BlueRibbonSingles_Value_As_String = String(describing: BlueRibbonSingles_Value!)
+                    lbl_BlueRibbonSingles_Value.text = BlueRibbonSingles_Value_As_String
+                    
+                    let RedFangsValue = document!.data()!["Red_Fangs"]
+                    let RedFangsValue_As_String = String(describing: RedFangsValue!)
+                    lbl_RedFangs_Value.text = RedFangsValue_As_String
+                }
+                
+            }
+            
+        }
+        print(GetBadgeData())
+   
         
     } //end of load
     
@@ -469,7 +503,6 @@ class BadgesViewController: UIViewController {
     
     
     
-   
     
 
 }//end of class
