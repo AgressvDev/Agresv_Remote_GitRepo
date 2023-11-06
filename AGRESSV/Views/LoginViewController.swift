@@ -71,20 +71,7 @@ class LoginViewController: UIViewController {
             backgroundImage.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0 * scalingFactor)
         ])
 
-        //END BACKGROUND
-//        // Do any additional setup after loading the view.
-//
-//        let gradientLayer = CAGradientLayer()
-//
-//        gradientLayer.frame = view.bounds
-//
-//        gradientLayer.colors = [UIColor.black.cgColor, UIColor.white.cgColor] //UIColor.red.cgColor]
-//
-//        gradientLayer.shouldRasterize = true
-//
-//        backgroundGradView.layer.addSublayer(gradientLayer)
-//
-//        self.view.layer.insertSublayer(gradientLayer, at: 0)
+
         
        
        
@@ -116,47 +103,14 @@ class LoginViewController: UIViewController {
             btn_ForgotPassword.addTarget(self, action: #selector(btn_ForgotPasswordAction(_:)), for: .touchUpInside)
                 
                 
-                
-//        func addUser() {
-//            let db = Firestore.firestore()
-//
-//            // Reference to the target document in "Agressv_Badges" collection
-//            let targetDocumentRef = db.collection("Agressv_Badges")
-//
-//            // Query the "Agressv_Users" collection to get all documents
-//            db.collection("Agressv_Users").getDocuments { (querySnapshot, error) in
-//                if let error = error {
-//                    print("Error querying Agressv_Users collection: \(error)")
-//                } else {
-//                    for document in querySnapshot!.documents {
-//                        let email = document.documentID
-//                        let username = document.data()["Username"] as? String ?? ""
-//
-//                        // Create the data to set in the target document
-//                        let badgeData: [String: Any] = [
-//                            "Username": username,
-//                            "Blue_Ribbon_Doubles": 0,
-//                            "Blue_Ribbon_Singles": 0,
-//                            "Gold_Ribbon": 0,
-//                            "Red_Fangs": 0
-//                        ]
-//
-//                        // Set the data in the target document using the email as the document ID
-//                        targetDocumentRef.document(email).setData(badgeData) { error in
-//                            if let error = error {
-//                                print("Error adding document to target collection: \(error)")
-//                            } else {
-//                                print("Document added to target collection successfully for Email: \(email)")
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//        }
+
+
 //
 //        // To call the function, simply use:
 //        addUser()
-
+        PasswordTextField.isSecureTextEntry = true
+        
+       
             
     } //end of load
     
@@ -221,6 +175,8 @@ class LoginViewController: UIViewController {
         guard let email = EmailTextField.text else {return}
         guard let password = PasswordTextField.text else {return}
         
+       
+        
         Auth.auth().signIn(withEmail: email, password: password) { Result, error in
             if error != nil {
                 // Create new Alert
@@ -238,6 +194,11 @@ class LoginViewController: UIViewController {
             }
             else {
                 //go to User's Homescreen
+                
+               
+
+            
+                
                 self.performSegue(withIdentifier: "LoginGoToHome", sender: self)
             }
         }

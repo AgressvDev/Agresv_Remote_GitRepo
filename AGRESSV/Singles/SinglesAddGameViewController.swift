@@ -463,8 +463,8 @@ class SinglesAddGameViewController: UIViewController {
         
         
         
+
         func findUserWithMostGamesInitial(completion: @escaping (String?) -> Void) {
-            
             let db = Firestore.firestore()
             let agressvGamesCollection = db.collection("Agressv_Games")
             
@@ -473,20 +473,29 @@ class SinglesAddGameViewController: UIViewController {
             
             let group = DispatchGroup()
             
+            // Calculate the date 30 days ago from the current date
+            let thirtyDaysAgo = Calendar.current.date(byAdding: .day, value: -30, to: Date())!
+            
             for field in fieldsToCheck {
                 group.enter()
-                agressvGamesCollection.whereField(field, isNotEqualTo: "").getDocuments { (querySnapshot, error) in
-                    if let error = error {
-                        print("Error fetching documents: \(error)")
-                    } else {
-                        for document in querySnapshot!.documents {
-                            if let email = document.data()[field] as? String {
-                                emailCounts[email, default: 0] += 1
+                agressvGamesCollection
+                    .whereField(field, isNotEqualTo: "")
+                    .getDocuments { (querySnapshot, error) in
+                        if let error = error {
+                            print("Error fetching documents: \(error)")
+                        } else {
+                            for document in querySnapshot!.documents {
+                                if let email = document.data()[field] as? String,
+                                   let gameDateTimestamp = document.data()["Game_Date"] as? Timestamp {
+                                    let gameDate = gameDateTimestamp.dateValue()
+                                    if gameDate > thirtyDaysAgo {
+                                        emailCounts[email, default: 0] += 1
+                                    }
+                                }
                             }
                         }
+                        group.leave()
                     }
-                    group.leave()
-                }
             }
             
             group.notify(queue: .main) {
@@ -497,7 +506,8 @@ class SinglesAddGameViewController: UIViewController {
                 }
             }
         }
-        
+
+
         
         findUserWithMostGamesInitial { mostFrequentEmail in
             if let email = mostFrequentEmail {
@@ -600,20 +610,29 @@ class SinglesAddGameViewController: UIViewController {
         
         let group = DispatchGroup()
         
+        // Calculate the date 30 days ago from the current date
+        let thirtyDaysAgo = Calendar.current.date(byAdding: .day, value: -30, to: Date())!
+        
         for field in fieldsToCheck {
             group.enter()
-            agressvGamesCollection.whereField(field, isNotEqualTo: "").getDocuments { (querySnapshot, error) in
-                if let error = error {
-                    print("Error fetching documents: \(error)")
-                } else {
-                    for document in querySnapshot!.documents {
-                        if let email = document.data()[field] as? String {
-                            emailCounts[email, default: 0] += 1
+            agressvGamesCollection
+                .whereField(field, isNotEqualTo: "")
+                .getDocuments { (querySnapshot, error) in
+                    if let error = error {
+                        print("Error fetching documents: \(error)")
+                    } else {
+                        for document in querySnapshot!.documents {
+                            if let email = document.data()[field] as? String,
+                               let gameDateTimestamp = document.data()["Game_Date"] as? Timestamp {
+                                let gameDate = gameDateTimestamp.dateValue()
+                                if gameDate > thirtyDaysAgo {
+                                    emailCounts[email, default: 0] += 1
+                                }
+                            }
                         }
                     }
+                    group.leave()
                 }
-                group.leave()
-            }
         }
         
         group.notify(queue: .main) {
