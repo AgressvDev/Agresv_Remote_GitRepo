@@ -1377,6 +1377,22 @@ class HomeScreenViewController: UIViewController {
                     ])
                     
                     FireMessage.layer.zPosition = 4
+                    
+                    // Create an image view for the "Fire" image
+                            let fireImage = UIImageView(image: UIImage(named: "Fire"))
+                            fireImage.contentMode = .scaleAspectFit // Adjust content mode as needed
+                            fireImage.translatesAutoresizingMaskIntoConstraints = false // Enable Auto Layout
+
+                            // Add the "Fire" image as a subview
+                            self.view.addSubview(fireImage)
+
+                            // Define Auto Layout constraints to position and scale the image over the word "fire"
+                            NSLayoutConstraint.activate([
+                                fireImage.leadingAnchor.constraint(equalTo: FireMessage.trailingAnchor, constant: -50 * scalingFactor),
+                                fireImage.bottomAnchor.constraint(equalTo: FireMessage.topAnchor, constant: -2 * scalingFactor), // Position it just above the text
+                                fireImage.widthAnchor.constraint(equalToConstant: 50 * scalingFactor), // Set the width to 10
+                                fireImage.heightAnchor.constraint(equalToConstant: 50 * scalingFactor), // Set the height to 10
+                            ])
                 }
         //END OF GAUGE MESSAGE
         
