@@ -13,12 +13,23 @@ class LoginViewController: UIViewController {
 
     @IBOutlet var backgroundGradView: UIView!
    
+    @IBOutlet weak var rememberMeSwitch: UISwitch!
     
     @IBOutlet weak var EmailTextField: UITextField!
     @IBOutlet weak var PasswordTextField: UITextField!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+    
+        // Retrieve and populate the text fields with saved credentials
+                if let savedEmail = UserDefaults.standard.string(forKey: "userEmail"),
+                   let savedPassword = UserDefaults.standard.string(forKey: "userPassword") {
+                    EmailTextField.text = savedEmail
+                    PasswordTextField.text = savedPassword
+                }
+        
+        
             
         if self.traitCollection.userInterfaceStyle == .light {
             // User is in light mode
@@ -175,7 +186,12 @@ class LoginViewController: UIViewController {
         guard let email = EmailTextField.text else {return}
         guard let password = PasswordTextField.text else {return}
         
-       
+        // Save the user's credentials in UserDefaults
+                if let email = EmailTextField.text, let password = PasswordTextField.text {
+                    UserDefaults.standard.set(email, forKey: "userEmail")
+                    UserDefaults.standard.set(password, forKey: "userPassword")
+                }
+            
         
         Auth.auth().signIn(withEmail: email, password: password) { Result, error in
             if error != nil {
