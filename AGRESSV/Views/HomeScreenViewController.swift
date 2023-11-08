@@ -541,29 +541,29 @@ class HomeScreenViewController: UIViewController {
         
         NSLayoutConstraint.activate([
                     // Position the "Settings" button
-                    settingsButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20 * scalingFactor),
+                    settingsButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 5 * scalingFactor),
                     settingsButton.leadingAnchor.constraint(equalTo: MainUNLabel.leadingAnchor, constant: 10 * scalingFactor),
-                    settingsButton.widthAnchor.constraint(equalToConstant: 50 * scalingFactor),
-                    settingsButton.heightAnchor.constraint(equalToConstant: 50 * scalingFactor),
+                    settingsButton.widthAnchor.constraint(equalToConstant: 65 * scalingFactor),
+                    settingsButton.heightAnchor.constraint(equalToConstant: 65 * scalingFactor),
 
                     // Position the "History" button
                     historyButton.topAnchor.constraint(equalTo: settingsButton.topAnchor),
-                    historyButton.leadingAnchor.constraint(equalTo: settingsButton.trailingAnchor, constant: 21 * IconsPercentage),
-                    historyButton.widthAnchor.constraint(equalToConstant: 50 * scalingFactor),
-                    historyButton.heightAnchor.constraint(equalToConstant: 50 * scalingFactor),
+                    historyButton.leadingAnchor.constraint(equalTo: settingsButton.trailingAnchor, constant: 15 * IconsPercentage),
+                    historyButton.widthAnchor.constraint(equalToConstant: 65 * scalingFactor),
+                    historyButton.heightAnchor.constraint(equalToConstant: 65 * scalingFactor),
 
                     // Position the "Badges" button
                     badgesButton.topAnchor.constraint(equalTo: settingsButton.topAnchor),
-                    badgesButton.trailingAnchor.constraint(equalTo: newGameButton.leadingAnchor, constant: -21 * IconsPercentage),
-                    badgesButton.widthAnchor.constraint(equalToConstant: 50 * scalingFactor),
-                    badgesButton.heightAnchor.constraint(equalToConstant: 50 * scalingFactor),
+                    badgesButton.trailingAnchor.constraint(equalTo: newGameButton.leadingAnchor, constant: -15 * IconsPercentage),
+                    badgesButton.widthAnchor.constraint(equalToConstant: 65 * scalingFactor),
+                    badgesButton.heightAnchor.constraint(equalToConstant: 65 * scalingFactor),
 
                     // Position the "NewGame" button
                     newGameButton.topAnchor.constraint(equalTo: settingsButton.topAnchor),
                     //newGameButton.leadingAnchor.constraint(equalTo: badgesButton.trailingAnchor, constant: 20 * scalingFactor),
                     newGameButton.trailingAnchor.constraint(equalTo: MainUNLabel.trailingAnchor, constant: -10 * scalingFactor),
-                    newGameButton.widthAnchor.constraint(equalToConstant: 50 * scalingFactor),
-                    newGameButton.heightAnchor.constraint(equalToConstant: 50 * scalingFactor)
+                    newGameButton.widthAnchor.constraint(equalToConstant: 65 * scalingFactor),
+                    newGameButton.heightAnchor.constraint(equalToConstant: 65 * scalingFactor)
                 ])
         
 
@@ -590,7 +590,7 @@ class HomeScreenViewController: UIViewController {
         NSLayoutConstraint.activate([
            
             lbl_NewGame.topAnchor.constraint(equalTo: newGameButton.bottomAnchor, constant: 3 * scalingFactor),
-            lbl_NewGame.leadingAnchor.constraint(equalTo: newGameButton.leadingAnchor),
+            lbl_NewGame.leadingAnchor.constraint(equalTo: newGameButton.leadingAnchor, constant: 5 * scalingFactor),
             lbl_NewGame.widthAnchor.constraint(equalToConstant: 100 * scalingFactor), // Adjust the reference size as needed
             lbl_NewGame.heightAnchor.constraint(equalToConstant: 30 * scalingFactor) // Adjust the reference size as needed
         ])
@@ -616,7 +616,7 @@ class HomeScreenViewController: UIViewController {
         NSLayoutConstraint.activate([
            
             lbl_Settings.topAnchor.constraint(equalTo: settingsButton.bottomAnchor, constant: 3 * scalingFactor),
-            lbl_Settings.leadingAnchor.constraint(equalTo: settingsButton.leadingAnchor, constant: 3 * scalingFactor),
+            lbl_Settings.leadingAnchor.constraint(equalTo: settingsButton.leadingAnchor, constant: 10 * scalingFactor),
             lbl_Settings.widthAnchor.constraint(equalToConstant: 100 * scalingFactor), // Adjust the reference size as needed
             lbl_Settings.heightAnchor.constraint(equalToConstant: 30 * scalingFactor) // Adjust the reference size as needed
         ])
@@ -641,7 +641,7 @@ class HomeScreenViewController: UIViewController {
         NSLayoutConstraint.activate([
            
             lbl_History.topAnchor.constraint(equalTo: historyButton.bottomAnchor, constant: 3 * scalingFactor),
-            lbl_History.leadingAnchor.constraint(equalTo: historyButton.leadingAnchor, constant: 7 * scalingFactor),
+            lbl_History.leadingAnchor.constraint(equalTo: historyButton.leadingAnchor, constant: 15 * scalingFactor),
             lbl_History.widthAnchor.constraint(equalToConstant: 100 * scalingFactor), // Adjust the reference size as needed
             lbl_History.heightAnchor.constraint(equalToConstant: 30 * scalingFactor) // Adjust the reference size as needed
         ])
@@ -666,7 +666,7 @@ class HomeScreenViewController: UIViewController {
         NSLayoutConstraint.activate([
            
             lbl_Badges.topAnchor.constraint(equalTo: badgesButton.bottomAnchor, constant: 3 * scalingFactor),
-            lbl_Badges.leadingAnchor.constraint(equalTo: badgesButton.leadingAnchor, constant: 7 * scalingFactor),
+            lbl_Badges.leadingAnchor.constraint(equalTo: badgesButton.leadingAnchor, constant: 15 * scalingFactor),
             lbl_Badges.widthAnchor.constraint(equalToConstant: 100 * scalingFactor), // Adjust the reference size as needed
             lbl_Badges.heightAnchor.constraint(equalToConstant: 30 * scalingFactor) // Adjust the reference size as needed
         ])
@@ -1424,7 +1424,7 @@ class HomeScreenViewController: UIViewController {
 
     @objc func newGameButtonTapped() {
         // Create an alert controller
-        let alertController = UIAlertController(title: "Game Logger Confirmation", message: "Pick one player to log this game. It will then appear in the history for all players involved and adjust all rankings. If you are the elected game logger, click Continue.", preferredStyle: .alert)
+        let alertController = UIAlertController(title: "Game Logger Confirmation", message: "MAKE SURE ONLY ONE PLAYER LOGS THIS GAME.", preferredStyle: .alert)
 
         // Create a "Continue" action
         let continueAction = UIAlertAction(title: "Continue", style: .default) { (action) in
