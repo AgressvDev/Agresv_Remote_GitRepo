@@ -299,6 +299,21 @@
             </objects>
             <point key="canvasLocation" x="4795" y="1288"/>
         </scene>
+        <!--User Profile HomeVC-->
+        <scene sceneID="uqX-Lr-dM1">
+            <objects>
+                <viewController storyboardIdentifier="UserProfileID" id="geX-j0-gb7" customClass="UserProfileHomeVC" customModule="AGRESSV" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Tae-Bw-ZUH">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="QA5-wR-Dgf"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="oEc-hO-J71" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4176" y="582"/>
+        </scene>
         <!--Badges View Controller-->
         <scene sceneID="Ymd-V1-rxL">
             <objects>
@@ -313,6 +328,21 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3a5-qy-fvC" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="3365.6488549618321" y="-1319.0140845070423"/>
+        </scene>
+        <!--Players View Controller-->
+        <scene sceneID="38E-2F-8Om">
+            <objects>
+                <viewController storyboardIdentifier="PlayersID" id="5GI-WW-nW0" customClass="PlayersViewController" customModule="AGRESSV" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="YSQ-Yc-GLK">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="OjR-KT-VHU"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="XOk-Ph-oBF" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4279" y="-1942"/>
         </scene>
         <!--Game History View Controller-->
         <scene sceneID="RZe-p1-xsS">

@@ -217,7 +217,14 @@ class CreateAccountViewController: UIViewController {
                             self.addUser(Username: Username, Email: Email)
                             //go to User's Homescreen
                             
-                            self.performSegue(withIdentifier: "CreateAccountGoToHome", sender: self)
+                            //self.performSegue(withIdentifier: "CreateAccountGoToHome", sender: self)
+                            
+                            // Create an instance of opp two VC
+                            let UserProfileVC = self.storyboard?.instantiateViewController(withIdentifier: "UserProfileID") as! UserProfileHomeVC
+                            
+                            // Push to the SecondViewController
+                            self.navigationController?.pushViewController(UserProfileVC, animated: true)
+                        
                            
                         }
                     }

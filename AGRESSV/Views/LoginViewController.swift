@@ -212,10 +212,14 @@ class LoginViewController: UIViewController {
                 //go to User's Homescreen
                 
                
-
+                // Create an instance of opp two VC
+                let UserProfileVC = self.storyboard?.instantiateViewController(withIdentifier: "UserProfileID") as! UserProfileHomeVC
+                
+                // Push to the SecondViewController
+                self.navigationController?.pushViewController(UserProfileVC, animated: true)
             
                 
-                self.performSegue(withIdentifier: "LoginGoToHome", sender: self)
+                //self.performSegue(withIdentifier: "LoginGoToHome", sender: self)
             }
         }
     }
