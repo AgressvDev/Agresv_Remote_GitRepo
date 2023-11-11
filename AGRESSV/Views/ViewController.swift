@@ -55,6 +55,8 @@ class ViewController: UIViewController {
         ])
 
         //END BACKGROUND
+//        // Set the background color of the screen
+//        view.backgroundColor = UIColor(red: 0/255, green: 0/255, blue: 30/255, alpha: 1.0)
         
         LoginFirstButton.setTitle("Login", for: .normal)
         LoginFirstButton.layer.cornerRadius = 15

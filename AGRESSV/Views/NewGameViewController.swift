@@ -20,38 +20,60 @@ class NewGameViewController: UIViewController {
         let heightScalingFactor = screenHeight / 932.0 // Use a reference height, e.g., iPhone 6/6s/7/8 height
         let scalingFactor = min(widthScalingFactor, heightScalingFactor)
         
+        // Set the background color of the screen
+        view.backgroundColor = UIColor(red: 0/255, green: 0/255, blue: 30/255, alpha: 1.0)
         
-        //BACKGROUND
-        // Create UIImageView for the background image
-               let backgroundImage = UIImageView()
-
-               // Set the image to "AppBackgroundOne.png" from your asset catalog
-               backgroundImage.image = UIImage(named: "AppBackgroundOne")
-
-               // Make sure the image doesn't stretch or distort
-               backgroundImage.contentMode = .scaleAspectFill
-
-               // Add the UIImageView as a subview to the view
-               view.addSubview(backgroundImage)
-               view.sendSubviewToBack(backgroundImage)
-
-               // Disable autoresizing mask constraints for the UIImageView
-               backgroundImage.translatesAutoresizingMaskIntoConstraints = false
-
-               // Set constraints to cover the full screen using the scaling factor
-        // Define Auto Layout constraints to position and allow the label to expand its width based on content
-        NSLayoutConstraint.activate([
-            backgroundImage.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0 * scalingFactor), // Left side of the screen
-            backgroundImage.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0 * scalingFactor), // A little higher than the bottom
-            backgroundImage.topAnchor.constraint(equalTo: view.topAnchor, constant: 0 * scalingFactor),
-            backgroundImage.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0 * scalingFactor)
-        ])
-
-        //END BACKGROUND
-    } // end of load
+        // Create a button "Doubles"
+        let btnDoubles = createButton(title: "DOUBLES", action: #selector(btnDoublesTapped), scalingFactor: scalingFactor)
+        view.addSubview(btnDoubles)
+        
+        // Set constraints to center and almost touch the edges
+        btnDoubles.translatesAutoresizingMaskIntoConstraints = false
+        btnDoubles.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        btnDoubles.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -45 * scalingFactor).isActive = true
+        btnDoubles.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20 * scalingFactor).isActive = true
+        btnDoubles.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20 * scalingFactor).isActive = true
+        btnDoubles.heightAnchor.constraint(equalToConstant: 70 * scalingFactor).isActive = true // Adjust height as needed
+        
+        // Create a button "Singles"
+        let btnSingles = createButton(title: "SINGLES", action: #selector(btnSinglesTapped), scalingFactor: scalingFactor)
+        view.addSubview(btnSingles)
+        
+        // Set constraints below "btn_Doubles"
+        btnSingles.translatesAutoresizingMaskIntoConstraints = false
+        btnSingles.topAnchor.constraint(equalTo: btnDoubles.bottomAnchor, constant: 20 * scalingFactor).isActive = true
+        btnSingles.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20 * scalingFactor).isActive = true
+        btnSingles.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20 * scalingFactor).isActive = true
+        btnSingles.heightAnchor.constraint(equalTo: btnDoubles.heightAnchor).isActive = true
+    }
     
-
-            
-            
-        } //end of class
-
+    // Button action for "Doubles"
+    @objc func btnDoublesTapped() {
+        // Create an instance of DoublesSearchVCNew
+        let doublesSearchVC = storyboard?.instantiateViewController(withIdentifier: "DoublesSearchVCNewID") as! DoublesSearchVCNew
+        
+        // Push to the DoublesSearchVCNew
+        navigationController?.pushViewController(doublesSearchVC, animated: true)
+    }
+    
+    // Button action for "Singles"
+    @objc func btnSinglesTapped() {
+        // Create an instance of SinglesSearchOppVC
+        let singlesSearchVC = storyboard?.instantiateViewController(withIdentifier: "SinglesSearchOppVCID") as! SinglesSearchOppVC
+        
+        // Push to the SinglesSearchOppVC
+        navigationController?.pushViewController(singlesSearchVC, animated: true)
+    }
+    
+    // Helper method to create a button with common properties
+    func createButton(title: String, action: Selector, scalingFactor: CGFloat) -> UIButton {
+        let button = UIButton(type: .system)
+        button.setTitle(title, for: .normal)
+        button.setTitleColor(.black, for: .normal)
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20 * scalingFactor)
+        button.backgroundColor = UIColor(red: 173/255, green: 216/255, blue: 230/255, alpha: 1.0)
+        button.layer.cornerRadius = 10
+        button.addTarget(self, action: action, for: .touchUpInside)
+        return button
+    }
+}

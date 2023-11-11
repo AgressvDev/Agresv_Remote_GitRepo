@@ -141,7 +141,26 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
+    
+    
+    
+    let lbl_DoublesNerdData: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .center
+        label.textColor = .white
+        label.layer.masksToBounds = true
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
 
+    let lbl_SinglesNerdData: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .center
+        label.textColor = .white
+        label.layer.masksToBounds = true
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
 
     let lbl_GamesPlayed = UILabel()
     
@@ -231,97 +250,10 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
             backgroundImage.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 0 * scalingFactor)
         ])
       
-        //put gold ribbon top right
-        let img_GoldRibbon = UIImageView(image: UIImage(named: "GoldRibbon"))
-        img_GoldRibbon.translatesAutoresizingMaskIntoConstraints = false
-      
-    
-        //put gold ribbon top right
-        let img_BlueRibbon = UIImageView(image: UIImage(named: "BlueRibbon"))
-        img_BlueRibbon.translatesAutoresizingMaskIntoConstraints = false
-      
-      
+
         
-        //put gold ribbon top right
-        let img_RedFangs = UIImageView(image: UIImage(named: "RedFangs"))
-        img_RedFangs.translatesAutoresizingMaskIntoConstraints = false
-        //RUN BADGES QUERY
-                
-                func GetBadgeData() {
-                    let db = Firestore.firestore()
-                    let uid = Auth.auth().currentUser!.email
-                    let docRef = db.collection("Agressv_Badges").document(uid!)
-                    
-                    docRef.getDocument { (document, error) in
-                        if let err = error {
-                            print("Error getting documents: \(err)")
-                        } else {
-                            print("\(document!.documentID) => \(String(describing: document!.data()))")
-                            
-                            //Doubles Wins number to string conversion
-                            if let GoldRibbonValue = document!.data()!["Gold_Ribbon"] as? Int,
-                            GoldRibbonValue > 0
-                                {
-                                self.HasAchievedGoldRibbon = true
-                                }
-                            
-                            if let blueRibbonDoublesValue = document!.data()!["Blue_Ribbon_Doubles"] as? Int,
-                                let blueRibbonSinglesValue = document!.data()!["Blue_Ribbon_Singles"] as? Int,
-                                blueRibbonDoublesValue > 0 || blueRibbonSinglesValue > 0 {
-                                self.HasAchievedBlueRibbon = true
-                            }
-                           
-                            if let RedFangsValue = document!.data()!["Red_Fangs"] as? Int,
-                               RedFangsValue > 0
-                                {
-                                self.HasAchievedRedFangs = true
-                                }
-                           
-                            
-                            if self.HasAchievedGoldRibbon {
-                                
-                                
-                                self.view.addSubview(img_GoldRibbon)
-                                
-                                NSLayoutConstraint.activate([
-                                    img_GoldRibbon.topAnchor.constraint(equalTo: self.profileImageView.topAnchor), // Anchor to the bottom of the view
-                                    img_GoldRibbon.leadingAnchor.constraint(equalTo: self.profileImageView.trailingAnchor, constant: 75 * scalingFactor),  // Anchor to the left of the view
-                                    img_GoldRibbon.widthAnchor.constraint(equalToConstant: 40 * scalingFactor),
-                                    img_GoldRibbon.heightAnchor.constraint(equalToConstant: 40 * scalingFactor)
-                                ])
-                                
-                            }
-                            if self.HasAchievedBlueRibbon {
-                                
-                                
-                                self.view.addSubview(img_BlueRibbon)
-                                
-                                // Position the label above the NewDoublesRankLabel
-                                NSLayoutConstraint.activate([
-                                    img_BlueRibbon.topAnchor.constraint(equalTo: self.profileImageView.topAnchor),
-                                    img_BlueRibbon.leadingAnchor.constraint(equalTo: self.profileImageView.trailingAnchor, constant: 105 * scalingFactor),
-                                    img_BlueRibbon.widthAnchor.constraint(equalToConstant: 40 * scalingFactor),
-                                    img_BlueRibbon.heightAnchor.constraint(equalToConstant: 40 * scalingFactor)
-                                ])
-                            }
-                            if self.HasAchievedRedFangs {
-                                //put red fangs top right
-                                self.view.addSubview(img_RedFangs)
-                                
-                                // Position the label above the NewDoublesRankLabel
-                                NSLayoutConstraint.activate([
-                                    img_RedFangs.topAnchor.constraint(equalTo: self.profileImageView.topAnchor),
-                                    img_RedFangs.leadingAnchor.constraint(equalTo: self.profileImageView.trailingAnchor, constant: 145 * scalingFactor),
-                                    img_RedFangs.widthAnchor.constraint(equalToConstant: 40 * scalingFactor),
-                                    img_RedFangs.heightAnchor.constraint(equalToConstant: 40 * scalingFactor)
-                                ])
-                            }
-                        }
-                        
-                    }
-                    
-                }
-                print(GetBadgeData())
+        
+
         
         
         
@@ -360,6 +292,15 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
             UserNameLabelMain.leadingAnchor.constraint(equalTo: profileImageView.leadingAnchor, constant: 15 * scalingFactor),
             
         ])
+        
+        
+       
+        
+        
+        
+        
+        
+        
         
         //GET DATA
 
@@ -428,6 +369,264 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
         
         
        
+
+        // Function to query Firestore and determine rank
+        func calculateAndSetDoublesRank() {
+            let db = Firestore.firestore()
+            let uid = Auth.auth().currentUser!.email
+            let collectionReference = db.collection("Agressv_Users")
+            
+            collectionReference.order(by: "Doubles_Rank", descending: true).getDocuments { (querySnapshot, error) in
+                if let error = error {
+                    print("Error getting documents: \(error)")
+                } else {
+                    // Process documents and calculate rank
+                    print(uid!)
+                    print("THE NERD DATA FUNCTION IS RUNNING!!!!")
+                    var rank = 1
+
+                    for (index, document) in querySnapshot!.documents.enumerated() {
+                        let doublesRank = document.data()["Doubles_Rank"] as? Double ?? 0.0
+
+                        if index > 0 {
+                            let previousDocument = querySnapshot!.documents[index - 1]
+                            let previousDoublesRank = previousDocument.data()["Doubles_Rank"] as? Double ?? 0.0
+
+                            if doublesRank < previousDoublesRank {
+                                rank = index + 1
+                            }
+                        }
+
+                        // Assuming you want to find the rank for the current user
+                        if document.documentID == uid {
+                            // Update UI on the main thread
+                          
+                                self.lbl_DoublesNerdData.text = "D: \(rank)"
+                                
+                                    
+                                   
+                          
+                                
+                           
+                        }
+                    }
+                }
+            }
+        }
+        
+        // Function to query Firestore and determine rank
+        func calculateAndSetSinglesRank() {
+            let db = Firestore.firestore()
+            let uid = Auth.auth().currentUser!.email
+            let collectionReference = db.collection("Agressv_Users")
+            
+            collectionReference.order(by: "Singles_Rank", descending: true).getDocuments { (querySnapshot, error) in
+                if let error = error {
+                    print("Error getting documents: \(error)")
+                } else {
+                    // Process documents and calculate rank
+                    print(uid!)
+                    print("THE NERD DATA FUNCTION IS RUNNING!!!!")
+                    var rank = 1
+
+                    for (index, document) in querySnapshot!.documents.enumerated() {
+                        let doublesRank = document.data()["Singles_Rank"] as? Double ?? 0.0
+
+                        if index > 0 {
+                            let previousDocument = querySnapshot!.documents[index - 1]
+                            let previousDoublesRank = previousDocument.data()["Singles_Rank"] as? Double ?? 0.0
+
+                            if doublesRank < previousDoublesRank {
+                                rank = index + 1
+                            }
+                        }
+
+                        // Assuming you want to find the rank for the current user
+                        if document.documentID == uid {
+                            // Update UI on the main thread
+                          
+                                self.lbl_SinglesNerdData.text = "S: \(rank)"
+                                
+                                    
+                                   
+                          
+                                
+                           
+                        }
+                    }
+                }
+            }
+        }
+
+        // Call this function when you want to calculate and set the rank
+      
+            print(calculateAndSetDoublesRank())
+        print(calculateAndSetSinglesRank())
+        
+
+        // Create the label
+        let lbl_RanksTop = UILabel()
+        lbl_RanksTop.text = "Current Rank"
+        lbl_RanksTop.textColor = .lightGray
+        lbl_RanksTop.font = UIFont.systemFont(ofSize: 15)
+        lbl_RanksTop.translatesAutoresizingMaskIntoConstraints = false // Enable Auto Layout
+        lbl_RanksTop.numberOfLines = 0 // Allow multiple lines
+        // Add the label to the view hierarchy
+        self.view.addSubview(lbl_RanksTop)
+        
+        // Calculate the adjusted font size based on the scalingFactor
+        let baseFontSize_lbl_RanksTop: CGFloat = 15.0 // Set your base font size
+        let adjustedFontSize_lbl_RanksTop = baseFontSize_lbl_RanksTop * scalingFactor
+
+        // Set the font size for lbl_Playometer
+        lbl_RanksTop.font = UIFont.systemFont(ofSize: adjustedFontSize_lbl_RanksTop)
+        
+        lbl_RanksTop.font = UIFont(name: "Thonburi", size: adjustedFontSize_lbl_RanksTop)
+        
+        // Define Auto Layout constraints to position and allow the label to expand its width based on content
+                NSLayoutConstraint.activate([
+                    lbl_RanksTop.leadingAnchor.constraint(equalTo: self.profileImageView.trailingAnchor, constant: 50 * scalingFactor),
+                    lbl_RanksTop.topAnchor.constraint(equalTo: self.profileImageView.topAnchor, constant: 55 * scalingFactor)
+                    
+                ])
+        
+        
+        
+        self.lbl_DoublesNerdData.textColor = .white
+        
+    self.view.addSubview(self.lbl_DoublesNerdData)
+        
+        self.lbl_DoublesNerdData.layer.zPosition = 5
+        
+        // Calculate the adjusted font size based on the scalingFactor
+        let baseFontSize_lbl_DoublesNerdData: CGFloat = 20.0 // Set your base font size
+        let adjustedFontSize_lbl_DoublesNerdData = baseFontSize_lbl_DoublesNerdData * scalingFactor
+
+        // Set the font size for lbl_Playometer
+        lbl_DoublesNerdData.font = UIFont.systemFont(ofSize: adjustedFontSize_lbl_DoublesNerdData)
+        self.lbl_DoublesNerdData.font = UIFont(name: "Thonburi", size: adjustedFontSize_lbl_DoublesNerdData)
+        
+        NSLayoutConstraint.activate([
+            // Position NewDoublesRankLabel to the left of the center by a certain percentage
+            self.lbl_DoublesNerdData.leadingAnchor.constraint(equalTo: lbl_RanksTop.leadingAnchor),
+            self.lbl_DoublesNerdData.topAnchor.constraint(equalTo: lbl_RanksTop.bottomAnchor, constant: 5 * scalingFactor)
+            ])
+        
+        
+        
+        
+        self.lbl_SinglesNerdData.textColor = .white
+        
+        self.view.addSubview(self.lbl_SinglesNerdData)
+        
+        self.lbl_SinglesNerdData.layer.zPosition = 5
+        
+        // Calculate the adjusted font size based on the scalingFactor
+        let baseFontSize_lbl_SinglesNerdData: CGFloat = 20.0 // Set your base font size
+        let adjustedFontSize_lbl_SinglesNerdData = baseFontSize_lbl_SinglesNerdData * scalingFactor
+
+        // Set the font size for lbl_Playometer
+        self.lbl_SinglesNerdData.font = UIFont.systemFont(ofSize: adjustedFontSize_lbl_SinglesNerdData)
+        self.lbl_SinglesNerdData.font = UIFont(name: "Thonburi", size: adjustedFontSize_lbl_SinglesNerdData)
+        
+        NSLayoutConstraint.activate([
+            // Position NewDoublesRankLabel to the left of the center by a certain percentage
+            self.lbl_SinglesNerdData.leadingAnchor.constraint(equalTo: self.lbl_DoublesNerdData.trailingAnchor, constant: 25 * scalingFactor),
+            self.lbl_SinglesNerdData.topAnchor.constraint(equalTo: self.lbl_DoublesNerdData.topAnchor)
+            ])
+        
+        
+        //put gold ribbon top right
+        let img_GoldRibbon = UIImageView(image: UIImage(named: "GoldRibbon"))
+        img_GoldRibbon.translatesAutoresizingMaskIntoConstraints = false
+      
+    
+        //put gold ribbon top right
+        let img_BlueRibbon = UIImageView(image: UIImage(named: "BlueRibbon"))
+        img_BlueRibbon.translatesAutoresizingMaskIntoConstraints = false
+      
+      
+        
+        //put gold ribbon top right
+        let img_RedFangs = UIImageView(image: UIImage(named: "RedFangs"))
+        img_RedFangs.translatesAutoresizingMaskIntoConstraints = false
+        //RUN BADGES QUERY
+                
+        func GetBadgeData() {
+            let db = Firestore.firestore()
+            let uid = Auth.auth().currentUser!.email
+            let docRef = db.collection("Agressv_Badges").document(uid!)
+            
+            docRef.getDocument { (document, error) in
+                if let err = error {
+                    print("Error getting documents: \(err)")
+                } else {
+                    print("\(document!.documentID) => \(String(describing: document!.data()))")
+                    
+                    //Doubles Wins number to string conversion
+                    if let GoldRibbonValue = document!.data()!["Gold_Ribbon"] as? Int,
+                    GoldRibbonValue > 0
+                        {
+                        self.HasAchievedGoldRibbon = true
+                        }
+                    
+                    if let blueRibbonDoublesValue = document!.data()!["Blue_Ribbon_Doubles"] as? Int,
+                        let blueRibbonSinglesValue = document!.data()!["Blue_Ribbon_Singles"] as? Int,
+                        blueRibbonDoublesValue > 0 || blueRibbonSinglesValue > 0 {
+                        self.HasAchievedBlueRibbon = true
+                    }
+                   
+                    if let RedFangsValue = document!.data()!["Red_Fangs"] as? Int,
+                       RedFangsValue > 0
+                        {
+                        self.HasAchievedRedFangs = true
+                        }
+                   
+                    
+                    if self.HasAchievedGoldRibbon {
+                        
+                        
+                        self.view.addSubview(img_GoldRibbon)
+                        
+                        NSLayoutConstraint.activate([
+                            img_GoldRibbon.topAnchor.constraint(equalTo: self.lbl_DoublesNerdData.bottomAnchor, constant: 10 * scalingFactor), // Anchor to the bottom of the view
+                            img_GoldRibbon.leadingAnchor.constraint(equalTo: self.lbl_DoublesNerdData.leadingAnchor, constant: 55 * scalingFactor),  // Anchor to the left of the view
+                            img_GoldRibbon.widthAnchor.constraint(equalToConstant: 25 * scalingFactor),
+                            img_GoldRibbon.heightAnchor.constraint(equalToConstant: 25 * scalingFactor)
+                        ])
+                        
+                    }
+                    if self.HasAchievedBlueRibbon {
+                        
+                        
+                        self.view.addSubview(img_BlueRibbon)
+                        
+                        // Position the label above the NewDoublesRankLabel
+                        NSLayoutConstraint.activate([
+                            img_BlueRibbon.topAnchor.constraint(equalTo: self.lbl_DoublesNerdData.bottomAnchor, constant: 10 * scalingFactor),
+                            img_BlueRibbon.leadingAnchor.constraint(equalTo: self.lbl_DoublesNerdData.leadingAnchor, constant: -5 * scalingFactor),
+                            img_BlueRibbon.widthAnchor.constraint(equalToConstant: 25 * scalingFactor),
+                            img_BlueRibbon.heightAnchor.constraint(equalToConstant: 25 * scalingFactor)
+                        ])
+                    }
+                    if self.HasAchievedRedFangs {
+                        //put red fangs top right
+                        self.view.addSubview(img_RedFangs)
+                        
+                        // Position the label above the NewDoublesRankLabel
+                        NSLayoutConstraint.activate([
+                            img_RedFangs.topAnchor.constraint(equalTo: self.lbl_DoublesNerdData.bottomAnchor, constant: 10 * scalingFactor),
+                            img_RedFangs.leadingAnchor.constraint(equalTo: self.lbl_DoublesNerdData.leadingAnchor, constant: 25 * scalingFactor),
+                            img_RedFangs.widthAnchor.constraint(equalToConstant: 25 * scalingFactor),
+                            img_RedFangs.heightAnchor.constraint(equalToConstant: 25 * scalingFactor)
+                        ])
+                    }
+                }
+                
+            }
+            
+        }
+        print(GetBadgeData())
         
         let fontSize: CGFloat = 25.0 // Set your default font size
      
@@ -501,8 +700,8 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
                     NSLayoutConstraint.activate([
                         swiftuiView_gauge.leadingAnchor.constraint(equalTo: backgroundImage.leadingAnchor, constant: 5 * scalingFactor), // Left side of the screen
                         swiftuiView_gauge.trailingAnchor.constraint(equalTo: backgroundImage.trailingAnchor, constant: -5 * scalingFactor), // A little higher than the bottom
-                        swiftuiView_gauge.topAnchor.constraint(equalTo: backgroundImage.bottomAnchor, constant: 230 * scalingFactor),
-                        swiftuiView_gauge.bottomAnchor.constraint(equalTo: backgroundImage.bottomAnchor, constant: -470 * scalingFactor)
+                        swiftuiView_gauge.topAnchor.constraint(equalTo: backgroundImage.bottomAnchor, constant: 200 * scalingFactor),
+                        swiftuiView_gauge.bottomAnchor.constraint(equalTo: backgroundImage.bottomAnchor, constant: -500 * scalingFactor)
                     ])
                     
                     
@@ -598,6 +797,28 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
                     
                     self.lbl_testcount.layer.zPosition = 3
                     
+//                    // Check if gaugeactualcount is greater than or equal to 32
+//                    if self.gaugeactualcount >= 14 {
+//
+//
+//
+//                        // Create an image view for the "Fire" image
+//                        let fireImage = UIImageView(image: UIImage(named: "Fire"))
+//                        fireImage.contentMode = .scaleAspectFit // Adjust content mode as needed
+//                        fireImage.translatesAutoresizingMaskIntoConstraints = false // Enable Auto Layout
+//
+//                        // Add the "Fire" image as a subview
+//                        self.view.addSubview(fireImage)
+//
+//                        // Define Auto Layout constraints to position and scale the image over the word "fire"
+//                        NSLayoutConstraint.activate([
+//                            fireImage.trailingAnchor.constraint(equalTo: backgroundImage.trailingAnchor, constant: -15 * scalingFactor),
+//                            fireImage.bottomAnchor.constraint(equalTo: self.lbl_testcount.bottomAnchor, constant: 5 * scalingFactor),
+//                            fireImage.widthAnchor.constraint(equalToConstant: 50 * scalingFactor), // Set the width to 10
+//                            fireImage.heightAnchor.constraint(equalToConstant: 50 * scalingFactor), // Set the height to 10
+//                        ])
+//                    }
+                    
                     let labelSize: CGFloat = 80.0
                     
                     NSLayoutConstraint.activate([
@@ -667,6 +888,11 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
         //update the gauge value
         print(currentcountforgauge())
         
+        
+
+        
+        
+        
         // Create buttons with actions and images
                let settingsButton = createButton(withImageName: "SettingsIconWhite")
                settingsButton.addTarget(self, action: #selector(settingsButtonTapped), for: .touchUpInside)
@@ -698,26 +924,26 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
                // Set corner radius for all buttons and add a square border
                let cornerRadius: CGFloat = 15
                settingsButton.layer.cornerRadius = cornerRadius
-               settingsButton.layer.borderWidth = 1
-               settingsButton.layer.borderColor = UIColor.white.cgColor
+               //settingsButton.layer.borderWidth = 1
+               //settingsButton.layer.borderColor = UIColor.white.cgColor
 
                historyButton.layer.cornerRadius = cornerRadius
-               historyButton.layer.borderWidth = 1
-               historyButton.layer.borderColor = UIColor.white.cgColor
+               //historyButton.layer.borderWidth = 1
+               //historyButton.layer.borderColor = UIColor.white.cgColor
 
         PlayersButton.layer.cornerRadius = cornerRadius
-        PlayersButton.layer.borderWidth = 1
-        PlayersButton.layer.borderColor = UIColor.white.cgColor
+        //PlayersButton.layer.borderWidth = 1
+        //PlayersButton.layer.borderColor = UIColor.white.cgColor
 
                newGameButton.layer.cornerRadius = cornerRadius
-               newGameButton.layer.borderWidth = 1
-               newGameButton.layer.borderColor = UIColor.white.cgColor
+               //newGameButton.layer.borderWidth = 1
+               //newGameButton.layer.borderColor = UIColor.white.cgColor
 
                // Set the background color to teal blue
-               settingsButton.backgroundColor = UIColor(red: 0, green: 142/255, blue: 184/255, alpha: 1) // Teal blue
-               historyButton.backgroundColor = UIColor(red: 0, green: 142/255, blue: 184/255, alpha: 1) // Teal blue
-        PlayersButton.backgroundColor = UIColor(red: 0, green: 142/255, blue: 184/255, alpha: 1) // Teal blue
-               newGameButton.backgroundColor = UIColor(red: 0, green: 142/255, blue: 184/255, alpha: 1) // Teal blue
+               settingsButton.backgroundColor = UIColor(red: 173/255, green: 216/255, blue: 230/255, alpha: 1.0)//UIColor(red: 0, green: 142/255, blue: 184/255, alpha: 1) // Teal blue
+               historyButton.backgroundColor = UIColor(red: 173/255, green: 216/255, blue: 230/255, alpha: 1.0)//UIColor(red: 0, green: 142/255, blue: 184/255, alpha: 1) // Teal blue
+        PlayersButton.backgroundColor = UIColor(red: 173/255, green: 216/255, blue: 230/255, alpha: 1.0)//UIColor(red: 0, green: 142/255, blue: 184/255, alpha: 1) // Teal blue
+               newGameButton.backgroundColor = UIColor(red: 173/255, green: 216/255, blue: 230/255, alpha: 1.0)//UIColor(red: 0, green: 142/255, blue: 184/255, alpha: 1) // Teal blue
            
         // Adjust the image size within the buttons
                 settingsButton.imageView?.contentMode = .scaleAspectFit
@@ -794,7 +1020,7 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
 
         // Add constraints for the stack view
         NSLayoutConstraint.activate([
-            buttonsStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -125 * scalingFactor),
+            buttonsStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -165 * scalingFactor),
             buttonsStackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 40 * scalingFactor),
             buttonsStackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -40 * scalingFactor),
             buttonsStackView.heightAnchor.constraint(equalToConstant: 65 * scalingFactor),
@@ -807,7 +1033,7 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
         }
 
 
-        
+       
 
 
 //
@@ -822,7 +1048,7 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
         view.addSubview(lbl_NewGame)
 
         // Calculate the adjusted font size based on the scalingFactor
-        let baseFontSize_lbl_NewGame: CGFloat = 10.0 // Set your base font size
+        let baseFontSize_lbl_NewGame: CGFloat = 14.0 // Set your base font size
         let adjustedFontSize_lbl_NewGame = baseFontSize_lbl_NewGame * scalingFactor
 
         // Set the font size for lbl_Playometer
@@ -832,7 +1058,7 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
         NSLayoutConstraint.activate([
            
             lbl_NewGame.topAnchor.constraint(equalTo: newGameButton.bottomAnchor, constant: 3 * scalingFactor),
-            lbl_NewGame.leadingAnchor.constraint(equalTo: newGameButton.leadingAnchor, constant: 5 * scalingFactor),
+            lbl_NewGame.leadingAnchor.constraint(equalTo: newGameButton.leadingAnchor),
             lbl_NewGame.widthAnchor.constraint(equalToConstant: 100 * scalingFactor), // Adjust the reference size as needed
             lbl_NewGame.heightAnchor.constraint(equalToConstant: 30 * scalingFactor) // Adjust the reference size as needed
         ])
@@ -848,7 +1074,7 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
         view.addSubview(lbl_Settings)
 
         // Calculate the adjusted font size based on the scalingFactor
-        let baseFontSize_lbl_Settings: CGFloat = 10.0 // Set your base font size
+        let baseFontSize_lbl_Settings: CGFloat = 14.0 // Set your base font size
         let adjustedFontSize_lbl_Settings = baseFontSize_lbl_Settings * scalingFactor
 
         // Set the font size for lbl_Playometer
@@ -858,7 +1084,7 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
         NSLayoutConstraint.activate([
            
             lbl_Settings.topAnchor.constraint(equalTo: settingsButton.bottomAnchor, constant: 3 * scalingFactor),
-            lbl_Settings.leadingAnchor.constraint(equalTo: settingsButton.leadingAnchor, constant: 10 * scalingFactor),
+            lbl_Settings.leadingAnchor.constraint(equalTo: settingsButton.leadingAnchor),
             lbl_Settings.widthAnchor.constraint(equalToConstant: 100 * scalingFactor), // Adjust the reference size as needed
             lbl_Settings.heightAnchor.constraint(equalToConstant: 30 * scalingFactor) // Adjust the reference size as needed
         ])
@@ -873,7 +1099,7 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
         view.addSubview(lbl_History)
 
         // Calculate the adjusted font size based on the scalingFactor
-        let baseFontSize_lbl_History: CGFloat = 10.0 // Set your base font size
+        let baseFontSize_lbl_History: CGFloat = 14.0 // Set your base font size
         let adjustedFontSize_lbl_History = baseFontSize_lbl_History * scalingFactor
 
         // Set the font size for lbl_Playometer
@@ -883,7 +1109,7 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
         NSLayoutConstraint.activate([
            
             lbl_History.topAnchor.constraint(equalTo: historyButton.bottomAnchor, constant: 3 * scalingFactor),
-            lbl_History.leadingAnchor.constraint(equalTo: historyButton.leadingAnchor, constant: 15 * scalingFactor),
+            lbl_History.leadingAnchor.constraint(equalTo: historyButton.leadingAnchor, constant: 5 * scalingFactor),
             lbl_History.widthAnchor.constraint(equalToConstant: 100 * scalingFactor), // Adjust the reference size as needed
             lbl_History.heightAnchor.constraint(equalToConstant: 30 * scalingFactor) // Adjust the reference size as needed
         ])
@@ -898,7 +1124,7 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
         view.addSubview(lbl_Badges)
 
         // Calculate the adjusted font size based on the scalingFactor
-        let baseFontSize_lbl_Badges: CGFloat = 10.0 // Set your base font size
+        let baseFontSize_lbl_Badges: CGFloat = 14.0 // Set your base font size
         let adjustedFontSize_lbl_Badges = baseFontSize_lbl_Badges * scalingFactor
 
         // Set the font size for lbl_Playometer
@@ -908,7 +1134,7 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
         NSLayoutConstraint.activate([
            
             lbl_Badges.topAnchor.constraint(equalTo: PlayersButton.bottomAnchor, constant: 3 * scalingFactor),
-            lbl_Badges.leadingAnchor.constraint(equalTo: PlayersButton.leadingAnchor, constant: 15 * scalingFactor),
+            lbl_Badges.leadingAnchor.constraint(equalTo: PlayersButton.leadingAnchor, constant: 5 * scalingFactor),
             lbl_Badges.widthAnchor.constraint(equalToConstant: 100 * scalingFactor), // Adjust the reference size as needed
             lbl_Badges.heightAnchor.constraint(equalToConstant: 30 * scalingFactor) // Adjust the reference size as needed
         ])
@@ -952,6 +1178,160 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
         SinglesRankLabel.clipsToBounds = true
         
         
+        
+        
+        func GetHighScores() {
+           
+            let agressvUsersRef = db.collection("Agressv_Users")
+          
+
+            // Query to get the documents with max Doubles_Rank and max Singles_Rank
+            agressvUsersRef
+                .order(by: "Doubles_Rank", descending: true)
+                .limit(to: 1)
+                .getDocuments { (doublesRankQuerySnapshot, error) in
+                    if let err = error {
+                        print("Error getting documents: \(err)")
+                    } else {
+                        let maxDoublesRank = doublesRankQuerySnapshot?.documents.first?["Doubles_Rank"] as? Double
+                        let roundedValue = round(maxDoublesRank! * 10) / 10.0
+                        
+                        
+                        self.Highest_Score_Doubles = roundedValue
+                        print(self.Highest_Score_Doubles)
+                        // Query to get the documents with max Singles_Rank
+                        agressvUsersRef
+                            .order(by: "Singles_Rank", descending: true)
+                            .limit(to: 1)
+                            .getDocuments { (singlesRankQuerySnapshot, error) in
+                                if let err = error {
+                                    print("Error getting documents: \(err)")
+                                } else {
+                                    let maxSinglesRank = singlesRankQuerySnapshot?.documents.first?["Singles_Rank"] as? Double
+                                    let roundedValueSingles = round(maxSinglesRank! * 10) / 10.0
+                                    
+                                    self.Highest_Score_Singles = roundedValueSingles
+                                    print(self.Highest_Score_Singles)
+                                    
+                                    
+                                    
+                                    // Now you have the highest score in the variable Highest_Score
+                                    if self.Highest_Score_Doubles > 8.5 {
+                                        if
+                                            self.Player_DoublesRank == self.Highest_Score_Doubles
+                                        {
+                                            self.profileImageView.layer.borderColor = UIColor.blue.cgColor
+//                                            //ADD BLACK RIBBON
+//                                            let BlackRibbon_Doubles = UIImage(named: "BlueRibbon.png")
+//                                            let BlackRibbonDoubles = UIImageView()
+//                                            BlackRibbonDoubles.contentMode = .scaleAspectFit
+//                                            BlackRibbonDoubles.image = BlackRibbon_Doubles
+//                                            BlackRibbonDoubles.translatesAutoresizingMaskIntoConstraints = false // Enable Auto Layout
+//
+//                                            // Add the image view to the view hierarchy
+//                                            self.view.addSubview(BlackRibbonDoubles)
+//                                            self.view.bringSubviewToFront(BlackRibbonDoubles)
+//
+//                                            BlackRibbonDoubles.layer.zPosition = 5
+//
+//                                            NSLayoutConstraint.activate([
+//                                                BlackRibbonDoubles.trailingAnchor.constraint(equalTo: self.NewDoublesRankLabel.leadingAnchor, constant: -10 * scalingFactor),
+//                                                BlackRibbonDoubles.centerYAnchor.constraint(equalTo: self.NewDoublesRankLabel.centerYAnchor),
+//                                                BlackRibbonDoubles.widthAnchor.constraint(equalToConstant: 50 * scalingFactor), // Adjust the reference size as needed
+//                                                BlackRibbonDoubles.heightAnchor.constraint(equalToConstant: 50 * scalingFactor), // Adjust the reference size as needed
+//                                            ])
+                                            
+                                            //Increment 1 for Blue Ribbon_Doubles in Badges table
+                                            
+                                        
+                                        
+                                        }
+                                        else
+                                        {
+                                            print("HIGHEST SCORE IS GREATER THAN 8.5 BUUTTT PLAYER IS NOT EVALUATING TO IT")
+                                        }
+                                    }
+                                    else
+                                    {
+                                        print("HIGHEST SCORE NOT EVALUATING TO > 8.5")
+                                    }
+                                    
+                                    
+                                    if self.Highest_Score_Singles > 8.5 {
+                                        if
+                                            self.Player_SinglesRank == self.Highest_Score_Singles
+                                        {
+                                            self.profileImageView.layer.borderColor = UIColor.blue.cgColor
+//                                            //ADD BLACK RIBBON
+//                                            let BlackRibbon_Doubles = UIImage(named: "BlueRibbon.png")
+//                                            let BlackRibbonDoubles = UIImageView()
+//                                            BlackRibbonDoubles.contentMode = .scaleAspectFit
+//                                            BlackRibbonDoubles.image = BlackRibbon_Doubles
+//                                            BlackRibbonDoubles.translatesAutoresizingMaskIntoConstraints = false // Enable Auto Layout
+//                                            
+//                                            // Add the image view to the view hierarchy
+//                                            self.view.addSubview(BlackRibbonDoubles)
+//                                            self.view.bringSubviewToFront(BlackRibbonDoubles)
+//                                            
+//                                            BlackRibbonDoubles.layer.zPosition = 5
+//                                            
+//                                            NSLayoutConstraint.activate([
+//                                                BlackRibbonDoubles.trailingAnchor.constraint(equalTo: self.NewSinglesRankLabel.leadingAnchor, constant: -10 * scalingFactor),
+//                                                BlackRibbonDoubles.centerYAnchor.constraint(equalTo: self.NewSinglesRankLabel.centerYAnchor),
+//                                                BlackRibbonDoubles.widthAnchor.constraint(equalToConstant: 50 * scalingFactor), // Adjust the reference size as needed
+//                                                BlackRibbonDoubles.heightAnchor.constraint(equalToConstant: 50 * scalingFactor), // Adjust the reference size as needed
+//                                            ])
+                                            
+                                            //Increment 1 for Blue Ribbon_Singles in Badges table
+                                            
+                                        }
+                                        else
+                                        {
+                                            print("HIGHEST SCORE IS GREATER THAN 8.5 BUUTTT PLAYER IS NOT EVALUATING TO IT")
+                                        }
+                                    }
+                                    else
+                                    {
+                                        print("HIGHEST SCORE NOT EVALUATING TO > 8.5")
+                                    }
+                                    
+                                    if self.Highest_Score_Doubles > 8.5
+                                    {
+                                        if self.Highest_Score_Singles > 8.5
+                                        {
+                                            
+                                        
+                                        if self.Highest_Score_Doubles == self.Player_DoublesRank
+                                            {
+                                            if self.Highest_Score_Singles == self.Player_SinglesRank
+                                                    {
+                                            //backgroundImage.image = UIImage(named: "ChampBackground.png")
+                                                self.profileImageView.layer.borderColor = UIColor.yellow.cgColor
+                                                //Increment 1 for Gold Ribbon in Badges Table
+                                               
+                                                    }
+                                           
+                                            }
+                                    }
+                                    }
+                                    else {}
+                                }
+                            }
+                    }
+                }
+        }
+
+        print(GetHighScores())
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         // Simulate loading for 2 seconds
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
             // Call a function to hide the loading view
@@ -967,9 +1347,11 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
     
     
     
-  
-    
-    
+   
+        
+        
+       
+   
     
     
     
@@ -1181,7 +1563,7 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
     
     @objc func PlayersButtonTapped() {
         // Create an instance of opp two VC
-        let PlayersVC = storyboard?.instantiateViewController(withIdentifier: "PlayersID") as! PlayersViewController
+        let PlayersVC = storyboard?.instantiateViewController(withIdentifier: "PlayersID") as! PlayersSearchViewController
         
         // Push to the SecondViewController
         navigationController?.pushViewController(PlayersVC, animated: true)

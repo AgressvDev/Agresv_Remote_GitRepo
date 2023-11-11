@@ -35,8 +35,10 @@
 		45E6DC012AE7323A00345671 /* BadgesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E6DC002AE7323900345671 /* BadgesViewController.swift */; };
 		45E6DC042AF6C44A00345671 /* CreateGroupVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E6DC032AF6C44A00345671 /* CreateGroupVC.swift */; };
 		45E6DC072AFD901400345671 /* UserProfileHomeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E6DC062AFD901400345671 /* UserProfileHomeVC.swift */; };
-		45E6DC0A2AFDA73600345671 /* PlayersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E6DC092AFDA73600345671 /* PlayersViewController.swift */; };
+		45E6DC0A2AFDA73600345671 /* PlayersSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E6DC092AFDA73600345671 /* PlayersSearchViewController.swift */; };
 		45E6DC0C2AFDB33900345671 /* Angel wish.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 45E6DC0B2AFDB33900345671 /* Angel wish.ttf */; };
+		45E6DC0E2AFE04CA00345671 /* PlayerProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E6DC0D2AFE04CA00345671 /* PlayerProfileViewController.swift */; };
+		45E6DC102AFE06EA00345671 /* PlayersSharedVariable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E6DC0F2AFE06EA00345671 /* PlayersSharedVariable.swift */; };
 		45ECA1D92AD4AC4D00A706C9 /* AccountSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45ECA1D82AD4AC4D00A706C9 /* AccountSettingsViewController.swift */; };
 		45EE444A2AAAC1DA00319597 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45EE44492AAAC1DA00319597 /* ViewController.swift */; };
 		45F489262A9D7A4C0043238C /* GaugeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F489252A9D7A4C0043238C /* GaugeView.swift */; };
@@ -91,8 +93,10 @@
 		45E6DC002AE7323900345671 /* BadgesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BadgesViewController.swift; sourceTree = "<group>"; };
 		45E6DC032AF6C44A00345671 /* CreateGroupVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateGroupVC.swift; sourceTree = "<group>"; };
 		45E6DC062AFD901400345671 /* UserProfileHomeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileHomeVC.swift; sourceTree = "<group>"; };
-		45E6DC092AFDA73600345671 /* PlayersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayersViewController.swift; sourceTree = "<group>"; };
+		45E6DC092AFDA73600345671 /* PlayersSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayersSearchViewController.swift; sourceTree = "<group>"; };
 		45E6DC0B2AFDB33900345671 /* Angel wish.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Angel wish.ttf"; sourceTree = "<group>"; };
+		45E6DC0D2AFE04CA00345671 /* PlayerProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerProfileViewController.swift; sourceTree = "<group>"; };
+		45E6DC0F2AFE06EA00345671 /* PlayersSharedVariable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayersSharedVariable.swift; sourceTree = "<group>"; };
 		45ECA1D82AD4AC4D00A706C9 /* AccountSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSettingsViewController.swift; sourceTree = "<group>"; };
 		45EE44492AAAC1DA00319597 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		45F489252A9D7A4C0043238C /* GaugeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GaugeView.swift; sourceTree = "<group>"; };
@@ -253,7 +257,9 @@
 		45E6DC082AFDA72700345671 /* Players */ = {
 			isa = PBXGroup;
 			children = (
-				45E6DC092AFDA73600345671 /* PlayersViewController.swift */,
+				45E6DC092AFDA73600345671 /* PlayersSearchViewController.swift */,
+				45E6DC0D2AFE04CA00345671 /* PlayerProfileViewController.swift */,
+				45E6DC0F2AFE06EA00345671 /* PlayersSharedVariable.swift */,
 			);
 			path = Players;
 			sourceTree = "<group>";
@@ -426,7 +432,7 @@
 				45E6DC072AFD901400345671 /* UserProfileHomeVC.swift in Sources */,
 				45540EED2ACF843B00F2C932 /* BlockScreenViewController.swift in Sources */,
 				4526236B2AC4A8D00070B637 /* OppTwoViewController.swift in Sources */,
-				45E6DC0A2AFDA73600345671 /* PlayersViewController.swift in Sources */,
+				45E6DC0A2AFDA73600345671 /* PlayersSearchViewController.swift in Sources */,
 				4526236D2AC4B24A0070B637 /* OppOneViewController.swift in Sources */,
 				45540EEB2ACF83E800F2C932 /* BlockedStruct.swift in Sources */,
 				4526342E2A98734E0045FD6A /* HomeScreenViewController.swift in Sources */,
@@ -436,9 +442,11 @@
 				450A49762A8EC94D00DEB7CF /* SceneDelegate.swift in Sources */,
 				45E6DC012AE7323A00345671 /* BadgesViewController.swift in Sources */,
 				455BDA2C2ACA4098003B2EBF /* SinglesAddGameViewController.swift in Sources */,
+				45E6DC102AFE06EA00345671 /* PlayersSharedVariable.swift in Sources */,
 				45271D0F2AC1241F006A3050 /* DoublesSearchVCNew.swift in Sources */,
 				45F489262A9D7A4C0043238C /* GaugeView.swift in Sources */,
 				4526236F2AC4DECA0070B637 /* DoublesSharedVariables.swift in Sources */,
+				45E6DC0E2AFE04CA00345671 /* PlayerProfileViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

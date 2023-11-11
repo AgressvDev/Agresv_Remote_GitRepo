@@ -9,17 +9,20 @@ import UIKit
 import Firebase
 import FirebaseFirestore
 
-class DoublesSearchVCNew: UIViewController {
+class PlayersSearchViewController: UIViewController {
     
     
 
 
     
-    @IBOutlet weak var newLabel_PickPartner: UILabel!
     
-    @IBOutlet weak var newSB_SearchPlayers: UISearchBar!
+
+    @IBOutlet weak var SearchBar_Players: UISearchBar!
     
-    @IBOutlet weak var newTableView_Partners: UITableView!
+
+    
+    @IBOutlet weak var lbl_SearchPlayers: UILabel!
+    @IBOutlet weak var TableView_Players: UITableView!
     
     
     var dataSourceArrayPartner = [String]()
@@ -38,24 +41,16 @@ class DoublesSearchVCNew: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
-        newLabel_PickPartner.textColor = UIColor.black
+        lbl_SearchPlayers.textColor = UIColor.black
         
         // Set the background color
-        newSB_SearchPlayers.backgroundImage = UIImage()
-        newSB_SearchPlayers.barTintColor = UIColor.white
-        newSB_SearchPlayers.layer.borderColor = UIColor.clear.cgColor
-        
-        view.addSubview(newSB_SearchPlayers)
-        
-        
-        
        
-
+        SearchBar_Players.backgroundImage = UIImage()
+        SearchBar_Players.barTintColor = UIColor.white
+        SearchBar_Players.layer.borderColor = UIColor.clear.cgColor
+       
         // Set the default placeholder text
-        newSB_SearchPlayers.placeholder = "Search Username"
-   
-        
+        SearchBar_Players.placeholder = "Search Username"
         
         func GetHighScores() {
             
@@ -83,10 +78,17 @@ class DoublesSearchVCNew: UIViewController {
         }
         print(GetHighScores())
         
-
+        // Calculate scaling factors based on screen width and height
+        let screenWidth = view.bounds.size.width
+        let screenHeight = view.bounds.size.height
+        let widthScalingFactor = screenWidth / 430.0 // Use a reference width, e.g., iPhone 6/6s/7/8 width
+        let heightScalingFactor = screenHeight / 932.0 // Use a reference height, e.g., iPhone 6/6s/7/8 height
        
         
-       
+        
+        
+
+        
    
 
         func fetchUsernames(completion: @escaping (Error?) -> Void) {
@@ -98,23 +100,9 @@ class DoublesSearchVCNew: UIViewController {
             }
 
             let db = Firestore.firestore()
-            let blockedCollection = db.collection("Agressv_Blocked").whereField("Blocked_Email", isEqualTo: currentUserEmail)
+            
 
-            // Create an array to store Plaintiff_Usernames
-            var plaintiffUsernames: [String] = []
-
-            blockedCollection.getDocuments { (querySnapshot, error) in
-                if let error = error {
-                    completion(error)
-                    return
-                }
-
-                // Retrieve Plaintiff_Username values and populate the plaintiffUsernames array
-                for document in querySnapshot!.documents {
-                    if let plaintiffUsername = document["Plaintiff_Username"] as? String {
-                        plaintiffUsernames.append(plaintiffUsername)
-                    }
-                }
+            
 
                 // Fetch data from "Agressv_Users" collection and remove Plaintiff_Usernames from dataSourceArrayPartner
                 let usersCollection = db.collection("Agressv_Users").whereField("Email", isNotEqualTo: currentUserEmail)
@@ -131,17 +119,17 @@ class DoublesSearchVCNew: UIViewController {
                             let formattedRank = String(format: "%.1f", doublesRank)
                             let userWithFormattedRank = "\(username) - \(formattedRank)"
 
-                            // Check if the username is not in plaintiffUsernames and add it to dataSourceArrayPartner
-                            if !plaintiffUsernames.contains(username) {
+                            
+                           
                                 self.dataSourceArrayPartner.append(userWithFormattedRank)
-                            }
+                            
                         }
                     }
 
                     completion(nil)
                 }
             }
-        }
+        
 
         
         // Call the function to fetch and populate usernames
@@ -151,7 +139,7 @@ class DoublesSearchVCNew: UIViewController {
                 return
             }
 
-            self.newTableView_Partners.reloadData()
+            self.TableView_Players.reloadData()
         }
 
 
@@ -166,7 +154,7 @@ class DoublesSearchVCNew: UIViewController {
 
                 
                 // Reload the table view to display the sorted data.
-                newTableView_Partners.reloadData()
+                TableView_Players.reloadData()
             }
         
     } //end of loading
@@ -179,7 +167,7 @@ class DoublesSearchVCNew: UIViewController {
 } //end of class
     
     
-extension DoublesSearchVCNew: UITableViewDelegate, UITableViewDataSource {
+extension PlayersSearchViewController: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 100.0 // Adjust this value to your desired cell height
@@ -201,23 +189,23 @@ extension DoublesSearchVCNew: UITableViewDelegate, UITableViewDataSource {
             
          if searching {
                      let selectedValue = filteredDataSourceArrayPartner[indexPath.row]
-                     SharedData.shared.PartnerSelection = selectedValue
+             SharedPlayerData.shared.PlayerSelectedUsername_NoRank = selectedValue
 
                      // Extract username without the rank and assign it to SharedDataNoRank.sharednorank.PartnerSelection_NoRank
                      if let username = selectedValue.components(separatedBy: " - ").first {
-                         SharedDataNoRank.sharednorank.PartnerSelection_NoRank = username
+                         SharedPlayerData.shared.PlayerSelectedUsername_NoRank  = username
                      }
                  } else {
                      let selectedValue = dataSourceArrayPartner[indexPath.row]
-                     SharedData.shared.PartnerSelection = selectedValue
+                     SharedPlayerData.shared.PlayerSelectedUsername_NoRank  = selectedValue
 
                      // Extract username without the rank and assign it to SharedDataNoRank.sharednorank.PartnerSelection_NoRank
                      if let username = selectedValue.components(separatedBy: " - ").first {
-                         SharedDataNoRank.sharednorank.PartnerSelection_NoRank = username
+                         SharedPlayerData.shared.PlayerSelectedUsername_NoRank  = username
                      }
                  }
             // Create an instance of SecondViewController
-            let OppOneVC = storyboard?.instantiateViewController(withIdentifier: "OppOneID") as! OppOneViewController
+            let PlayerProfileVC = storyboard?.instantiateViewController(withIdentifier: "PlayerProfileID") as! PlayerProfileViewController
             
          //prep for sending partner variable
          //let LogGameVC = storyboard?.instantiateViewController(withIdentifier: "AddGameID") as! AddGameViewController
@@ -229,16 +217,16 @@ extension DoublesSearchVCNew: UITableViewDelegate, UITableViewDataSource {
          
             
             // Push to the SecondViewController
-            navigationController?.pushViewController(OppOneVC, animated: true)
+            navigationController?.pushViewController(PlayerProfileVC, animated: true)
          
         }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        let customColor = UIColor(red: 0/255, green: 0/255, blue: 30/255, alpha: 1.0)
-        cell.textLabel?.font = UIFont.systemFont(ofSize: 18.0)
-         cell.textLabel?.textColor = UIColor.white
-        cell.contentView.backgroundColor = customColor
+               let customColor = UIColor(red: 0/255, green: 0/255, blue: 30/255, alpha: 1.0)
+               cell.textLabel?.font = UIFont.systemFont(ofSize: 18.0)
+                cell.textLabel?.textColor = UIColor.white
+               cell.contentView.backgroundColor = customColor
 
         // Reset the cell's content view to remove any previously added image views
             for subview in cell.contentView.subviews {
@@ -277,7 +265,7 @@ extension DoublesSearchVCNew: UITableViewDelegate, UITableViewDataSource {
 
 
     
-extension DoublesSearchVCNew: UISearchBarDelegate {
+extension PlayersSearchViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         //filteredDataSourceArrayPartner = dataSourceArrayPartner.filter({$0.prefix(searchText.count)==searchText})
         if searchText.isEmpty {
@@ -288,7 +276,9 @@ extension DoublesSearchVCNew: UISearchBarDelegate {
                 filteredDataSourceArrayPartner = dataSourceArrayPartner.filter { $0.lowercased().contains(searchText.lowercased()) }
             }
         searching = true
-        newTableView_Partners.reloadData()
+        TableView_Players.reloadData()
     }
 }
+
+
 

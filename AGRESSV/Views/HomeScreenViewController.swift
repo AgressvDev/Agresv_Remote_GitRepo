@@ -1398,6 +1398,8 @@ class HomeScreenViewController: UIViewController {
         
         
     }
+    
+    
     func showLoadingView() {
             // Create a UIView that covers the entire screen
             loadingView = UIView(frame: view.bounds)
