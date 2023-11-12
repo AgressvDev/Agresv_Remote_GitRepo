@@ -78,11 +78,7 @@ class PlayersSearchViewController: UIViewController {
         }
         print(GetHighScores())
         
-        // Calculate scaling factors based on screen width and height
-        let screenWidth = view.bounds.size.width
-        let screenHeight = view.bounds.size.height
-        let widthScalingFactor = screenWidth / 430.0 // Use a reference width, e.g., iPhone 6/6s/7/8 width
-        let heightScalingFactor = screenHeight / 932.0 // Use a reference height, e.g., iPhone 6/6s/7/8 height
+       
        
         
         

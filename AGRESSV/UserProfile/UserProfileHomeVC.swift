@@ -1374,9 +1374,9 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
         let imagePickerController = UIImagePickerController()
         imagePickerController.delegate = self
         imagePickerController.allowsEditing = true
-        
+
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        
+
         if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
             let choosePhotoAction = UIAlertAction(title: "Choose Photo", style: .default) { _ in
                 imagePickerController.sourceType = .photoLibrary
@@ -1384,13 +1384,39 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
             }
             alertController.addAction(choosePhotoAction)
         }
-        
+
+        // Add delete photo option
+        let deletePhotoAction = UIAlertAction(title: "Delete Photo", style: .destructive) { _ in
+            self.deletePhoto()
+        }
+        alertController.addAction(deletePhotoAction)
+
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
         alertController.addAction(cancelAction)
-        
+
         present(alertController, animated: true, completion: nil)
     }
     
+    
+    func deletePhoto() {
+        // Check if there's an existing document reference
+        if let currentUserProfileImageRef = currentUserProfileImageRef {
+            // Delete the document from Firestore
+            currentUserProfileImageRef.delete { error in
+                if let error = error {
+                    print("Error deleting image from Firestore: \(error.localizedDescription)")
+                } else {
+                    print("Image deleted from Firestore successfully!")
+                    // Reset the profile image view to a default image or nil
+                    self.profileImageView.image = UIImage(named: "DefaultPlayerImage")
+                }
+            }
+        } else {
+            // Handle the case where there's no existing document reference
+            print("Error: No existing document reference to delete.")
+        }
+    }
+        
     // MARK: - UIImagePickerControllerDelegate
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
@@ -1472,6 +1498,7 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
                 }
             } else {
                 // Handle the case where the document does not exist (user does not have a profile image)
+                self.profileImageView.image = UIImage(named: "DefaultPlayerImage")
             }
         }
     }
