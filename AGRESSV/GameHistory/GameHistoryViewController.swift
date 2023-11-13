@@ -32,6 +32,7 @@ class GameHistoryViewController: UIViewController, UITableViewDelegate, UITableV
         let auth = Auth.auth()
         
        
+    @IBOutlet weak var lbl_gameh: UILabel!
     
     // Date formatter to convert Firestore timestamps to human-readable dates
         let dateFormatter: DateFormatter = {
@@ -50,7 +51,15 @@ class GameHistoryViewController: UIViewController, UITableViewDelegate, UITableV
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // Calculate scaling factors based on screen width and height
+        let screenWidth = view.bounds.size.width
+        let screenHeight = view.bounds.size.height
+        let widthScalingFactor = screenWidth / 430.0 // Use a reference width, e.g., iPhone 6/6s/7/8 width
+        let heightScalingFactor = screenHeight / 932.0 // Use a reference height, e.g., iPhone 6/6s/7/8 height
+        let scalingFactor = min(widthScalingFactor, heightScalingFactor)
         
+
+
         func getcurrentuser() {
             let db = Firestore.firestore()
             let uid = Auth.auth().currentUser!.email
@@ -81,12 +90,7 @@ class GameHistoryViewController: UIViewController, UITableViewDelegate, UITableV
         print(getcurrentuser())
         
 
-        // Calculate scaling factors based on screen width and height
-        let screenWidth = view.bounds.size.width
-        let screenHeight = view.bounds.size.height
-        let widthScalingFactor = screenWidth / 430.0 // Use a reference width, e.g., iPhone 6/6s/7/8 width
-        let heightScalingFactor = screenHeight / 932.0 // Use a reference height, e.g., iPhone 6/6s/7/8 height
-        let scalingFactor = min(widthScalingFactor, heightScalingFactor)
+      
         
         //BACKGROUND
         // Create UIImageView for the background image

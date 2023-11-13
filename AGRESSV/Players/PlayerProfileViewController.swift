@@ -12,6 +12,7 @@ import MobileCoreServices
 import AVFoundation
 import SwiftUI
 import Foundation
+import Charts
 
 
 class PlayerProfileViewController: UIViewController {
@@ -19,6 +20,14 @@ class PlayerProfileViewController: UIViewController {
     var player: String = SharedPlayerData.shared.PlayerSelectedUsername_NoRank
     var playersEmail: String = ""
     
+    var pieChartView: PieChartView!
+    var pieChartViewSingles: PieChartViewSingles!
+    
+    
+    var DoublesWinsPie: Double = 0.0
+    var DoublesLossesPie: Double = 0.0
+    var SinglesWinsPie: Double = 0.0
+    var SinglesLossesPie: Double = 0.0
     
     var HasAchievedGoldRibbon: Bool = false
     var HasAchievedBlueRibbon: Bool = false
@@ -209,10 +218,23 @@ class PlayerProfileViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-      
         
-       
+        
+        // Calculate scaling factors based on screen width and height
+        let screenWidth = view.bounds.size.width
+        let screenHeight = view.bounds.size.height
+        let widthScalingFactor = screenWidth / 430.0 // Use a reference width, e.g., iPhone 6/6s/7/8 width
+        let heightScalingFactor = screenHeight / 932.0 // Use a reference height, e.g., iPhone 6/6s/7/8 height
+        let scalingFactor = min(widthScalingFactor, heightScalingFactor)
+        
+        
+        
+              
+        
+   
+        
+        
+        
         showLoadingView()
         
         
@@ -230,9 +252,41 @@ class PlayerProfileViewController: UIViewController {
     
     
     
+    func updatePieChart() {
+            // Calculate the percentage of wins and losses
+            let totalGames = DoublesWinsPie + DoublesLossesPie
+
+            guard totalGames > 0 else {
+                // Handle the case where there are no games (to avoid division by zero)
+                return
+            }
+
+            let winPercentage = DoublesWinsPie / totalGames
+            let lossPercentage = DoublesLossesPie / totalGames
+
+            // Update the data property of PieChartView
+            pieChartView.data = [winPercentage, lossPercentage]
+        
+        
+        }
     
-    
-    
+    func updatePieChartSingles() {
+            // Calculate the percentage of wins and losses
+            let totalGames = SinglesWinsPie + SinglesLossesPie
+
+            guard totalGames > 0 else {
+                // Handle the case where there are no games (to avoid division by zero)
+                return
+            }
+
+            let winPercentage = SinglesWinsPie / totalGames
+            let lossPercentage = SinglesLossesPie / totalGames
+
+            // Update the data property of PieChartView
+            pieChartViewSingles.data = [winPercentage, lossPercentage]
+        
+        
+        }
     
     
     func retrieveUserEmailAndUpdateVariable() {
@@ -277,6 +331,8 @@ class PlayerProfileViewController: UIViewController {
         // Perform any additional setup or code that depends on the player's email here
         
         loadProfileImage()
+        
+        
         
         // Calculate scaling factors based on screen width and height
         let screenWidth = view.bounds.size.width
@@ -325,7 +381,7 @@ class PlayerProfileViewController: UIViewController {
        
         
         
-        
+      
         
         
         view.addSubview(UserNameLabelMain)
@@ -346,8 +402,55 @@ class PlayerProfileViewController: UIViewController {
        
         
         
-        
-        
+//        let lbl_Playmoregames = UILabel()
+//        lbl_Playmoregames.text = "Play more games. Be"
+//        lbl_Playmoregames.textColor = .white
+//        lbl_Playmoregames.font = UIFont.systemFont(ofSize: 12)
+//        lbl_Playmoregames.numberOfLines = 0 // Allow multiple lines
+//        lbl_Playmoregames.translatesAutoresizingMaskIntoConstraints = false // Enable Auto Layout
+//
+//                // Add the label to the view hierarchy
+//                view.addSubview(lbl_Playmoregames)
+//
+//                // Define Auto Layout constraints to position and allow the label to expand its width based on content
+//                NSLayoutConstraint.activate([
+//                    lbl_Playmoregames.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 150 * scalingFactor), // Left side of the screen
+//                    lbl_Playmoregames.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -200 * scalingFactor), // A little higher than the bottom
+//                    lbl_Playmoregames.heightAnchor.constraint(equalToConstant: 30 * scalingFactor), // Adjust the reference height as needed
+//                ])
+//
+//                // Set the width constraint to be greater than or equal to a minimum width
+//                let minWidthConstraint_playmoregames = lbl_Playmoregames.widthAnchor.constraint(greaterThanOrEqualToConstant: 100 * scalingFactor) // Adjust the minimum width as needed
+//        minWidthConstraint_playmoregames.priority = .defaultLow // Lower priority so that it can expand
+//
+//                NSLayoutConstraint.activate([minWidthConstraint_playmoregames])
+//
+//
+//        lbl_Playmoregames.layer.zPosition = 3
+//
+//
+//        // Load the image
+//        if let AgressvLogo = UIImage(named: "AgressvLogoSmallWhite.png") {
+//            let myImageView = UIImageView()
+//            myImageView.contentMode = .scaleAspectFit
+//            myImageView.image = AgressvLogo
+//            myImageView.translatesAutoresizingMaskIntoConstraints = false // Enable Auto Layout
+//
+//            // Add the image view to the view hierarchy
+//            view.addSubview(myImageView)
+//
+//
+//
+//            // Define Auto Layout constraints to position and scale the image
+//            NSLayoutConstraint.activate([
+//                myImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+//                myImageView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+//                myImageView.widthAnchor.constraint(equalToConstant: 300 * scalingFactor), // Adjust the reference size as needed
+//                myImageView.heightAnchor.constraint(equalToConstant: 300 * scalingFactor), // Adjust the reference size as needed
+//            ])
+//
+//
+//        }
         
         
         
@@ -357,7 +460,7 @@ class PlayerProfileViewController: UIViewController {
 
 
         func GetHomeScreenData() {
-            let uid = playersEmail
+          
             let docRef = db.collection("Agressv_Users").document(playersEmail)
 
             docRef.getDocument { (document, error) in
@@ -406,7 +509,25 @@ class PlayerProfileViewController: UIViewController {
 //
                     self.UserNameLabelMain.text = document!.data()!["Username"] as? String
 
-
+                    
+                    let DoublesWinsPie = document!.data()!["Doubles_Games_Wins"] as? Double ?? 0.0
+                    let DoublesLossesPie = document!.data()!["Doubles_Games_Losses"] as? Double ?? 0.0
+                    let SinglesWinsPie = document!.data()!["Singles_Games_Wins"] as? Double ?? 0.0
+                    let SinglesLossesPie = document!.data()!["Singles_Games_Losses"] as? Double ?? 0.0
+                    
+                    self.DoublesWinsPie = DoublesWinsPie
+                    self.DoublesLossesPie = DoublesLossesPie
+                    
+                    self.SinglesWinsPie = SinglesWinsPie
+                    self.SinglesLossesPie = SinglesLossesPie
+                    
+                    print(self.DoublesWinsPie)
+                    print(self.DoublesLossesPie)
+                    
+                 
+                   
+                    self.updatePieChart()
+                    self.updatePieChartSingles()
 
                 }
             }
@@ -416,7 +537,7 @@ class PlayerProfileViewController: UIViewController {
         //Calls the Username function
         print(GetHomeScreenData())
         
-        
+                           
        
 
         // Function to query Firestore and determine rank
@@ -958,10 +1079,49 @@ class PlayerProfileViewController: UIViewController {
                 view.addSubview(SinglesLossesLabel)
                 view.addSubview(lbl_DoublesHeader)
                 view.addSubview(lbl_SinglesHeader)
+        
+        
                
+      
+
+        // Create an instance of PieChartView
+        pieChartView = PieChartView()
+        pieChartView.translatesAutoresizingMaskIntoConstraints = false
+
+
+
+
+        view.addSubview(pieChartView)
+
+
+
+        // Set Auto Layout constraints for PieChartView
+        NSLayoutConstraint.activate([
+            pieChartView.leadingAnchor.constraint(equalTo: lbl_DoublesHeader.leadingAnchor),
+            pieChartView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -130 * scalingFactor),
+            pieChartView.widthAnchor.constraint(equalToConstant: 90 * scalingFactor),
+            pieChartView.heightAnchor.constraint(equalToConstant: 90 * scalingFactor)
+        ])
+
+
         
         
         
+        pieChartViewSingles = PieChartViewSingles()
+        pieChartViewSingles.translatesAutoresizingMaskIntoConstraints = false
+
+        
+        view.addSubview(pieChartViewSingles)
+
+      
+
+        // Set Auto Layout constraints for PieChartView
+        NSLayoutConstraint.activate([
+            pieChartViewSingles.leadingAnchor.constraint(equalTo: lbl_SinglesHeader.leadingAnchor),
+            pieChartViewSingles.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -130 * scalingFactor),
+            pieChartViewSingles.widthAnchor.constraint(equalToConstant: 90 * scalingFactor),
+            pieChartViewSingles.heightAnchor.constraint(equalToConstant: 90 * scalingFactor)
+        ])
         
 //        NSLayoutConstraint.activate([
 //                    // Position the "Settings" button

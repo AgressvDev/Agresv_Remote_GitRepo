@@ -485,7 +485,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="insetGrouped" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" estimatedSectionHeaderHeight="-1" sectionFooterHeight="18" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="Y8n-P7-6VB">
-                                <rect key="frame" x="0.0" y="139" width="393" height="713"/>
+                                <rect key="frame" x="0.0" y="151.66666666666669" width="393" height="700.33333333333326"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <color key="separatorColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
@@ -503,9 +503,9 @@
                                     <outlet property="delegate" destination="BS9-lG-8hD" id="pyb-7H-n4U"/>
                                 </connections>
                             </tableView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Game History" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OVO-P8-fDf">
-                                <rect key="frame" x="112" y="59" width="168" height="24"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Game History" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="O2r-q6-ImQ">
+                                <rect key="frame" x="80" y="73" width="233" height="45.333333333333343"/>
+                                <fontDescription key="fontDescription" name="Impact" family="Impact" pointSize="37"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -513,17 +513,18 @@
                         <viewLayoutGuide key="safeArea" id="Xxz-XV-X0a"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="Y8n-P7-6VB" firstAttribute="top" secondItem="OVO-P8-fDf" secondAttribute="bottom" constant="56" id="6IZ-Jw-gAH"/>
-                            <constraint firstItem="Y8n-P7-6VB" firstAttribute="leading" secondItem="Xxz-XV-X0a" secondAttribute="leading" id="M8u-Hc-paZ"/>
-                            <constraint firstItem="OVO-P8-fDf" firstAttribute="top" secondItem="Xxz-XV-X0a" secondAttribute="top" id="MR1-cT-zWC"/>
-                            <constraint firstItem="Y8n-P7-6VB" firstAttribute="centerX" secondItem="l9W-5f-vyo" secondAttribute="centerX" id="XEq-Xe-8i7"/>
-                            <constraint firstItem="Y8n-P7-6VB" firstAttribute="centerX" secondItem="OVO-P8-fDf" secondAttribute="centerX" id="cLz-wj-cdl"/>
-                            <constraint firstAttribute="bottomMargin" secondItem="Y8n-P7-6VB" secondAttribute="bottom" constant="-34" id="cyb-Qc-ftL"/>
-                            <constraint firstItem="OVO-P8-fDf" firstAttribute="leading" secondItem="Xxz-XV-X0a" secondAttribute="leading" constant="112" id="oAg-zt-MMl"/>
+                            <constraint firstItem="O2r-q6-ImQ" firstAttribute="centerX" secondItem="Y8n-P7-6VB" secondAttribute="centerX" id="2LA-Q5-p5D"/>
+                            <constraint firstAttribute="bottomMargin" secondItem="Y8n-P7-6VB" secondAttribute="bottom" constant="-34" id="43F-eI-sad"/>
+                            <constraint firstItem="O2r-q6-ImQ" firstAttribute="leading" secondItem="Xxz-XV-X0a" secondAttribute="leading" constant="80" id="HtU-Li-qR6"/>
+                            <constraint firstItem="Y8n-P7-6VB" firstAttribute="leading" secondItem="Xxz-XV-X0a" secondAttribute="leading" id="cln-EO-hp8"/>
+                            <constraint firstItem="Y8n-P7-6VB" firstAttribute="top" secondItem="Xxz-XV-X0a" secondAttribute="top" constant="92.666666666666686" id="nLy-aS-TIw"/>
+                            <constraint firstItem="O2r-q6-ImQ" firstAttribute="top" secondItem="Xxz-XV-X0a" secondAttribute="top" constant="14" id="rYY-HD-vNW"/>
+                            <constraint firstItem="Y8n-P7-6VB" firstAttribute="centerX" secondItem="l9W-5f-vyo" secondAttribute="centerX" id="t0x-hz-4zC"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="Table_GameHistory" destination="Y8n-P7-6VB" id="OUy-aZ-BrV"/>
+                        <outlet property="lbl_gameh" destination="O2r-q6-ImQ" id="USr-Ri-jFX"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jLJ-Ve-ljr" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

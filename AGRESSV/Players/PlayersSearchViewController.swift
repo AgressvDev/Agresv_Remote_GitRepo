@@ -101,7 +101,7 @@ class PlayersSearchViewController: UIViewController {
             
 
                 // Fetch data from "Agressv_Users" collection and remove Plaintiff_Usernames from dataSourceArrayPartner
-                let usersCollection = db.collection("Agressv_Users").whereField("Email", isNotEqualTo: currentUserEmail)
+                let usersCollection = db.collection("Agressv_Users")
 
                 usersCollection.getDocuments { (querySnapshot, error) in
                     if let error = error {
