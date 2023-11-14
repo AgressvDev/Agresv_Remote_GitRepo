@@ -325,6 +325,46 @@
             </objects>
             <point key="canvasLocation" x="3365.6488549618321" y="-1319.0140845070423"/>
         </scene>
+        <!--New Player SearchVC-->
+        <scene sceneID="hB1-E8-POJ">
+            <objects>
+                <viewController storyboardIdentifier="NewPlayerSearchID" id="xVv-GS-G5k" customClass="NewPlayerSearchVC" customModule="AGRESSV" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="56p-cd-cOU">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="ZM2-Vd-rQ5">
+                                <rect key="frame" x="0.0" y="200" width="393" height="652"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="CircularImageCell" id="p81-7k-6Ze" customClass="CircularImageCell" customModule="AGRESSV" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="50" width="393" height="43.666667938232422"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="p81-7k-6Ze" id="0Sr-Zv-BuU" customClass="CircularImageCell" customModule="AGRESSV" customModuleProvider="target">
+                                            <rect key="frame" x="0.0" y="0.0" width="393" height="43.666667938232422"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="eBr-Ul-HiS"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="ZM2-Vd-rQ5" firstAttribute="leading" secondItem="eBr-Ul-HiS" secondAttribute="leading" id="On4-01-KrJ"/>
+                            <constraint firstItem="ZM2-Vd-rQ5" firstAttribute="centerX" secondItem="56p-cd-cOU" secondAttribute="centerX" id="SDj-zQ-Qao"/>
+                            <constraint firstItem="ZM2-Vd-rQ5" firstAttribute="top" secondItem="eBr-Ul-HiS" secondAttribute="top" constant="141" id="Zuc-yt-Cme"/>
+                            <constraint firstAttribute="bottomMargin" secondItem="ZM2-Vd-rQ5" secondAttribute="bottom" constant="-34" id="eBP-Yu-IK9"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="tableView" destination="ZM2-Vd-rQ5" id="7RD-sM-ecH"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Lo3-RZ-FXt" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4281.679389312977" y="-2722.535211267606"/>
+        </scene>
         <!--Players Search View Controller-->
         <scene sceneID="38E-2F-8Om">
             <objects>

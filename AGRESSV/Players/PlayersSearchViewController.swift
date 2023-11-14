@@ -88,17 +88,9 @@ class PlayersSearchViewController: UIViewController {
    
 
         func fetchUsernames(completion: @escaping (Error?) -> Void) {
-            // Get the current user's email
-            guard let currentUserEmail = Auth.auth().currentUser?.email else {
-                let error = NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "Current user email is nil"])
-                completion(error)
-                return
-            }
+       
 
             let db = Firestore.firestore()
-            
-
-            
 
                 // Fetch data from "Agressv_Users" collection and remove Plaintiff_Usernames from dataSourceArrayPartner
                 let usersCollection = db.collection("Agressv_Users")

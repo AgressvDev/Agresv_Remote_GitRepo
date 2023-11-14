@@ -220,12 +220,7 @@ class PlayerProfileViewController: UIViewController {
         super.viewDidLoad()
         
         
-        // Calculate scaling factors based on screen width and height
-        let screenWidth = view.bounds.size.width
-        let screenHeight = view.bounds.size.height
-        let widthScalingFactor = screenWidth / 430.0 // Use a reference width, e.g., iPhone 6/6s/7/8 width
-        let heightScalingFactor = screenHeight / 932.0 // Use a reference height, e.g., iPhone 6/6s/7/8 height
-        let scalingFactor = min(widthScalingFactor, heightScalingFactor)
+       
         
         
         
@@ -556,11 +551,11 @@ class PlayerProfileViewController: UIViewController {
                     var rank = 1
 
                     for (index, document) in querySnapshot!.documents.enumerated() {
-                        let doublesRank = document.data()["Doubles_Rank"] as? Double ?? 0.0
+                        let doublesRank = (document.data()["Doubles_Rank"] as? Double ?? 0.0).rounded(toPlaces: 1)
 
                         if index > 0 {
                             let previousDocument = querySnapshot!.documents[index - 1]
-                            let previousDoublesRank = previousDocument.data()["Doubles_Rank"] as? Double ?? 0.0
+                            let previousDoublesRank = (previousDocument.data()["Doubles_Rank"] as? Double ?? 0.0).rounded(toPlaces: 1)
 
                             if doublesRank < previousDoublesRank {
                                 rank = index + 1
@@ -570,13 +565,8 @@ class PlayerProfileViewController: UIViewController {
                         // Assuming you want to find the rank for the current user
                         if document.documentID == uid {
                             // Update UI on the main thread
-                          
-                                self.lbl_DoublesNerdData.text = "D: \(rank)"
-                                
-                                    
-                                   
-                          
-                                
+                            self.lbl_DoublesNerdData.text = "D: \(rank)"
+                        
                            
                         }
                     }
@@ -600,18 +590,19 @@ class PlayerProfileViewController: UIViewController {
                     var rank = 1
 
                     for (index, document) in querySnapshot!.documents.enumerated() {
-                        let doublesRank = document.data()["Singles_Rank"] as? Double ?? 0.0
+                        let singlesRank = (document.data()["Singles_Rank"] as? Double ?? 0.0).rounded(toPlaces: 1)
 
                         if index > 0 {
                             let previousDocument = querySnapshot!.documents[index - 1]
-                            let previousDoublesRank = previousDocument.data()["Singles_Rank"] as? Double ?? 0.0
+                            let previousSinglesRank = (previousDocument.data()["Singles_Rank"] as? Double ?? 0.0).rounded(toPlaces: 1)
 
-                            if doublesRank < previousDoublesRank {
+                            if singlesRank < previousSinglesRank {
                                 rank = index + 1
                             }
                         }
 
                         // Assuming you want to find the rank for the current user
+                     
                         if document.documentID == uid {
                             // Update UI on the main thread
                           

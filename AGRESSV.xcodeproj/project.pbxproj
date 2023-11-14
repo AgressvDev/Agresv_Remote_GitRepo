@@ -34,6 +34,7 @@
 		45B2195F2ADB9E240081AA5F /* ContactUsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45B2195E2ADB9E240081AA5F /* ContactUsViewController.swift */; };
 		45BD18212B01CA9A00EB98C6 /* PieChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45BD18202B01CA9900EB98C6 /* PieChart.swift */; };
 		45BD18232B01E83900EB98C6 /* PieChartSingles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45BD18222B01E83900EB98C6 /* PieChartSingles.swift */; };
+		45BD18252B02E53200EB98C6 /* NewPlayerSearchVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45BD18242B02E53200EB98C6 /* NewPlayerSearchVC.swift */; };
 		45E6DC012AE7323A00345671 /* BadgesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E6DC002AE7323900345671 /* BadgesViewController.swift */; };
 		45E6DC042AF6C44A00345671 /* CreateGroupVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E6DC032AF6C44A00345671 /* CreateGroupVC.swift */; };
 		45E6DC072AFD901400345671 /* UserProfileHomeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E6DC062AFD901400345671 /* UserProfileHomeVC.swift */; };
@@ -94,6 +95,7 @@
 		45B2195E2ADB9E240081AA5F /* ContactUsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactUsViewController.swift; sourceTree = "<group>"; };
 		45BD18202B01CA9900EB98C6 /* PieChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieChart.swift; sourceTree = "<group>"; };
 		45BD18222B01E83900EB98C6 /* PieChartSingles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieChartSingles.swift; sourceTree = "<group>"; };
+		45BD18242B02E53200EB98C6 /* NewPlayerSearchVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPlayerSearchVC.swift; sourceTree = "<group>"; };
 		45E6DC002AE7323900345671 /* BadgesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BadgesViewController.swift; sourceTree = "<group>"; };
 		45E6DC032AF6C44A00345671 /* CreateGroupVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateGroupVC.swift; sourceTree = "<group>"; };
 		45E6DC062AFD901400345671 /* UserProfileHomeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileHomeVC.swift; sourceTree = "<group>"; };
@@ -261,6 +263,7 @@
 		45E6DC082AFDA72700345671 /* Players */ = {
 			isa = PBXGroup;
 			children = (
+				45BD18242B02E53200EB98C6 /* NewPlayerSearchVC.swift */,
 				45E6DC092AFDA73600345671 /* PlayersSearchViewController.swift */,
 				45E6DC0D2AFE04CA00345671 /* PlayerProfileViewController.swift */,
 				45E6DC0F2AFE06EA00345671 /* PlayersSharedVariable.swift */,
@@ -428,6 +431,7 @@
 				4508FA9B2A90229B0081B477 /* CreateAccountViewController.swift in Sources */,
 				45BD18212B01CA9A00EB98C6 /* PieChart.swift in Sources */,
 				4508FA992A900D910081B477 /* LoginViewController.swift in Sources */,
+				45BD18252B02E53200EB98C6 /* NewPlayerSearchVC.swift in Sources */,
 				45EE444A2AAAC1DA00319597 /* ViewController.swift in Sources */,
 				450A49782A8EC94D00DEB7CF /* MainViewController.swift in Sources */,
 				455606E12AB8AECC00CBE801 /* AddGameViewController.swift in Sources */,
@@ -642,7 +646,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 8.0;
+				MARKETING_VERSION = 9.0;
 				PRODUCT_BUNDLE_IDENTIFIER = AGRESSV.AGRESSV;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -673,7 +677,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 8.0;
+				MARKETING_VERSION = 9.0;
 				PRODUCT_BUNDLE_IDENTIFIER = AGRESSV.AGRESSV;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;

@@ -386,11 +386,11 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
                     var rank = 1
 
                     for (index, document) in querySnapshot!.documents.enumerated() {
-                        let doublesRank = document.data()["Doubles_Rank"] as? Double ?? 0.0
+                        let doublesRank = (document.data()["Doubles_Rank"] as? Double ?? 0.0).rounded(toPlaces: 1)
 
                         if index > 0 {
                             let previousDocument = querySnapshot!.documents[index - 1]
-                            let previousDoublesRank = previousDocument.data()["Doubles_Rank"] as? Double ?? 0.0
+                            let previousDoublesRank = (previousDocument.data()["Doubles_Rank"] as? Double ?? 0.0).rounded(toPlaces: 1)
 
                             if doublesRank < previousDoublesRank {
                                 rank = index + 1
@@ -430,18 +430,19 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
                     var rank = 1
 
                     for (index, document) in querySnapshot!.documents.enumerated() {
-                        let doublesRank = document.data()["Singles_Rank"] as? Double ?? 0.0
+                        let singlesRank = (document.data()["Singles_Rank"] as? Double ?? 0.0).rounded(toPlaces: 1)
 
                         if index > 0 {
                             let previousDocument = querySnapshot!.documents[index - 1]
-                            let previousDoublesRank = previousDocument.data()["Singles_Rank"] as? Double ?? 0.0
+                            let previousSinglesRank = (previousDocument.data()["Singles_Rank"] as? Double ?? 0.0).rounded(toPlaces: 1)
 
-                            if doublesRank < previousDoublesRank {
+                            if singlesRank < previousSinglesRank {
                                 rank = index + 1
                             }
                         }
 
                         // Assuming you want to find the rank for the current user
+                     
                         if document.documentID == uid {
                             // Update UI on the main thread
                           
@@ -1590,10 +1591,20 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
     
     @objc func PlayersButtonTapped() {
         // Create an instance of opp two VC
-        let PlayersVC = storyboard?.instantiateViewController(withIdentifier: "PlayersID") as! PlayersSearchViewController
+//        let PlayersVC = storyboard?.instantiateViewController(withIdentifier: "PlayersID") as! PlayersSearchViewController
+//
+//        // Push to the SecondViewController
+//        navigationController?.pushViewController(PlayersVC, animated: true)
+        
+        
+        //for testing
+        
+        let PlayersVC = storyboard?.instantiateViewController(withIdentifier: "NewPlayerSearchID") as! NewPlayerSearchVC
         
         // Push to the SecondViewController
         navigationController?.pushViewController(PlayersVC, animated: true)
+        
+        
         }
     
     
