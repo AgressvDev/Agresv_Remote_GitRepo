@@ -8,6 +8,11 @@
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="Angel wish.ttf">
+            <string>Angelwish-Regular</string>
+        </array>
+    </customFonts>
     <scenes>
         <!--MainScreen-->
         <scene sceneID="tne-QT-ifu">
@@ -347,17 +352,43 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
+                            <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="gZW-eT-9xo">
+                                <rect key="frame" x="0.0" y="130" width="393" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="Y6r-kY-zvg"/>
+                                </constraints>
+                                <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <outlet property="delegate" destination="xVv-GS-G5k" id="wVv-ZN-Nvc"/>
+                                </connections>
+                            </searchBar>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Search Players" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ims-8g-tCZ">
+                                <rect key="frame" x="128" y="59" width="161" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="NG2-KK-LuX"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Angelwish-Regular" family="Angel wish" pointSize="31"/>
+                                <color key="textColor" red="0.75453044459999996" green="0.053230738499999999" blue="0.01485466564" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="eBr-Ul-HiS"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="ZM2-Vd-rQ5" firstAttribute="leading" secondItem="eBr-Ul-HiS" secondAttribute="leading" id="On4-01-KrJ"/>
-                            <constraint firstItem="ZM2-Vd-rQ5" firstAttribute="centerX" secondItem="56p-cd-cOU" secondAttribute="centerX" id="SDj-zQ-Qao"/>
-                            <constraint firstItem="ZM2-Vd-rQ5" firstAttribute="top" secondItem="eBr-Ul-HiS" secondAttribute="top" constant="141" id="Zuc-yt-Cme"/>
-                            <constraint firstAttribute="bottomMargin" secondItem="ZM2-Vd-rQ5" secondAttribute="bottom" constant="-34" id="eBP-Yu-IK9"/>
+                            <constraint firstItem="gZW-eT-9xo" firstAttribute="top" secondItem="ims-8g-tCZ" secondAttribute="bottom" constant="27" id="2tS-oU-jZh"/>
+                            <constraint firstItem="ims-8g-tCZ" firstAttribute="leading" secondItem="eBr-Ul-HiS" secondAttribute="leading" constant="128" id="3pY-zU-9iW"/>
+                            <constraint firstItem="ims-8g-tCZ" firstAttribute="top" secondItem="eBr-Ul-HiS" secondAttribute="top" id="GGA-LT-vi9"/>
+                            <constraint firstItem="ZM2-Vd-rQ5" firstAttribute="trailing" secondItem="gZW-eT-9xo" secondAttribute="trailing" id="Gz0-Xt-u2G"/>
+                            <constraint firstItem="ZM2-Vd-rQ5" firstAttribute="leading" secondItem="gZW-eT-9xo" secondAttribute="leading" id="cfz-fo-xsp"/>
+                            <constraint firstItem="gZW-eT-9xo" firstAttribute="leading" secondItem="eBr-Ul-HiS" secondAttribute="leading" id="fha-qw-cgQ"/>
+                            <constraint firstAttribute="bottomMargin" secondItem="ZM2-Vd-rQ5" secondAttribute="bottom" constant="-34" id="oyk-nI-8WJ"/>
+                            <constraint firstItem="eBr-Ul-HiS" firstAttribute="trailing" secondItem="ims-8g-tCZ" secondAttribute="trailing" constant="104" id="pd0-g7-6v4"/>
+                            <constraint firstItem="gZW-eT-9xo" firstAttribute="centerX" secondItem="56p-cd-cOU" secondAttribute="centerX" id="sja-Ci-CyX"/>
+                            <constraint firstItem="ZM2-Vd-rQ5" firstAttribute="top" secondItem="gZW-eT-9xo" secondAttribute="bottom" constant="26" id="vep-mt-c8C"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="searchBar_Players" destination="gZW-eT-9xo" id="ZO1-IS-hrs"/>
                         <outlet property="tableView" destination="ZM2-Vd-rQ5" id="7RD-sM-ecH"/>
                     </connections>
                 </viewController>

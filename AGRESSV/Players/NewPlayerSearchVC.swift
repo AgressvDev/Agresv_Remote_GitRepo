@@ -4,8 +4,9 @@ import FirebaseFirestore
 
 var dataSourceArrayPartner: [String: String] = [:]
 var dataSourceProfileImages: [String: String] = [:]
+var filteredDataSourceArray: [(username: String, imageData: String)] = []
 
-
+var searching = false
 
 class CircularImageCell: UITableViewCell {
 
@@ -82,15 +83,28 @@ class CircularImageCell: UITableViewCell {
 
 
 
-class NewPlayerSearchVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class NewPlayerSearchVC: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate {
 
     @IBOutlet weak var tableView: UITableView!
 
+    @IBOutlet weak var searchBar_Players: UISearchBar!
+    
     var mergedArray: [(username: String, imageData: String)] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        searchBar_Players.delegate = self
+        
+        
+        searchBar_Players.backgroundImage = UIImage()
+        searchBar_Players.barTintColor = UIColor.white
+        searchBar_Players.layer.borderColor = UIColor.clear.cgColor
+       
+        // Set the default placeholder text
+        searchBar_Players.placeholder = "Search Username"
+        
+        
         tableView.dataSource = self
         tableView.delegate = self
 
@@ -211,15 +225,51 @@ class NewPlayerSearchVC: UIViewController, UITableViewDataSource, UITableViewDel
     // MARK: - UITableViewDataSource
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-           return mergedArray.count
-       }
+            if searching {
+                return filteredDataSourceArray.count
+            } else {
+                return mergedArray.count
+            }
+        }
 
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let selectedUsername: String
+
+        if searching {
+            selectedUsername = filteredDataSourceArray[indexPath.row].username
+        } else {
+            selectedUsername = mergedArray[indexPath.row].username
+        }
+
+        // Assign the selected username to SharedPlayerData.shared.PlayerSelectedUsername_NoRank
+        SharedPlayerData.shared.PlayerSelectedUsername_NoRank = selectedUsername
+
+        // Create an instance of PlayerProfileViewController
+        if let playerProfileVC = storyboard?.instantiateViewController(withIdentifier: "PlayerProfileID") as? PlayerProfileViewController {
+            // Push to the PlayerProfileViewController
+            navigationController?.pushViewController(playerProfileVC, animated: true)
+        }
+    }
+
+    
+    
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "CircularImageCell", for: indexPath) as? CircularImageCell else {
             return UITableViewCell()
         }
-
-        let data = mergedArray[indexPath.row]
+        
+        let data: (username: String, imageData: String)
+        
+        if searching {
+            data = filteredDataSourceArray[indexPath.row]
+        } else {
+            data = mergedArray[indexPath.row]
+        }
+    
+        
+       
 
         // Set username label
         cell.usernameLabel.text = data.username
@@ -243,7 +293,39 @@ class NewPlayerSearchVC: UIViewController, UITableViewDataSource, UITableViewDel
         return cell
     }
 
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        // Ensure the array is sorted before filtering
+        mergedArray.sort { $0.username < $1.username }
 
+        // Filter the merged array based on the search text (case-insensitive)
+        filteredDataSourceArray = mergedArray.filter { (username, _) in
+            return username.lowercased().contains(searchText.lowercased())
+        }
+
+        // Update the searching flag
+           searching = !searchText.isEmpty
+        
+        
+        // Print statements for debugging
+        print("Search Text: \(searchText)")
+        print("Filtered Data: \(filteredDataSourceArray)")
+
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
+    }
+
+
+        func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+            // Clear the filtered data when cancel button is clicked
+            filteredDataSourceArray.removeAll()
+
+            // Update the searching flag
+            searching = false
+
+            // Reload the table view with the original data
+            tableView.reloadData()
+        }
 
 
     // Set corner radius for circular image view in visible cells
@@ -257,6 +339,6 @@ class NewPlayerSearchVC: UIViewController, UITableViewDataSource, UITableViewDel
         }
     }
     
-    
+   
     
 }
