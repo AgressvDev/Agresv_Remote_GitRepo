@@ -291,7 +291,16 @@ class GameHistoryViewController: UIViewController, UITableViewDelegate, UITableV
     
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let game = games[indexPath.row]
+        // Sort the games array by Date in descending order
+            let sortedGames = games.sorted { (game1, game2) -> Bool in
+                if let date1 = game1.gameDate?.dateValue(),
+                   let date2 = game2.gameDate?.dateValue() {
+                    return date1 > date2
+                }
+                return false
+            }
+
+            let game = sortedGames[indexPath.row]
         
         // Get the Game_Creator email from the selected cell
         let gameCreatorEmail = game.gameCreatorUsername

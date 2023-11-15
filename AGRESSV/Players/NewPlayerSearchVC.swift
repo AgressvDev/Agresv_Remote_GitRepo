@@ -305,10 +305,6 @@ class NewPlayerSearchVC: UIViewController, UITableViewDataSource, UITableViewDel
         // Update the searching flag
            searching = !searchText.isEmpty
         
-        
-        // Print statements for debugging
-        print("Search Text: \(searchText)")
-        print("Filtered Data: \(filteredDataSourceArray)")
 
         DispatchQueue.main.async {
             self.tableView.reloadData()

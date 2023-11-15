@@ -24,6 +24,15 @@ class PlayerProfileViewController: UIViewController {
     var pieChartViewSingles: PieChartViewSingles!
     
     
+    var bluebadgecount: Int = 0
+    var redfangscount: Int = 0
+    var goldribboncount: Int = 0
+    
+    let lbl_bluebadgecount = UILabel()
+    let lbl_redfangscount = UILabel()
+    let lbl_goldribboncount = UILabel()
+  
+    
     var DoublesWinsPie: Double = 0.0
     var DoublesLossesPie: Double = 0.0
     var SinglesWinsPie: Double = 0.0
@@ -724,6 +733,21 @@ class PlayerProfileViewController: UIViewController {
                 } else {
                     print("\(document!.documentID) => \(String(describing: document!.data()))")
                     
+                    let blueribbondoubles = document!.data()!["Blue_Ribbon_Doubles"] as! Int
+                    let blueribbonsingles = document!.data()!["Blue_Ribbon_Singles"] as! Int
+                    let blueribbonsum = blueribbondoubles + blueribbonsingles
+                    
+                    self.bluebadgecount = blueribbonsum
+                    self.redfangscount = document!.data()!["Red_Fangs"] as! Int
+                    self.goldribboncount = document!.data()!["Gold_Ribbon"] as! Int
+                    
+                    print(self.bluebadgecount)
+                    print(self.redfangscount)
+                    print(self.goldribboncount)
+                    
+                    self.lbl_bluebadgecount.text = String(self.bluebadgecount)
+                    self.lbl_goldribboncount.text = String(self.goldribboncount)
+                    self.lbl_redfangscount.text = String(self.redfangscount)
                     //Doubles Wins number to string conversion
                     if let GoldRibbonValue = document!.data()!["Gold_Ribbon"] as? Int,
                     GoldRibbonValue > 0
@@ -750,25 +774,64 @@ class PlayerProfileViewController: UIViewController {
                         self.view.addSubview(img_GoldRibbon)
                         
                         NSLayoutConstraint.activate([
-                            img_GoldRibbon.topAnchor.constraint(equalTo: self.lbl_DoublesNerdData.bottomAnchor, constant: 10 * scalingFactor), // Anchor to the bottom of the view
+                            img_GoldRibbon.topAnchor.constraint(equalTo: self.lbl_DoublesNerdData.bottomAnchor, constant: 20 * scalingFactor), // Anchor to the bottom of the view
                             img_GoldRibbon.leadingAnchor.constraint(equalTo: self.lbl_DoublesNerdData.leadingAnchor, constant: 55 * scalingFactor),  // Anchor to the left of the view
                             img_GoldRibbon.widthAnchor.constraint(equalToConstant: 25 * scalingFactor),
                             img_GoldRibbon.heightAnchor.constraint(equalToConstant: 25 * scalingFactor)
                         ])
                         
+                        let baseFontSize: CGFloat = 8.0 // Set your base font size
+                        let adjustedFontSize = baseFontSize * scalingFactor
+
+                 
+                        self.lbl_goldribboncount.font = UIFont.systemFont(ofSize: adjustedFontSize)
+                        
+                        self.lbl_goldribboncount.textColor = UIColor.white
+                        self.lbl_goldribboncount.translatesAutoresizingMaskIntoConstraints = false
+                        print(self.lbl_goldribboncount)
+                        self.view.addSubview(self.lbl_goldribboncount)
+                        
+                        NSLayoutConstraint.activate([
+                            self.lbl_goldribboncount.bottomAnchor.constraint(equalTo: img_GoldRibbon.topAnchor),
+                            self.lbl_goldribboncount.leadingAnchor.constraint(equalTo: img_GoldRibbon.trailingAnchor, constant: -2 * scalingFactor),
+                            self.lbl_goldribboncount.widthAnchor.constraint(equalToConstant: 10 * scalingFactor),
+                            self.lbl_goldribboncount.heightAnchor.constraint(equalToConstant: 10 * scalingFactor)
+                        ])
+                        
                     }
                     if self.HasAchievedBlueRibbon {
                         
-                        
+                    
                         self.view.addSubview(img_BlueRibbon)
-                        
-                        // Position the label above the NewDoublesRankLabel
+                
                         NSLayoutConstraint.activate([
-                            img_BlueRibbon.topAnchor.constraint(equalTo: self.lbl_DoublesNerdData.bottomAnchor, constant: 10 * scalingFactor),
+                            img_BlueRibbon.topAnchor.constraint(equalTo: self.lbl_DoublesNerdData.bottomAnchor, constant: 20 * scalingFactor),
                             img_BlueRibbon.leadingAnchor.constraint(equalTo: self.lbl_DoublesNerdData.leadingAnchor, constant: -5 * scalingFactor),
                             img_BlueRibbon.widthAnchor.constraint(equalToConstant: 25 * scalingFactor),
                             img_BlueRibbon.heightAnchor.constraint(equalToConstant: 25 * scalingFactor)
                         ])
+                        
+                        let baseFontSize: CGFloat = 8.0 // Set your base font size
+                        let adjustedFontSize = baseFontSize * scalingFactor
+
+                 
+                        self.lbl_bluebadgecount.font = UIFont.systemFont(ofSize: adjustedFontSize)
+                        
+                        self.lbl_bluebadgecount.textColor = UIColor.white
+                        self.lbl_bluebadgecount.translatesAutoresizingMaskIntoConstraints = false
+                        print(self.lbl_bluebadgecount)
+                        self.view.addSubview(self.lbl_bluebadgecount)
+                        
+                        NSLayoutConstraint.activate([
+                            self.lbl_bluebadgecount.bottomAnchor.constraint(equalTo: img_BlueRibbon.topAnchor),
+                            self.lbl_bluebadgecount.leadingAnchor.constraint(equalTo: img_BlueRibbon.trailingAnchor, constant: -2 * scalingFactor),
+                            self.lbl_bluebadgecount.widthAnchor.constraint(equalToConstant: 10 * scalingFactor),
+                            self.lbl_bluebadgecount.heightAnchor.constraint(equalToConstant: 10 * scalingFactor)
+                        ])
+                        
+                        
+                        
+                        
                     }
                     if self.HasAchievedRedFangs {
                         //put red fangs top right
@@ -776,10 +839,28 @@ class PlayerProfileViewController: UIViewController {
                         
                         // Position the label above the NewDoublesRankLabel
                         NSLayoutConstraint.activate([
-                            img_RedFangs.topAnchor.constraint(equalTo: self.lbl_DoublesNerdData.bottomAnchor, constant: 10 * scalingFactor),
+                            img_RedFangs.topAnchor.constraint(equalTo: self.lbl_DoublesNerdData.bottomAnchor, constant: 20 * scalingFactor),
                             img_RedFangs.leadingAnchor.constraint(equalTo: self.lbl_DoublesNerdData.leadingAnchor, constant: 25 * scalingFactor),
                             img_RedFangs.widthAnchor.constraint(equalToConstant: 25 * scalingFactor),
                             img_RedFangs.heightAnchor.constraint(equalToConstant: 25 * scalingFactor)
+                        ])
+                        
+                        let baseFontSize: CGFloat = 8.0 // Set your base font size
+                        let adjustedFontSize = baseFontSize * scalingFactor
+
+                 
+                        self.lbl_redfangscount.font = UIFont.systemFont(ofSize: adjustedFontSize)
+                        
+                        self.lbl_redfangscount.textColor = UIColor.white
+                        self.lbl_redfangscount.translatesAutoresizingMaskIntoConstraints = false
+                        print(self.lbl_redfangscount)
+                        self.view.addSubview(self.lbl_redfangscount)
+                        
+                        NSLayoutConstraint.activate([
+                            self.lbl_redfangscount.bottomAnchor.constraint(equalTo: img_RedFangs.topAnchor),
+                            self.lbl_redfangscount.leadingAnchor.constraint(equalTo: img_RedFangs.trailingAnchor, constant: -2 * scalingFactor),
+                            self.lbl_redfangscount.widthAnchor.constraint(equalToConstant: 10 * scalingFactor),
+                            self.lbl_redfangscount.heightAnchor.constraint(equalToConstant: 10 * scalingFactor)
                         ])
                     }
                 }
@@ -993,10 +1074,10 @@ class PlayerProfileViewController: UIViewController {
                         self.NewDoublesRankLabel.widthAnchor.constraint(equalToConstant: labelSize * scalingFactor),
                         self.NewDoublesRankLabel.heightAnchor.constraint(equalToConstant: labelSize * scalingFactor),
                         
-                        self.lbl_SinglesHeader.centerXAnchor.constraint(equalTo: self.NewSinglesRankLabel.centerXAnchor, constant: -3 * scalingFactor),
+                        self.lbl_SinglesHeader.centerXAnchor.constraint(equalTo: self.NewSinglesRankLabel.centerXAnchor, constant: 1 * scalingFactor),
                         self.lbl_SinglesHeader.topAnchor.constraint(equalTo: self.NewSinglesRankLabel.bottomAnchor, constant: -115 * scalingFactor),
                         
-                        self.lbl_DoublesHeader.centerXAnchor.constraint(equalTo: self.NewDoublesRankLabel.centerXAnchor, constant: -3 * scalingFactor),
+                        self.lbl_DoublesHeader.centerXAnchor.constraint(equalTo: self.NewDoublesRankLabel.centerXAnchor, constant: 1 * scalingFactor),
                         self.lbl_DoublesHeader.topAnchor.constraint(equalTo: self.NewDoublesRankLabel.bottomAnchor, constant: -115 * scalingFactor),
                         
                         // Position DW_Letter a certain percentage lower than NewDoublesRankLabel
