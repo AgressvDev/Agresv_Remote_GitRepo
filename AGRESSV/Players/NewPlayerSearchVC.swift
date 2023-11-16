@@ -93,6 +93,13 @@ class NewPlayerSearchVC: UIViewController, UITableViewDataSource, UITableViewDel
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // Clear the filtered data when cancel button is clicked
+        filteredDataSourceArray.removeAll()
+
+        // Update the searching flag
+        searching = false
+        
 
         searchBar_Players.delegate = self
         
@@ -260,6 +267,9 @@ class NewPlayerSearchVC: UIViewController, UITableViewDataSource, UITableViewDel
             return UITableViewCell()
         }
         
+    
+        
+        
         let data: (username: String, imageData: String)
         
         if searching {
@@ -335,6 +345,6 @@ class NewPlayerSearchVC: UIViewController, UITableViewDataSource, UITableViewDel
         }
     }
     
-   
+
     
 }

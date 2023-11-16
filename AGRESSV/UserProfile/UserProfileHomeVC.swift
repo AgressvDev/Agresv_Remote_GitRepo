@@ -36,6 +36,8 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
     var lbl_goldribboncount = UILabel()
     
     
+    var lbl_CurrentHighestScore = UILabel()
+    
     let NewDoublesRankLabel: UILabel = {
             let label = UILabel()
             label.textAlignment = .center
@@ -1301,6 +1303,18 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
                                             self.Player_DoublesRank == self.Highest_Score_Doubles
                                         {
                                             
+                                            
+                                            let baseFontSize: CGFloat = 8.0 // Set your base font size
+                                            let adjustedFontSize = baseFontSize * scalingFactor
+
+                                            self.lbl_CurrentHighestScore.text = "Current Highest Score!"
+                                            self.lbl_CurrentHighestScore.font = UIFont.systemFont(ofSize: adjustedFontSize)
+                                            
+                                            self.lbl_CurrentHighestScore.textColor = UIColor.white
+                                            self.lbl_CurrentHighestScore.translatesAutoresizingMaskIntoConstraints = false
+                                          
+                                            self.view.addSubview(self.lbl_CurrentHighestScore)
+                                            
 //                                            //ADD BLACK RIBBON
 //                                            let BlackRibbon_Doubles = UIImage(named: "BlueRibbon.png")
 //                                            let BlackRibbonDoubles = UIImageView()
@@ -1314,12 +1328,12 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
 //
 //                                            BlackRibbonDoubles.layer.zPosition = 5
 //
-//                                            NSLayoutConstraint.activate([
-//                                                BlackRibbonDoubles.trailingAnchor.constraint(equalTo: self.NewDoublesRankLabel.leadingAnchor, constant: -10 * scalingFactor),
-//                                                BlackRibbonDoubles.centerYAnchor.constraint(equalTo: self.NewDoublesRankLabel.centerYAnchor),
-//                                                BlackRibbonDoubles.widthAnchor.constraint(equalToConstant: 50 * scalingFactor), // Adjust the reference size as needed
-//                                                BlackRibbonDoubles.heightAnchor.constraint(equalToConstant: 50 * scalingFactor), // Adjust the reference size as needed
-//                                            ])
+                                            NSLayoutConstraint.activate([
+                                                self.lbl_CurrentHighestScore.topAnchor.constraint(equalTo: self.NewDoublesRankLabel.bottomAnchor, constant: 4 * scalingFactor),
+                                                self.lbl_CurrentHighestScore.leadingAnchor.constraint(equalTo: self.NewDoublesRankLabel.leadingAnchor, constant: -10 * scalingFactor),
+                                                self.lbl_CurrentHighestScore.widthAnchor.constraint(equalToConstant: 20 * scalingFactor), // Adjust the reference size as needed
+                                                self.lbl_CurrentHighestScore.heightAnchor.constraint(equalToConstant: 20 * scalingFactor), // Adjust the reference size as needed
+                                            ])
                                             
                                             //Increment 1 for Blue Ribbon_Doubles in Badges table
                                             

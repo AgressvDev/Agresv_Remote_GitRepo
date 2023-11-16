@@ -32,6 +32,7 @@ class PlayerProfileViewController: UIViewController {
     let lbl_redfangscount = UILabel()
     let lbl_goldribboncount = UILabel()
   
+    var lbl_CurrentHighestScore = UILabel()
     
     var DoublesWinsPie: Double = 0.0
     var DoublesLossesPie: Double = 0.0
@@ -1304,28 +1305,9 @@ class PlayerProfileViewController: UIViewController {
                                         if
                                             self.Player_DoublesRank == self.Highest_Score_Doubles
                                         {
-                                            self.profileImageView.layer.borderColor = UIColor.blue.cgColor
-//                                            //ADD BLACK RIBBON
-//                                            let BlackRibbon_Doubles = UIImage(named: "BlueRibbon.png")
-//                                            let BlackRibbonDoubles = UIImageView()
-//                                            BlackRibbonDoubles.contentMode = .scaleAspectFit
-//                                            BlackRibbonDoubles.image = BlackRibbon_Doubles
-//                                            BlackRibbonDoubles.translatesAutoresizingMaskIntoConstraints = false // Enable Auto Layout
-//
-//                                            // Add the image view to the view hierarchy
-//                                            self.view.addSubview(BlackRibbonDoubles)
-//                                            self.view.bringSubviewToFront(BlackRibbonDoubles)
-//
-//                                            BlackRibbonDoubles.layer.zPosition = 5
-//
-//                                            NSLayoutConstraint.activate([
-//                                                BlackRibbonDoubles.trailingAnchor.constraint(equalTo: self.NewDoublesRankLabel.leadingAnchor, constant: -10 * scalingFactor),
-//                                                BlackRibbonDoubles.centerYAnchor.constraint(equalTo: self.NewDoublesRankLabel.centerYAnchor),
-//                                                BlackRibbonDoubles.widthAnchor.constraint(equalToConstant: 50 * scalingFactor), // Adjust the reference size as needed
-//                                                BlackRibbonDoubles.heightAnchor.constraint(equalToConstant: 50 * scalingFactor), // Adjust the reference size as needed
-//                                            ])
                                             
-                                            //Increment 1 for Blue Ribbon_Doubles in Badges table
+                                            //Adornment for screen
+
                                             
                                         
                                         
@@ -1345,7 +1327,7 @@ class PlayerProfileViewController: UIViewController {
                                         if
                                             self.Player_SinglesRank == self.Highest_Score_Singles
                                         {
-                                            self.profileImageView.layer.borderColor = UIColor.blue.cgColor
+                                          
 //                                            //ADD BLACK RIBBON
 //                                            let BlackRibbon_Doubles = UIImage(named: "BlueRibbon.png")
 //                                            let BlackRibbonDoubles = UIImageView()
@@ -1390,7 +1372,7 @@ class PlayerProfileViewController: UIViewController {
                                             if self.Highest_Score_Singles == self.Player_SinglesRank
                                                     {
                                             //backgroundImage.image = UIImage(named: "ChampBackground.png")
-                                                self.profileImageView.layer.borderColor = UIColor.yellow.cgColor
+                                               
                                                 //Increment 1 for Gold Ribbon in Badges Table
                                                
                                                     }
