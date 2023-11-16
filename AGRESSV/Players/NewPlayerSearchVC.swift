@@ -100,7 +100,6 @@ class NewPlayerSearchVC: UIViewController, UITableViewDataSource, UITableViewDel
         // Update the searching flag
         searching = false
         
-
         searchBar_Players.delegate = self
         
         

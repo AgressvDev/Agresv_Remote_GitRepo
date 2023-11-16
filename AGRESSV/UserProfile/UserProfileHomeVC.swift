@@ -37,6 +37,7 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
     
     
     var lbl_CurrentHighestScore = UILabel()
+    var lbl_CurrentHighestScoreSingles = UILabel()
     
     let NewDoublesRankLabel: UILabel = {
             let label = UILabel()
@@ -1304,38 +1305,32 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
                                         {
                                             
                                             
-                                            let baseFontSize: CGFloat = 8.0 // Set your base font size
-                                            let adjustedFontSize = baseFontSize * scalingFactor
+                                            //Adornment for blue ribbon
 
-                                            self.lbl_CurrentHighestScore.text = "Current Highest Score!"
-                                            self.lbl_CurrentHighestScore.font = UIFont.systemFont(ofSize: adjustedFontSize)
+                                            self.NewDoublesRankLabel.backgroundColor = UIColor.mustardYellow()
+                                            self.lbl_CurrentHighestScore.text = "Highest Score!"
+                                            self.lbl_CurrentHighestScore.textColor = UIColor.mustardYellow()
                                             
-                                            self.lbl_CurrentHighestScore.textColor = UIColor.white
-                                            self.lbl_CurrentHighestScore.translatesAutoresizingMaskIntoConstraints = false
-                                          
+                                            self.lbl_CurrentHighestScore.translatesAutoresizingMaskIntoConstraints = false // Enable Auto Layout
+                                            self.lbl_CurrentHighestScore.numberOfLines = 0 // Allow multiple lines
+                                            // Add the label to the view hierarchy
                                             self.view.addSubview(self.lbl_CurrentHighestScore)
                                             
-//                                            //ADD BLACK RIBBON
-//                                            let BlackRibbon_Doubles = UIImage(named: "BlueRibbon.png")
-//                                            let BlackRibbonDoubles = UIImageView()
-//                                            BlackRibbonDoubles.contentMode = .scaleAspectFit
-//                                            BlackRibbonDoubles.image = BlackRibbon_Doubles
-//                                            BlackRibbonDoubles.translatesAutoresizingMaskIntoConstraints = false // Enable Auto Layout
-//
-//                                            // Add the image view to the view hierarchy
-//                                            self.view.addSubview(BlackRibbonDoubles)
-//                                            self.view.bringSubviewToFront(BlackRibbonDoubles)
-//
-//                                            BlackRibbonDoubles.layer.zPosition = 5
-//
-                                            NSLayoutConstraint.activate([
-                                                self.lbl_CurrentHighestScore.topAnchor.constraint(equalTo: self.NewDoublesRankLabel.bottomAnchor, constant: 4 * scalingFactor),
-                                                self.lbl_CurrentHighestScore.leadingAnchor.constraint(equalTo: self.NewDoublesRankLabel.leadingAnchor, constant: -10 * scalingFactor),
-                                                self.lbl_CurrentHighestScore.widthAnchor.constraint(equalToConstant: 20 * scalingFactor), // Adjust the reference size as needed
-                                                self.lbl_CurrentHighestScore.heightAnchor.constraint(equalToConstant: 20 * scalingFactor), // Adjust the reference size as needed
-                                            ])
+                                            let baseFontSize: CGFloat = 12.0 // Set your base font size
+                                            let adjustedFontSize = baseFontSize * scalingFactor
+
+                                            // Set the font size for lbl_Playometer
+                                            self.lbl_CurrentHighestScore.font = UIFont.systemFont(ofSize: adjustedFontSize)
                                             
-                                            //Increment 1 for Blue Ribbon_Doubles in Badges table
+
+                                            
+                                            // Define Auto Layout constraints to position and allow the label to expand its width based on content
+                                                    NSLayoutConstraint.activate([
+                                                        self.lbl_CurrentHighestScore.leadingAnchor.constraint(equalTo: self.NewDoublesRankLabel.leadingAnchor),
+                                                        self.lbl_CurrentHighestScore.topAnchor.constraint(equalTo: self.NewDoublesRankLabel.bottomAnchor, constant: 3 * scalingFactor),
+                                                        self.lbl_CurrentHighestScore.heightAnchor.constraint(equalToConstant: 20 * scalingFactor),
+                                                        self.lbl_CurrentHighestScore.widthAnchor.constraint(equalToConstant: 200 * scalingFactor)// Adjust the reference height as needed
+                                                    ])
                                             
                                         
                                         
@@ -1356,27 +1351,34 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
                                             self.Player_SinglesRank == self.Highest_Score_Singles
                                         {
                                             
-//                                            //ADD BLACK RIBBON
-//                                            let BlackRibbon_Doubles = UIImage(named: "BlueRibbon.png")
-//                                            let BlackRibbonDoubles = UIImageView()
-//                                            BlackRibbonDoubles.contentMode = .scaleAspectFit
-//                                            BlackRibbonDoubles.image = BlackRibbon_Doubles
-//                                            BlackRibbonDoubles.translatesAutoresizingMaskIntoConstraints = false // Enable Auto Layout
-//                                            
-//                                            // Add the image view to the view hierarchy
-//                                            self.view.addSubview(BlackRibbonDoubles)
-//                                            self.view.bringSubviewToFront(BlackRibbonDoubles)
-//                                            
-//                                            BlackRibbonDoubles.layer.zPosition = 5
-//                                            
-//                                            NSLayoutConstraint.activate([
-//                                                BlackRibbonDoubles.trailingAnchor.constraint(equalTo: self.NewSinglesRankLabel.leadingAnchor, constant: -10 * scalingFactor),
-//                                                BlackRibbonDoubles.centerYAnchor.constraint(equalTo: self.NewSinglesRankLabel.centerYAnchor),
-//                                                BlackRibbonDoubles.widthAnchor.constraint(equalToConstant: 50 * scalingFactor), // Adjust the reference size as needed
-//                                                BlackRibbonDoubles.heightAnchor.constraint(equalToConstant: 50 * scalingFactor), // Adjust the reference size as needed
-//                                            ])
+                                            //Adornment for blue ribbon
+
+                                            self.NewSinglesRankLabel.backgroundColor = UIColor.mustardYellow()
+                                            self.lbl_CurrentHighestScoreSingles.text = "Highest Score!"
+                                            self.lbl_CurrentHighestScoreSingles.textColor = UIColor.mustardYellow()
                                             
-                                            //Increment 1 for Blue Ribbon_Singles in Badges table
+                                            self.lbl_CurrentHighestScoreSingles.translatesAutoresizingMaskIntoConstraints = false // Enable Auto Layout
+                                            self.lbl_CurrentHighestScoreSingles.numberOfLines = 0 // Allow multiple lines
+                                            // Add the label to the view hierarchy
+                                            self.view.addSubview(self.lbl_CurrentHighestScoreSingles)
+                                            
+                                            let baseFontSize: CGFloat = 12.0 // Set your base font size
+                                            let adjustedFontSize = baseFontSize * scalingFactor
+
+                                            // Set the font size for lbl_Playometer
+                                            self.lbl_CurrentHighestScoreSingles.font = UIFont.systemFont(ofSize: adjustedFontSize)
+                                            
+
+                                            
+                                            // Define Auto Layout constraints to position and allow the label to expand its width based on content
+                                                    NSLayoutConstraint.activate([
+                                                        self.lbl_CurrentHighestScoreSingles.leadingAnchor.constraint(equalTo: self.NewSinglesRankLabel.leadingAnchor),
+                                                        self.lbl_CurrentHighestScoreSingles.topAnchor.constraint(equalTo: self.NewSinglesRankLabel.bottomAnchor, constant: 3 * scalingFactor),
+                                                        self.lbl_CurrentHighestScoreSingles.heightAnchor.constraint(equalToConstant: 20 * scalingFactor),
+                                                        self.lbl_CurrentHighestScoreSingles.widthAnchor.constraint(equalToConstant: 200 * scalingFactor)// Adjust the reference height as needed
+                                                    ])
+                                            
+                                           
                                             
                                         }
                                         else
@@ -1399,9 +1401,59 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
                                             {
                                             if self.Highest_Score_Singles == self.Player_SinglesRank
                                                     {
-                                            //backgroundImage.image = UIImage(named: "ChampBackground.png")
-                                               
-                                                //Increment 1 for Gold Ribbon in Badges Table
+                                                //Adornment for blue ribbon
+
+                                                self.NewDoublesRankLabel.backgroundColor = UIColor.mustardYellow()
+                                                self.lbl_CurrentHighestScore.text = "Highest Score!"
+                                                self.lbl_CurrentHighestScore.textColor = UIColor.mustardYellow()
+                                                
+                                                self.lbl_CurrentHighestScore.translatesAutoresizingMaskIntoConstraints = false // Enable Auto Layout
+                                                self.lbl_CurrentHighestScore.numberOfLines = 0 // Allow multiple lines
+                                                // Add the label to the view hierarchy
+                                                self.view.addSubview(self.lbl_CurrentHighestScore)
+                                                
+                                                let baseFontSize: CGFloat = 12.0 // Set your base font size
+                                                let adjustedFontSize = baseFontSize * scalingFactor
+
+                                                // Set the font size for lbl_Playometer
+                                                self.lbl_CurrentHighestScore.font = UIFont.systemFont(ofSize: adjustedFontSize)
+                                                
+
+                                                
+                                                // Define Auto Layout constraints to position and allow the label to expand its width based on content
+                                                        NSLayoutConstraint.activate([
+                                                            self.lbl_CurrentHighestScore.leadingAnchor.constraint(equalTo: self.NewDoublesRankLabel.leadingAnchor),
+                                                            self.lbl_CurrentHighestScore.topAnchor.constraint(equalTo: self.NewDoublesRankLabel.bottomAnchor, constant: 3 * scalingFactor),
+                                                            self.lbl_CurrentHighestScore.heightAnchor.constraint(equalToConstant: 20 * scalingFactor),
+                                                            self.lbl_CurrentHighestScore.widthAnchor.constraint(equalToConstant: 200 * scalingFactor)// Adjust the reference height as needed
+                                                        ])
+                                                
+                                                //Adornment for blue ribbon
+
+                                                self.NewSinglesRankLabel.backgroundColor = UIColor.mustardYellow()
+                                                self.lbl_CurrentHighestScoreSingles.text = "Highest Score!"
+                                                self.lbl_CurrentHighestScoreSingles.textColor = UIColor.mustardYellow()
+                                                
+                                                self.lbl_CurrentHighestScoreSingles.translatesAutoresizingMaskIntoConstraints = false // Enable Auto Layout
+                                                self.lbl_CurrentHighestScoreSingles.numberOfLines = 0 // Allow multiple lines
+                                                // Add the label to the view hierarchy
+                                                self.view.addSubview(self.lbl_CurrentHighestScoreSingles)
+                                                
+                                                let baseFontSize_singles: CGFloat = 12.0 // Set your base font size
+                                                let adjustedFontSize_singles = baseFontSize_singles * scalingFactor
+
+                                                // Set the font size for lbl_Playometer
+                                                self.lbl_CurrentHighestScoreSingles.font = UIFont.systemFont(ofSize: adjustedFontSize_singles)
+                                                
+
+                                                
+                                                // Define Auto Layout constraints to position and allow the label to expand its width based on content
+                                                        NSLayoutConstraint.activate([
+                                                            self.lbl_CurrentHighestScoreSingles.leadingAnchor.constraint(equalTo: self.NewSinglesRankLabel.leadingAnchor),
+                                                            self.lbl_CurrentHighestScoreSingles.topAnchor.constraint(equalTo: self.NewSinglesRankLabel.bottomAnchor, constant: 3 * scalingFactor),
+                                                            self.lbl_CurrentHighestScoreSingles.heightAnchor.constraint(equalToConstant: 20 * scalingFactor),
+                                                            self.lbl_CurrentHighestScoreSingles.widthAnchor.constraint(equalToConstant: 200 * scalingFactor)// Adjust the reference height as needed
+                                                        ])
                                                
                                                     }
                                            
