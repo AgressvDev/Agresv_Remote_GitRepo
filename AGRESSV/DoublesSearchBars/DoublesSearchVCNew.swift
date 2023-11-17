@@ -172,7 +172,24 @@ class DoublesSearchVCNew: UIViewController {
     } //end of loading
     
 
-    
+    func GetPartnerEmail(usernameselection: String) {
+        let db = Firestore.firestore()
+        let uid = usernameselection
+        let query = db.collection("Agressv_Users").whereField("Username", isEqualTo: uid)
+
+        query.getDocuments { (querySnapshot, error) in
+            if error != nil {
+                print("error")
+            } else {
+                for document in querySnapshot!.documents {
+                    // Access the value of field2 from the document
+                    let partnerEmail = document.data()["Email"] as? String
+                    SharedDataEmails.sharedemails.PartnerEmail = partnerEmail!
+                }
+            }
+        }
+    }
+
    
 
     
@@ -206,6 +223,9 @@ extension DoublesSearchVCNew: UITableViewDelegate, UITableViewDataSource {
                      // Extract username without the rank and assign it to SharedDataNoRank.sharednorank.PartnerSelection_NoRank
                      if let username = selectedValue.components(separatedBy: " - ").first {
                          SharedDataNoRank.sharednorank.PartnerSelection_NoRank = username
+                         
+                         GetPartnerEmail(usernameselection: username)
+                         
                      }
                  } else {
                      let selectedValue = dataSourceArrayPartner[indexPath.row]
@@ -214,6 +234,9 @@ extension DoublesSearchVCNew: UITableViewDelegate, UITableViewDataSource {
                      // Extract username without the rank and assign it to SharedDataNoRank.sharednorank.PartnerSelection_NoRank
                      if let username = selectedValue.components(separatedBy: " - ").first {
                          SharedDataNoRank.sharednorank.PartnerSelection_NoRank = username
+                         
+                         GetPartnerEmail(usernameselection: username)
+                        
                      }
                  }
             // Create an instance of SecondViewController

@@ -11,6 +11,31 @@ import FirebaseFirestore
 
 class SinglesAddGameViewController: UIViewController {
     
+    var loadingView: UIView?
+    var loadingLabel: UILabel?
+    var selectedCellValueOppOneEmail: String = SharedDataEmails.sharedemails.OppOneEmail
+    
+    
+    let CurrentUserImg: UIImageView = {
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
+        imageView.layer.borderColor = UIColor.white.cgColor
+        imageView.layer.borderWidth = 2.0
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
+    }()
+    
+    let OppOneImg: UIImageView = {
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
+        imageView.layer.borderColor = UIColor.white.cgColor
+        imageView.layer.borderWidth = 2.0
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
+    }()
+    
     
     var UserWithMostGames: String?
     var currentuseremail: String = ""
@@ -45,13 +70,24 @@ class SinglesAddGameViewController: UIViewController {
     var CurrentUser_Username_NoRank: String = ""
     var currentuser: String = ""
     var OppOneCellValue_NoRank: String = SharedDataNoRank.sharednorank.OppOneSelection_NoRank
-    var selectedCellValueOppOneEmail: String = ""
+    
     var selectedCellValueOppOne: String =  SharedData.shared.OppOneSelection//Opp One
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        showLoadingView()
+        PullAllImages()
+        
+        
+        func PullAllImages() {
+            
+            loadProfileImage()
+            loadProfileImageOppOne()
+           
+           
+        }
         
         // Calculate scaling factors based on screen width and height
         let screenWidth = view.bounds.size.width
@@ -60,6 +96,15 @@ class SinglesAddGameViewController: UIViewController {
         let heightScalingFactor = screenHeight / 932.0 // Use a reference height, e.g., iPhone 6/6s/7/8 height
         let scalingFactor = min(widthScalingFactor, heightScalingFactor)
         let marginPercentage: CGFloat = 0.07
+    
+        
+        // Set the background color of the screen
+        view.backgroundColor = UIColor(red: 0/255, green: 0/255, blue: 30/255, alpha: 1.0)
+        
+        
+        
+        
+        
         
         // Create a button
         let button = UIButton(type: .system)
@@ -87,64 +132,6 @@ class SinglesAddGameViewController: UIViewController {
         button.addTarget(self, action: #selector(btn_Log(_:)), for: .touchUpInside)
         
         
-        // Create a UIColor with the desired light blueish gray color
-        let lightBlueishGrayColor = UIColor(red: 173/255, green: 216/255, blue: 230/255, alpha: 1.0)
-        
-        // Create a label
-        let lbl_CurrentUser = UILabel()
-        lbl_CurrentUser.textAlignment = .center
-        lbl_CurrentUser.textColor = .black
-        lbl_CurrentUser.backgroundColor = lightBlueishGrayColor//UIColor(red: 100.0, green: 0.8, blue: 0.8, alpha: 2.0) // Light red background color
-        lbl_CurrentUser.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(lbl_CurrentUser)
-        view.bringSubviewToFront(lbl_CurrentUser)
-        
-        
-        // Calculate the adjusted font size based on the scalingFactor
-        let baseFontSize_lbl_CurrentUser: CGFloat = 17.0 // Set your base font size
-        let adjustedFontSize_lbl_CurrentUser = baseFontSize_lbl_CurrentUser * scalingFactor
-        
-        // Set the font size for lbl_Playometer
-        lbl_CurrentUser.font = UIFont.systemFont(ofSize: adjustedFontSize_lbl_CurrentUser)
-        
-        // Define constraints for lbl_OppTwo
-        NSLayoutConstraint.activate([
-            lbl_CurrentUser.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: view.bounds.width * marginPercentage),
-            lbl_CurrentUser.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -view.bounds.width * marginPercentage),
-            lbl_CurrentUser.bottomAnchor.constraint(equalTo: button.topAnchor, constant: -460 * scalingFactor), // Place it above the button with spacing
-            lbl_CurrentUser.heightAnchor.constraint(equalToConstant: 40 * heightScalingFactor) // Adjust the height as needed
-        ])
-        
-        
-        
-        
-        //BACKGROUND
-        // Create UIImageView for the background image
-        let backgroundImage = UIImageView()
-        
-        // Set the image to "AppBackgroundOne.png" from your asset catalog
-        backgroundImage.image = UIImage(named: "AppBackgroundOne")
-        
-        // Make sure the image doesn't stretch or distort
-        backgroundImage.contentMode = .scaleAspectFill
-        
-        // Add the UIImageView as a subview to the view
-        view.addSubview(backgroundImage)
-        view.sendSubviewToBack(backgroundImage)
-        
-        // Disable autoresizing mask constraints for the UIImageView
-        backgroundImage.translatesAutoresizingMaskIntoConstraints = false
-        
-        // Set constraints to cover the full screen using the scaling factor
-        // Define Auto Layout constraints to position and allow the label to expand its width based on content
-        NSLayoutConstraint.activate([
-            backgroundImage.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0 * scalingFactor), // Left side of the screen
-            backgroundImage.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0 * scalingFactor), // A little higher than the bottom
-            backgroundImage.topAnchor.constraint(equalTo: view.topAnchor, constant: 0 * scalingFactor),
-            backgroundImage.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0 * scalingFactor)
-        ])
-        
-        //END BACKGROUND
         
         
         
@@ -152,107 +139,18 @@ class SinglesAddGameViewController: UIViewController {
         
         
         
+       
         
         
-        if let dobermanleft = UIImage(named: "DogLfilled.png") {
-            let myImageViewdl = UIImageView()
-            myImageViewdl.contentMode = .scaleAspectFit
-            myImageViewdl.image = dobermanleft
-            myImageViewdl.translatesAutoresizingMaskIntoConstraints = false // Enable Auto Layout
-            
-            // Add the image view to the view hierarchy
-            view.addSubview(myImageViewdl)
-            view.bringSubviewToFront(myImageViewdl)
-            
-            myImageViewdl.layer.zPosition = 3
-            // Define Auto Layout constraints to position and scale the image
-            NSLayoutConstraint.activate([
-                myImageViewdl.leadingAnchor.constraint(equalTo: button.leadingAnchor, constant: -20 * scalingFactor),
-                myImageViewdl.bottomAnchor.constraint(equalTo: button.bottomAnchor, constant: -550 * scalingFactor),
-                myImageViewdl.widthAnchor.constraint(equalToConstant: 120 * scalingFactor), // Adjust the reference size as needed
-                myImageViewdl.heightAnchor.constraint(equalToConstant: 120 * scalingFactor), // Adjust the reference size as needed
-            ])
-            
-            
-        }
+    
+     
+        
+        
+      
         
         
         
-        if let dobermanright = UIImage(named: "DogRfilled.png") {
-            let myImageViewdl = UIImageView()
-            myImageViewdl.contentMode = .scaleAspectFit
-            myImageViewdl.image = dobermanright
-            myImageViewdl.translatesAutoresizingMaskIntoConstraints = false // Enable Auto Layout
-            
-            // Add the image view to the view hierarchy
-            view.addSubview(myImageViewdl)
-            view.bringSubviewToFront(myImageViewdl)
-            
-            myImageViewdl.layer.zPosition = 3
-            // Define Auto Layout constraints to position and scale the image
-            NSLayoutConstraint.activate([
-                myImageViewdl.trailingAnchor.constraint(equalTo: button.trailingAnchor, constant: 20 * scalingFactor),
-                myImageViewdl.bottomAnchor.constraint(equalTo: button.bottomAnchor, constant: -550 * scalingFactor),
-                myImageViewdl.widthAnchor.constraint(equalToConstant: 120 * scalingFactor), // Adjust the reference size as needed
-                myImageViewdl.heightAnchor.constraint(equalToConstant: 120 * scalingFactor), // Adjust the reference size as needed
-            ])
-            
-            
-        }
-        
-        
-        // Create a label
-        let lbl_OppOne = UILabel()
-        lbl_OppOne.textAlignment = .center
-        lbl_OppOne.textColor = .black
-        lbl_OppOne.backgroundColor = lightBlueishGrayColor//UIColor(red: 100.0, green: 0.8, blue: 0.8, alpha: 2.0) // Light red background color
-        lbl_OppOne.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(lbl_OppOne)
-        view.bringSubviewToFront(lbl_OppOne)
-        
-        
-        // Calculate the adjusted font size based on the scalingFactor
-        let baseFontSize_lbl_OppOne: CGFloat = 17.0 // Set your base font size
-        let adjustedFontSize_lbl_OppOne = baseFontSize_lbl_OppOne * scalingFactor
-        
-        // Set the font size for lbl_Playometer
-        lbl_OppOne.font = UIFont.systemFont(ofSize: adjustedFontSize_lbl_OppOne)
-        
-        // Define constraints for lbl_OppTwo
-        NSLayoutConstraint.activate([
-            lbl_OppOne.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: view.bounds.width * marginPercentage),
-            lbl_OppOne.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -view.bounds.width * marginPercentage),
-            lbl_OppOne.bottomAnchor.constraint(equalTo: button.topAnchor, constant: -270 * scalingFactor), // Place it above the button with spacing
-            lbl_OppOne.heightAnchor.constraint(equalToConstant: 40 * heightScalingFactor) // Adjust the height as needed
-        ])
-        
-        
-        
-        // Create a label
-        let lbl_VS = UILabel()
-        lbl_VS.textAlignment = .center
-        lbl_VS.text = "VS."
-        lbl_VS.textColor = .white
-        
-        lbl_VS.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(lbl_VS)
-        //view.bringSubviewToFront(lbl_VS)
-        // Calculate the adjusted font size based on the scalingFactor
-        let baseFontSize_lbl_VS: CGFloat = 35.0 // Set your base font size
-        let adjustedFontSize_lbl_VS = baseFontSize_lbl_VS * scalingFactor
-        
-        
-        
-        // Set the font size for lbl_Playometer
-        lbl_VS.font = UIFont.systemFont(ofSize: adjustedFontSize_lbl_VS)
-        
-        // Define constraints for lbl_OppTwo
-        NSLayoutConstraint.activate([
-            lbl_VS.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: view.bounds.width * marginPercentage),
-            lbl_VS.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -view.bounds.width * marginPercentage),
-            lbl_VS.bottomAnchor.constraint(equalTo: button.topAnchor, constant: -360 * scalingFactor), // Place it above the button with spacing
-            lbl_VS.heightAnchor.constraint(equalToConstant: 40 * heightScalingFactor) // Adjust the height as needed
-        ])
+  
         
         let fontsize: CGFloat = 45
         
@@ -269,13 +167,65 @@ class SinglesAddGameViewController: UIViewController {
         view.addSubview(lbl_Singles)
         view.bringSubviewToFront(lbl_Singles)
         
-        // Define constraints for lbl_OppTwo
         NSLayoutConstraint.activate([
             lbl_Singles.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: view.bounds.width * marginPercentage),
             lbl_Singles.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -view.bounds.width * marginPercentage),
-            lbl_Singles.bottomAnchor.constraint(equalTo: button.topAnchor, constant: -600 * scalingFactor), // Place it above the button with spacing
-            lbl_Singles.heightAnchor.constraint(equalToConstant: 48 * heightScalingFactor) // Adjust the height as needed
+            lbl_Singles.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10), // 20 points down from the top safe area
+            lbl_Singles.heightAnchor.constraint(equalToConstant: 50 * heightScalingFactor) // Adjust the height as needed
         ])
+        
+        
+        
+        // Add profile image view to the view
+        view.addSubview(CurrentUserImg)
+        
+        NSLayoutConstraint.activate([
+            CurrentUserImg.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            CurrentUserImg.topAnchor.constraint(equalTo: lbl_Singles.bottomAnchor, constant: 40 * scalingFactor),
+            CurrentUserImg.widthAnchor.constraint(equalToConstant: 100 * scalingFactor),
+            CurrentUserImg.heightAnchor.constraint(equalToConstant: 100 * scalingFactor)
+        ])
+        
+        // Create UIImageView and set image from asset
+                let lbl_Vs = UIImageView(image: UIImage(named: "VsIconWhite"))
+        lbl_Vs.translatesAutoresizingMaskIntoConstraints = false
+
+      
+        
+        // Calculate the adjusted font size based on the scalingFactor
+        let baseFontSize_lbl_CurrentUser: CGFloat = 13.0 // Set your base font size
+        let adjustedFontSize_lbl_CurrentUser = baseFontSize_lbl_CurrentUser * scalingFactor
+
+        // Create a label
+        let lbl_CurrentUser = UILabel()
+        lbl_CurrentUser.textAlignment = .center
+        lbl_CurrentUser.textColor = .white
+        lbl_CurrentUser.translatesAutoresizingMaskIntoConstraints = false
+        lbl_CurrentUser.font = UIFont.systemFont(ofSize: adjustedFontSize_lbl_CurrentUser)
+
+        view.addSubview(lbl_CurrentUser)
+        view.bringSubviewToFront(lbl_CurrentUser)
+
+        // Define constraints for lbl_OppTwo
+        NSLayoutConstraint.activate([
+            lbl_CurrentUser.leadingAnchor.constraint(equalTo: CurrentUserImg.leadingAnchor, constant: 2),
+            lbl_CurrentUser.topAnchor.constraint(equalTo: CurrentUserImg.bottomAnchor, constant: 5 * scalingFactor), // Place it above the button with spacing
+            lbl_CurrentUser.heightAnchor.constraint(equalToConstant: 25 * heightScalingFactor), // Adjust the height as needed
+            lbl_CurrentUser.widthAnchor.constraint(equalTo: CurrentUserImg.widthAnchor)
+
+        ])
+        
+        // Add the image view to the view hierarchy
+            self.view.addSubview(lbl_Vs)
+
+        // Create constraints to center the image view
+        NSLayoutConstraint.activate([
+            lbl_Vs.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
+            lbl_Vs.topAnchor.constraint(equalTo: lbl_CurrentUser.bottomAnchor, constant: 15 * scalingFactor),
+            lbl_Vs.widthAnchor.constraint(equalToConstant: 70),
+            lbl_Vs.heightAnchor.constraint(equalToConstant: 70)
+        ])
+        
         
         // Create a label
         let gameresult_prompt = UILabel()
@@ -459,8 +409,7 @@ class SinglesAddGameViewController: UIViewController {
         
         
         
-        lbl_OppOne.text = selectedCellValueOppOne
-        
+       
         
         
 
@@ -520,6 +469,8 @@ class SinglesAddGameViewController: UIViewController {
                     print(self.currentuseremail)
                     print(self.selectedCellValueOppOneEmail)
                     
+                    GetOppOneEmail()
+                    
                     if email == self.currentuseremail {
                         self.CurrentISRedFangs = true
                         print("CURRENT IS RED FANGS SET TO TRUE?")
@@ -532,6 +483,42 @@ class SinglesAddGameViewController: UIViewController {
                         print(self.OppOneISRedFangs)
                     }
                     
+                    // Add profile image view to the view
+                    self.view.addSubview(self.OppOneImg)
+                    
+                    NSLayoutConstraint.activate([
+                        self.OppOneImg.leadingAnchor.constraint(equalTo: self.CurrentUserImg.leadingAnchor),
+                        self.OppOneImg.topAnchor.constraint(equalTo: lbl_Vs.bottomAnchor, constant: 15 * scalingFactor),
+                        self.OppOneImg.widthAnchor.constraint(equalToConstant: 100 * scalingFactor),
+                        self.OppOneImg.heightAnchor.constraint(equalToConstant: 100 * scalingFactor)
+                    ])
+                    
+                    // Calculate the adjusted font size based on the scalingFactor
+                    let baseFontSize_lbl_Partner: CGFloat = 13.0 // Set your base font size
+                    let adjustedFontSize_lbl_Partner = baseFontSize_lbl_Partner * scalingFactor
+                    
+                    
+                    // Create a label
+                    let lbl_OppOne = UILabel()
+                    lbl_OppOne.textAlignment = .center
+                    lbl_OppOne.textColor = .white
+                    lbl_OppOne.translatesAutoresizingMaskIntoConstraints = false
+                    lbl_OppOne.font = UIFont.systemFont(ofSize: adjustedFontSize_lbl_Partner)
+                    self.view.addSubview(lbl_OppOne)
+                    self.view.bringSubviewToFront(lbl_OppOne)
+
+                    // Define constraints for lbl_OppTwo
+                    NSLayoutConstraint.activate([
+                        lbl_OppOne.leadingAnchor.constraint(equalTo: self.OppOneImg.leadingAnchor, constant: 2),
+                        lbl_OppOne.topAnchor.constraint(equalTo: self.OppOneImg.bottomAnchor, constant: 5 * scalingFactor), // Place it above the button with spacing
+                        lbl_OppOne.heightAnchor.constraint(equalToConstant: 25 * heightScalingFactor), // Adjust the height as needed
+                        lbl_OppOne.widthAnchor.constraint(equalTo: self.OppOneImg.widthAnchor)
+
+                    ])
+                    
+                    
+                    
+                    lbl_OppOne.text = self.selectedCellValueOppOne
                 }
                 }
             }
@@ -561,21 +548,63 @@ class SinglesAddGameViewController: UIViewController {
             }
         }
         
-        func printstuff() {
-            print("FUCK FUCK FUCK --- ")
-            print(currentuseremail)
-            print("Current User Doubles Rank:")
-            print(CurrentUserDoublesRank)
-            print("Current User email:")
-            print(currentuseremail)
-            print("Opp One display:")
-            print(selectedCellValueOppOne)
-            print("opp one rank: ")
-            print(OppOneDoublesRank)
+        
+        
+        // Simulate loading for 2 seconds
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            // Call a function to hide the loading view
+            self.hideLoadingView()
         }
         
-        
     } //end of load
+    
+    override func viewDidLayoutSubviews() {
+           super.viewDidLayoutSubviews()
+
+           // Set corner radius to half of the image view's width
+           CurrentUserImg.layer.cornerRadius = 0.5 * CurrentUserImg.bounds.width
+           OppOneImg.layer.cornerRadius = 0.5 * OppOneImg.bounds.width
+        
+       }
+    
+    
+    func showLoadingView() {
+            // Create a UIView that covers the entire screen
+            loadingView = UIView(frame: view.bounds)
+            loadingView?.backgroundColor = UIColor(red: 0/255, green: 0/255, blue: 30/255, alpha: 1.0)
+            
+            // Create a UILabel with the desired text
+            loadingLabel = UILabel()
+            //loadingLabel?.text = "Loading game..."
+            loadingLabel?.textColor = .white
+            loadingLabel?.translatesAutoresizingMaskIntoConstraints = false
+        loadingView?.layer.zPosition = 7
+        loadingView?.layer.zPosition = 7
+            
+            // Add the label to the loading view
+            if let loadingLabel = loadingLabel {
+                loadingView?.addSubview(loadingLabel)
+                loadingLabel.centerXAnchor.constraint(equalTo: loadingView!.centerXAnchor).isActive = true
+                loadingLabel.centerYAnchor.constraint(equalTo: loadingView!.centerYAnchor).isActive = true
+            }
+            
+            // Add the loading view to the main view controller
+            if let loadingView = loadingView {
+                view.addSubview(loadingView)
+            }
+        }
+        
+        func hideLoadingView() {
+            // Remove the loading view and label from the main view controller
+            loadingLabel?.removeFromSuperview()
+            loadingView?.removeFromSuperview()
+            
+            // Set the references to nil to release memory
+            loadingLabel = nil
+            loadingView = nil
+            
+          
+        }
     
     
     func GetCurrentUserEmail(completion: @escaping () -> Void) {
@@ -1132,6 +1161,58 @@ class SinglesAddGameViewController: UIViewController {
         }
         
     }
+    
+    func loadProfileImage() {
+        // Load the user's profile image from Firestore
+        
+        guard let uid = Auth.auth().currentUser?.email else {
+            // Handle the case where the user's email is not available
+            return
+        }
+        let db = Firestore.firestore()
+        let docRef = db.collection("Agressv_ProfileImages").document(uid)
+        
+        docRef.getDocument { (document, error) in
+            if let document = document, document.exists {
+                // Document exists, retrieve and set the profile image
+                if let imageData = document.data()?["User_Img"] as? Data {
+                    self.CurrentUserImg.image = UIImage(data: imageData)
+                
+                    
+                } else {
+                    // Handle the case where the "User_Img" field does not contain valid image data
+                    self.CurrentUserImg.image = UIImage(named: "DefaultPlayerImage")
+                }
+            } else {
+                // Handle the case where the document does not exist (user does not have a profile image)
+                self.CurrentUserImg.image = UIImage(named: "DefaultPlayerImage")
+            }
+        }
+    }
+    
+    func loadProfileImageOppOne() {
+        // Load the user's profile image from Firestore
+        
+         let uid = selectedCellValueOppOneEmail
+        let db = Firestore.firestore()
+        let docRef = db.collection("Agressv_ProfileImages").document(uid)
+        
+        docRef.getDocument { (document, error) in
+            if let document = document, document.exists {
+                // Document exists, retrieve and set the profile image
+                if let imageData = document.data()?["User_Img"] as? Data {
+                    self.OppOneImg.image = UIImage(data: imageData)
+                } else {
+                    // Handle the case where the "User_Img" field does not contain valid image data
+                    self.OppOneImg.image = UIImage(named: "DefaultPlayerImage")
+                }
+            } else {
+                // Handle the case where the document does not exist (user does not have a profile image)
+                self.OppOneImg.image = UIImage(named: "DefaultPlayerImage")
+            }
+        }
+    }
+    
 } //end of class
 
 

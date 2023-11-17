@@ -35,6 +35,13 @@ class OppOneViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        SB_OppOne.backgroundImage = UIImage()
+        SB_OppOne.barTintColor = UIColor.white
+        SB_OppOne.layer.borderColor = UIColor.clear.cgColor
+       
+        // Set the default placeholder text
+        SB_OppOne.placeholder = "Search Username"
+        
         
         func GetHighScores() {
             
@@ -62,20 +69,20 @@ class OppOneViewController: UIViewController {
         }
         print(GetHighScores())
 
-        //Gradient background
-         
-         let gradientLayer = CAGradientLayer()
-         
-         gradientLayer.frame = view.bounds
-         
-         gradientLayer.colors = [UIColor.black.cgColor, UIColor.white.cgColor] //UIColor.red.cgColor]
-         
-         gradientLayer.shouldRasterize = true
-         
-         //GradientPartnerbackground.layer.addSublayer(gradientLayer)
-         
-         self.view.layer.insertSublayer(gradientLayer, at: 0)
-        
+//        //Gradient background
+//         
+//         let gradientLayer = CAGradientLayer()
+//         
+//         gradientLayer.frame = view.bounds
+//         
+//         gradientLayer.colors = [UIColor.black.cgColor, UIColor.white.cgColor] //UIColor.red.cgColor]
+//         
+//         gradientLayer.shouldRasterize = true
+//         
+//         //GradientPartnerbackground.layer.addSublayer(gradientLayer)
+//         
+//         self.view.layer.insertSublayer(gradientLayer, at: 0)
+//        
         //end gradient background view
         
         
@@ -192,7 +199,23 @@ class OppOneViewController: UIViewController {
         
     } //end of load
     
-    
+    func GetOppOneEmail(usernameselection: String) {
+        let db = Firestore.firestore()
+        let uid = usernameselection
+        let query = db.collection("Agressv_Users").whereField("Username", isEqualTo: uid)
+
+        query.getDocuments { (querySnapshot, error) in
+            if error != nil {
+                print("error")
+            } else {
+                for document in querySnapshot!.documents {
+                    // Access the value of field2 from the document
+                    let OppOneEmail = document.data()["Email"] as? String
+                    SharedDataEmails.sharedemails.OppOneEmail = OppOneEmail!
+                }
+            }
+        }
+    }
     
    
 
@@ -224,6 +247,8 @@ extension OppOneViewController: UITableViewDelegate, UITableViewDataSource {
                     // Extract username without the rank and assign it to SharedDataNoRank.sharednorank.PartnerSelection_NoRank
                     if let username = selectedValue.components(separatedBy: " - ").first {
                         SharedDataNoRank.sharednorank.OppOneSelection_NoRank = username
+                        
+                        GetOppOneEmail(usernameselection: username)
                     }
                 } else {
                     let selectedValue = dataSourceArrayOppOne[indexPath.row]
@@ -232,6 +257,9 @@ extension OppOneViewController: UITableViewDelegate, UITableViewDataSource {
                     // Extract username without the rank and assign it to SharedDataNoRank.sharednorank.PartnerSelection_NoRank
                     if let username = selectedValue.components(separatedBy: " - ").first {
                         SharedDataNoRank.sharednorank.OppOneSelection_NoRank = username
+                        
+                        GetOppOneEmail(usernameselection: username)
+                     
                     }
                 }
         // Create an instance of opp two VC

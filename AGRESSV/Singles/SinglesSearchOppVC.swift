@@ -27,6 +27,13 @@ class SinglesSearchOppVC: UIViewController {
         super.viewDidLoad()
         
         
+        SB_SinglesSearchBar.backgroundImage = UIImage()
+        SB_SinglesSearchBar.barTintColor = UIColor.white
+        SB_SinglesSearchBar.layer.borderColor = UIColor.clear.cgColor
+       
+        // Set the default placeholder text
+        SB_SinglesSearchBar.placeholder = "Search Username"
+        
         func GetHighScores() {
             
             let db = Firestore.firestore()
@@ -52,19 +59,19 @@ class SinglesSearchOppVC: UIViewController {
         }
         print(GetHighScores())
 
-        //Gradient background
-         
-         let gradientLayer = CAGradientLayer()
-         
-         gradientLayer.frame = view.bounds
-         
-         gradientLayer.colors = [UIColor.black.cgColor, UIColor.white.cgColor] //UIColor.red.cgColor]
-         
-         gradientLayer.shouldRasterize = true
-         
-         //GradientPartnerbackground.layer.addSublayer(gradientLayer)
-         
-         self.view.layer.insertSublayer(gradientLayer, at: 0)
+//        //Gradient background
+//         
+//         let gradientLayer = CAGradientLayer()
+//         
+//         gradientLayer.frame = view.bounds
+//         
+//         gradientLayer.colors = [UIColor.black.cgColor, UIColor.white.cgColor] //UIColor.red.cgColor]
+//         
+//         gradientLayer.shouldRasterize = true
+//         
+//         //GradientPartnerbackground.layer.addSublayer(gradientLayer)
+//         
+//         self.view.layer.insertSublayer(gradientLayer, at: 0)
         //end gradient background view
         
         
@@ -174,7 +181,34 @@ class SinglesSearchOppVC: UIViewController {
     } //end of load
     
 
-   
+    func GetOppOneEmail(usernameselection: String) {
+        let db = Firestore.firestore()
+        let uid = usernameselection
+        let query = db.collection("Agressv_Users").whereField("Username", isEqualTo: uid)
+
+        query.getDocuments { (querySnapshot, error) in
+            if error != nil {
+                print("error")
+            } else {
+                for document in querySnapshot!.documents {
+                    // Access the value of field2 from the document
+                    let OppOneEmail = document.data()["Email"] as? String
+                    SharedDataEmails.sharedemails.OppOneEmail = OppOneEmail!
+                    
+                    //prep for sending partner variable
+                    let LogGameSinglesVC = self.storyboard?.instantiateViewController(withIdentifier: "SinglesAddGameID") as! SinglesAddGameViewController
+                    
+                       // Set the selected cell's value as the public variable in SecondViewController
+                   
+                       
+                       // Push to the SecondViewController
+                    self.navigationController?.pushViewController(LogGameSinglesVC, animated: true)
+                }
+            }
+        }
+    }
+    
+    
 
 } //end of class
 extension SinglesSearchOppVC: UITableViewDelegate, UITableViewDataSource {
@@ -204,6 +238,8 @@ extension SinglesSearchOppVC: UITableViewDelegate, UITableViewDataSource {
                      // Extract username without the rank and assign it to SharedDataNoRank.sharednorank.PartnerSelection_NoRank
                      if let username = selectedValue.components(separatedBy: " - ").first {
                          SharedDataNoRank.sharednorank.OppOneSelection_NoRank = username
+                         
+                         GetOppOneEmail(usernameselection: username)
                      }
                  } else {
                      let selectedValue = dataSourceArraySinglesOpp[indexPath.row]
@@ -212,16 +248,11 @@ extension SinglesSearchOppVC: UITableViewDelegate, UITableViewDataSource {
                      // Extract username without the rank and assign it to SharedDataNoRank.sharednorank.PartnerSelection_NoRank
                      if let username = selectedValue.components(separatedBy: " - ").first {
                          SharedDataNoRank.sharednorank.OppOneSelection_NoRank = username
+                         
+                         GetOppOneEmail(usernameselection: username) 
                      }
                  }
-         //prep for sending partner variable
-         let LogGameSinglesVC = storyboard?.instantiateViewController(withIdentifier: "SinglesAddGameID") as! SinglesAddGameViewController
          
-            // Set the selected cell's value as the public variable in SecondViewController
-        
-            
-            // Push to the SecondViewController
-            navigationController?.pushViewController(LogGameSinglesVC, animated: true)
          
         }
 

@@ -32,6 +32,15 @@ class OppTwoViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
+        SB_OppTwo.backgroundImage = UIImage()
+        SB_OppTwo.barTintColor = UIColor.white
+        SB_OppTwo.layer.borderColor = UIColor.clear.cgColor
+       
+        // Set the default placeholder text
+        SB_OppTwo.placeholder = "Search Username"
+        
+        
         func GetHighScores() {
             
             let db = Firestore.firestore()
@@ -59,19 +68,19 @@ class OppTwoViewController: UIViewController {
         print(GetHighScores())
         
 
-        //Gradient background
-         
-         let gradientLayer = CAGradientLayer()
-         
-         gradientLayer.frame = view.bounds
-         
-         gradientLayer.colors = [UIColor.black.cgColor, UIColor.white.cgColor] //UIColor.red.cgColor]
-         
-         gradientLayer.shouldRasterize = true
-         
-         //GradientPartnerbackground.layer.addSublayer(gradientLayer)
-         
-         self.view.layer.insertSublayer(gradientLayer, at: 0)
+//        //Gradient background
+//         
+//         let gradientLayer = CAGradientLayer()
+//         
+//         gradientLayer.frame = view.bounds
+//         
+//         gradientLayer.colors = [UIColor.black.cgColor, UIColor.white.cgColor] //UIColor.red.cgColor]
+//         
+//         gradientLayer.shouldRasterize = true
+//         
+//         //GradientPartnerbackground.layer.addSublayer(gradientLayer)
+//         
+//         self.view.layer.insertSublayer(gradientLayer, at: 0)
         
         //end gradient background view
         
@@ -192,7 +201,32 @@ class OppTwoViewController: UIViewController {
     } // end of load
     
 
-    
+    func GetOppTwoEmail(usernameselection: String) {
+        let db = Firestore.firestore()
+        let uid = usernameselection
+        let query = db.collection("Agressv_Users").whereField("Username", isEqualTo: uid)
+
+        query.getDocuments { (querySnapshot, error) in
+            if error != nil {
+                print("error")
+            } else {
+                for document in querySnapshot!.documents {
+                    // Access the value of field2 from the document
+                    let OppTwoEmail = document.data()["Email"] as? String
+                    SharedDataEmails.sharedemails.OppTwoEmail = OppTwoEmail!
+                    
+                    //prep for sending partner variable
+                    let LogGameVC = self.storyboard?.instantiateViewController(withIdentifier: "AddGameID") as! AddGameViewController
+                    
+                       // Set the selected cell's value as the public variable in SecondViewController
+                   
+                       
+                       // Push to the SecondViewController
+                    self.navigationController?.pushViewController(LogGameVC, animated: true)
+                }
+            }
+        }
+    }
 
 } //end of class
 
@@ -222,6 +256,8 @@ extension OppTwoViewController: UITableViewDelegate, UITableViewDataSource {
                      // Extract username without the rank and assign it to SharedDataNoRank.sharednorank.PartnerSelection_NoRank
                      if let username = selectedValue.components(separatedBy: " - ").first {
                          SharedDataNoRank.sharednorank.OppTwoSelection_NoRank = username
+                         
+                         GetOppTwoEmail(usernameselection: username)
                      }
                  } else {
                      let selectedValue = dataSourceArrayOppTwo[indexPath.row]
@@ -230,17 +266,13 @@ extension OppTwoViewController: UITableViewDelegate, UITableViewDataSource {
                      // Extract username without the rank and assign it to SharedDataNoRank.sharednorank.PartnerSelection_NoRank
                      if let username = selectedValue.components(separatedBy: " - ").first {
                          SharedDataNoRank.sharednorank.OppTwoSelection_NoRank = username
+                         
+                         GetOppTwoEmail(usernameselection: username)
+                         
                      }
                  }
             
-         //prep for sending partner variable
-         let LogGameVC = storyboard?.instantiateViewController(withIdentifier: "AddGameID") as! AddGameViewController
          
-            // Set the selected cell's value as the public variable in SecondViewController
-        
-            
-            // Push to the SecondViewController
-            navigationController?.pushViewController(LogGameVC, animated: true)
          
         }
 

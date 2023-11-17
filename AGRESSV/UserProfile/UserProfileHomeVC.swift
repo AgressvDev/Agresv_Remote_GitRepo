@@ -291,18 +291,26 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
         
         
         view.addSubview(UserNameLabelMain)
-        
-        
-        let customFont = UIFont(name: "Angel wish", size: 50.0 * scalingFactor)
-         UserNameLabelMain.font = customFont
-        
-        
-        NSLayoutConstraint.activate([
-           
-            UserNameLabelMain.topAnchor.constraint(equalTo: profileImageView.bottomAnchor, constant: 20 * scalingFactor),
-            UserNameLabelMain.leadingAnchor.constraint(equalTo: profileImageView.leadingAnchor, constant: 15 * scalingFactor),
-            
-        ])
+
+        if let customFont = UIFont(name: "Angel wish", size: 50.0 * scalingFactor) {
+            UserNameLabelMain.font = customFont
+            UserNameLabelMain.adjustsFontSizeToFitWidth = true // Allow text to resize to fit width
+            UserNameLabelMain.minimumScaleFactor = 0.5 // Set a minimum scale factor as needed
+
+            UserNameLabelMain.translatesAutoresizingMaskIntoConstraints = false
+
+            NSLayoutConstraint.activate([
+                UserNameLabelMain.topAnchor.constraint(equalTo: profileImageView.bottomAnchor, constant: 20 * scalingFactor),
+                UserNameLabelMain.leadingAnchor.constraint(equalTo: profileImageView.leadingAnchor, constant: 15 * scalingFactor),
+                //UserNameLabelMain.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -15 * scalingFactor),
+                UserNameLabelMain.bottomAnchor.constraint(lessThanOrEqualTo: view.bottomAnchor, constant: -20 * scalingFactor) // Optional: Set a bottom constraint to define the bounds
+            ])
+        } else {
+            // Handle the case where the custom font is not available
+            print("Error: Custom font not available")
+        }
+
+
         
         
        
@@ -1479,7 +1487,7 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
         
         
         // Simulate loading for 2 seconds
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.25) {
             // Call a function to hide the loading view
             self.hideLoadingView()
         }
@@ -1641,6 +1649,7 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
                     self.profileImageView.image = UIImage(data: imageData)
                 } else {
                     // Handle the case where the "User_Img" field does not contain valid image data
+                    self.profileImageView.image = UIImage(named: "DefaultPlayerImage")
                 }
             } else {
                 // Handle the case where the document does not exist (user does not have a profile image)

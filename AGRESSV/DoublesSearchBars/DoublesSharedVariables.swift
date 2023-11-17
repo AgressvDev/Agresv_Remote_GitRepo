@@ -21,3 +21,9 @@ class SharedDataNoRank {
     var OppTwoSelection_NoRank: String!
 }
 
+class SharedDataEmails{
+    static let sharedemails = SharedDataEmails()
+    var PartnerEmail: String!
+    var OppOneEmail: String!
+    var OppTwoEmail: String!
+}
