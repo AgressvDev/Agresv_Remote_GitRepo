@@ -1307,6 +1307,7 @@ class PlayerProfileViewController: UIViewController {
                                             self.Player_DoublesRank == self.Highest_Score_Doubles
                                         {
                                             
+                                            
                                             //Adornment for blue ribbon
 
                                             self.NewDoublesRankLabel.backgroundColor = UIColor.mustardYellow()
@@ -1333,6 +1334,8 @@ class PlayerProfileViewController: UIViewController {
                                                         self.lbl_CurrentHighestScore.heightAnchor.constraint(equalToConstant: 20 * scalingFactor),
                                                         self.lbl_CurrentHighestScore.widthAnchor.constraint(equalToConstant: 200 * scalingFactor)// Adjust the reference height as needed
                                                     ])
+                                            
+                                        
                                         
                                         }
                                         else
@@ -1350,33 +1353,35 @@ class PlayerProfileViewController: UIViewController {
                                         if
                                             self.Player_SinglesRank == self.Highest_Score_Singles
                                         {
-                                          
+                                            
                                             //Adornment for blue ribbon
 
                                             self.NewSinglesRankLabel.backgroundColor = UIColor.mustardYellow()
-                                            self.lbl_CurrentHighestScore.text = "Highest Score!"
-                                            self.lbl_CurrentHighestScore.textColor = UIColor.mustardYellow()
+                                            self.lbl_CurrentHighestScoreSingles.text = "Highest Score!"
+                                            self.lbl_CurrentHighestScoreSingles.textColor = UIColor.mustardYellow()
                                             
-                                            self.lbl_CurrentHighestScore.translatesAutoresizingMaskIntoConstraints = false // Enable Auto Layout
-                                            self.lbl_CurrentHighestScore.numberOfLines = 0 // Allow multiple lines
+                                            self.lbl_CurrentHighestScoreSingles.translatesAutoresizingMaskIntoConstraints = false // Enable Auto Layout
+                                            self.lbl_CurrentHighestScoreSingles.numberOfLines = 0 // Allow multiple lines
                                             // Add the label to the view hierarchy
-                                            self.view.addSubview(self.lbl_CurrentHighestScore)
+                                            self.view.addSubview(self.lbl_CurrentHighestScoreSingles)
                                             
                                             let baseFontSize: CGFloat = 12.0 // Set your base font size
                                             let adjustedFontSize = baseFontSize * scalingFactor
 
                                             // Set the font size for lbl_Playometer
-                                            self.lbl_CurrentHighestScore.font = UIFont.systemFont(ofSize: adjustedFontSize)
+                                            self.lbl_CurrentHighestScoreSingles.font = UIFont.systemFont(ofSize: adjustedFontSize)
                                             
 
                                             
                                             // Define Auto Layout constraints to position and allow the label to expand its width based on content
                                                     NSLayoutConstraint.activate([
-                                                        self.lbl_CurrentHighestScore.leadingAnchor.constraint(equalTo: self.NewSinglesRankLabel.leadingAnchor),
-                                                        self.lbl_CurrentHighestScore.topAnchor.constraint(equalTo: self.NewSinglesRankLabel.bottomAnchor, constant: 3 * scalingFactor),
-                                                        self.lbl_CurrentHighestScore.heightAnchor.constraint(equalToConstant: 20 * scalingFactor),
-                                                        self.lbl_CurrentHighestScore.widthAnchor.constraint(equalToConstant: 200 * scalingFactor)// Adjust the reference height as needed
+                                                        self.lbl_CurrentHighestScoreSingles.leadingAnchor.constraint(equalTo: self.NewSinglesRankLabel.leadingAnchor),
+                                                        self.lbl_CurrentHighestScoreSingles.topAnchor.constraint(equalTo: self.NewSinglesRankLabel.bottomAnchor, constant: 3 * scalingFactor),
+                                                        self.lbl_CurrentHighestScoreSingles.heightAnchor.constraint(equalToConstant: 20 * scalingFactor),
+                                                        self.lbl_CurrentHighestScoreSingles.widthAnchor.constraint(equalToConstant: 200 * scalingFactor)// Adjust the reference height as needed
                                                     ])
+                                            
+                                           
                                             
                                         }
                                         else

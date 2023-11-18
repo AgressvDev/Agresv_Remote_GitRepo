@@ -38,20 +38,17 @@ class DoublesSearchVCNew: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+
         
-        newLabel_PickPartner.textColor = UIColor.black
+      
         
-        // Set the background color
+        newSB_SearchPlayers.delegate = self
+        
+        
         newSB_SearchPlayers.backgroundImage = UIImage()
         newSB_SearchPlayers.barTintColor = UIColor.white
         newSB_SearchPlayers.layer.borderColor = UIColor.clear.cgColor
-        
-        view.addSubview(newSB_SearchPlayers)
-        
-        
-        
        
-
         // Set the default placeholder text
         newSB_SearchPlayers.placeholder = "Search Username"
    

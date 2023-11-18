@@ -32,6 +32,10 @@ class OppTwoViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+      
+        
+        SB_OppTwo.delegate = self
+        
         
         SB_OppTwo.backgroundImage = UIImage()
         SB_OppTwo.barTintColor = UIColor.white

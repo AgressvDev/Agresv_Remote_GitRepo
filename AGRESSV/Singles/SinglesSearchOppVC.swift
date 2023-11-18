@@ -14,6 +14,7 @@ class SinglesSearchOppVC: UIViewController {
     
     @IBOutlet weak var SB_SinglesSearchBar: UISearchBar!
     
+    @IBOutlet weak var lbl_PickSinglesOpp: UILabel!
     @IBOutlet weak var Table_SinglesUsernames: UITableView!
     
     var dataSourceArraySinglesOpp = [String]()
@@ -25,6 +26,10 @@ class SinglesSearchOppVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+      
+        
+        SB_SinglesSearchBar.delegate = self
         
         
         SB_SinglesSearchBar.backgroundImage = UIImage()

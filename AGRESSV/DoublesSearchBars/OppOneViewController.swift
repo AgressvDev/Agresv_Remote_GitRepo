@@ -35,6 +35,12 @@ class OppOneViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
+      
+        
+        SB_OppOne.delegate = self
+        
+        
         SB_OppOne.backgroundImage = UIImage()
         SB_OppOne.barTintColor = UIColor.white
         SB_OppOne.layer.borderColor = UIColor.clear.cgColor

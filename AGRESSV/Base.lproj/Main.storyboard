@@ -214,7 +214,7 @@
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pick Opponent" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="en2-Hb-sZI">
                                 <rect key="frame" x="0.0" y="94" width="393" height="45.333333333333343"/>
                                 <fontDescription key="fontDescription" name="Impact" family="Impact" pointSize="37"/>
-                                <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="textColor" red="0.75453044459999996" green="0.053230738499999999" blue="0.01485466564" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
@@ -238,6 +238,7 @@
                     <connections>
                         <outlet property="SB_SinglesSearchBar" destination="Joq-zD-Xx9" id="Uu1-Gx-04v"/>
                         <outlet property="Table_SinglesUsernames" destination="fbQ-qh-kfo" id="KjH-Yf-Sm9"/>
+                        <outlet property="lbl_PickSinglesOpp" destination="en2-Hb-sZI" id="8mg-S9-qud"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qR3-8i-wAE" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -472,18 +473,11 @@
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pick Your Partner" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IHd-I9-o9L">
                                 <rect key="frame" x="0.0" y="93" width="393" height="45.333333333333343"/>
                                 <fontDescription key="fontDescription" name="Impact" family="Impact" pointSize="37"/>
-                                <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="textColor" red="0.75453044459999996" green="0.053230738499999999" blue="0.01485466564" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <searchBar contentMode="redraw" placeholder="Search Username" translatesAutoresizingMaskIntoConstraints="NO" id="V4w-gF-L25">
-                                <rect key="frame" x="16" y="151" width="361" height="56"/>
-                                <textInputTraits key="textInputTraits"/>
-                                <connections>
-                                    <outlet property="delegate" destination="dfi-tP-anM" id="BrI-MC-x3o"/>
-                                </connections>
-                            </searchBar>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="insetGrouped" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" estimatedSectionHeaderHeight="-1" sectionFooterHeight="18" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="jfR-k5-aRJ">
-                                <rect key="frame" x="0.0" y="213" width="393" height="604.66666666666674"/>
+                                <rect key="frame" x="0.0" y="212.99999999999994" width="393" height="604.66666666666652"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <color key="separatorColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
@@ -501,17 +495,27 @@
                                     <outlet property="delegate" destination="dfi-tP-anM" id="Xmq-Js-dmn"/>
                                 </connections>
                             </tableView>
+                            <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="Sxs-wh-BnW">
+                                <rect key="frame" x="16" y="160" width="361" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="nwW-xw-gSs"/>
+                                </constraints>
+                                <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <outlet property="delegate" destination="dfi-tP-anM" id="foc-2C-Mfo"/>
+                                </connections>
+                            </searchBar>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="gOm-yq-amu"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="jfR-k5-aRJ" firstAttribute="leading" secondItem="IHd-I9-o9L" secondAttribute="leading" id="1T4-WG-cg8"/>
-                            <constraint firstItem="V4w-gF-L25" firstAttribute="leading" secondItem="Mwb-b6-xnD" secondAttribute="leadingMargin" id="2Ht-e4-BQP"/>
-                            <constraint firstItem="V4w-gF-L25" firstAttribute="centerX" secondItem="IHd-I9-o9L" secondAttribute="centerX" id="OdF-vO-MfC"/>
-                            <constraint firstItem="V4w-gF-L25" firstAttribute="top" secondItem="IHd-I9-o9L" secondAttribute="bottom" constant="12.666666666666742" id="Opx-3Q-B7r"/>
+                            <constraint firstItem="Sxs-wh-BnW" firstAttribute="top" secondItem="IHd-I9-o9L" secondAttribute="bottom" constant="21.666666666666657" id="8fa-cP-gED"/>
                             <constraint firstItem="gOm-yq-amu" firstAttribute="bottom" secondItem="jfR-k5-aRJ" secondAttribute="bottom" constant="0.33333333333325754" id="WGK-tx-i4O"/>
-                            <constraint firstItem="jfR-k5-aRJ" firstAttribute="top" secondItem="V4w-gF-L25" secondAttribute="bottom" constant="6" id="cXQ-Z3-E7l"/>
+                            <constraint firstItem="Sxs-wh-BnW" firstAttribute="leading" secondItem="Mwb-b6-xnD" secondAttribute="leadingMargin" id="eHt-q0-nYd"/>
+                            <constraint firstItem="jfR-k5-aRJ" firstAttribute="top" secondItem="Sxs-wh-BnW" secondAttribute="bottom" constant="9" id="fK6-NP-kuW"/>
                             <constraint firstItem="IHd-I9-o9L" firstAttribute="centerX" secondItem="Mwb-b6-xnD" secondAttribute="centerX" id="il8-50-BCc"/>
+                            <constraint firstItem="Sxs-wh-BnW" firstAttribute="centerX" secondItem="IHd-I9-o9L" secondAttribute="centerX" id="jLi-Jc-Dxp"/>
                             <constraint firstItem="IHd-I9-o9L" firstAttribute="leading" secondItem="gOm-yq-amu" secondAttribute="leading" id="mqY-iB-ubp"/>
                             <constraint firstItem="jfR-k5-aRJ" firstAttribute="trailing" secondItem="IHd-I9-o9L" secondAttribute="trailing" id="nwy-b2-VZ0"/>
                             <constraint firstItem="IHd-I9-o9L" firstAttribute="top" secondItem="gOm-yq-amu" secondAttribute="top" constant="34" id="yw6-es-osJ"/>
@@ -519,7 +523,7 @@
                     </view>
                     <connections>
                         <outlet property="newLabel_PickPartner" destination="IHd-I9-o9L" id="IqS-7a-l6d"/>
-                        <outlet property="newSB_SearchPlayers" destination="V4w-gF-L25" id="zfW-VG-bjK"/>
+                        <outlet property="newSB_SearchPlayers" destination="Sxs-wh-BnW" id="xFW-n6-y9x"/>
                         <outlet property="newTableView_Partners" destination="jfR-k5-aRJ" id="CR7-2G-Gd9"/>
                     </connections>
                 </viewController>
@@ -661,11 +665,12 @@
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pick Opponent One" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="J5L-TD-gBn">
                                 <rect key="frame" x="0.0" y="94" width="393" height="45.333333333333343"/>
                                 <fontDescription key="fontDescription" name="Impact" family="Impact" pointSize="37"/>
-                                <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="textColor" red="0.75453044459999996" green="0.053230738499999999" blue="0.01485466564" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <searchBar contentMode="redraw" placeholder="Search Username" translatesAutoresizingMaskIntoConstraints="NO" id="APU-tu-utP">
                                 <rect key="frame" x="16" y="151.33333333333334" width="361" height="56"/>
+                                <color key="tintColor" systemColor="tintColor"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <connections>
                                     <outlet property="delegate" destination="B2a-as-hg0" id="wdN-ay-qFq"/>
@@ -715,7 +720,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4TF-GM-sj0" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6130.5343511450383" y="-546.47887323943667"/>
+            <point key="canvasLocation" x="6181" y="-546"/>
         </scene>
         <!--OppTwoSearch-->
         <scene sceneID="4FT-ui-Mjb">
@@ -728,7 +733,7 @@
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pick Opponent Two" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pla-Dc-AFL">
                                 <rect key="frame" x="0.0" y="94" width="393" height="45.333333333333343"/>
                                 <fontDescription key="fontDescription" name="Impact" family="Impact" pointSize="37"/>
-                                <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="textColor" red="0.75453044459999996" green="0.053230738499999999" blue="0.01485466564" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <searchBar contentMode="redraw" placeholder="Search Username" translatesAutoresizingMaskIntoConstraints="NO" id="ymN-Tp-z7S">
