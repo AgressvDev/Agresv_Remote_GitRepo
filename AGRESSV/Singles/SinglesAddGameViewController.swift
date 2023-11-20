@@ -458,11 +458,11 @@ class SinglesAddGameViewController: UIViewController {
 
 
         
-        findUserWithMostGamesInitial { mostFrequentEmail in
-            if let email = mostFrequentEmail {
-                self.UserWithMostGames = email
-                print("INITIAL USER WITH MOST GAMES RED FANG!!!!!!: \(email)")
-                print(self.UserWithMostGames!)
+//        findUserWithMostGamesInitial { mostFrequentEmail in
+//            if let email = mostFrequentEmail {
+//                self.UserWithMostGames = email
+//                print("INITIAL USER WITH MOST GAMES RED FANG!!!!!!: \(email)")
+//                print(self.UserWithMostGames!)
                 GetCurrentUserEmailInitial
                 {
                     
@@ -471,17 +471,17 @@ class SinglesAddGameViewController: UIViewController {
                     
                     GetOppOneEmail()
                     
-                    if email == self.currentuseremail {
-                        self.CurrentISRedFangs = true
-                        print("CURRENT IS RED FANGS SET TO TRUE?")
-                        print(self.CurrentISRedFangs)
-                    }
-                    
-                    if email == self.selectedCellValueOppOneEmail {
-                        self.OppOneISRedFangs = true
-                        print("OPP ONE IS RED FANGS SET TO TRUE?")
-                        print(self.OppOneISRedFangs)
-                    }
+//                    if email == self.currentuseremail {
+//                        self.CurrentISRedFangs = true
+//                        print("CURRENT IS RED FANGS SET TO TRUE?")
+//                        print(self.CurrentISRedFangs)
+//                    }
+//
+//                    if email == self.selectedCellValueOppOneEmail {
+//                        self.OppOneISRedFangs = true
+//                        print("OPP ONE IS RED FANGS SET TO TRUE?")
+//                        print(self.OppOneISRedFangs)
+//                    }
                     
                     // Add profile image view to the view
                     self.view.addSubview(self.OppOneImg)
@@ -519,8 +519,8 @@ class SinglesAddGameViewController: UIViewController {
                     
                     
                     lbl_OppOne.text = self.selectedCellValueOppOne
-                }
-                }
+                
+                
             }
         
     
@@ -1030,35 +1030,35 @@ class SinglesAddGameViewController: UIViewController {
                     
                     self.GetCurrentUserEmail {
                         
-                        self.findUserWithMostGames
-                        { mostFrequentEmail in
-                            self.UserWithMostGames = mostFrequentEmail
-                            print(self.UserWithMostGames!)
-                            print(self.CurrentISRedFangs)
-                            print(self.currentuseremail)
-                            
-                            if !self.CurrentISRedFangs
-                            {
-                                if self.UserWithMostGames == self.currentuseremail
-                                {
-                                    print("CURRENT USER - INCREMENT 1 RED FANG")
-                                    User_Badges_ref.updateData([
-                                        "Red_Fangs": FieldValue.increment(Int64(1))])
-                                }
-                            }
-                            
-                            
-                            
-                            if !self.OppOneISRedFangs
-                            {
-                                if self.UserWithMostGames == self.selectedCellValueOppOneEmail
-                                {
-                                    print("OPP ONE - INCREMENT 1 RED FANG")
-                                    OppOne_Badges_ref.updateData([
-                                        "Red_Fangs": FieldValue.increment(Int64(1))])
-                                }
-                            }
-                            
+//                        self.findUserWithMostGames
+//                        { mostFrequentEmail in
+//                            self.UserWithMostGames = mostFrequentEmail
+//                            print(self.UserWithMostGames!)
+//                            print(self.CurrentISRedFangs)
+//                            print(self.currentuseremail)
+//
+//                            if !self.CurrentISRedFangs
+//                            {
+//                                if self.UserWithMostGames == self.currentuseremail
+//                                {
+//                                    print("CURRENT USER - INCREMENT 1 RED FANG")
+//                                    User_Badges_ref.updateData([
+//                                        "Red_Fangs": FieldValue.increment(Int64(1))])
+//                                }
+//                            }
+//
+//
+//
+//                            if !self.OppOneISRedFangs
+//                            {
+//                                if self.UserWithMostGames == self.selectedCellValueOppOneEmail
+//                                {
+//                                    print("OPP ONE - INCREMENT 1 RED FANG")
+//                                    OppOne_Badges_ref.updateData([
+//                                        "Red_Fangs": FieldValue.increment(Int64(1))])
+//                                }
+//                            }
+//
                             
                             print("HIGH SCORE DOUBLES")
                             print(self.Highest_Score_Doubles)
@@ -1160,7 +1160,7 @@ class SinglesAddGameViewController: UIViewController {
             }
         }
         
-    }
+    
     
     func loadProfileImage() {
         // Load the user's profile image from Firestore

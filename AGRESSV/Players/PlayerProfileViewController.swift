@@ -17,6 +17,9 @@ import Charts
 
 class PlayerProfileViewController: UIViewController {
 
+    
+    var UserEarnedRedFangs: Bool = false
+    
     var player: String = SharedPlayerData.shared.PlayerSelectedUsername_NoRank
     var playersEmail: String = ""
     
@@ -740,7 +743,7 @@ class PlayerProfileViewController: UIViewController {
                     let blueribbonsum = blueribbondoubles + blueribbonsingles
                     
                     self.bluebadgecount = blueribbonsum
-                    self.redfangscount = document!.data()!["Red_Fangs"] as! Int
+                    self.redfangscount = 1
                     self.goldribboncount = document!.data()!["Gold_Ribbon"] as! Int
                     
                     print(self.bluebadgecount)
@@ -835,7 +838,7 @@ class PlayerProfileViewController: UIViewController {
                         
                         
                     }
-                    if self.HasAchievedRedFangs {
+                    if self.UserEarnedRedFangs {
                         //put red fangs top right
                         self.view.addSubview(img_RedFangs)
                         
@@ -870,7 +873,9 @@ class PlayerProfileViewController: UIViewController {
             }
             
         }
-        print(GetBadgeData())
+        findUserGames {
+            GetBadgeData()
+        }
         
         let fontSize: CGFloat = 25.0 // Set your default font size
      
@@ -1489,6 +1494,51 @@ class PlayerProfileViewController: UIViewController {
         
     }
     
+    func findUserGames(completion: @escaping () -> Void) {
+        let db = Firestore.firestore()
+        let agressvGamesCollection = db.collection("Agressv_Games")
+        
+        // Get the current user's UID
+         let uid = playersEmail
+        
+        // Reference to the current user in the "Agressv_Users" collection
+        let userRef = db.collection("Agressv_Users").document(uid)
+        
+        var emailCount = 0
+        
+        let fieldsToCheck = ["Game_Creator", "Game_Partner", "Game_Opponent_One", "Game_Opponent_Two"]
+        
+        let group = DispatchGroup()
+        
+        // Calculate the date 30 days ago from the current date
+        let thirtyDaysAgo = Calendar.current.date(byAdding: .day, value: -30, to: Date())!
+        
+        for field in fieldsToCheck {
+            group.enter()
+            agressvGamesCollection
+                .whereField(field, isEqualTo: uid)
+                .whereField("Game_Date", isGreaterThan: thirtyDaysAgo)
+                .getDocuments { (querySnapshot, error) in
+                    if let error = error {
+                        print("Error fetching documents: \(error)")
+                    } else {
+                        emailCount += querySnapshot?.documents.count ?? 0
+                    }
+                    group.leave()
+                }
+        }
+        
+        group.notify(queue: .main) {
+            // Check if the email count for the user is 20 or more
+            print("HOW MANY GAMES USER PLAYED IN LAST 30 DAYS")
+            print(emailCount)
+            if emailCount >= 20 {
+                // Update the bool variable
+                self.UserEarnedRedFangs = true
+            }
+            completion()
+        }
+    }
     
     override func viewDidLayoutSubviews() {
            super.viewDidLayoutSubviews()

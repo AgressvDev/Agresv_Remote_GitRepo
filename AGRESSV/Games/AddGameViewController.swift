@@ -665,11 +665,11 @@ class AddGameViewController: UIViewController {
         }
         
         
-        findUserWithMostGamesInitial { mostFrequentEmail in
-            if let email = mostFrequentEmail {
-                self.UserWithMostGames = email
-                print("INITIAL USER WITH MOST GAMES RED FANG!!!!!!: \(email)")
-                print(self.UserWithMostGames!)
+//        findUserWithMostGamesInitial { mostFrequentEmail in
+//            if let email = mostFrequentEmail {
+//                self.UserWithMostGames = email
+//                print("INITIAL USER WITH MOST GAMES RED FANG!!!!!!: \(email)")
+//                print(self.UserWithMostGames!)
                 GetCurrentUserEmailInitial
                 {
                     
@@ -680,29 +680,29 @@ class AddGameViewController: UIViewController {
                     
                     
                     
-                    if email == self.currentuseremail {
-                        self.CurrentISRedFangs = true
-                        print("CURRENT IS RED FANGS SET TO TRUE?")
-                        print(self.CurrentISRedFangs)
-                    }
-                    
-                    if email == self.selectedCellValueEmail {
-                        self.PartnerISRedFangs = true
-                        print("OPP ONE IS RED FANGS SET TO TRUE?")
-                        print(self.PartnerISRedFangs)
-                    }
-                    
-                    if email == self.selectedCellValueOppOneEmail {
-                        self.OppOneISRedFangs = true
-                        print("OPP ONE IS RED FANGS SET TO TRUE?")
-                        print(self.OppOneISRedFangs)
-                    }
-                    
-                    if email == self.selectedCellValueOppTwoEmail {
-                        self.OppTwoISRedFangs = true
-                        print("OPP ONE IS RED FANGS SET TO TRUE?")
-                        print(self.OppTwoISRedFangs)
-                    }
+//                    if email == self.currentuseremail {
+//                        self.CurrentISRedFangs = true
+//                        print("CURRENT IS RED FANGS SET TO TRUE?")
+//                        print(self.CurrentISRedFangs)
+//                    }
+//
+//                    if email == self.selectedCellValueEmail {
+//                        self.PartnerISRedFangs = true
+//                        print("OPP ONE IS RED FANGS SET TO TRUE?")
+//                        print(self.PartnerISRedFangs)
+//                    }
+//
+//                    if email == self.selectedCellValueOppOneEmail {
+//                        self.OppOneISRedFangs = true
+//                        print("OPP ONE IS RED FANGS SET TO TRUE?")
+//                        print(self.OppOneISRedFangs)
+//                    }
+//
+//                    if email == self.selectedCellValueOppTwoEmail {
+//                        self.OppTwoISRedFangs = true
+//                        print("OPP ONE IS RED FANGS SET TO TRUE?")
+//                        print(self.OppTwoISRedFangs)
+//                    }
                     
                     //PullAllImages()
                     
@@ -800,8 +800,8 @@ class AddGameViewController: UIViewController {
                     
                     lbl_OppTwo.text = self.selectedCellValueOppTwo
                     
-                }
-                }
+                
+                
             }
         
         func PullAllImages() {
@@ -1449,49 +1449,49 @@ class AddGameViewController: UIViewController {
                     
                     self.GetCurrentUserEmail {
                         
-                        self.findUserWithMostGames
-                        { mostFrequentEmail in
-                            self.UserWithMostGames = mostFrequentEmail
-                            
-                            if !self.CurrentISRedFangs
-                            {
-                                if self.UserWithMostGames == self.currentuseremail
-                                {
-                                    //increment 1 red fangs
-                                    User_Badges_ref.updateData([
-                                        "Red_Fangs": FieldValue.increment(Int64(1))])
-                                }
-                            }
-                            
-                            if !self.PartnerISRedFangs
-                            {
-                                if self.UserWithMostGames == self.selectedCellValueEmail
-                                {
-                                    //increment 1 red fangs
-                                    Partner_Badges_ref.updateData([
-                                        "Red_Fangs": FieldValue.increment(Int64(1))])
-                                }
-                            }
-                            
-                            if !self.OppOneISRedFangs
-                            {
-                                if self.UserWithMostGames == self.selectedCellValueOppOneEmail
-                                {
-                                    //increment 1 red fangs
-                                    OppOne_Badges_ref.updateData([
-                                        "Red_Fangs": FieldValue.increment(Int64(1))])
-                                }
-                            }
-                            
-                            if !self.OppTwoISRedFangs
-                            {
-                                if self.UserWithMostGames == self.selectedCellValueOppTwoEmail
-                                {
-                                    //increment 1 red fangs
-                                    OppTwo_Badgres_ref.updateData([
-                                        "Red_Fangs": FieldValue.increment(Int64(1))])
-                                }
-                            }
+//                        self.findUserWithMostGames
+//                        { mostFrequentEmail in
+//                            self.UserWithMostGames = mostFrequentEmail
+//
+//                            if !self.CurrentISRedFangs
+//                            {
+//                                if self.UserWithMostGames == self.currentuseremail
+//                                {
+//                                    //increment 1 red fangs
+//                                    User_Badges_ref.updateData([
+//                                        "Red_Fangs": FieldValue.increment(Int64(1))])
+//                                }
+//                            }
+//
+//                            if !self.PartnerISRedFangs
+//                            {
+//                                if self.UserWithMostGames == self.selectedCellValueEmail
+//                                {
+//                                    //increment 1 red fangs
+//                                    Partner_Badges_ref.updateData([
+//                                        "Red_Fangs": FieldValue.increment(Int64(1))])
+//                                }
+//                            }
+//
+//                            if !self.OppOneISRedFangs
+//                            {
+//                                if self.UserWithMostGames == self.selectedCellValueOppOneEmail
+//                                {
+//                                    //increment 1 red fangs
+//                                    OppOne_Badges_ref.updateData([
+//                                        "Red_Fangs": FieldValue.increment(Int64(1))])
+//                                }
+//                            }
+//
+//                            if !self.OppTwoISRedFangs
+//                            {
+//                                if self.UserWithMostGames == self.selectedCellValueOppTwoEmail
+//                                {
+//                                    //increment 1 red fangs
+//                                    OppTwo_Badgres_ref.updateData([
+//                                        "Red_Fangs": FieldValue.increment(Int64(1))])
+//                                }
+//                            }
                             
                             
                             
@@ -1658,7 +1658,7 @@ class AddGameViewController: UIViewController {
                             
                             
                             
-                        }
+                        
                     }
                     
                 }

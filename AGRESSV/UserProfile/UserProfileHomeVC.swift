@@ -16,7 +16,7 @@ import Foundation
 
 class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UINavigationControllerDelegate {
     
-    
+    var UserEarnedRedFangs: Bool = false
     var HasAchievedGoldRibbon: Bool = false
     var HasAchievedBlueRibbon: Bool = false
     var HasAchievedRedFangs: Bool = false
@@ -588,7 +588,7 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
                     let blueribbonsum = blueribbondoubles + blueribbonsingles
                     
                     self.bluebadgecount = blueribbonsum
-                    self.redfangscount = document!.data()!["Red_Fangs"] as! Int
+                    self.redfangscount = 1
                     self.goldribboncount = document!.data()!["Gold_Ribbon"] as! Int
                     
                     print(self.bluebadgecount)
@@ -612,11 +612,11 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
                         self.HasAchievedBlueRibbon = true
                     }
                    
-                    if let RedFangsValue = document!.data()!["Red_Fangs"] as? Int,
-                       RedFangsValue > 0
-                        {
-                        self.HasAchievedRedFangs = true
-                        }
+//                    if let RedFangsValue = document!.data()!["Red_Fangs"] as? Int,
+//                       RedFangsValue > 0
+//                        {
+//                        self.HasAchievedRedFangs = true
+//                        }
                    
                     
                     if self.HasAchievedGoldRibbon {
@@ -682,7 +682,7 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
                         ])
                     }
                     
-                    if self.HasAchievedRedFangs {
+                    if self.UserEarnedRedFangs {
                         //put red fangs top right
                         self.view.addSubview(img_RedFangs)
                         
@@ -717,7 +717,10 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
             }
             
         }
-        print(GetBadgeData())
+        findUserGames {
+            GetBadgeData()
+        }
+        
         
         let fontSize: CGFloat = 25.0 // Set your default font size
      
@@ -1503,7 +1506,55 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
     
    
         
+    func findUserGames(completion: @escaping () -> Void) {
+        let db = Firestore.firestore()
+        let agressvGamesCollection = db.collection("Agressv_Games")
         
+        // Get the current user's UID
+        guard let uid = Auth.auth().currentUser?.email else {
+            completion()
+            return
+        }
+        
+        // Reference to the current user in the "Agressv_Users" collection
+        let userRef = db.collection("Agressv_Users").document(uid)
+        
+        var emailCount = 0
+        
+        let fieldsToCheck = ["Game_Creator", "Game_Partner", "Game_Opponent_One", "Game_Opponent_Two"]
+        
+        let group = DispatchGroup()
+        
+        // Calculate the date 30 days ago from the current date
+        let thirtyDaysAgo = Calendar.current.date(byAdding: .day, value: -30, to: Date())!
+        
+        for field in fieldsToCheck {
+            group.enter()
+            agressvGamesCollection
+                .whereField(field, isEqualTo: uid)
+                .whereField("Game_Date", isGreaterThan: thirtyDaysAgo)
+                .getDocuments { (querySnapshot, error) in
+                    if let error = error {
+                        print("Error fetching documents: \(error)")
+                    } else {
+                        emailCount += querySnapshot?.documents.count ?? 0
+                    }
+                    group.leave()
+                }
+        }
+        
+        group.notify(queue: .main) {
+            // Check if the email count for the user is 20 or more
+            print("HOW MANY GAMES USER PLAYED IN LAST 30 DAYS")
+            print(emailCount)
+            if emailCount >= 20 {
+                // Update the bool variable
+                self.UserEarnedRedFangs = true
+            }
+            completion()
+        }
+    }
+
        
    
     
