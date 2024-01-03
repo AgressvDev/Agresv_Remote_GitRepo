@@ -46,34 +46,55 @@ class NewGameViewController: UIViewController {
         btnSingles.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20 * scalingFactor).isActive = true
         btnSingles.heightAnchor.constraint(equalTo: btnDoubles.heightAnchor).isActive = true
     }
-    
-    // Button action for "Doubles"
-    @objc func btnDoublesTapped() {
-        // Create an instance of DoublesSearchVCNew
-        let doublesSearchVC = storyboard?.instantiateViewController(withIdentifier: "DoublesSearchVCNewID") as! DoublesSearchVCNew
+//                // Create a button "Singles"
+//                let btnRR = createButton(title: "ROUND ROBIN", action: #selector(btnRR), scalingFactor: scalingFactor)
+//                view.addSubview(btnRR)
+//
+//                // Set constraints below "btn_Doubles"
+//                btnRR.translatesAutoresizingMaskIntoConstraints = false
+//                btnRR.topAnchor.constraint(equalTo: btnSingles.bottomAnchor, constant: 20 * scalingFactor).isActive = true
+//                btnRR.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20 * scalingFactor).isActive = true
+//                btnRR.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20 * scalingFactor).isActive = true
+//                btnRR.heightAnchor.constraint(equalTo: btnSingles.heightAnchor).isActive = true
+//            }
         
-        // Push to the DoublesSearchVCNew
-        navigationController?.pushViewController(doublesSearchVC, animated: true)
-    }
-    
-    // Button action for "Singles"
-    @objc func btnSinglesTapped() {
-        // Create an instance of SinglesSearchOppVC
-        let singlesSearchVC = storyboard?.instantiateViewController(withIdentifier: "SinglesSearchOppVCID") as! SinglesSearchOppVC
+        // Button action for "Doubles"
+        @objc func btnDoublesTapped() {
+            // Create an instance of DoublesSearchVCNew
+            let doublesSearchVC = storyboard?.instantiateViewController(withIdentifier: "DoublesSearchVCNewID") as! DoublesSearchVCNew
+            
+            // Push to the DoublesSearchVCNew
+            navigationController?.pushViewController(doublesSearchVC, animated: true)
+        }
         
-        // Push to the SinglesSearchOppVC
-        navigationController?.pushViewController(singlesSearchVC, animated: true)
+        // Button action for "Singles"
+        @objc func btnSinglesTapped() {
+            // Create an instance of SinglesSearchOppVC
+            let singlesSearchVC = storyboard?.instantiateViewController(withIdentifier: "SinglesSearchOppVCID") as! SinglesSearchOppVC
+            
+            // Push to the SinglesSearchOppVC
+            navigationController?.pushViewController(singlesSearchVC, animated: true)
+        }
+        
+//            // Button action for "Doubles"
+//            @objc func btnRR() {
+//                // Create an instance of DoublesSearchVCNew
+//                let RRVC = storyboard?.instantiateViewController(withIdentifier: "RRCreateRosterID") as! RRCreateRosterVC
+//
+//                // Push to the DoublesSearchVCNew
+//                navigationController?.pushViewController(RRVC, animated: true)
+//            }
+        
+        // Helper method to create a button with common properties
+        func createButton(title: String, action: Selector, scalingFactor: CGFloat) -> UIButton {
+            let button = UIButton(type: .system)
+            button.setTitle(title, for: .normal)
+            button.setTitleColor(.black, for: .normal)
+            button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20 * scalingFactor)
+            button.backgroundColor = UIColor(red: 173/255, green: 216/255, blue: 230/255, alpha: 1.0)
+            button.layer.cornerRadius = 10
+            button.addTarget(self, action: action, for: .touchUpInside)
+            return button
+        }
     }
     
-    // Helper method to create a button with common properties
-    func createButton(title: String, action: Selector, scalingFactor: CGFloat) -> UIButton {
-        let button = UIButton(type: .system)
-        button.setTitle(title, for: .normal)
-        button.setTitleColor(.black, for: .normal)
-        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20 * scalingFactor)
-        button.backgroundColor = UIColor(red: 173/255, green: 216/255, blue: 230/255, alpha: 1.0)
-        button.layer.cornerRadius = 10
-        button.addTarget(self, action: action, for: .touchUpInside)
-        return button
-    }
-}

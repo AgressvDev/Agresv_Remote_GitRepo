@@ -614,7 +614,7 @@ class AddGameViewController: UIViewController {
         print(GetOppTwoRank())
         
   
-      
+        
         
       
        

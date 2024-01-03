@@ -30,6 +30,11 @@
 		455BDA2C2ACA4098003B2EBF /* SinglesAddGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 455BDA2B2ACA4098003B2EBF /* SinglesAddGameViewController.swift */; };
 		4573B8B82A91A636009FAE1E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4573B8B72A91A636009FAE1E /* GoogleService-Info.plist */; };
 		4573B8BB2A91A868009FAE1E /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 4573B8BA2A91A868009FAE1E /* FirebaseAuth */; };
+		457C708E2B1685F900796A57 /* RoundRobinVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 457C708D2B1685F900796A57 /* RoundRobinVC.swift */; };
+		457C70902B16912200796A57 /* RRSelectPlayersVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 457C708F2B16912200796A57 /* RRSelectPlayersVC.swift */; };
+		457C70922B16962200796A57 /* RRCreateRosterVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 457C70912B16962200796A57 /* RRCreateRosterVC.swift */; };
+		457C70942B1699D100796A57 /* RRPlayerArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = 457C70932B1699D100796A57 /* RRPlayerArray.swift */; };
+		457C70962B18228F00796A57 /* PracticeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 457C70952B18228F00796A57 /* PracticeViewController.swift */; };
 		45A1DF4D2AA3F58D00191437 /* NewGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45A1DF4C2AA3F58D00191437 /* NewGameViewController.swift */; };
 		45B2195F2ADB9E240081AA5F /* ContactUsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45B2195E2ADB9E240081AA5F /* ContactUsViewController.swift */; };
 		45BD18212B01CA9A00EB98C6 /* PieChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45BD18202B01CA9900EB98C6 /* PieChart.swift */; };
@@ -91,6 +96,11 @@
 		455BDA292ACA3D89003B2EBF /* SinglesSearchOppVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SinglesSearchOppVC.swift; sourceTree = "<group>"; };
 		455BDA2B2ACA4098003B2EBF /* SinglesAddGameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SinglesAddGameViewController.swift; sourceTree = "<group>"; };
 		4573B8B72A91A636009FAE1E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		457C708D2B1685F900796A57 /* RoundRobinVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundRobinVC.swift; sourceTree = "<group>"; };
+		457C708F2B16912200796A57 /* RRSelectPlayersVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RRSelectPlayersVC.swift; sourceTree = "<group>"; };
+		457C70912B16962200796A57 /* RRCreateRosterVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RRCreateRosterVC.swift; sourceTree = "<group>"; };
+		457C70932B1699D100796A57 /* RRPlayerArray.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RRPlayerArray.swift; sourceTree = "<group>"; };
+		457C70952B18228F00796A57 /* PracticeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PracticeViewController.swift; sourceTree = "<group>"; };
 		45A1DF4C2AA3F58D00191437 /* NewGameViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewGameViewController.swift; sourceTree = "<group>"; };
 		45B2195E2ADB9E240081AA5F /* ContactUsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactUsViewController.swift; sourceTree = "<group>"; };
 		45BD18202B01CA9900EB98C6 /* PieChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieChart.swift; sourceTree = "<group>"; };
@@ -163,6 +173,7 @@
 				450A49792A8EC94D00DEB7CF /* Main.storyboard */,
 				45B2195E2ADB9E240081AA5F /* ContactUsViewController.swift */,
 				45ECA1D82AD4AC4D00A706C9 /* AccountSettingsViewController.swift */,
+				457C708C2B1685D600796A57 /* Round Robin */,
 				45E6DC082AFDA72700345671 /* Players */,
 				45E6DC052AFD8FF900345671 /* UserProfile */,
 				45E6DC022AF6C41700345671 /* Private_Groups */,
@@ -225,6 +236,18 @@
 				455BDA2B2ACA4098003B2EBF /* SinglesAddGameViewController.swift */,
 			);
 			path = Singles;
+			sourceTree = "<group>";
+		};
+		457C708C2B1685D600796A57 /* Round Robin */ = {
+			isa = PBXGroup;
+			children = (
+				457C708D2B1685F900796A57 /* RoundRobinVC.swift */,
+				457C70952B18228F00796A57 /* PracticeViewController.swift */,
+				457C708F2B16912200796A57 /* RRSelectPlayersVC.swift */,
+				457C70912B16962200796A57 /* RRCreateRosterVC.swift */,
+				457C70932B1699D100796A57 /* RRPlayerArray.swift */,
+			);
+			path = "Round Robin";
 			sourceTree = "<group>";
 		};
 		45B875902AA41A29008A67EF /* Playometer */ = {
@@ -436,6 +459,8 @@
 				450A49782A8EC94D00DEB7CF /* MainViewController.swift in Sources */,
 				455606E12AB8AECC00CBE801 /* AddGameViewController.swift in Sources */,
 				45ECA1D92AD4AC4D00A706C9 /* AccountSettingsViewController.swift in Sources */,
+				457C708E2B1685F900796A57 /* RoundRobinVC.swift in Sources */,
+				457C70922B16962200796A57 /* RRCreateRosterVC.swift in Sources */,
 				450A49742A8EC94D00DEB7CF /* AppDelegate.swift in Sources */,
 				455BDA2A2ACA3D89003B2EBF /* SinglesSearchOppVC.swift in Sources */,
 				45BD18232B01E83900EB98C6 /* PieChartSingles.swift in Sources */,
@@ -447,6 +472,7 @@
 				45E6DC0A2AFDA73600345671 /* PlayersSearchViewController.swift in Sources */,
 				4526236D2AC4B24A0070B637 /* OppOneViewController.swift in Sources */,
 				45540EEB2ACF83E800F2C932 /* BlockedStruct.swift in Sources */,
+				457C70962B18228F00796A57 /* PracticeViewController.swift in Sources */,
 				4526342E2A98734E0045FD6A /* HomeScreenViewController.swift in Sources */,
 				45A1DF4D2AA3F58D00191437 /* NewGameViewController.swift in Sources */,
 				45B2195F2ADB9E240081AA5F /* ContactUsViewController.swift in Sources */,
@@ -454,9 +480,11 @@
 				450A49762A8EC94D00DEB7CF /* SceneDelegate.swift in Sources */,
 				45E6DC012AE7323A00345671 /* BadgesViewController.swift in Sources */,
 				455BDA2C2ACA4098003B2EBF /* SinglesAddGameViewController.swift in Sources */,
+				457C70942B1699D100796A57 /* RRPlayerArray.swift in Sources */,
 				45E6DC102AFE06EA00345671 /* PlayersSharedVariable.swift in Sources */,
 				45271D0F2AC1241F006A3050 /* DoublesSearchVCNew.swift in Sources */,
 				45F489262A9D7A4C0043238C /* GaugeView.swift in Sources */,
+				457C70902B16912200796A57 /* RRSelectPlayersVC.swift in Sources */,
 				4526236F2AC4DECA0070B637 /* DoublesSharedVariables.swift in Sources */,
 				45E6DC0E2AFE04CA00345671 /* PlayerProfileViewController.swift in Sources */,
 			);
@@ -646,7 +674,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 10.0;
+				MARKETING_VERSION = 11.0;
 				PRODUCT_BUNDLE_IDENTIFIER = AGRESSV.AGRESSV;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -677,7 +705,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 10.0;
+				MARKETING_VERSION = 11.0;
 				PRODUCT_BUNDLE_IDENTIFIER = AGRESSV.AGRESSV;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;

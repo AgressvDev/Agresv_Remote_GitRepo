@@ -16,6 +16,20 @@ import Foundation
 
 class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UINavigationControllerDelegate {
     
+    
+    
+    var playersEmail: String = ""
+    var highestWinPercentage: Double = 0.0
+    
+    var UserHasHighestDoublesWinPercentage: Bool = false
+    var D_highestWinPercentage: Double = 0.0
+    var D_currentUserWinPercentage: Double = 0.0
+    
+    
+    var UserHasHighestSinglesWinPercentage: Bool = false
+    var S_highestWinPercentage: Double = 0.0
+    var S_currentUserWinPercentage: Double = 0.0
+    
     var UserEarnedRedFangs: Bool = false
     var HasAchievedGoldRibbon: Bool = false
     var HasAchievedBlueRibbon: Bool = false
@@ -78,6 +92,22 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
             return label
         }()
     
+    let DWP_Letter: UILabel = {
+            let label = UILabel()
+            label.textColor = .systemRed // Set your desired text color
+            label.text = "%:"
+            label.translatesAutoresizingMaskIntoConstraints = false
+            return label
+        }()
+    
+    let SWP_Letter: UILabel = {
+            let label = UILabel()
+            label.textColor = .systemRed // Set your desired text color
+            label.text = "%:"
+            label.translatesAutoresizingMaskIntoConstraints = false
+            return label
+        }()
+    
     let SW_Letter: UILabel = {
             let label = UILabel()
             label.textColor = .systemGreen // Set your desired text color
@@ -108,6 +138,13 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
             return label
         }()
     
+    var Doubles_WP_Label: UILabel = {
+        let label = UILabel()
+        label.textColor = .white // Set your desired text color
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
     let SinglesWinsLabel: UILabel = {
             let label = UILabel()
             label.textColor = .white // Set your desired text color
@@ -116,6 +153,14 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
         }()
     
     let SinglesLossesLabel: UILabel = {
+            let label = UILabel()
+            label.textColor = .white // Set your desired text color
+            label.translatesAutoresizingMaskIntoConstraints = false
+            return label
+        }()
+    
+    
+    let Singles_WP_Label: UILabel = {
             let label = UILabel()
             label.textColor = .white // Set your desired text color
             label.translatesAutoresizingMaskIntoConstraints = false
@@ -311,10 +356,68 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
         }
 
 
-        
+     
         
        
-        
+//        func getHighestWinPercentage(completion: @escaping (Double?, Error?) -> Void) {
+//            let db = Firestore.firestore()
+//
+//            guard let uid = Auth.auth().currentUser?.email else {
+//                completion(nil, NSError(domain: "Authentication", code: 401, userInfo: ["message": "User not authenticated"]))
+//                return
+//            }
+//
+//            let usersCollection = db.collection("Agressv_Users")
+//
+//           
+//            var userWinPercentage: Double = 0.0
+//
+//            usersCollection.getDocuments { (snapshot, error) in
+//                if let error = error {
+//                    completion(nil, error)
+//                    return
+//                }
+//
+//                for document in snapshot!.documents {
+//                    guard let gamesPlayed = document["Doubles_Games_Played"] as? Int,
+//                          let gamesWon = document["Doubles_Games_Wins"] as? Int,
+//                          let currentUserUID = document["uid"] as? String else {
+//                        continue // Skip this document if the required fields are missing
+//                    }
+//
+//                    let winPercentage = Double(gamesWon) / Double(gamesPlayed)
+//
+//                    if winPercentage > self.highestWinPercentage {
+//                        self.highestWinPercentage = winPercentage
+//                    }
+//
+//                    if currentUserUID == uid {
+//                        userWinPercentage = winPercentage
+//                    }
+//                }
+//
+//                completion(userWinPercentage, nil)
+//            }
+//        }
+//
+//        // Example usage:
+//        getHighestWinPercentage { (userWinPercentage, error) in
+//            if let error = error {
+//                print("Error: \(error.localizedDescription)")
+//            } else {
+//                if let userWinPercentage = userWinPercentage {
+//                    if userWinPercentage == self.highestWinPercentage {
+//                        print("User has the highest win percentage: \(userWinPercentage)")
+//                    } else {
+//                        print("User win percentage: \(userWinPercentage)")
+//                    }
+//                } else {
+//                    print("Unable to retrieve user win percentage.")
+//                }
+//            }
+//        }
+
+
         
         
         
@@ -328,6 +431,7 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
 
         func GetHomeScreenData() {
             let uid = Auth.auth().currentUser!.email
+            self.playersEmail = uid!
             let docRef = db.collection("Agressv_Users").document(uid!)
 
             docRef.getDocument { (document, error) in
@@ -387,18 +491,27 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
         print(GetHomeScreenData())
         
         
-       
+        
+
+    
+
 
         // Function to query Firestore and determine rank
         func calculateAndSetDoublesRank() {
             let db = Firestore.firestore()
             let uid = Auth.auth().currentUser!.email
             let collectionReference = db.collection("Agressv_Users")
-            
+
             collectionReference.order(by: "Doubles_Rank", descending: true).getDocuments { (querySnapshot, error) in
                 if let error = error {
                     print("Error getting documents: \(error)")
                 } else {
+
+                    // Print the entire list in descending order
+                               print("Documents in descending order by Doubles_Rank:")
+                    for document in querySnapshot!.documents {
+                        print(document.data())
+                    }
                     // Process documents and calculate rank
                     print(uid!)
                     print("THE NERD DATA FUNCTION IS RUNNING!!!!")
@@ -419,14 +532,14 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
                         // Assuming you want to find the rank for the current user
                         if document.documentID == uid {
                             // Update UI on the main thread
-                          
+
                                 self.lbl_DoublesNerdData.text = "D: \(rank)"
-                                
-                                    
-                                   
-                          
-                                
-                           
+
+
+
+
+
+
                         }
                     }
                 }
@@ -1056,6 +1169,223 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
         }
         
         
+        func getHighestWinPercentage(playersEmail: String, completion: @escaping (Bool?, Error?) -> Void) {
+            let db = Firestore.firestore()
+            let uid = Auth.auth().currentUser!.email
+            self.playersEmail = uid!
+            let usersCollection = db.collection("Agressv_Users")
+
+            usersCollection.getDocuments { (snapshot, error) in
+                if let error = error {
+                    completion(nil, error)
+                    return
+                }
+
+                
+
+                for document in snapshot!.documents {
+                    guard let gamesPlayed = document["Doubles_Games_Played"] as? Int,
+                          let gamesWon = document["Doubles_Games_Wins"] as? Int else {
+                        continue // Skip this document if the required fields are missing
+                    }
+
+                    let winPercentage = Double(gamesWon) / Double(gamesPlayed)
+
+                    if winPercentage >= self.D_highestWinPercentage {
+                        self.D_highestWinPercentage = winPercentage
+                        
+                    }
+
+                    if let userEmail = document["Email"] as? String, userEmail == playersEmail {
+                        self.D_currentUserWinPercentage = winPercentage
+                        if winPercentage.isNaN {
+                            self.Doubles_WP_Label.text = ""
+                        
+                        } else {
+                            self.Doubles_WP_Label.text = String((winPercentage * 100).rounded())
+                         
+                        }
+                    }
+                }
+                print("HIGHEST WIN PERCENTAGE!!!")
+                print("highest: " + String(self.D_highestWinPercentage))
+                print("user w p: " + String(self.D_currentUserWinPercentage))
+                
+             
+                
+                let userHasHighestWinPercentage = self.D_currentUserWinPercentage == self.D_highestWinPercentage
+                completion(userHasHighestWinPercentage, nil)
+            }
+        }
+
+       
+        getHighestWinPercentage(playersEmail: playersEmail) { (userHasHighestWinPercentage, error) in
+            if let error = error {
+                print("Error: \(error.localizedDescription)")
+            } else {
+                if let userHasHighestWinPercentage = userHasHighestWinPercentage {
+                    print("User has the highest win percentage: \(userHasHighestWinPercentage)")
+                    
+                    if self.D_currentUserWinPercentage == self.D_highestWinPercentage {
+                        
+                        
+                        NSLayoutConstraint.activate([
+                            self.DWP_Letter.leadingAnchor.constraint(equalTo: self.DL_Letter.leadingAnchor),
+                            self.DWP_Letter.topAnchor.constraint(equalTo: self.DL_Letter.bottomAnchor, constant: 20 * scalingFactor)
+                            
+                        ])
+                        
+                        // Set the text color for WP_Letter
+                        self.DWP_Letter.textColor = UIColor.systemYellow
+                        
+                        NSLayoutConstraint.activate([
+                            self.Doubles_WP_Label.leadingAnchor.constraint(equalTo: self.DoublesWinsLabel.leadingAnchor),
+                            self.Doubles_WP_Label.topAnchor.constraint(equalTo: self.DWP_Letter.topAnchor)
+                            
+                        ])
+                        
+                        // Set the text color for WP_Letter
+                        self.Doubles_WP_Label.textColor = UIColor.systemYellow
+                        
+                        
+                    }
+                    
+                    else {
+                        
+                        
+                        NSLayoutConstraint.activate([
+                            self.DWP_Letter.leadingAnchor.constraint(equalTo: self.DL_Letter.leadingAnchor),
+                            self.DWP_Letter.topAnchor.constraint(equalTo: self.DL_Letter.bottomAnchor, constant: 20 * scalingFactor)
+                            
+                        ])
+                        
+                        // Set the text color for WP_Letter
+                        self.DWP_Letter.textColor = UIColor.white
+                        
+                        NSLayoutConstraint.activate([
+                            self.Doubles_WP_Label.leadingAnchor.constraint(equalTo: self.DoublesWinsLabel.leadingAnchor),
+                            self.Doubles_WP_Label.topAnchor.constraint(equalTo: self.DWP_Letter.topAnchor)
+                            
+                        ])
+                        
+                        // Set the text color for WP_Letter
+                        self.Doubles_WP_Label.textColor = UIColor.white
+                        
+                    }
+                }
+            }
+        }
+
+      
+        
+        
+        func getHighestSinglesWinPercentage(playersEmail: String, completion: @escaping (Bool?, Error?) -> Void) {
+            let db = Firestore.firestore()
+            let uid = Auth.auth().currentUser!.email
+            self.playersEmail = uid!
+            let usersCollection = db.collection("Agressv_Users")
+
+            usersCollection.getDocuments { (snapshot, error) in
+                if let error = error {
+                    completion(nil, error)
+                    return
+                }
+
+                
+
+                for document in snapshot!.documents {
+                    guard let gamesPlayed = document["Singles_Games_Played"] as? Int,
+                          let gamesWon = document["Singles_Games_Wins"] as? Int else {
+                        continue // Skip this document if the required fields are missing
+                    }
+
+                    let winPercentage = Double(gamesWon) / Double(gamesPlayed)
+
+                    if winPercentage >= self.S_highestWinPercentage {
+                        self.S_highestWinPercentage = winPercentage
+                        
+                    }
+
+                    if let userEmail = document["Email"] as? String, userEmail == playersEmail {
+                        self.S_currentUserWinPercentage = winPercentage
+                        if winPercentage.isNaN {
+                            self.Singles_WP_Label.text = ""
+                            
+                        } else {
+                            self.Singles_WP_Label.text = String((winPercentage * 100).rounded())
+                            
+                    
+                        }
+                    }
+                }
+                print("HIGHEST SINGLES WIN PERCENTAGE!!!")
+                print("highest: " + String(self.S_highestWinPercentage))
+                print("user w p: " + String(self.S_currentUserWinPercentage))
+                
+              
+                
+                let userHasHighestWinPercentage = self.S_currentUserWinPercentage == self.S_highestWinPercentage
+                completion(userHasHighestWinPercentage, nil)
+            }
+        }
+
+       
+        getHighestSinglesWinPercentage(playersEmail: playersEmail) { (userHasHighestWinPercentage, error) in
+            if let error = error {
+                print("Error: \(error.localizedDescription)")
+            } else {
+                if let userHasHighestWinPercentage = userHasHighestWinPercentage {
+                    print("User has the highest win percentage: \(userHasHighestWinPercentage)")
+                    
+                    if self.S_currentUserWinPercentage == self.S_highestWinPercentage {
+                        
+                        
+                        NSLayoutConstraint.activate([
+                            self.SWP_Letter.leadingAnchor.constraint(equalTo: self.SL_Letter.leadingAnchor),
+                            self.SWP_Letter.topAnchor.constraint(equalTo: self.SL_Letter.bottomAnchor, constant: 20 * scalingFactor)
+                            
+                        ])
+                        
+                        // Set the text color for WP_Letter
+                        self.SWP_Letter.textColor = UIColor.systemYellow
+                        
+                        NSLayoutConstraint.activate([
+                            self.Singles_WP_Label.leadingAnchor.constraint(equalTo: self.SinglesWinsLabel.leadingAnchor),
+                            self.Singles_WP_Label.topAnchor.constraint(equalTo: self.SWP_Letter.topAnchor)
+                            
+                        ])
+                        
+                        // Set the text color for WP_Letter
+                        self.Singles_WP_Label.textColor = UIColor.systemYellow
+                        
+                        
+                    }
+                    
+                    else {
+                        
+                        
+                        NSLayoutConstraint.activate([
+                            self.SWP_Letter.leadingAnchor.constraint(equalTo: self.SL_Letter.leadingAnchor),
+                            self.SWP_Letter.topAnchor.constraint(equalTo: self.SL_Letter.bottomAnchor, constant: 20 * scalingFactor)
+                            
+                        ])
+                        
+                        // Set the text color for WP_Letter
+                        self.SWP_Letter.textColor = UIColor.white
+                        
+                        NSLayoutConstraint.activate([
+                            self.Singles_WP_Label.leadingAnchor.constraint(equalTo: self.SinglesWinsLabel.leadingAnchor),
+                            self.Singles_WP_Label.topAnchor.constraint(equalTo: self.SWP_Letter.topAnchor)
+                            
+                        ])
+                        
+                        // Set the text color for WP_Letter
+                        self.Singles_WP_Label.textColor = UIColor.white
+                        
+                    }
+                }
+            }
+        }
         
         // Add the labels to the view hierarchy
                 view.addSubview(NewDoublesRankLabel)
@@ -1070,6 +1400,10 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
                 view.addSubview(SinglesLossesLabel)
                 view.addSubview(lbl_DoublesHeader)
                 view.addSubview(lbl_SinglesHeader)
+        view.addSubview(DWP_Letter)
+        view.addSubview(Doubles_WP_Label)
+        view.addSubview(SWP_Letter)
+        view.addSubview(Singles_WP_Label)
                
         
         
@@ -1516,8 +1850,7 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
             return
         }
         
-        // Reference to the current user in the "Agressv_Users" collection
-        let userRef = db.collection("Agressv_Users").document(uid)
+       
         
         var emailCount = 0
         

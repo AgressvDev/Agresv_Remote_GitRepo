@@ -17,6 +17,15 @@ import Charts
 
 class PlayerProfileViewController: UIViewController {
 
+    var UserHasHighestDoublesWinPercentage: Bool = false
+    var D_highestWinPercentage: Double = 0.0
+    var D_currentUserWinPercentage: Double = 0.0
+    
+    
+    var UserHasHighestSinglesWinPercentage: Bool = false
+    var S_highestWinPercentage: Double = 0.0
+    var S_currentUserWinPercentage: Double = 0.0
+    
     
     var UserEarnedRedFangs: Bool = false
     
@@ -93,6 +102,22 @@ class PlayerProfileViewController: UIViewController {
             return label
         }()
     
+    let DWP_Letter: UILabel = {
+            let label = UILabel()
+            label.textColor = .systemRed // Set your desired text color
+            label.text = "%:"
+            label.translatesAutoresizingMaskIntoConstraints = false
+            return label
+        }()
+    
+    let SWP_Letter: UILabel = {
+            let label = UILabel()
+            label.textColor = .systemRed // Set your desired text color
+            label.text = "%:"
+            label.translatesAutoresizingMaskIntoConstraints = false
+            return label
+        }()
+    
     let SW_Letter: UILabel = {
             let label = UILabel()
             label.textColor = .systemGreen // Set your desired text color
@@ -123,6 +148,13 @@ class PlayerProfileViewController: UIViewController {
             return label
         }()
     
+    var Doubles_WP_Label: UILabel = {
+        let label = UILabel()
+        label.textColor = .white // Set your desired text color
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
     let SinglesWinsLabel: UILabel = {
             let label = UILabel()
             label.textColor = .white // Set your desired text color
@@ -131,6 +163,13 @@ class PlayerProfileViewController: UIViewController {
         }()
     
     let SinglesLossesLabel: UILabel = {
+            let label = UILabel()
+            label.textColor = .white // Set your desired text color
+            label.translatesAutoresizingMaskIntoConstraints = false
+            return label
+        }()
+    
+    let Singles_WP_Label: UILabel = {
             let label = UILabel()
             label.textColor = .white // Set your desired text color
             label.translatesAutoresizingMaskIntoConstraints = false
@@ -409,7 +448,217 @@ class PlayerProfileViewController: UIViewController {
         
         
        
+     
+        func getHighestWinPercentage(playersEmail: String, completion: @escaping (Bool?, Error?) -> Void) {
+            let db = Firestore.firestore()
+
+            let usersCollection = db.collection("Agressv_Users")
+
+            usersCollection.getDocuments { (snapshot, error) in
+                if let error = error {
+                    completion(nil, error)
+                    return
+                }
+
+                
+
+                for document in snapshot!.documents {
+                    guard let gamesPlayed = document["Doubles_Games_Played"] as? Int,
+                          let gamesWon = document["Doubles_Games_Wins"] as? Int else {
+                        continue // Skip this document if the required fields are missing
+                    }
+
+                    let winPercentage = Double(gamesWon) / Double(gamesPlayed)
+
+                    if winPercentage >= self.D_highestWinPercentage {
+                        self.D_highestWinPercentage = winPercentage
+                        
+                    }
+
+                    if let userEmail = document["Email"] as? String, userEmail == playersEmail {
+                        self.D_currentUserWinPercentage = winPercentage
+                        if winPercentage.isNaN {
+                            self.Doubles_WP_Label.text = ""
+                        } else {
+                            self.Doubles_WP_Label.text = String((winPercentage * 100).rounded())
+                        }
+                    }
+                }
+                print("HIGHEST WIN PERCENTAGE!!!")
+                print("highest: " + String(self.D_highestWinPercentage))
+                print("user w p: " + String(self.D_currentUserWinPercentage))
+                
+                let userHasHighestWinPercentage = self.D_currentUserWinPercentage == self.D_highestWinPercentage
+                completion(userHasHighestWinPercentage, nil)
+            }
+        }
+
+       
+        getHighestWinPercentage(playersEmail: playersEmail) { (userHasHighestWinPercentage, error) in
+            if let error = error {
+                print("Error: \(error.localizedDescription)")
+            } else {
+                if let userHasHighestWinPercentage = userHasHighestWinPercentage {
+                    print("User has the highest win percentage: \(userHasHighestWinPercentage)")
+                    
+                    if self.D_currentUserWinPercentage == self.D_highestWinPercentage {
+                        
+                        
+                        NSLayoutConstraint.activate([
+                            self.DWP_Letter.leadingAnchor.constraint(equalTo: self.DL_Letter.leadingAnchor),
+                            self.DWP_Letter.topAnchor.constraint(equalTo: self.DL_Letter.bottomAnchor, constant: 20 * scalingFactor)
+                            
+                        ])
+                        
+                        // Set the text color for WP_Letter
+                        self.DWP_Letter.textColor = UIColor.systemYellow
+                        
+                        NSLayoutConstraint.activate([
+                            self.Doubles_WP_Label.leadingAnchor.constraint(equalTo: self.DoublesWinsLabel.leadingAnchor),
+                            self.Doubles_WP_Label.topAnchor.constraint(equalTo: self.DWP_Letter.topAnchor)
+                            
+                        ])
+                        
+                        // Set the text color for WP_Letter
+                        self.Doubles_WP_Label.textColor = UIColor.systemYellow
+                        
+                        
+                    }
+                    
+                    else {
+                        
+                        
+                        NSLayoutConstraint.activate([
+                            self.DWP_Letter.leadingAnchor.constraint(equalTo: self.DL_Letter.leadingAnchor),
+                            self.DWP_Letter.topAnchor.constraint(equalTo: self.DL_Letter.bottomAnchor, constant: 20 * scalingFactor)
+                            
+                        ])
+                        
+                        // Set the text color for WP_Letter
+                        self.DWP_Letter.textColor = UIColor.white
+                        
+                        NSLayoutConstraint.activate([
+                            self.Doubles_WP_Label.leadingAnchor.constraint(equalTo: self.DoublesWinsLabel.leadingAnchor),
+                            self.Doubles_WP_Label.topAnchor.constraint(equalTo: self.DWP_Letter.topAnchor)
+                            
+                        ])
+                        
+                        // Set the text color for WP_Letter
+                        self.Doubles_WP_Label.textColor = UIColor.white
+                        
+                    }
+                }
+            }
+        }
+
+      
         
+        
+        func getHighestSinglesWinPercentage(playersEmail: String, completion: @escaping (Bool?, Error?) -> Void) {
+            let db = Firestore.firestore()
+
+            let usersCollection = db.collection("Agressv_Users")
+
+            usersCollection.getDocuments { (snapshot, error) in
+                if let error = error {
+                    completion(nil, error)
+                    return
+                }
+
+                
+
+                for document in snapshot!.documents {
+                    guard let gamesPlayed = document["Singles_Games_Played"] as? Int,
+                          let gamesWon = document["Singles_Games_Wins"] as? Int else {
+                        continue // Skip this document if the required fields are missing
+                    }
+
+                    let winPercentage = Double(gamesWon) / Double(gamesPlayed)
+
+                    if winPercentage >= self.S_highestWinPercentage {
+                        self.S_highestWinPercentage = winPercentage
+                        
+                    }
+
+                    if let userEmail = document["Email"] as? String, userEmail == playersEmail {
+                        self.S_currentUserWinPercentage = winPercentage
+                        if winPercentage.isNaN {
+                            self.Singles_WP_Label.text = ""
+                        } else {
+                            self.Singles_WP_Label.text = String((winPercentage * 100).rounded())
+                        }
+                    }
+                }
+                print("HIGHEST SINGLES WIN PERCENTAGE!!!")
+                print("highest: " + String(self.S_highestWinPercentage))
+                print("user w p: " + String(self.S_currentUserWinPercentage))
+                
+                let userHasHighestWinPercentage = self.S_currentUserWinPercentage == self.S_highestWinPercentage
+                completion(userHasHighestWinPercentage, nil)
+            }
+        }
+
+       
+        getHighestSinglesWinPercentage(playersEmail: playersEmail) { (userHasHighestWinPercentage, error) in
+            if let error = error {
+                print("Error: \(error.localizedDescription)")
+            } else {
+                if let userHasHighestWinPercentage = userHasHighestWinPercentage {
+                    print("User has the highest win percentage: \(userHasHighestWinPercentage)")
+                    
+                    if self.S_currentUserWinPercentage == self.S_highestWinPercentage {
+                        
+                        
+                        NSLayoutConstraint.activate([
+                            self.SWP_Letter.leadingAnchor.constraint(equalTo: self.SL_Letter.leadingAnchor),
+                            self.SWP_Letter.topAnchor.constraint(equalTo: self.SL_Letter.bottomAnchor, constant: 20 * scalingFactor)
+                            
+                        ])
+                        
+                        // Set the text color for WP_Letter
+                        self.SWP_Letter.textColor = UIColor.systemYellow
+                        
+                        NSLayoutConstraint.activate([
+                            self.Singles_WP_Label.leadingAnchor.constraint(equalTo: self.SinglesWinsLabel.leadingAnchor),
+                            self.Singles_WP_Label.topAnchor.constraint(equalTo: self.SWP_Letter.topAnchor)
+                            
+                        ])
+                        
+                        // Set the text color for WP_Letter
+                        self.Singles_WP_Label.textColor = UIColor.systemYellow
+                        
+                        
+                    }
+                    
+                    else {
+                        
+                        
+                        NSLayoutConstraint.activate([
+                            self.SWP_Letter.leadingAnchor.constraint(equalTo: self.SL_Letter.leadingAnchor),
+                            self.SWP_Letter.topAnchor.constraint(equalTo: self.SL_Letter.bottomAnchor, constant: 20 * scalingFactor)
+                            
+                        ])
+                        
+                        // Set the text color for WP_Letter
+                        self.SWP_Letter.textColor = UIColor.white
+                        
+                        NSLayoutConstraint.activate([
+                            self.Singles_WP_Label.leadingAnchor.constraint(equalTo: self.SinglesWinsLabel.leadingAnchor),
+                            self.Singles_WP_Label.topAnchor.constraint(equalTo: self.SWP_Letter.topAnchor)
+                            
+                        ])
+                        
+                        // Set the text color for WP_Letter
+                        self.Singles_WP_Label.textColor = UIColor.white
+                        
+                    }
+                }
+            }
+        }
+        
+       
+        
+            
         
 //        let lbl_Playmoregames = UILabel()
 //        lbl_Playmoregames.text = "Play more games. Be"
@@ -725,6 +974,11 @@ class PlayerProfileViewController: UIViewController {
         //put gold ribbon top right
         let img_RedFangs = UIImageView(image: UIImage(named: "RedFangs"))
         img_RedFangs.translatesAutoresizingMaskIntoConstraints = false
+        
+        //put gold ribbon top right
+        let img_WinPercent = UIImageView(image: UIImage(named: "WinPercentIconRedWhiteBlue"))
+        img_WinPercent.translatesAutoresizingMaskIntoConstraints = false
+        
         //RUN BADGES QUERY
                 
         func GetBadgeData() {
@@ -773,6 +1027,20 @@ class PlayerProfileViewController: UIViewController {
                         }
                    
                     
+//                    if self.UserHasHighestDoublesWinPercentage {
+//
+//                        self.view.addSubview(img_WinPercent)
+//
+//                        NSLayoutConstraint.activate([
+//                            img_WinPercent.topAnchor.constraint(equalTo: self.DL_Letter.bottomAnchor, constant: 15 * scalingFactor), // Anchor to the bottom of the view
+//                            img_WinPercent.leadingAnchor.constraint(equalTo: self.DL_Letter.leadingAnchor, constant: -25 * scalingFactor),  // Anchor to the left of the view
+//                            img_WinPercent.widthAnchor.constraint(equalToConstant: 20 * scalingFactor),
+//                            img_WinPercent.heightAnchor.constraint(equalToConstant: 20 * scalingFactor)
+//                        ])
+//
+//                    }
+                    
+                    
                     if self.HasAchievedGoldRibbon {
                         
                         
@@ -804,6 +1072,10 @@ class PlayerProfileViewController: UIViewController {
                         ])
                         
                     }
+                    
+                    
+                    
+                    
                     if self.HasAchievedBlueRibbon {
                         
                     
@@ -1128,6 +1400,7 @@ class PlayerProfileViewController: UIViewController {
                     ])
                     
                     
+                        
                     
                 }
             }
@@ -1152,6 +1425,10 @@ class PlayerProfileViewController: UIViewController {
                 view.addSubview(DL_Letter)
                 view.addSubview(SW_Letter)
                 view.addSubview(SL_Letter)
+                view.addSubview(DWP_Letter)
+                view.addSubview(Doubles_WP_Label)
+                view.addSubview(SWP_Letter)
+                view.addSubview(Singles_WP_Label)
                 view.addSubview(DoublesWinsLabel)
                 view.addSubview(DoublesLossesLabel)
                 view.addSubview(SinglesWinsLabel)
@@ -1177,7 +1454,7 @@ class PlayerProfileViewController: UIViewController {
         // Set Auto Layout constraints for PieChartView
         NSLayoutConstraint.activate([
             pieChartView.leadingAnchor.constraint(equalTo: lbl_DoublesHeader.leadingAnchor),
-            pieChartView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -130 * scalingFactor),
+            pieChartView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -80 * scalingFactor),
             pieChartView.widthAnchor.constraint(equalToConstant: 90 * scalingFactor),
             pieChartView.heightAnchor.constraint(equalToConstant: 90 * scalingFactor)
         ])
@@ -1197,10 +1474,13 @@ class PlayerProfileViewController: UIViewController {
         // Set Auto Layout constraints for PieChartView
         NSLayoutConstraint.activate([
             pieChartViewSingles.leadingAnchor.constraint(equalTo: lbl_SinglesHeader.leadingAnchor),
-            pieChartViewSingles.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -130 * scalingFactor),
+            pieChartViewSingles.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -80 * scalingFactor),
             pieChartViewSingles.widthAnchor.constraint(equalToConstant: 90 * scalingFactor),
             pieChartViewSingles.heightAnchor.constraint(equalToConstant: 90 * scalingFactor)
         ])
+        
+        
+        
         
 //        NSLayoutConstraint.activate([
 //                    // Position the "Settings" button
@@ -1501,8 +1781,7 @@ class PlayerProfileViewController: UIViewController {
         // Get the current user's UID
          let uid = playersEmail
         
-        // Reference to the current user in the "Agressv_Users" collection
-        let userRef = db.collection("Agressv_Users").document(uid)
+       
         
         var emailCount = 0
         

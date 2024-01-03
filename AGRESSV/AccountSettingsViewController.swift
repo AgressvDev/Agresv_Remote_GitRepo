@@ -188,7 +188,7 @@ class AccountSettingsViewController: UIViewController {
             // Navigate back to HomeScreenViewController
             if let viewControllers = self.navigationController?.viewControllers {
                 for viewController in viewControllers {
-                    if viewController is ViewController {
+                    if viewController is LoginViewController {
                         self.navigationController?.popToViewController(viewController, animated: true)
                         return // Exit the loop
                     }

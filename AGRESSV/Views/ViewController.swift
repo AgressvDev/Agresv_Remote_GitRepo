@@ -61,7 +61,10 @@ class ViewController: UIViewController {
         LoginFirstButton.setTitle("Login", for: .normal)
         LoginFirstButton.layer.cornerRadius = 15
         
-        }
+        
+       
+        
+        } //end of load
         
 
   
@@ -77,5 +80,5 @@ class ViewController: UIViewController {
 
     
     
-}
+} // end of class
 
