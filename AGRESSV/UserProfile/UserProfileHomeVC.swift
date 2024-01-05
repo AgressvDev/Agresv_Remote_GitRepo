@@ -359,63 +359,6 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
      
         
        
-//        func getHighestWinPercentage(completion: @escaping (Double?, Error?) -> Void) {
-//            let db = Firestore.firestore()
-//
-//            guard let uid = Auth.auth().currentUser?.email else {
-//                completion(nil, NSError(domain: "Authentication", code: 401, userInfo: ["message": "User not authenticated"]))
-//                return
-//            }
-//
-//            let usersCollection = db.collection("Agressv_Users")
-//
-//           
-//            var userWinPercentage: Double = 0.0
-//
-//            usersCollection.getDocuments { (snapshot, error) in
-//                if let error = error {
-//                    completion(nil, error)
-//                    return
-//                }
-//
-//                for document in snapshot!.documents {
-//                    guard let gamesPlayed = document["Doubles_Games_Played"] as? Int,
-//                          let gamesWon = document["Doubles_Games_Wins"] as? Int,
-//                          let currentUserUID = document["uid"] as? String else {
-//                        continue // Skip this document if the required fields are missing
-//                    }
-//
-//                    let winPercentage = Double(gamesWon) / Double(gamesPlayed)
-//
-//                    if winPercentage > self.highestWinPercentage {
-//                        self.highestWinPercentage = winPercentage
-//                    }
-//
-//                    if currentUserUID == uid {
-//                        userWinPercentage = winPercentage
-//                    }
-//                }
-//
-//                completion(userWinPercentage, nil)
-//            }
-//        }
-//
-//        // Example usage:
-//        getHighestWinPercentage { (userWinPercentage, error) in
-//            if let error = error {
-//                print("Error: \(error.localizedDescription)")
-//            } else {
-//                if let userWinPercentage = userWinPercentage {
-//                    if userWinPercentage == self.highestWinPercentage {
-//                        print("User has the highest win percentage: \(userWinPercentage)")
-//                    } else {
-//                        print("User win percentage: \(userWinPercentage)")
-//                    }
-//                } else {
-//                    print("Unable to retrieve user win percentage.")
-//                }
-//            }
-//        }
 
 
         
@@ -491,9 +434,12 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
         print(GetHomeScreenData())
         
         
-        
+     
 
-    
+
+
+
+
 
 
         // Function to query Firestore and determine rank
@@ -1409,32 +1355,7 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
         
         
         
-//        NSLayoutConstraint.activate([
-//                    // Position the "Settings" button
-//                    settingsButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -125 * scalingFactor),
-//                    settingsButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 40 * scalingFactor),
-//                    settingsButton.widthAnchor.constraint(equalToConstant: 65 * scalingFactor),
-//                    settingsButton.heightAnchor.constraint(equalToConstant: 65 * scalingFactor),
-//
-//                    // Position the "History" button
-//                    historyButton.topAnchor.constraint(equalTo: settingsButton.topAnchor),
-//                    historyButton.leadingAnchor.constraint(equalTo: settingsButton.trailingAnchor, constant: 20 * IconsPercentage),
-//                    historyButton.widthAnchor.constraint(equalToConstant: 65 * scalingFactor),
-//                    historyButton.heightAnchor.constraint(equalToConstant: 65 * scalingFactor),
-//
-//                    // Position the "Badges" button
-//                    PlayersButton.topAnchor.constraint(equalTo: settingsButton.topAnchor),
-//                    PlayersButton.trailingAnchor.constraint(equalTo: newGameButton.leadingAnchor, constant: -20 * IconsPercentage),
-//                    PlayersButton.widthAnchor.constraint(equalToConstant: 65 * scalingFactor),
-//                    PlayersButton.heightAnchor.constraint(equalToConstant: 65 * scalingFactor),
-//
-//                    // Position the "NewGame" button
-//                    newGameButton.topAnchor.constraint(equalTo: settingsButton.topAnchor),
-//                    //newGameButton.leadingAnchor.constraint(equalTo: badgesButton.trailingAnchor, constant: 20 * scalingFactor),
-//                    newGameButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -40 * scalingFactor),
-//                    newGameButton.widthAnchor.constraint(equalToConstant: 65 * scalingFactor),
-//                    newGameButton.heightAnchor.constraint(equalToConstant: 65 * scalingFactor)
-//                ])
+
         
         let buttons = [settingsButton, historyButton, PlayersButton, newGameButton]
 

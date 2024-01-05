@@ -1,17 +1,17 @@
 //
-//  CreateGroupVC.swift
+//  WinPercentagesVC.swift
 //  AGRESSV
 //
-//  Created by RyanMax OMelia on 11/4/23.
+//  Created by RyanMax OMelia on 1/5/24.
 //
 
 import UIKit
 
-class CreateGroupVC: UIViewController
-{
+class WinPercentagesVC: UIViewController {
 
-    override func viewDidLoad()
-    {
+    
+    
+    override func viewDidLoad() {
         super.viewDidLoad()
 
         
@@ -19,16 +19,12 @@ class CreateGroupVC: UIViewController
         
         
         
-        
-        
-       
     } //end of load
     
 
- 
     
     
     
     
-
+    
 } //end of class

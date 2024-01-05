@@ -380,7 +380,7 @@ class PlayerProfileViewController: UIViewController {
         
         loadProfileImage()
         
-        
+       
         
         // Calculate scaling factors based on screen width and height
         let screenWidth = view.bounds.size.width
@@ -660,55 +660,7 @@ class PlayerProfileViewController: UIViewController {
         
             
         
-//        let lbl_Playmoregames = UILabel()
-//        lbl_Playmoregames.text = "Play more games. Be"
-//        lbl_Playmoregames.textColor = .white
-//        lbl_Playmoregames.font = UIFont.systemFont(ofSize: 12)
-//        lbl_Playmoregames.numberOfLines = 0 // Allow multiple lines
-//        lbl_Playmoregames.translatesAutoresizingMaskIntoConstraints = false // Enable Auto Layout
-//
-//                // Add the label to the view hierarchy
-//                view.addSubview(lbl_Playmoregames)
-//
-//                // Define Auto Layout constraints to position and allow the label to expand its width based on content
-//                NSLayoutConstraint.activate([
-//                    lbl_Playmoregames.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 150 * scalingFactor), // Left side of the screen
-//                    lbl_Playmoregames.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -200 * scalingFactor), // A little higher than the bottom
-//                    lbl_Playmoregames.heightAnchor.constraint(equalToConstant: 30 * scalingFactor), // Adjust the reference height as needed
-//                ])
-//
-//                // Set the width constraint to be greater than or equal to a minimum width
-//                let minWidthConstraint_playmoregames = lbl_Playmoregames.widthAnchor.constraint(greaterThanOrEqualToConstant: 100 * scalingFactor) // Adjust the minimum width as needed
-//        minWidthConstraint_playmoregames.priority = .defaultLow // Lower priority so that it can expand
-//
-//                NSLayoutConstraint.activate([minWidthConstraint_playmoregames])
-//
-//
-//        lbl_Playmoregames.layer.zPosition = 3
-//
-//
-//        // Load the image
-//        if let AgressvLogo = UIImage(named: "AgressvLogoSmallWhite.png") {
-//            let myImageView = UIImageView()
-//            myImageView.contentMode = .scaleAspectFit
-//            myImageView.image = AgressvLogo
-//            myImageView.translatesAutoresizingMaskIntoConstraints = false // Enable Auto Layout
-//
-//            // Add the image view to the view hierarchy
-//            view.addSubview(myImageView)
-//
-//
-//
-//            // Define Auto Layout constraints to position and scale the image
-//            NSLayoutConstraint.activate([
-//                myImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-//                myImageView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-//                myImageView.widthAnchor.constraint(equalToConstant: 300 * scalingFactor), // Adjust the reference size as needed
-//                myImageView.heightAnchor.constraint(equalToConstant: 300 * scalingFactor), // Adjust the reference size as needed
-//            ])
-//
-//
-//        }
+
         
         
         
@@ -1893,6 +1845,8 @@ class PlayerProfileViewController: UIViewController {
     
     
     
+
+  
     
     
 } //end of class
