@@ -191,13 +191,62 @@
                     <view key="view" contentMode="scaleToFill" id="sgJ-8P-2sf">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="nQs-sR-fqf">
+                                <rect key="frame" x="0.0" y="220" width="393" height="670"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ScoreCell" id="QlQ-uq-IyC">
+                                        <rect key="frame" x="0.0" y="50" width="393" height="43.666667938232422"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="QlQ-uq-IyC" id="Ijs-UE-DWV">
+                                            <rect key="frame" x="0.0" y="0.0" width="393" height="43.666667938232422"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="0J1-KP-z4X">
+                                <rect key="frame" x="131" y="156" width="131" height="32"/>
+                                <segments>
+                                    <segment title="Doubles"/>
+                                    <segment title="Singles"/>
+                                </segments>
+                                <connections>
+                                    <action selector="segmentValueChanged:" destination="Lfy-k8-EDa" eventType="valueChanged" id="A5W-zm-MNq"/>
+                                </connections>
+                            </segmentedControl>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Scores" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6pU-lU-JbP">
+                                <rect key="frame" x="16" y="91" width="361" height="24"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                                <color key="textColor" red="0.75453044459999996" green="0.053230738499999999" blue="0.01485466564" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="nK7-Tb-jH6"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="6pU-lU-JbP" firstAttribute="centerX" secondItem="0J1-KP-z4X" secondAttribute="centerX" id="4dO-Yg-FjN"/>
+                            <constraint firstItem="6pU-lU-JbP" firstAttribute="leading" secondItem="sgJ-8P-2sf" secondAttribute="leadingMargin" id="9vj-mz-YMe"/>
+                            <constraint firstItem="nQs-sR-fqf" firstAttribute="leading" secondItem="nK7-Tb-jH6" secondAttribute="leading" id="DXg-63-Vcz"/>
+                            <constraint firstItem="nQs-sR-fqf" firstAttribute="top" secondItem="0J1-KP-z4X" secondAttribute="bottom" constant="33" id="Go6-nr-CGS"/>
+                            <constraint firstItem="0J1-KP-z4X" firstAttribute="top" secondItem="6pU-lU-JbP" secondAttribute="bottom" constant="41" id="ZsF-rY-HMw"/>
+                            <constraint firstItem="6pU-lU-JbP" firstAttribute="top" secondItem="nK7-Tb-jH6" secondAttribute="top" constant="32" id="asl-4L-yPd"/>
+                            <constraint firstItem="0J1-KP-z4X" firstAttribute="leading" secondItem="nK7-Tb-jH6" secondAttribute="leading" constant="131" id="dOZ-ld-h0I"/>
+                            <constraint firstItem="nQs-sR-fqf" firstAttribute="centerX" secondItem="0J1-KP-z4X" secondAttribute="centerX" id="ojk-Co-6js"/>
+                            <constraint firstAttribute="bottomMargin" secondItem="nQs-sR-fqf" secondAttribute="bottom" constant="-72" id="phH-0p-0lL"/>
+                            <constraint firstItem="0J1-KP-z4X" firstAttribute="centerX" secondItem="sgJ-8P-2sf" secondAttribute="centerX" id="zvn-n4-yD4"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="SegController" destination="0J1-KP-z4X" id="NaJ-Ax-It2"/>
+                        <outlet property="segController" destination="0J1-KP-z4X" id="0LH-jY-KRL"/>
+                        <outlet property="tableView" destination="nQs-sR-fqf" id="CS8-L1-Y5S"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FKb-2k-cu7" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2550" y="-2669"/>
+            <point key="canvasLocation" x="2547.3282442748091" y="-2669.0140845070423"/>
         </scene>
         <!--Win PercentagesVC-->
         <scene sceneID="N7r-Ac-Ukg">
@@ -206,13 +255,61 @@
                     <view key="view" contentMode="scaleToFill" id="Fbn-gr-tYt">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="Fyx-tC-Vvr">
+                                <rect key="frame" x="0.0" y="222" width="393" height="670"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="WinCell" id="rcW-h4-NeZ">
+                                        <rect key="frame" x="0.0" y="50" width="393" height="43.666667938232422"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="rcW-h4-NeZ" id="Dil-fV-4rh">
+                                            <rect key="frame" x="0.0" y="0.0" width="393" height="43.666667938232422"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Win Percentages" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lG0-mo-RB2">
+                                <rect key="frame" x="16" y="93" width="361" height="24"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                                <color key="textColor" red="0.75453044459999996" green="0.053230738499999999" blue="0.01485466564" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="96F-HI-6x5">
+                                <rect key="frame" x="127" y="158" width="139" height="32"/>
+                                <segments>
+                                    <segment title="Doubles"/>
+                                    <segment title="Singles"/>
+                                </segments>
+                                <connections>
+                                    <action selector="segmentValueChanged:" destination="Tgs-cR-aNk" eventType="valueChanged" id="fl9-Kk-x0h"/>
+                                    <action selector="segmentValueChanged:" destination="Lfy-k8-EDa" eventType="valueChanged" id="uQU-wo-TUQ"/>
+                                </connections>
+                            </segmentedControl>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="f2G-81-Nmm"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="Fyx-tC-Vvr" firstAttribute="leading" secondItem="f2G-81-Nmm" secondAttribute="leading" id="8wM-Rs-sqC"/>
+                            <constraint firstItem="lG0-mo-RB2" firstAttribute="centerX" secondItem="Fyx-tC-Vvr" secondAttribute="centerX" id="GQT-gd-tfg"/>
+                            <constraint firstItem="lG0-mo-RB2" firstAttribute="trailing" secondItem="Fbn-gr-tYt" secondAttribute="trailingMargin" id="HhD-5m-IV6"/>
+                            <constraint firstItem="96F-HI-6x5" firstAttribute="top" secondItem="lG0-mo-RB2" secondAttribute="bottom" constant="41" id="J9M-gb-f1L"/>
+                            <constraint firstItem="Fyx-tC-Vvr" firstAttribute="top" secondItem="96F-HI-6x5" secondAttribute="bottom" constant="33" id="aUD-gg-BSf"/>
+                            <constraint firstAttribute="bottomMargin" secondItem="Fyx-tC-Vvr" secondAttribute="bottom" constant="-74" id="fDd-Dm-Gz8"/>
+                            <constraint firstItem="lG0-mo-RB2" firstAttribute="leading" secondItem="Fbn-gr-tYt" secondAttribute="leadingMargin" id="hP8-vp-7VA"/>
+                            <constraint firstItem="96F-HI-6x5" firstAttribute="centerX" secondItem="lG0-mo-RB2" secondAttribute="centerX" id="tr2-s0-DTF"/>
+                            <constraint firstItem="lG0-mo-RB2" firstAttribute="top" secondItem="f2G-81-Nmm" secondAttribute="top" constant="34" id="yCV-Rr-adt"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="segController" destination="96F-HI-6x5" id="Fsy-fq-69w"/>
+                        <outlet property="tableView" destination="Fyx-tC-Vvr" id="oUr-jb-STM"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="CnB-Xp-Uoe" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3343" y="-2669"/>
+            <point key="canvasLocation" x="3342.7480916030531" y="-2669.0140845070423"/>
         </scene>
         <!--RankingsVC-->
         <scene sceneID="RU2-bn-6d2">

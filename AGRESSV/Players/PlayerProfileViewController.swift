@@ -1434,32 +1434,7 @@ class PlayerProfileViewController: UIViewController {
         
         
         
-//        NSLayoutConstraint.activate([
-//                    // Position the "Settings" button
-//                    settingsButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -125 * scalingFactor),
-//                    settingsButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 40 * scalingFactor),
-//                    settingsButton.widthAnchor.constraint(equalToConstant: 65 * scalingFactor),
-//                    settingsButton.heightAnchor.constraint(equalToConstant: 65 * scalingFactor),
-//
-//                    // Position the "History" button
-//                    historyButton.topAnchor.constraint(equalTo: settingsButton.topAnchor),
-//                    historyButton.leadingAnchor.constraint(equalTo: settingsButton.trailingAnchor, constant: 20 * IconsPercentage),
-//                    historyButton.widthAnchor.constraint(equalToConstant: 65 * scalingFactor),
-//                    historyButton.heightAnchor.constraint(equalToConstant: 65 * scalingFactor),
-//
-//                    // Position the "Badges" button
-//                    PlayersButton.topAnchor.constraint(equalTo: settingsButton.topAnchor),
-//                    PlayersButton.trailingAnchor.constraint(equalTo: newGameButton.leadingAnchor, constant: -20 * IconsPercentage),
-//                    PlayersButton.widthAnchor.constraint(equalToConstant: 65 * scalingFactor),
-//                    PlayersButton.heightAnchor.constraint(equalToConstant: 65 * scalingFactor),
-//
-//                    // Position the "NewGame" button
-//                    newGameButton.topAnchor.constraint(equalTo: settingsButton.topAnchor),
-//                    //newGameButton.leadingAnchor.constraint(equalTo: badgesButton.trailingAnchor, constant: 20 * scalingFactor),
-//                    newGameButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -40 * scalingFactor),
-//                    newGameButton.widthAnchor.constraint(equalToConstant: 65 * scalingFactor),
-//                    newGameButton.heightAnchor.constraint(equalToConstant: 65 * scalingFactor)
-//                ])
+
         
      
 
