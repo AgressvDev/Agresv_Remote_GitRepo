@@ -16,7 +16,16 @@ import Foundation
 
 class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UINavigationControllerDelegate {
     
+    var player: String = ""
+    var Weighted_Score: Double = 0.60
+    var Weighted_GamesPlayed: Double = 0.25
+    var Weighted_WinPercentage: Double = 0.15
     
+    var userDataDictionary: [String: [String: Double]] = [:]
+    var sortedUsernames: [String] = []
+
+    var userDataDictionarySingles: [String: [String: Double]] = [:]
+    var sortedUsernamesSingles: [String] = []
     
     var playersEmail: String = ""
     var highestWinPercentage: Double = 0.0
@@ -423,8 +432,9 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
 //
                     self.UserNameLabelMain.text = document!.data()!["Username"] as? String
 
-
-
+                    self.player = (document!.data()!["Username"] as? String)!
+                    print(fetchRankDoubles())
+                    print(fetchRankSingles())
                 }
             }
         }
@@ -442,106 +452,137 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
 
 
 
-        // Function to query Firestore and determine rank
-        func calculateAndSetDoublesRank() {
+        func fetchRankDoubles() {
             let db = Firestore.firestore()
-            let uid = Auth.auth().currentUser!.email
-            let collectionReference = db.collection("Agressv_Users")
-
-            collectionReference.order(by: "Doubles_Rank", descending: true).getDocuments { (querySnapshot, error) in
-                if let error = error {
-                    print("Error getting documents: \(error)")
-                } else {
-
-                    // Print the entire list in descending order
-                               print("Documents in descending order by Doubles_Rank:")
-                    for document in querySnapshot!.documents {
-                        print(document.data())
-                    }
-                    // Process documents and calculate rank
-                    print(uid!)
-                    print("THE NERD DATA FUNCTION IS RUNNING!!!!")
-                    var rank = 1
-
-                    for (index, document) in querySnapshot!.documents.enumerated() {
-                        let doublesRank = (document.data()["Doubles_Rank"] as? Double ?? 0.0).rounded(toPlaces: 1)
-
-                        if index > 0 {
-                            let previousDocument = querySnapshot!.documents[index - 1]
-                            let previousDoublesRank = (previousDocument.data()["Doubles_Rank"] as? Double ?? 0.0).rounded(toPlaces: 1)
-
-                            if doublesRank < previousDoublesRank {
-                                rank = index + 1
-                            }
-                        }
-
-                        // Assuming you want to find the rank for the current user
-                        if document.documentID == uid {
-                            // Update UI on the main thread
-
-                                self.lbl_DoublesNerdData.text = "D: \(rank)"
-
-
-
-
-
-
-                        }
-                    }
-                }
-            }
-        }
-        
-        // Function to query Firestore and determine rank
-        func calculateAndSetSinglesRank() {
-            let db = Firestore.firestore()
-            let uid = Auth.auth().currentUser!.email
-            let collectionReference = db.collection("Agressv_Users")
+         
             
-            collectionReference.order(by: "Singles_Rank", descending: true).getDocuments { (querySnapshot, error) in
-                if let error = error {
-                    print("Error getting documents: \(error)")
-                } else {
-                    // Process documents and calculate rank
-                    print(uid!)
-                    print("THE NERD DATA FUNCTION IS RUNNING!!!!")
-                    var rank = 1
+            self.userDataDictionary.removeAll()
 
-                    for (index, document) in querySnapshot!.documents.enumerated() {
-                        let singlesRank = (document.data()["Singles_Rank"] as? Double ?? 0.0).rounded(toPlaces: 1)
+            db.collection("Agressv_Users")
+                .order(by: "Doubles_Rank", descending: true)
+                .getDocuments { (querySnapshot, error) in
+                    if let error = error {
+                        print("Error getting documents: \(error)")
+                    } else {
+                        for document in querySnapshot!.documents {
+                            let data = document.data()
+                            let username = data["Username"] as! String
 
-                        if index > 0 {
-                            let previousDocument = querySnapshot!.documents[index - 1]
-                            let previousSinglesRank = (previousDocument.data()["Singles_Rank"] as? Double ?? 0.0).rounded(toPlaces: 1)
+                            if let score = data["Doubles_Rank"] as? Double {
+                                let roundedScore = (score * 10).rounded() / 10
+                                let weightedScore = roundedScore * self.Weighted_Score
+                                self.userDataDictionary[username, default: [:]]["weightedScore"] = (self.userDataDictionary[username]?["weightedScore"] ?? 0.0) + weightedScore
+                            }
 
-                            if singlesRank < previousSinglesRank {
-                                rank = index + 1
+                            if let games = data["Doubles_Games_Played"] as? Double {
+                                let weightedGames = games * self.Weighted_GamesPlayed
+                                self.userDataDictionary[username, default: [:]]["weightedGames"] = (self.userDataDictionary[username]?["weightedGames"] ?? 0.0) + weightedGames
+                            }
+
+                            if let gamesPlayed = data["Doubles_Games_Played"] as? Double,
+                               gamesPlayed > 0 {
+                                let gamesWon = data["Doubles_Games_Wins"] as? Double ?? 0.0
+                                let winPercentage = ((gamesWon) / gamesPlayed * 100).rounded()
+                                let weightedWinPercentage = winPercentage * self.Weighted_WinPercentage / 100
+                                self.userDataDictionary[username, default: [:]]["weightedWinPercentage"] = (self.userDataDictionary[username]?["weightedWinPercentage"] ?? 0.0) + weightedWinPercentage
                             }
                         }
 
-                        // Assuming you want to find the rank for the current user
-                     
-                        if document.documentID == uid {
-                            // Update UI on the main thread
-                          
-                                self.lbl_SinglesNerdData.text = "S: \(rank)"
-                                
-                                    
-                                   
-                          
-                                
-                           
+                        // Calculate the Sum_Of_Weights for each username
+                        for (username, values) in self.userDataDictionary {
+                            let sumOfWeights = (values["weightedScore"] ?? 0.0) + (values["weightedGames"] ?? 0.0) + (values["weightedWinPercentage"] ?? 0.0)
+                            
+                            // Round the sumOfWeights to 2 decimal places
+                            let roundedSumOfWeights = (sumOfWeights * 100).rounded() / 100
+                            
+                            self.userDataDictionary[username]?["Sum_Of_Weights"] = roundedSumOfWeights
+                        }
+
+                        // Sort the usernames based on Sum_Of_Weights in descending order
+                        self.sortedUsernames = self.userDataDictionary.keys.sorted(by: { (username1, username2) -> Bool in
+                            return (self.userDataDictionary[username1]?["Sum_Of_Weights"] ?? 0.0) > (self.userDataDictionary[username2]?["Sum_Of_Weights"] ?? 0.0)
+                        })
+
+                        // Add numerical order to each username
+                                       for (index, username) in self.sortedUsernames.enumerated() {
+                                           self.userDataDictionary[username]?["Numerical_Order"] = Double(index + 1)
+                                       }
+                        
+                        if let numericalOrder = self.userDataDictionary[self.player]?["Numerical_Order"] {
+                            // Convert numericalOrder to Int
+                            let numericalOrderInt = Int(numericalOrder)
+                            self.lbl_DoublesNerdData.text = "D: \(numericalOrderInt)"
                         }
                     }
                 }
-            }
         }
 
-        // Call this function when you want to calculate and set the rank
-      
-            print(calculateAndSetDoublesRank())
-        print(calculateAndSetSinglesRank())
+        func fetchRankSingles() {
+            let db = Firestore.firestore()
+           
+            
+            self.userDataDictionarySingles.removeAll()
+
+            db.collection("Agressv_Users")
+                .order(by: "Singles_Rank", descending: true)
+                .getDocuments { (querySnapshot, error) in
+                    if let error = error {
+                        print("Error getting documents: \(error)")
+                    } else {
+                        for document in querySnapshot!.documents {
+                            let data = document.data()
+                            let username = data["Username"] as! String
+
+                            if let score = data["Singles_Rank"] as? Double {
+                                let roundedScore = (score * 10).rounded() / 10
+                                let weightedScore = roundedScore * self.Weighted_Score
+                                self.userDataDictionarySingles[username, default: [:]]["weightedScore"] = (self.userDataDictionarySingles[username]?["weightedScore"] ?? 0.0) + weightedScore
+                            }
+
+                            if let games = data["Singles_Games_Played"] as? Double {
+                                let weightedGames = games * self.Weighted_GamesPlayed
+                                self.userDataDictionarySingles[username, default: [:]]["weightedGames"] = (self.userDataDictionarySingles[username]?["weightedGames"] ?? 0.0) + weightedGames
+                            }
+
+                            if let gamesPlayed = data["Singles_Games_Played"] as? Double,
+                               gamesPlayed > 0 {
+                                let gamesWon = data["Singles_Games_Wins"] as? Double ?? 0.0
+                                let winPercentage = ((gamesWon) / gamesPlayed * 100).rounded()
+                                let weightedWinPercentage = winPercentage * self.Weighted_WinPercentage / 100
+                                self.userDataDictionarySingles[username, default: [:]]["weightedWinPercentage"] = (self.userDataDictionarySingles[username]?["weightedWinPercentage"] ?? 0.0) + weightedWinPercentage
+                            }
+                        }
+
+                        // Calculate the Sum_Of_Weights for each username
+                        for (username, values) in self.userDataDictionarySingles {
+                            let sumOfWeights = (values["weightedScore"] ?? 0.0) + (values["weightedGames"] ?? 0.0) + (values["weightedWinPercentage"] ?? 0.0)
+                            
+                            // Round the sumOfWeights to 2 decimal places
+                            let roundedSumOfWeights = (sumOfWeights * 100).rounded() / 100
+                            
+                            self.userDataDictionarySingles[username]?["Sum_Of_Weights"] = roundedSumOfWeights
+                        }
+
+                        // Sort the usernames based on Sum_Of_Weights in descending order
+                        self.sortedUsernamesSingles = self.userDataDictionarySingles.keys.sorted(by: { (username1, username2) -> Bool in
+                            return (self.userDataDictionarySingles[username1]?["Sum_Of_Weights"] ?? 0.0) > (self.userDataDictionarySingles[username2]?["Sum_Of_Weights"] ?? 0.0)
+                        })
+
+                        // Add numerical order to each username
+                                       for (index, username) in self.sortedUsernamesSingles.enumerated() {
+                                           self.userDataDictionarySingles[username]?["Numerical_Order"] = Double(index + 1)
+                                       }
+                        
+                        if let numericalOrder = self.userDataDictionarySingles[self.player]?["Numerical_Order"] {
+                            // Convert numericalOrder to Int
+                            let numericalOrderInt = Int(numericalOrder)
+                            self.lbl_SinglesNerdData.text = "D: \(numericalOrderInt)"
+                        }
+                    }
+                }
+        }
         
+       
 
         // Create the label
         let lbl_RanksTop = UILabel()
