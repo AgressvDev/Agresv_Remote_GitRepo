@@ -319,9 +319,63 @@
                     <view key="view" contentMode="scaleToFill" id="WmH-S3-cj0">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="Ozi-Rt-dlw">
+                                <rect key="frame" x="0.0" y="221" width="393" height="670"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="RankCell" id="7cJ-la-rPR">
+                                        <rect key="frame" x="0.0" y="50" width="393" height="43.666667938232422"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="7cJ-la-rPR" id="Wbh-Sf-7fe">
+                                            <rect key="frame" x="0.0" y="0.0" width="393" height="43.666667938232422"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="kQD-AN-r8z" id="VYW-gV-xlZ"/>
+                                    <outlet property="delegate" destination="kQD-AN-r8z" id="IC5-02-NaM"/>
+                                </connections>
+                            </tableView>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="w9l-nG-2wc">
+                                <rect key="frame" x="97" y="157" width="198" height="32"/>
+                                <segments>
+                                    <segment title="Doubles"/>
+                                    <segment title="Singles"/>
+                                </segments>
+                                <connections>
+                                    <action selector="segmentValueChanged:" destination="Lfy-k8-EDa" eventType="valueChanged" id="MuF-uo-qn2"/>
+                                    <action selector="segmentValueChanged:" destination="Tgs-cR-aNk" eventType="valueChanged" id="Uq3-V7-Ksm"/>
+                                    <action selector="segmentValueChanged:" destination="kQD-AN-r8z" eventType="valueChanged" id="usl-7p-qQU"/>
+                                </connections>
+                            </segmentedControl>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Rankings" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="53X-fx-aG0">
+                                <rect key="frame" x="16" y="92" width="361" height="24"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                                <color key="textColor" red="0.75453044459999996" green="0.053230738499999999" blue="0.01485466564" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="xbb-R3-mHO"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="w9l-nG-2wc" firstAttribute="leading" secondItem="xbb-R3-mHO" secondAttribute="leading" constant="97" id="81R-TE-LX0"/>
+                            <constraint firstAttribute="bottomMargin" secondItem="Ozi-Rt-dlw" secondAttribute="bottom" constant="-73" id="GfZ-j4-kmM"/>
+                            <constraint firstItem="Ozi-Rt-dlw" firstAttribute="centerX" secondItem="53X-fx-aG0" secondAttribute="centerX" id="JZC-C0-e1v"/>
+                            <constraint firstItem="53X-fx-aG0" firstAttribute="trailing" secondItem="WmH-S3-cj0" secondAttribute="trailingMargin" id="RQO-FT-ZOg"/>
+                            <constraint firstItem="Ozi-Rt-dlw" firstAttribute="centerX" secondItem="w9l-nG-2wc" secondAttribute="centerX" id="Sks-1L-Cvz"/>
+                            <constraint firstItem="Ozi-Rt-dlw" firstAttribute="leading" secondItem="xbb-R3-mHO" secondAttribute="leading" id="h3a-Sf-thc"/>
+                            <constraint firstItem="53X-fx-aG0" firstAttribute="top" secondItem="xbb-R3-mHO" secondAttribute="top" constant="33" id="im2-VU-jQr"/>
+                            <constraint firstItem="Ozi-Rt-dlw" firstAttribute="top" secondItem="w9l-nG-2wc" secondAttribute="bottom" constant="33" id="m0g-gn-lmp"/>
+                            <constraint firstItem="w9l-nG-2wc" firstAttribute="top" secondItem="53X-fx-aG0" secondAttribute="bottom" constant="41" id="sfe-RJ-Mqp"/>
+                            <constraint firstItem="53X-fx-aG0" firstAttribute="leading" secondItem="WmH-S3-cj0" secondAttribute="leadingMargin" id="trj-VU-UuV"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="segController" destination="w9l-nG-2wc" id="7mX-W1-Vwj"/>
+                        <outlet property="tableView" destination="Ozi-Rt-dlw" id="iDp-GO-rAE"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="MxB-4a-rlW" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
