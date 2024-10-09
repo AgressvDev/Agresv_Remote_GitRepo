@@ -20,8 +20,33 @@ class NewGameViewController: UIViewController {
         let heightScalingFactor = screenHeight / 932.0 // Use a reference height, e.g., iPhone 6/6s/7/8 height
         let scalingFactor = min(widthScalingFactor, heightScalingFactor)
         
-        // Set the background color of the screen
-        view.backgroundColor = UIColor(red: 0/255, green: 0/255, blue: 30/255, alpha: 1.0)
+        
+      
+        
+        //BACKGROUND
+        // Create UIImageView for the background image
+        let backgroundImage = UIImageView()
+        
+        // Set the image to "AppBackgroundOne.png" from your asset catalog
+        backgroundImage.image = UIImage(named: "BackgroundCoolGreen")
+        
+        // Make sure the image doesn't stretch or distort
+        backgroundImage.contentMode = .scaleAspectFill
+        
+        // Add the UIImageView as a subview to the view
+        view.addSubview(backgroundImage)
+        view.sendSubviewToBack(backgroundImage)
+        
+        // Disable autoresizing mask constraints for the UIImageView
+        backgroundImage.translatesAutoresizingMaskIntoConstraints = false
+        
+        // Set constraints to cover the full screen using the scaling factor
+        NSLayoutConstraint.activate([
+            backgroundImage.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 0 * scalingFactor), // Left side of the screen
+            backgroundImage.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: 0 * scalingFactor), // A little higher than the bottom
+            backgroundImage.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 0 * scalingFactor),
+            backgroundImage.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 0 * scalingFactor)
+        ])
         
         // Create a button "Doubles"
         let btnDoubles = createButton(title: "DOUBLES", action: #selector(btnDoublesTapped), scalingFactor: scalingFactor)
@@ -60,10 +85,10 @@ class NewGameViewController: UIViewController {
         
         // Button action for "Doubles"
         @objc func btnDoublesTapped() {
-            // Create an instance of DoublesSearchVCNew
+             //Create an instance of DoublesSearchVCNew
             let doublesSearchVC = storyboard?.instantiateViewController(withIdentifier: "DoublesSearchVCNewID") as! DoublesSearchVCNew
             
-            // Push to the DoublesSearchVCNew
+             //Push to the DoublesSearchVCNew
             navigationController?.pushViewController(doublesSearchVC, animated: true)
         }
         
@@ -91,7 +116,7 @@ class NewGameViewController: UIViewController {
             button.setTitle(title, for: .normal)
             button.setTitleColor(.black, for: .normal)
             button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20 * scalingFactor)
-            button.backgroundColor = UIColor(red: 173/255, green: 216/255, blue: 230/255, alpha: 1.0)
+            button.backgroundColor = UIColor(red: 240/255, green: 240/255, blue: 240/255, alpha: 1.0) //soft white
             button.layer.cornerRadius = 10
             button.addTarget(self, action: action, for: .touchUpInside)
             return button

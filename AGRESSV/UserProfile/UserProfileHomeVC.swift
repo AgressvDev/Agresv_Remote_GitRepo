@@ -18,8 +18,8 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
     
     var player: String = ""
     var Weighted_Score: Double = 0.60
-    var Weighted_GamesPlayed: Double = 0.25
-    var Weighted_WinPercentage: Double = 0.15
+    var Weighted_GamesPlayed: Double = 0.15
+    var Weighted_WinPercentage: Double = 0.25
     
     var userDataDictionary: [String: [String: Double]] = [:]
     var sortedUsernames: [String] = []
@@ -66,7 +66,7 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
             let label = UILabel()
             label.textAlignment = .center
             label.backgroundColor = UIColor.lightGray
-            label.textColor = .black // Set your desired text color
+            label.textColor = .white // Set your desired text color
             label.layer.borderColor = UIColor.white.cgColor
             label.layer.borderWidth = 2.0 // Set your desired border width
             label.translatesAutoresizingMaskIntoConstraints = false
@@ -77,7 +77,7 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
             let label = UILabel()
             label.textAlignment = .center
             label.backgroundColor = UIColor.lightGray
-            label.textColor = .black // Set your desired text color
+            label.textColor = .white // Set your desired text color
             label.layer.borderColor = UIColor.white.cgColor
             label.layer.borderWidth = 2.0 // Set your desired border width
             label.translatesAutoresizingMaskIntoConstraints = false
@@ -103,7 +103,7 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
     
     let DWP_Letter: UILabel = {
             let label = UILabel()
-            label.textColor = .systemRed // Set your desired text color
+            label.textColor = .white // Set your desired text color
             label.text = "%:"
             label.translatesAutoresizingMaskIntoConstraints = false
             return label
@@ -111,7 +111,7 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
     
     let SWP_Letter: UILabel = {
             let label = UILabel()
-            label.textColor = .systemRed // Set your desired text color
+            label.textColor = .white // Set your desired text color
             label.text = "%:"
             label.translatesAutoresizingMaskIntoConstraints = false
             return label
@@ -212,7 +212,7 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
     let lbl_DoublesNerdData: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
-        label.textColor = .white
+        label.textColor = .black
         label.layer.masksToBounds = true
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -221,7 +221,7 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
     let lbl_SinglesNerdData: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
-        label.textColor = .white
+        label.textColor = .black
         label.layer.masksToBounds = true
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -265,6 +265,8 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
     
     
     
+    
+  
    
     
     
@@ -272,9 +274,11 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
     override func viewDidLoad() {
         super.viewDidLoad()
         
+    
+        
         view.addSubview(profileImageView)
        
-        
+        checkUserVerification()
         showLoadingView()
         
         // Load the user's profile image from Firestore
@@ -295,7 +299,7 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
         let backgroundImage = UIImageView()
         
         // Set the image to "AppBackgroundOne.png" from your asset catalog
-        backgroundImage.image = UIImage(named: "NewProfileBackground")
+        backgroundImage.image = UIImage(named: "BackgroundCoolGreen")
         
         // Make sure the image doesn't stretch or distort
         backgroundImage.contentMode = .scaleAspectFill
@@ -364,8 +368,8 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
             print("Error: Custom font not available")
         }
 
-
-     
+        
+        
         
        
 
@@ -384,28 +388,31 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
         func GetHomeScreenData() {
             let uid = Auth.auth().currentUser!.email
             self.playersEmail = uid!
+            
             let docRef = db.collection("Agressv_Users").document(uid!)
 
             docRef.getDocument { (document, error) in
                 if let err = error {
                     print("Error getting documents: \(err)")
                 } else {
+                    
+                    
                     print("\(document!.documentID) => \(String(describing: document!.data()))")
 
                     //Doubles Rank number to string conversion
                     let Doubles_Rank = document!.data()!["Doubles_Rank"]
                     let Doubles_Rank_As_String = String(describing: Doubles_Rank!)
                     let Int_Doubles_Rank = Double(Doubles_Rank_As_String)
-                    self.NewDoublesRankLabel.text = String(format: "%.1f", Int_Doubles_Rank!)
-                    let rounded_int_doubles_rank = round(Int_Doubles_Rank! * 10) / 10.0
+                    self.NewDoublesRankLabel.text = String(format: "%.2f", Int_Doubles_Rank!)
+                    let rounded_int_doubles_rank = round(Int_Doubles_Rank! * 100) / 100.0
                     self.Player_DoublesRank = rounded_int_doubles_rank
 
                     //Singles Rank number to string conversion
                     let Singles_Rank = document!.data()!["Singles_Rank"]
                     let Singles_Rank_As_String = String(describing: Singles_Rank!)
                     let Int_Singles_Rank = Double(Singles_Rank_As_String)
-                    self.NewSinglesRankLabel.text = String(format: "%.1f", Int_Singles_Rank!)
-                    let rounded_int_singles_rank = round(Int_Singles_Rank! * 10) / 10.0
+                    self.NewSinglesRankLabel.text = String(format: "%.2f", Int_Singles_Rank!)
+                    let rounded_int_singles_rank = round(Int_Singles_Rank! * 100) / 100.0
                     self.Player_SinglesRank = rounded_int_singles_rank
                     
                     //Doubles Wins number to string conversion
@@ -469,7 +476,7 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
                             let username = data["Username"] as! String
 
                             if let score = data["Doubles_Rank"] as? Double {
-                                let roundedScore = (score * 10).rounded() / 10
+                                let roundedScore = (score * 100).rounded() / 100
                                 let weightedScore = roundedScore * self.Weighted_Score
                                 self.userDataDictionary[username, default: [:]]["weightedScore"] = (self.userDataDictionary[username]?["weightedScore"] ?? 0.0) + weightedScore
                             }
@@ -534,7 +541,7 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
                             let username = data["Username"] as! String
 
                             if let score = data["Singles_Rank"] as? Double {
-                                let roundedScore = (score * 10).rounded() / 10
+                                let roundedScore = (score * 100).rounded() / 100
                                 let weightedScore = roundedScore * self.Weighted_Score
                                 self.userDataDictionarySingles[username, default: [:]]["weightedScore"] = (self.userDataDictionarySingles[username]?["weightedScore"] ?? 0.0) + weightedScore
                             }
@@ -576,7 +583,7 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
                         if let numericalOrder = self.userDataDictionarySingles[self.player]?["Numerical_Order"] {
                             // Convert numericalOrder to Int
                             let numericalOrderInt = Int(numericalOrder)
-                            self.lbl_SinglesNerdData.text = "D: \(numericalOrderInt)"
+                            self.lbl_SinglesNerdData.text = "S: \(numericalOrderInt)"
                         }
                     }
                 }
@@ -587,7 +594,7 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
         // Create the label
         let lbl_RanksTop = UILabel()
         lbl_RanksTop.text = "Current Rank"
-        lbl_RanksTop.textColor = .lightGray
+        lbl_RanksTop.textColor = .black
         lbl_RanksTop.font = UIFont.systemFont(ofSize: 15)
         lbl_RanksTop.translatesAutoresizingMaskIntoConstraints = false // Enable Auto Layout
         lbl_RanksTop.numberOfLines = 0 // Allow multiple lines
@@ -737,7 +744,7 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
                  
                         self.lbl_goldribboncount.font = UIFont.systemFont(ofSize: adjustedFontSize)
                         
-                        self.lbl_goldribboncount.textColor = UIColor.white
+                        self.lbl_goldribboncount.textColor = UIColor.black
                         self.lbl_goldribboncount.translatesAutoresizingMaskIntoConstraints = false
                         print(self.lbl_goldribboncount)
                         self.view.addSubview(self.lbl_goldribboncount)
@@ -769,7 +776,7 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
                  
                         self.lbl_bluebadgecount.font = UIFont.systemFont(ofSize: adjustedFontSize)
                         
-                        self.lbl_bluebadgecount.textColor = UIColor.white
+                        self.lbl_bluebadgecount.textColor = UIColor.black
                         self.lbl_bluebadgecount.translatesAutoresizingMaskIntoConstraints = false
                         print(self.lbl_bluebadgecount)
                         self.view.addSubview(self.lbl_bluebadgecount)
@@ -800,7 +807,7 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
                  
                         self.lbl_redfangscount.font = UIFont.systemFont(ofSize: adjustedFontSize)
                         
-                        self.lbl_redfangscount.textColor = UIColor.white
+                        self.lbl_redfangscount.textColor = UIColor.black
                         self.lbl_redfangscount.translatesAutoresizingMaskIntoConstraints = false
                         print(self.lbl_redfangscount)
                         self.view.addSubview(self.lbl_redfangscount)
@@ -938,7 +945,7 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
                     
                     // Create the label
                     let lbl_Games7Days = UILabel()
-                    lbl_Games7Days.text = "Games played in rolling 7 days:"
+                    lbl_Games7Days.text = "Games played in last 7 days:"
                     lbl_Games7Days.textColor = .lightGray
                     lbl_Games7Days.font = UIFont.systemFont(ofSize: 17)
                     lbl_Games7Days.translatesAutoresizingMaskIntoConstraints = false // Enable Auto Layout
@@ -1133,11 +1140,10 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
                //newGameButton.layer.borderWidth = 1
                //newGameButton.layer.borderColor = UIColor.white.cgColor
 
-               // Set the background color to teal blue
-               settingsButton.backgroundColor = UIColor(red: 173/255, green: 216/255, blue: 230/255, alpha: 1.0)//UIColor(red: 0, green: 142/255, blue: 184/255, alpha: 1) // Teal blue
-               historyButton.backgroundColor = UIColor(red: 173/255, green: 216/255, blue: 230/255, alpha: 1.0)//UIColor(red: 0, green: 142/255, blue: 184/255, alpha: 1) // Teal blue
-        PlayersButton.backgroundColor = UIColor(red: 173/255, green: 216/255, blue: 230/255, alpha: 1.0)//UIColor(red: 0, green: 142/255, blue: 184/255, alpha: 1) // Teal blue
-               newGameButton.backgroundColor = UIColor(red: 173/255, green: 216/255, blue: 230/255, alpha: 1.0)//UIColor(red: 0, green: 142/255, blue: 184/255, alpha: 1) // Teal blue
+        settingsButton.backgroundColor = UIColor(red: 12/255, green: 89.3/255, blue: 78.9/255, alpha: 1.0)
+        historyButton.backgroundColor = UIColor(red: 12/255, green: 89.3/255, blue: 78.9/255, alpha: 1.0)
+        PlayersButton.backgroundColor = UIColor(red: 12/255, green: 89.3/255, blue: 78.9/255, alpha: 1.0)
+        newGameButton.backgroundColor = UIColor(red: 12/255, green: 89.3/255, blue: 78.9/255, alpha: 1.0)
            
         // Adjust the image size within the buttons
                 settingsButton.imageView?.contentMode = .scaleAspectFit
@@ -1223,7 +1229,7 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
                         ])
                         
                         // Set the text color for WP_Letter
-                        self.DWP_Letter.textColor = UIColor.systemYellow
+                       // self.DWP_Letter.textColor = UIColor.systemYellow
                         
                         NSLayoutConstraint.activate([
                             self.Doubles_WP_Label.leadingAnchor.constraint(equalTo: self.DoublesWinsLabel.leadingAnchor),
@@ -1232,7 +1238,7 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
                         ])
                         
                         // Set the text color for WP_Letter
-                        self.Doubles_WP_Label.textColor = UIColor.systemYellow
+                        //self.Doubles_WP_Label.textColor = UIColor.systemYellow
                         
                         
                     }
@@ -1334,7 +1340,7 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
                         ])
                         
                         // Set the text color for WP_Letter
-                        self.SWP_Letter.textColor = UIColor.systemYellow
+                        //self.SWP_Letter.textColor = UIColor.systemYellow
                         
                         NSLayoutConstraint.activate([
                             self.Singles_WP_Label.leadingAnchor.constraint(equalTo: self.SinglesWinsLabel.leadingAnchor),
@@ -1343,7 +1349,7 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
                         ])
                         
                         // Set the text color for WP_Letter
-                        self.Singles_WP_Label.textColor = UIColor.systemYellow
+                        //self.Singles_WP_Label.textColor = UIColor.systemYellow
                         
                         
                     }
@@ -1530,24 +1536,24 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
         ])
 //
 
-        // Create a UIColor with the desired light blueish gray color
-        let lightBlueishGrayColor = UIColor(red: 173/255, green: 216/255, blue: 230/255, alpha: 1.0)
-        lbl_DoublesHeader.textColor = lightBlueishGrayColor
-        lbl_SinglesHeader.textColor = lightBlueishGrayColor
+        
+        lbl_DoublesHeader.textColor = UIColor.white
+        lbl_SinglesHeader.textColor = UIColor.white
 
-        DL_Letter.textColor = lightBlueishGrayColor
-        SL_Letter.textColor = lightBlueishGrayColor
-        UserNameLabelMain.textColor = lightBlueishGrayColor
+        DL_Letter.textColor = UIColor.systemRed
+        SL_Letter.textColor = UIColor.systemRed
+        UserNameLabelMain.textColor = UIColor.black
         
         //Font aspects for Doubles Rank
         let DoublesRankFont = UIFont(name: "Impact", size: 30)
+        
         let DoublesRankLabelC = NewDoublesRankLabel
 
         //DoublesRankLabel!.frame.origin = CGPoint(x: 65, y: 340)
        DoublesRankLabelC.textAlignment = .center
         DoublesRankLabelC.font = DoublesRankFont
         DoublesRankLabelC.adjustsFontSizeToFitWidth = true
-        DoublesRankLabelC.backgroundColor = UIColor.lightGray
+        DoublesRankLabelC.backgroundColor = UIColor(red: 12/255, green: 89.3/255, blue: 78.9/255, alpha: 1.0)
         //DoublesRankLabelC.layer.borderColor = UIColor.red.cgColor
         //DoublesRankLabelC.layer.borderWidth = 2.0
         DoublesRankLabelC.layer.cornerRadius = 5
@@ -1561,7 +1567,7 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
         SinglesRankLabel.textAlignment = .center
         SinglesRankLabel.font = SinglesRankFont
         SinglesRankLabel.adjustsFontSizeToFitWidth = true
-        SinglesRankLabel.backgroundColor = UIColor.lightGray
+        SinglesRankLabel.backgroundColor = UIColor(red: 12/255, green: 89.3/255, blue: 78.9/255, alpha: 1.0)
         //SinglesRankLabel.layer.borderColor = UIColor.red.cgColor
         //SinglesRankLabel.layer.borderWidth = 2.0
         SinglesRankLabel.layer.cornerRadius = 5
@@ -1614,8 +1620,8 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
                                             
                                             //Adornment for blue ribbon
 
-                                            self.NewDoublesRankLabel.backgroundColor = UIColor.mustardYellow()
-                                            self.lbl_CurrentHighestScore.text = "Highest Score!"
+                                           // self.NewDoublesRankLabel.backgroundColor = UIColor.mustardYellow()
+                                            self.lbl_CurrentHighestScore.text = "Pro Level"
                                             self.lbl_CurrentHighestScore.textColor = UIColor.mustardYellow()
                                             
                                             self.lbl_CurrentHighestScore.translatesAutoresizingMaskIntoConstraints = false // Enable Auto Layout
@@ -1633,7 +1639,7 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
                                             
                                             // Define Auto Layout constraints to position and allow the label to expand its width based on content
                                                     NSLayoutConstraint.activate([
-                                                        self.lbl_CurrentHighestScore.leadingAnchor.constraint(equalTo: self.NewDoublesRankLabel.leadingAnchor),
+                                                        self.lbl_CurrentHighestScore.leadingAnchor.constraint(equalTo: self.NewDoublesRankLabel.leadingAnchor, constant: 15 * scalingFactor),
                                                         self.lbl_CurrentHighestScore.topAnchor.constraint(equalTo: self.NewDoublesRankLabel.bottomAnchor, constant: 3 * scalingFactor),
                                                         self.lbl_CurrentHighestScore.heightAnchor.constraint(equalToConstant: 20 * scalingFactor),
                                                         self.lbl_CurrentHighestScore.widthAnchor.constraint(equalToConstant: 200 * scalingFactor)// Adjust the reference height as needed
@@ -1660,8 +1666,8 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
                                             
                                             //Adornment for blue ribbon
 
-                                            self.NewSinglesRankLabel.backgroundColor = UIColor.mustardYellow()
-                                            self.lbl_CurrentHighestScoreSingles.text = "Highest Score!"
+                                            //self.NewSinglesRankLabel.backgroundColor = UIColor.mustardYellow()
+                                            self.lbl_CurrentHighestScoreSingles.text = "Pro Level"
                                             self.lbl_CurrentHighestScoreSingles.textColor = UIColor.mustardYellow()
                                             
                                             self.lbl_CurrentHighestScoreSingles.translatesAutoresizingMaskIntoConstraints = false // Enable Auto Layout
@@ -1679,7 +1685,7 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
                                             
                                             // Define Auto Layout constraints to position and allow the label to expand its width based on content
                                                     NSLayoutConstraint.activate([
-                                                        self.lbl_CurrentHighestScoreSingles.leadingAnchor.constraint(equalTo: self.NewSinglesRankLabel.leadingAnchor),
+                                                        self.lbl_CurrentHighestScoreSingles.leadingAnchor.constraint(equalTo: self.NewSinglesRankLabel.leadingAnchor, constant: 15 * scalingFactor),
                                                         self.lbl_CurrentHighestScoreSingles.topAnchor.constraint(equalTo: self.NewSinglesRankLabel.bottomAnchor, constant: 3 * scalingFactor),
                                                         self.lbl_CurrentHighestScoreSingles.heightAnchor.constraint(equalToConstant: 20 * scalingFactor),
                                                         self.lbl_CurrentHighestScoreSingles.widthAnchor.constraint(equalToConstant: 200 * scalingFactor)// Adjust the reference height as needed
@@ -1799,7 +1805,42 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
     
     
     
-    
+    func checkUserVerification() {
+           let db = Firestore.firestore()
+        let uid = Auth.auth().currentUser!.email
+        self.playersEmail = uid!
+
+           db.collection("Agressv_Users").document(uid!).getDocument { (document, error) in
+               if let document = document, document.exists {
+                   let data = document.data()
+                   if let verifiedPro = data?["Verified_Pro"] as? Bool, verifiedPro {
+                       // User is verified, add the verified image
+                       self.addVerifiedImage()
+                       print("RECOGNIZED BLUE CHECK MARK - VERIFIED PRO!!!!")
+                   }
+               } else {
+                   print("Document does not exist or error: \(String(describing: error))")
+               }
+           }
+       }
+
+    func addVerifiedImage() {
+        // Set up the verified image view
+        let img_Verified_Pro = UIImageView(image: UIImage(named: "verified_pro"))
+        img_Verified_Pro.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(img_Verified_Pro)
+
+        // Add constraints to position the verified image next to UserNameLabelMain
+        NSLayoutConstraint.activate([
+            img_Verified_Pro.leadingAnchor.constraint(equalTo: UserNameLabelMain.trailingAnchor, constant: 5),
+            img_Verified_Pro.centerYAnchor.constraint(equalTo: UserNameLabelMain.centerYAnchor), // Vertically align with the label
+            img_Verified_Pro.widthAnchor.constraint(equalToConstant: 30), // Set desired width
+            img_Verified_Pro.heightAnchor.constraint(equalToConstant: 30) // Set desired height
+        ])
+        
+        // Bring the verified image view to the front
+        view.bringSubviewToFront(img_Verified_Pro)
+    }
    
         
     func findUserGames(completion: @escaping () -> Void) {
@@ -1936,6 +1977,7 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
     }
     
     func uploadImageToFirestore(image: UIImage) {
+        
         // Convert the UIImage to Data
         if let imageData = image.jpegData(compressionQuality: 0.5) {
             // Check if there's an existing document reference
@@ -1977,6 +2019,8 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
     }
 
     
+    
+
     
     func loadProfileImage() {
         // Load the user's profile image from Firestore
@@ -2109,3 +2153,4 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
     
     
 } // end of class
+

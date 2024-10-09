@@ -16,8 +16,8 @@ class RankingsVC: UIViewController {
     @IBOutlet weak var tableView: UITableView!
 
     var Weighted_Score: Double = 0.60
-    var Weighted_GamesPlayed: Double = 0.25
-    var Weighted_WinPercentage: Double = 0.15
+    var Weighted_GamesPlayed: Double = 0.15
+    var Weighted_WinPercentage: Double = 0.25
 
     //var UserDataDictionary: [String: Any] = [:]
     var userDataDictionary: [String: [String: Double]] = [:]

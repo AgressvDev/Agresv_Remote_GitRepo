@@ -19,8 +19,8 @@ class PlayerProfileViewController: UIViewController {
     
     
     var Weighted_Score: Double = 0.60
-    var Weighted_GamesPlayed: Double = 0.25
-    var Weighted_WinPercentage: Double = 0.15
+    var Weighted_GamesPlayed: Double = 0.15
+    var Weighted_WinPercentage: Double = 0.25
     
     var userDataDictionary: [String: [String: Double]] = [:]
     var sortedUsernames: [String] = []
@@ -78,7 +78,7 @@ class PlayerProfileViewController: UIViewController {
             let label = UILabel()
             label.textAlignment = .center
             label.backgroundColor = UIColor.lightGray
-            label.textColor = .black // Set your desired text color
+            label.textColor = .white // Set your desired text color
             label.layer.borderColor = UIColor.white.cgColor
             label.layer.borderWidth = 2.0 // Set your desired border width
             label.translatesAutoresizingMaskIntoConstraints = false
@@ -89,7 +89,7 @@ class PlayerProfileViewController: UIViewController {
             let label = UILabel()
             label.textAlignment = .center
             label.backgroundColor = UIColor.lightGray
-            label.textColor = .black // Set your desired text color
+            label.textColor = .white // Set your desired text color
             label.layer.borderColor = UIColor.white.cgColor
             label.layer.borderWidth = 2.0 // Set your desired border width
             label.translatesAutoresizingMaskIntoConstraints = false
@@ -283,7 +283,7 @@ class PlayerProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
+       
        
         
         
@@ -308,7 +308,42 @@ class PlayerProfileViewController: UIViewController {
     } // end of LOAD
     
 
-    
+    func checkUserVerification() {
+           let db = Firestore.firestore()
+        let uid = self.playersEmail
+        
+
+           db.collection("Agressv_Users").document(uid).getDocument { (document, error) in
+               if let document = document, document.exists {
+                   let data = document.data()
+                   if let verifiedPro = data?["Verified_Pro"] as? Bool, verifiedPro {
+                       // User is verified, add the verified image
+                       self.addVerifiedImage()
+                       print("RECOGNIZED BLUE CHECK MARK - VERIFIED PRO!!!!")
+                   }
+               } else {
+                   print("Document does not exist or error: \(String(describing: error))")
+               }
+           }
+       }
+
+    func addVerifiedImage() {
+        // Set up the verified image view
+        let img_Verified_Pro = UIImageView(image: UIImage(named: "verified_pro"))
+        img_Verified_Pro.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(img_Verified_Pro)
+
+        // Add constraints to position the verified image next to UserNameLabelMain
+        NSLayoutConstraint.activate([
+            img_Verified_Pro.leadingAnchor.constraint(equalTo: UserNameLabelMain.trailingAnchor, constant: 5),
+            img_Verified_Pro.centerYAnchor.constraint(equalTo: UserNameLabelMain.centerYAnchor), // Vertically align with the label
+            img_Verified_Pro.widthAnchor.constraint(equalToConstant: 30), // Set desired width
+            img_Verified_Pro.heightAnchor.constraint(equalToConstant: 30) // Set desired height
+        ])
+        
+        // Bring the verified image view to the front
+        view.bringSubviewToFront(img_Verified_Pro)
+    }
     
     
     func updatePieChart() {
@@ -369,6 +404,8 @@ class PlayerProfileViewController: UIViewController {
                     if let userEmail = document.data()["Email"] as? String {
                         // Update the "playersEmail" variable
                         self.playersEmail = userEmail
+                        
+                        self.checkUserVerification()
                         // Now you can use 'self.playersEmail' in your view controller
                         print("Player's email: \(userEmail)")
 
@@ -406,7 +443,7 @@ class PlayerProfileViewController: UIViewController {
         let backgroundImage = UIImageView()
         
         // Set the image to "AppBackgroundOne.png" from your asset catalog
-        backgroundImage.image = UIImage(named: "NewProfileBackground")
+        backgroundImage.image = UIImage(named: "BackgroundCoolGreen")
         
         // Make sure the image doesn't stretch or distort
         backgroundImage.contentMode = .scaleAspectFill
@@ -522,7 +559,7 @@ class PlayerProfileViewController: UIViewController {
                         ])
                         
                         // Set the text color for WP_Letter
-                        self.DWP_Letter.textColor = UIColor.systemYellow
+                        //self.DWP_Letter.textColor = UIColor.systemYellow
                         
                         NSLayoutConstraint.activate([
                             self.Doubles_WP_Label.leadingAnchor.constraint(equalTo: self.DoublesWinsLabel.leadingAnchor),
@@ -531,7 +568,7 @@ class PlayerProfileViewController: UIViewController {
                         ])
                         
                         // Set the text color for WP_Letter
-                        self.Doubles_WP_Label.textColor = UIColor.systemYellow
+                        //self.Doubles_WP_Label.textColor = UIColor.systemYellow
                         
                         
                     }
@@ -694,16 +731,16 @@ class PlayerProfileViewController: UIViewController {
                     let Doubles_Rank = document!.data()!["Doubles_Rank"]
                     let Doubles_Rank_As_String = String(describing: Doubles_Rank!)
                     let Int_Doubles_Rank = Double(Doubles_Rank_As_String)
-                    self.NewDoublesRankLabel.text = String(format: "%.1f", Int_Doubles_Rank!)
-                    let rounded_int_doubles_rank = round(Int_Doubles_Rank! * 10) / 10.0
+                    self.NewDoublesRankLabel.text = String(format: "%.2f", Int_Doubles_Rank!)
+                    let rounded_int_doubles_rank = round(Int_Doubles_Rank! * 100) / 100.0
                     self.Player_DoublesRank = rounded_int_doubles_rank
 
                     //Singles Rank number to string conversion
                     let Singles_Rank = document!.data()!["Singles_Rank"]
                     let Singles_Rank_As_String = String(describing: Singles_Rank!)
                     let Int_Singles_Rank = Double(Singles_Rank_As_String)
-                    self.NewSinglesRankLabel.text = String(format: "%.1f", Int_Singles_Rank!)
-                    let rounded_int_singles_rank = round(Int_Singles_Rank! * 10) / 10.0
+                    self.NewSinglesRankLabel.text = String(format: "%.2f", Int_Singles_Rank!)
+                    let rounded_int_singles_rank = round(Int_Singles_Rank! * 100) / 100.0
                     self.Player_SinglesRank = rounded_int_singles_rank
                     
                     //Doubles Wins number to string conversion
@@ -884,7 +921,7 @@ class PlayerProfileViewController: UIViewController {
                         if let numericalOrder = self.userDataDictionarySingles[self.player]?["Numerical_Order"] {
                             // Convert numericalOrder to Int
                             let numericalOrderInt = Int(numericalOrder)
-                            self.lbl_SinglesNerdData.text = "D: \(numericalOrderInt)"
+                            self.lbl_SinglesNerdData.text = "S: \(numericalOrderInt)"
                         }
                     }
                 }
@@ -984,7 +1021,7 @@ class PlayerProfileViewController: UIViewController {
         // Create the label
         let lbl_RanksTop = UILabel()
         lbl_RanksTop.text = "Current Rank"
-        lbl_RanksTop.textColor = .lightGray
+        lbl_RanksTop.textColor = .black
         lbl_RanksTop.font = UIFont.systemFont(ofSize: 15)
         lbl_RanksTop.translatesAutoresizingMaskIntoConstraints = false // Enable Auto Layout
         lbl_RanksTop.numberOfLines = 0 // Allow multiple lines
@@ -1028,6 +1065,8 @@ class PlayerProfileViewController: UIViewController {
             self.lbl_DoublesNerdData.leadingAnchor.constraint(equalTo: lbl_RanksTop.leadingAnchor),
             self.lbl_DoublesNerdData.topAnchor.constraint(equalTo: lbl_RanksTop.bottomAnchor, constant: 5 * scalingFactor)
             ])
+        
+        
         
         
         
@@ -1358,7 +1397,7 @@ class PlayerProfileViewController: UIViewController {
                     
                     // Create the label
                     let lbl_Games7Days = UILabel()
-                    lbl_Games7Days.text = "Games played in rolling 7 days:"
+                    lbl_Games7Days.text = "Games played in last 7 days:"
                     lbl_Games7Days.textColor = .lightGray
                     lbl_Games7Days.font = UIFont.systemFont(ofSize: 17)
                     lbl_Games7Days.translatesAutoresizingMaskIntoConstraints = false // Enable Auto Layout
@@ -1580,13 +1619,13 @@ class PlayerProfileViewController: UIViewController {
      
 
         // Create a UIColor with the desired light blueish gray color
-        let lightBlueishGrayColor = UIColor(red: 173/255, green: 216/255, blue: 230/255, alpha: 1.0)
-        lbl_DoublesHeader.textColor = lightBlueishGrayColor
-        lbl_SinglesHeader.textColor = lightBlueishGrayColor
+        let agressvcoolgreen = UIColor(red: 12/255, green: 89.3/255, blue: 78.9/255, alpha: 1.0)
+        lbl_DoublesHeader.textColor = UIColor.white
+        lbl_SinglesHeader.textColor = UIColor.white
 
-        DL_Letter.textColor = lightBlueishGrayColor
-        SL_Letter.textColor = lightBlueishGrayColor
-        UserNameLabelMain.textColor = lightBlueishGrayColor
+        DL_Letter.textColor = UIColor.systemRed
+        SL_Letter.textColor = UIColor.systemRed
+        UserNameLabelMain.textColor = UIColor.black
         
         //Font aspects for Doubles Rank
         let DoublesRankFont = UIFont(name: "Impact", size: 30)
@@ -1596,7 +1635,7 @@ class PlayerProfileViewController: UIViewController {
        DoublesRankLabelC.textAlignment = .center
         DoublesRankLabelC.font = DoublesRankFont
         DoublesRankLabelC.adjustsFontSizeToFitWidth = true
-        DoublesRankLabelC.backgroundColor = UIColor.lightGray
+        DoublesRankLabelC.backgroundColor = agressvcoolgreen
         //DoublesRankLabelC.layer.borderColor = UIColor.red.cgColor
         //DoublesRankLabelC.layer.borderWidth = 2.0
         DoublesRankLabelC.layer.cornerRadius = 5
@@ -1610,7 +1649,7 @@ class PlayerProfileViewController: UIViewController {
         SinglesRankLabel.textAlignment = .center
         SinglesRankLabel.font = SinglesRankFont
         SinglesRankLabel.adjustsFontSizeToFitWidth = true
-        SinglesRankLabel.backgroundColor = UIColor.lightGray
+        SinglesRankLabel.backgroundColor = agressvcoolgreen
         //SinglesRankLabel.layer.borderColor = UIColor.red.cgColor
         //SinglesRankLabel.layer.borderWidth = 2.0
         SinglesRankLabel.layer.cornerRadius = 5

@@ -27,7 +27,7 @@ class AccountSettingsViewController: UIViewController {
         let backgroundImage = UIImageView()
 
         // Set the image to "AppBackgroundOne.png" from your asset catalog
-        backgroundImage.image = UIImage(named: "AppBackgroundOne")
+        backgroundImage.image = UIImage(named: "BackgroundCoolGreen")
 
         // Make sure the image doesn't stretch or distort
         backgroundImage.contentMode = .scaleAspectFill

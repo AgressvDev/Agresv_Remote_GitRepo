@@ -23,7 +23,7 @@ struct GaugeView: View {
     
     let gradient = Gradient(colors: [.white, .gray, .red])
     @State private var minValue = 0.0
-    @State private var maxValue = 16.0
+    @State private var maxValue = 20.0
     
     
     

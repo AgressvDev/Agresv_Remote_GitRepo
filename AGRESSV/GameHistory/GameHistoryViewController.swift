@@ -97,7 +97,7 @@ class GameHistoryViewController: UIViewController, UITableViewDelegate, UITableV
                let backgroundImage = UIImageView()
 
                // Set the image to "AppBackgroundOne.png" from your asset catalog
-               backgroundImage.image = UIImage(named: "AppBackgroundOne")
+               backgroundImage.image = UIImage(named: "BackgroundCoolGreen")
 
                // Make sure the image doesn't stretch or distort
                backgroundImage.contentMode = .scaleAspectFill
@@ -125,6 +125,10 @@ class GameHistoryViewController: UIViewController, UITableViewDelegate, UITableV
         
     } //end of load
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        Table_GameHistory.reloadData() // Reload data to refresh cell appearance
+    }
 
     func fetchDataFromFirestore() {
             // Get the current user's email
@@ -218,15 +222,15 @@ class GameHistoryViewController: UIViewController, UITableViewDelegate, UITableV
                //let game = games[indexPath.row] // Get the game data
                   
                   // Set the background color to a lighter grey
-                  let lighterGreyColor = UIColor(red: 0.9, green: 0.9, blue: 0.9, alpha: 1.0)
-                  cell.backgroundColor = lighterGreyColor
+                  let AgressvCoolGreen = UIColor(red: 12/255, green: 89.3/255, blue: 78.9/255, alpha: 1.0)//UIColor(red: 0.9, green: 0.9, blue: 0.9, alpha: 1.0)
+                  cell.backgroundColor = AgressvCoolGreen
                   
                   // Create a dictionary to define the text attributes (color) for keys and values
                   let keyAttributes: [NSAttributedString.Key: Any] = [
-                      .foregroundColor: UIColor.black, // Key text color (black)
+                      .foregroundColor: UIColor.white, // Key text color (black)
                   ]
                   let valueAttributes: [NSAttributedString.Key: Any] = [
-                      .foregroundColor: UIColor.blue, // Value text color (blue)
+                      .foregroundColor: UIColor.systemYellow, // Value text color (blue)
                   ]
                   
                   // Customize the cell with the game data, including formatting the date
@@ -273,9 +277,11 @@ class GameHistoryViewController: UIViewController, UITableViewDelegate, UITableV
                           .foregroundColor: UIColor.black, // Default text color for Game_Result
                       ]
                       if game.gameResult == "W" {
-                          resultAttributes[.foregroundColor] = UIColor(red: 0.0, green: 0.5, blue: 0.0, alpha: 1.0)
+                          resultAttributes[.foregroundColor] = UIColor.systemGreen
+                          resultAttributes[.backgroundColor] = UIColor.black
                       } else if game.gameResult == "L" {
                           resultAttributes[.foregroundColor] = UIColor.red
+                          resultAttributes[.backgroundColor] = UIColor.black
                       }
                       
                       attributedText.append(NSAttributedString(string: "Your Game Result: ", attributes: keyAttributes))
@@ -317,5 +323,7 @@ class GameHistoryViewController: UIViewController, UITableViewDelegate, UITableV
         }
     }
     
+  
+
     
        } //end of class

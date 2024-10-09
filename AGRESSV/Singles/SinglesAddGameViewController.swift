@@ -69,9 +69,9 @@ class SinglesAddGameViewController: UIViewController {
     
     var CurrentUser_Username_NoRank: String = ""
     var currentuser: String = ""
-    var OppOneCellValue_NoRank: String = SharedDataNoRank.sharednorank.OppOneSelection_NoRank
+    var OppOneCellValue_NoRank: String = SharedData.shared.OppOneSelection//Opp One
     
-    var selectedCellValueOppOne: String =  SharedData.shared.OppOneSelection//Opp One
+    var selectedCellValueOppOne: String = ""
     
     
     override func viewDidLoad() {
@@ -98,8 +98,30 @@ class SinglesAddGameViewController: UIViewController {
         let marginPercentage: CGFloat = 0.07
     
         
-        // Set the background color of the screen
-        view.backgroundColor = UIColor(red: 0/255, green: 0/255, blue: 30/255, alpha: 1.0)
+        //BACKGROUND
+        // Create UIImageView for the background image
+        let backgroundImage = UIImageView()
+        
+        // Set the image to "AppBackgroundOne.png" from your asset catalog
+        backgroundImage.image = UIImage(named: "BackgroundCoolGreen")
+        
+        // Make sure the image doesn't stretch or distort
+        backgroundImage.contentMode = .scaleAspectFill
+        
+        // Add the UIImageView as a subview to the view
+        view.addSubview(backgroundImage)
+        view.sendSubviewToBack(backgroundImage)
+        
+        // Disable autoresizing mask constraints for the UIImageView
+        backgroundImage.translatesAutoresizingMaskIntoConstraints = false
+        
+        // Set constraints to cover the full screen using the scaling factor
+        NSLayoutConstraint.activate([
+            backgroundImage.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 0 * scalingFactor), // Left side of the screen
+            backgroundImage.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: 0 * scalingFactor), // A little higher than the bottom
+            backgroundImage.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 0 * scalingFactor),
+            backgroundImage.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 0 * scalingFactor)
+        ])
         
         
         
@@ -292,7 +314,7 @@ class SinglesAddGameViewController: UIViewController {
                     //                    let Current_User_As_String = String(describing: CurrentUser!)
                     if let username = document?["Username"] as? String,
                        let doublesRank = document?["Singles_Rank"] as? Double {
-                        let formattedRank = String(format: "%.1f", doublesRank)
+                        let formattedRank = String(format: "%.2f", doublesRank)
                         let userWithFormattedRank = "\(username) - \(formattedRank)"
                         let norank = "\(username)"
                         self.currentuser = userWithFormattedRank
@@ -308,42 +330,6 @@ class SinglesAddGameViewController: UIViewController {
         
         
         
-        func GetCurrentUserRank() {
-            let db = Firestore.firestore()
-            
-            // Get the current user's email
-            guard let uid = Auth.auth().currentUser?.email else {
-                print("No current user")
-                return
-            }
-            
-            let documentRef = db.collection("Agressv_Users").document(uid)
-            
-            documentRef.getDocument { (documentSnapshot, error) in
-                if let error = error {
-                    print("Error: \(error)")
-                } else {
-                    if let document = documentSnapshot, document.exists {
-                        if let doublesRank = document.data()?["Singles_Rank"] as? Double {
-                            //                            // Convert the Double to a String
-                            //                            let doublesRankAsString = String(format: "%.1f", doublesRank)
-                            //                            self.CurrentUserSinglesRank = doublesRankAsString
-                            let currentUserRank = (doublesRank * 10.0).rounded() / 10.0
-                            
-                            // Update the label here (on the main thread)
-                            DispatchQueue.main.async {
-                                // Assuming you have a label called lbl_CurrentUserRank
-                                self.CurrentUserSinglesRank = currentUserRank
-                            }
-                        } else {
-                            print("Doubles_Rank is not a valid number in the document")
-                        }
-                    } else {
-                        print("Document does not exist")
-                    }
-                }
-            }
-        }
         
         
         func GetOppOneRank() {
@@ -357,7 +343,7 @@ class SinglesAddGameViewController: UIViewController {
                 } else {
                     for document in querySnapshot!.documents {
                         if let doublesRank = document.data()["Singles_Rank"] as? Double {
-                            let OppOneUserRank = (doublesRank * 10.0).rounded() / 10.0
+                            let OppOneUserRank = (doublesRank * 100.0).rounded() / 100.0
                             
                             // Update the label here
                             DispatchQueue.main.async {
@@ -382,10 +368,50 @@ class SinglesAddGameViewController: UIViewController {
                     print("error")
                 } else {
                     for document in querySnapshot!.documents {
-                        // Access the value of field2 from the document
-                        let PartnerEmail = document.data()["Email"] as? String
-                        if let PartnerEmail = PartnerEmail {
-                            self.selectedCellValueOppOneEmail = PartnerEmail
+                       
+                        if let username = document["Username"] as? String,
+                           let doublesRank = document["Singles_Rank"] as? Double {
+                            let formattedRank = String(format: "%.2f", doublesRank)
+                            let userWithFormattedRank = "\(username) - \(formattedRank)"
+                            self.selectedCellValueOppOne = userWithFormattedRank
+                            
+                            // Add profile image view to the view
+                            self.view.addSubview(self.OppOneImg)
+                            
+                            NSLayoutConstraint.activate([
+                                self.OppOneImg.leadingAnchor.constraint(equalTo: self.CurrentUserImg.leadingAnchor),
+                                self.OppOneImg.topAnchor.constraint(equalTo: lbl_Vs.bottomAnchor, constant: 15 * scalingFactor),
+                                self.OppOneImg.widthAnchor.constraint(equalToConstant: 100 * scalingFactor),
+                                self.OppOneImg.heightAnchor.constraint(equalToConstant: 100 * scalingFactor)
+                            ])
+                            
+                            // Calculate the adjusted font size based on the scalingFactor
+                            let baseFontSize_lbl_Partner: CGFloat = 13.0 // Set your base font size
+                            let adjustedFontSize_lbl_Partner = baseFontSize_lbl_Partner * scalingFactor
+                            
+                            
+                            // Create a label
+                            let lbl_OppOne = UILabel()
+                            lbl_OppOne.textAlignment = .center
+                            lbl_OppOne.textColor = .white
+                            lbl_OppOne.translatesAutoresizingMaskIntoConstraints = false
+                            lbl_OppOne.font = UIFont.systemFont(ofSize: adjustedFontSize_lbl_Partner)
+                            self.view.addSubview(lbl_OppOne)
+                            self.view.bringSubviewToFront(lbl_OppOne)
+
+                            // Define constraints for lbl_OppTwo
+                            NSLayoutConstraint.activate([
+                                lbl_OppOne.leadingAnchor.constraint(equalTo: self.OppOneImg.leadingAnchor, constant: 2),
+                                lbl_OppOne.topAnchor.constraint(equalTo: self.OppOneImg.bottomAnchor, constant: 5 * scalingFactor), // Place it above the button with spacing
+                                lbl_OppOne.heightAnchor.constraint(equalToConstant: 25 * heightScalingFactor), // Adjust the height as needed
+                                lbl_OppOne.widthAnchor.constraint(equalTo: self.OppOneImg.widthAnchor)
+
+                            ])
+                            
+                            
+                            
+                            lbl_OppOne.text = self.selectedCellValueOppOne
+
                         } else {
                             return
                         }
@@ -401,157 +427,32 @@ class SinglesAddGameViewController: UIViewController {
         
         
         print(getcurrentuser())
-        print(GetCurrentUserRank())
         print(GetOppOneEmail())
         print(GetOppOneRank())
         
         
-        
-        
-        
-       
-        
-        
 
-        func findUserWithMostGamesInitial(completion: @escaping (String?) -> Void) {
-            let db = Firestore.firestore()
-            let agressvGamesCollection = db.collection("Agressv_Games")
-            
-            var emailCounts = [String: Int]()
-            let fieldsToCheck = ["Game_Creator", "Game_Partner", "Game_Opponent_One", "Game_Opponent_Two"]
-            
-            let group = DispatchGroup()
-            
-            // Calculate the date 30 days ago from the current date
-            let thirtyDaysAgo = Calendar.current.date(byAdding: .day, value: -30, to: Date())!
-            
-            for field in fieldsToCheck {
-                group.enter()
-                agressvGamesCollection
-                    .whereField(field, isNotEqualTo: "")
-                    .getDocuments { (querySnapshot, error) in
-                        if let error = error {
-                            print("Error fetching documents: \(error)")
-                        } else {
-                            for document in querySnapshot!.documents {
-                                if let email = document.data()[field] as? String,
-                                   let gameDateTimestamp = document.data()["Game_Date"] as? Timestamp {
-                                    let gameDate = gameDateTimestamp.dateValue()
-                                    if gameDate > thirtyDaysAgo {
-                                        emailCounts[email, default: 0] += 1
-                                    }
-                                }
-                            }
-                        }
-                        group.leave()
-                    }
-            }
-            
-            group.notify(queue: .main) {
-                if let mostFrequentEmail = emailCounts.max(by: { $0.1 < $1.1 })?.key {
-                    completion(mostFrequentEmail)
-                } else {
-                    completion(nil)
-                }
-            }
-        }
+               
+                    
+              
+                 
+                    
 
-
-        
-//        findUserWithMostGamesInitial { mostFrequentEmail in
-//            if let email = mostFrequentEmail {
-//                self.UserWithMostGames = email
-//                print("INITIAL USER WITH MOST GAMES RED FANG!!!!!!: \(email)")
-//                print(self.UserWithMostGames!)
-                GetCurrentUserEmailInitial
-                {
-                    
-                    print(self.currentuseremail)
-                    print(self.selectedCellValueOppOneEmail)
-                    
-                    GetOppOneEmail()
-                    
-//                    if email == self.currentuseremail {
-//                        self.CurrentISRedFangs = true
-//                        print("CURRENT IS RED FANGS SET TO TRUE?")
-//                        print(self.CurrentISRedFangs)
-//                    }
-//
-//                    if email == self.selectedCellValueOppOneEmail {
-//                        self.OppOneISRedFangs = true
-//                        print("OPP ONE IS RED FANGS SET TO TRUE?")
-//                        print(self.OppOneISRedFangs)
-//                    }
-                    
-                    // Add profile image view to the view
-                    self.view.addSubview(self.OppOneImg)
-                    
-                    NSLayoutConstraint.activate([
-                        self.OppOneImg.leadingAnchor.constraint(equalTo: self.CurrentUserImg.leadingAnchor),
-                        self.OppOneImg.topAnchor.constraint(equalTo: lbl_Vs.bottomAnchor, constant: 15 * scalingFactor),
-                        self.OppOneImg.widthAnchor.constraint(equalToConstant: 100 * scalingFactor),
-                        self.OppOneImg.heightAnchor.constraint(equalToConstant: 100 * scalingFactor)
-                    ])
-                    
-                    // Calculate the adjusted font size based on the scalingFactor
-                    let baseFontSize_lbl_Partner: CGFloat = 13.0 // Set your base font size
-                    let adjustedFontSize_lbl_Partner = baseFontSize_lbl_Partner * scalingFactor
                     
                     
-                    // Create a label
-                    let lbl_OppOne = UILabel()
-                    lbl_OppOne.textAlignment = .center
-                    lbl_OppOne.textColor = .white
-                    lbl_OppOne.translatesAutoresizingMaskIntoConstraints = false
-                    lbl_OppOne.font = UIFont.systemFont(ofSize: adjustedFontSize_lbl_Partner)
-                    self.view.addSubview(lbl_OppOne)
-                    self.view.bringSubviewToFront(lbl_OppOne)
-
-                    // Define constraints for lbl_OppTwo
-                    NSLayoutConstraint.activate([
-                        lbl_OppOne.leadingAnchor.constraint(equalTo: self.OppOneImg.leadingAnchor, constant: 2),
-                        lbl_OppOne.topAnchor.constraint(equalTo: self.OppOneImg.bottomAnchor, constant: 5 * scalingFactor), // Place it above the button with spacing
-                        lbl_OppOne.heightAnchor.constraint(equalToConstant: 25 * heightScalingFactor), // Adjust the height as needed
-                        lbl_OppOne.widthAnchor.constraint(equalTo: self.OppOneImg.widthAnchor)
-
-                    ])
-                    
-                    
-                    
-                    lbl_OppOne.text = self.selectedCellValueOppOne
                 
                 
-            }
+            
         
     
   
         
-        func GetCurrentUserEmailInitial(completion: @escaping () -> Void) {
-            let db = Firestore.firestore()
-            let uid = CurrentUser_Username_NoRank
-            let query = db.collection("Agressv_Users").whereField("Username", isEqualTo: uid)
-
-            query.getDocuments { (querySnapshot, error) in
-                if let error = error {
-                    print("Error: \(error)")
-                } else {
-                    if let document = querySnapshot?.documents.first {
-                        // Access the value of "Email" field from the document
-                        let currentUserEmail = document.data()["Email"] as? String
-                        self.currentuseremail = currentUserEmail!
-                    } else {
-                        print("User not found")
-                    }
-                }
-                
-                completion()
-            }
-        }
+     
         
         
         
         // Simulate loading for 2 seconds
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
             // Call a function to hide the loading view
             self.hideLoadingView()
         }
@@ -569,30 +470,31 @@ class SinglesAddGameViewController: UIViewController {
     
     
     func showLoadingView() {
-            // Create a UIView that covers the entire screen
-            loadingView = UIView(frame: view.bounds)
-            loadingView?.backgroundColor = UIColor(red: 0/255, green: 0/255, blue: 30/255, alpha: 1.0)
-            
-            // Create a UILabel with the desired text
-            loadingLabel = UILabel()
-            //loadingLabel?.text = "Loading game..."
-            loadingLabel?.textColor = .white
-            loadingLabel?.translatesAutoresizingMaskIntoConstraints = false
-        loadingView?.layer.zPosition = 7
-        loadingView?.layer.zPosition = 7
-            
-            // Add the label to the loading view
-            if let loadingLabel = loadingLabel {
-                loadingView?.addSubview(loadingLabel)
-                loadingLabel.centerXAnchor.constraint(equalTo: loadingView!.centerXAnchor).isActive = true
-                loadingLabel.centerYAnchor.constraint(equalTo: loadingView!.centerYAnchor).isActive = true
-            }
-            
-            // Add the loading view to the main view controller
-            if let loadingView = loadingView {
-                view.addSubview(loadingView)
-            }
+        // Create a UIView that covers the entire screen
+        loadingView = UIView(frame: view.bounds)
+
+        // Create UIImageView for the background image
+        let backgroundImage = UIImageView(frame: loadingView!.bounds)
+        
+        // Set the image to "BackgroundCoolGreen" from your asset catalog
+        backgroundImage.image = UIImage(named: "BackgroundCoolGreen")
+        
+        // Make sure the image doesn't stretch or distort
+        backgroundImage.contentMode = .scaleAspectFill
+        
+        // Add the UIImageView as a subview to the loading view
+        loadingView?.addSubview(backgroundImage)
+        
+        // Set the loading view's zPosition to bring it to the front
+            loadingView?.layer.zPosition = 10
+        
+        // Add the loading view to the main view controller
+        if let loadingView = loadingView {
+            view.addSubview(loadingView)
         }
+        
+       
+    }
         
         func hideLoadingView() {
             // Remove the loading view and label from the main view controller
@@ -607,307 +509,26 @@ class SinglesAddGameViewController: UIViewController {
         }
     
     
-    func GetCurrentUserEmail(completion: @escaping () -> Void) {
-        let db = Firestore.firestore()
-        let uid = CurrentUser_Username_NoRank
-        let query = db.collection("Agressv_Users").whereField("Username", isEqualTo: uid)
-
-        query.getDocuments { (querySnapshot, error) in
-            if let error = error {
-                print("Error: \(error)")
-            } else {
-                if let document = querySnapshot?.documents.first {
-                    // Access the value of "Email" field from the document
-                    let currentUserEmail = document.data()["Email"] as? String
-                    self.currentuseremail = currentUserEmail!
-                } else {
-                    print("User not found")
-                }
-            }
-            
-            completion()
-        }
-    }
+    
 
     
-    func findUserWithMostGames(completion: @escaping (String?) -> Void) {
-        let db = Firestore.firestore()
-        let agressvGamesCollection = db.collection("Agressv_Games")
-        
-        var emailCounts = [String: Int]()
-        let fieldsToCheck = ["Game_Creator", "Game_Partner", "Game_Opponent_One", "Game_Opponent_Two"]
-        
-        let group = DispatchGroup()
-        
-        // Calculate the date 30 days ago from the current date
-        let thirtyDaysAgo = Calendar.current.date(byAdding: .day, value: -30, to: Date())!
-        
-        for field in fieldsToCheck {
-            group.enter()
-            agressvGamesCollection
-                .whereField(field, isNotEqualTo: "")
-                .getDocuments { (querySnapshot, error) in
-                    if let error = error {
-                        print("Error fetching documents: \(error)")
-                    } else {
-                        for document in querySnapshot!.documents {
-                            if let email = document.data()[field] as? String,
-                               let gameDateTimestamp = document.data()["Game_Date"] as? Timestamp {
-                                let gameDate = gameDateTimestamp.dateValue()
-                                if gameDate > thirtyDaysAgo {
-                                    emailCounts[email, default: 0] += 1
-                                }
-                            }
-                        }
-                    }
-                    group.leave()
-                }
-        }
-        
-        group.notify(queue: .main) {
-            if let mostFrequentEmail = emailCounts.max(by: { $0.1 < $1.1 })?.key {
-                completion(mostFrequentEmail)
-            } else {
-                completion(nil)
-            }
-        }
-    }
+   
     
     
     
-    
-    func GetDoublesRanks(completion: @escaping () -> Void) {
-        let db = Firestore.firestore()
-        
-        
-        // Get the current user's email
-        guard let uid = Auth.auth().currentUser?.email else {
-            print("No current user")
-            return
-        }
-        
-        
-        
-        let OppOne_uid = selectedCellValueOppOneEmail
-        let OppOne_ref = db.collection("Agressv_Users").document(OppOne_uid)
-        
-        
-        let documentRef = db.collection("Agressv_Users").document(uid)
-        
-        documentRef.getDocument { (documentSnapshot, error) in
-            if let error = error {
-                print("Error: \(error)")
-            } else {
-                if let document = documentSnapshot, document.exists {
-                    if let doublesRank = document.data()?["Doubles_Rank"] as? Double {
-                        // Convert the Double to a String
-                        //                            let doublesRankAsString = String(format: "%.1f", doublesRank)
-                        //                            self.CurrentUserDoublesRank = doublesRankAsString
-                        let currentUserRank = (doublesRank * 10.0).rounded() / 10.0
-                        // Update the label here (on the main thread)
-                        DispatchQueue.main.async {
-                            // Assuming you have a label called lbl_CurrentUserRank
-                            self.CurrentUserDoublesRank = currentUserRank
-                            
-                        }
-                    } else {
-                        print("Doubles_Rank is not a valid number in the document")
-                    }
-                } else {
-                    print("Document does not exist")
-                }
-            }
-        }
-        
-        
-        OppOne_ref.getDocument { (documentSnapshot, error) in
-            if let error = error {
-                print("Error: \(error)")
-            } else {
-                if let document = documentSnapshot, document.exists {
-                    if let doublesRank = document.data()?["Doubles_Rank"] as? Double {
-                        // Convert the Double to a String
-                        //                            let doublesRankAsString = String(format: "%.1f", doublesRank)
-                        //                            self.CurrentUserDoublesRank = doublesRankAsString
-                        let currentUserRank = (doublesRank * 10.0).rounded() / 10.0
-                        // Update the label here (on the main thread)
-                        DispatchQueue.main.async {
-                            // Assuming you have a label called lbl_CurrentUserRank
-                            self.OppOneDoublesRank = currentUserRank
-                            completion()
-                            
-                        }
-                    } else {
-                        print("Doubles_Rank is not a valid number in the document")
-                    }
-                } else {
-                    print("Document does not exist")
-                }
-            }
-        }
-        
-    }
+   
     
     
-    
-    func GetHighScoresInitial(completion: @escaping () -> Void) {
-        let db = Firestore.firestore()
-        let agressvUsersRef = db.collection("Agressv_Users")
+   
         
         
-        // Query to get the documents with max Doubles_Rank and max Singles_Rank
-        agressvUsersRef
-            .order(by: "Doubles_Rank", descending: true)
-            .limit(to: 1)
-            .getDocuments { (doublesRankQuerySnapshot, error) in
-                if let err = error {
-                    print("Error getting documents: \(err)")
-                } else {
-                    let maxDoublesRank = doublesRankQuerySnapshot?.documents.first?["Doubles_Rank"] as? Double
-                    let roundedValue = round(maxDoublesRank! * 10) / 10.0
-                    
-                    
-                    self.Highest_Score_Doubles = roundedValue
-                    print(self.Highest_Score_Doubles)
-                    // Query to get the documents with max Singles_Rank
-                    agressvUsersRef
-                        .order(by: "Singles_Rank", descending: true)
-                        .limit(to: 1)
-                        .getDocuments { (singlesRankQuerySnapshot, error) in
-                            if let err = error {
-                                print("Error getting documents: \(err)")
-                            } else {
-                                let maxSinglesRank = singlesRankQuerySnapshot?.documents.first?["Singles_Rank"] as? Double
-                                let roundedValueSingles = round(maxSinglesRank! * 10) / 10.0
-                                
-                                self.Highest_Score_Singles = roundedValueSingles
-                                print(self.Highest_Score_Singles)
-                                
-                                if self.CurrentUserSinglesRank == self.Highest_Score_Singles
-                                {
-                                    self.CurrentISHighestSingles = true
-                                }
-                                
-                                if self.OppOneSinglesRank == self.Highest_Score_Singles
-                                {
-                                    self.OppOneISHighestSingles = true
-                                }
-                                
-                                completion()
-                            }
-                            
-                        }
-                    
-                }
-                
-            }
+       
         
-    }
-    
-    func GetCurrentUserRankAfter(completion: @escaping () -> Void) {
-        let db = Firestore.firestore()
-        var currentUserRank: Double?
-        var oppOneRank: Double?
-        
-        
-        let dispatchGroup = DispatchGroup()
-        
-        // Get the current user's email
-        guard let uid = Auth.auth().currentUser?.email else {
-            print("No current user")
-            return
-        }
-        
-        
-        
-        let OppOne_uid = selectedCellValueOppOneEmail
-        let OppOne_ref = db.collection("Agressv_Users").document(OppOne_uid)
-        
-        let documentRef = db.collection("Agressv_Users").document(uid)
-        
-        dispatchGroup.enter()
-        documentRef.getDocument { (documentSnapshot, error) in
-            defer { dispatchGroup.leave() }
-            if let error = error {
-                print("Error: \(error)")
-            } else {
-                if let document = documentSnapshot, document.exists {
-                    if let SinglesRank = document.data()?["Singles_Rank"] as? Double {
-                        currentUserRank = (SinglesRank * 10.0).rounded() / 10.0
-                    } else {
-                        print("Singles_Rank is not a valid number in the document")
-                    }
-                } else {
-                    print("Document does not exist")
-                }
-            }
-        }
-        
-        
-        
-        dispatchGroup.enter()
-        OppOne_ref.getDocument { (documentSnapshot, error) in
-            defer { dispatchGroup.leave() }
-            if let error = error {
-                print("Error: \(error)")
-            } else {
-                if let document = documentSnapshot, document.exists {
-                    if let doublesRank = document.data()?["Singles_Rank"] as? Double {
-                        oppOneRank = (doublesRank * 10.0).rounded() / 10.0
-                    } else {
-                        print("Singles_Rank is not a valid number in the document")
-                    }
-                } else {
-                    print("Document does not exist")
-                }
-            }
-        }
-        
-        
-        
-        dispatchGroup.notify(queue: .main) {
-            // All Firestore calls have completed here
-            if let currentUserRank = currentUserRank, let oppOneRank = oppOneRank {
-                self.current_user_after_log_singles_rank = currentUserRank
-                self.oppone_user_after_log_singles_rank = oppOneRank
-                
-            }
-            completion()
-        }
-    }
+  
     
     func performCalculations() {
         
         
-        let higherNumber = max(CurrentUserSinglesRank, OppOneSinglesRank)
-        
-        // Calculate the percent difference
-        let percentDifference = abs((CurrentUserSinglesRank - OppOneSinglesRank) / higherNumber * 100.0) / 100 / 1.75 //divide by 1.75 because percent diff feels too high for one win
-        
-        if CurrentUserSinglesRank > OppOneSinglesRank {
-            // Perform calculations based on your conditions
-            OppOne_PercentDiff_Increment = OppOneSinglesRank * percentDifference
-            CurrentUser_PercentDiff_Increment = 0.1
-            
-            if OppOne_PercentDiff_Increment <= 0.1 {
-                OppOne_PercentDiff_Increment = 0.1
-            }
-            
-        } else if OppOneSinglesRank > CurrentUserSinglesRank {
-            // Perform calculations based on your conditions
-            CurrentUser_PercentDiff_Increment = CurrentUserSinglesRank * percentDifference
-            OppOne_PercentDiff_Increment = 0.1
-            
-            if CurrentUser_PercentDiff_Increment <= 0.1 {
-                CurrentUser_PercentDiff_Increment = 0.1
-            }
-        }
-        else if CurrentUserSinglesRank == OppOneSinglesRank
-        {
-            CurrentUser_PercentDiff_Increment = 0.1
-            OppOne_PercentDiff_Increment = 0.1
-            
-        }
     }
     
     
@@ -944,190 +565,26 @@ class SinglesAddGameViewController: UIViewController {
     
     @IBAction func btn_Log(_ sender: UIButton) {
         
-        performCalculations()
-        
-        GetDoublesRanks {
-            
-            self.GetHighScoresInitial {
-                
-                let db = Firestore.firestore()
-                let uid = Auth.auth().currentUser!.email
-                
-                let OppOne_ref = db.collection("Agressv_Users").document(self.selectedCellValueOppOneEmail)
-                
-                let Game_ref = db.collection("Agressv_Games").document()
-                let User_ref = db.collection("Agressv_Users").document(uid!)
-                
-                let User_Badges_ref = db.collection("Agressv_Badges").document(uid!)
-                let OppOne_Badges_ref = db.collection("Agressv_Badges").document(self.selectedCellValueOppOneEmail)
+
+//                let db = Firestore.firestore()
+//                let uid = Auth.auth().currentUser!.email
+//                let Game_ref = db.collection("Agressv_Games").document()
+             
                 
                 if self.WL_Selection == "W" {
                     self.Selection_Opposite = "L"
-                    //increment winning side
-                    User_ref.updateData([
-                        "Singles_Games_Wins": FieldValue.increment(Int64(1))])
                     
-                    User_ref.updateData([
-                        "Singles_Rank": FieldValue.increment(self.CurrentUser_PercentDiff_Increment)])
-                    
-                    //decrement losing side
-                    OppOne_ref.updateData([
-                        "Singles_Games_Losses": FieldValue.increment(Int64(1))])
-                    
-                    
-                    if self.OppOneSinglesRank == 8.5 {
-                        //do not decrement
                     }
-                    else
-                    {
-                        OppOne_ref.updateData([
-                            "Singles_Rank": FieldValue.increment(-0.1)])
-                    }
-                    
-                }
+                   
+                
                 
                 else if self.WL_Selection == "L"{
                     
                     self.Selection_Opposite = "W"
-                    //increment winning side
-                    OppOne_ref.updateData([
-                        "Singles_Games_Wins": FieldValue.increment(Int64(1))])
-                    
-                    OppOne_ref.updateData([
-                        "Singles_Rank": FieldValue.increment(self.OppOne_PercentDiff_Increment)])
-                    
-                    //decrement losing side
-                    User_ref.updateData([
-                        "Singles_Games_Losses": FieldValue.increment(Int64(1))])
-                    
-                    
-                    if self.CurrentUserSinglesRank == 8.5 {
-                        //do not decrement
-                    }
-                    else
-                    {
-                        User_ref.updateData([
-                            "Singles_Rank": FieldValue.increment(-0.1)])
-                    }
+                   
                 }
                 
-                
-                User_ref.updateData([
-                    "Singles_Games_Played": FieldValue.increment(Int64(1))])
-                
-                OppOne_ref.updateData([
-                    "Singles_Games_Played": FieldValue.increment(Int64(1))])
-                
-                
-                Game_ref.setData(["Game_Result" : self.WL_Selection, "Game_Date" : self.Today, "Game_Creator": uid!, "Game_Type": "Singles", "Game_Partner": "", "Game_Opponent_One": self.selectedCellValueOppOneEmail, "Game_Opponent_Two": "", "Game_Creator_Username": self.CurrentUser_Username_NoRank, "Game_Opponent_One_Username": self.OppOneCellValue_NoRank, "Game_Result_Opposite_For_UserView": self.Selection_Opposite])
-                
-                
-                
-                
-                
-                
-                self.GetCurrentUserRankAfter {
-                    
-                    self.GetCurrentUserEmail {
-                        
-//                        self.findUserWithMostGames
-//                        { mostFrequentEmail in
-//                            self.UserWithMostGames = mostFrequentEmail
-//                            print(self.UserWithMostGames!)
-//                            print(self.CurrentISRedFangs)
-//                            print(self.currentuseremail)
-//
-//                            if !self.CurrentISRedFangs
-//                            {
-//                                if self.UserWithMostGames == self.currentuseremail
-//                                {
-//                                    print("CURRENT USER - INCREMENT 1 RED FANG")
-//                                    User_Badges_ref.updateData([
-//                                        "Red_Fangs": FieldValue.increment(Int64(1))])
-//                                }
-//                            }
-//
-//
-//
-//                            if !self.OppOneISRedFangs
-//                            {
-//                                if self.UserWithMostGames == self.selectedCellValueOppOneEmail
-//                                {
-//                                    print("OPP ONE - INCREMENT 1 RED FANG")
-//                                    OppOne_Badges_ref.updateData([
-//                                        "Red_Fangs": FieldValue.increment(Int64(1))])
-//                                }
-//                            }
-//
-                            
-                            print("HIGH SCORE DOUBLES")
-                            print(self.Highest_Score_Doubles)
-                            print("HIGH SCORE SINGLES")
-                            print(self.Highest_Score_Singles)
-                            
-                            print("CURRENT USER PREVIOUS RANK")
-                            print(self.CurrentUserSinglesRank)
-                            print("CURRENT USER AFTER LOG RANK")
-                            print(self.current_user_after_log_singles_rank)
-                            
-                            print("OPP ONE USER PREVIOUS RANK")
-                            print(self.OppOneSinglesRank)
-                            print("OPP ONE USER AFTER LOG RANK")
-                            print(self.oppone_user_after_log_singles_rank)
-                            
-                            //Badge logic
-                            
-                            if !self.CurrentISHighestSingles
-                                
-                            {
-                                
-                                if self.current_user_after_log_singles_rank > 8.5
-                                {
-                                    if self.current_user_after_log_singles_rank >= self.Highest_Score_Singles
-                                    {
-                                        print("INCREMENT 1 FOR BLUE RIBBON")
-                                        User_Badges_ref.updateData([
-                                            "Blue_Ribbon_Singles": FieldValue.increment(Int64(1))])
-                                        
-                                        if self.CurrentUserDoublesRank > 8.5
-                                        {
-                                            if self.CurrentUserDoublesRank == self.Highest_Score_Doubles
-                                            {
-                                                print("INCREMENT 1 FOR GOLD RIBBON")
-                                                User_Badges_ref.updateData([
-                                                    "Gold_Ribbon": FieldValue.increment(Int64(1))])
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                            
-                            if !self.OppOneISHighestSingles
-                                
-                            {
-                                
-                                if self.oppone_user_after_log_singles_rank > 8.5
-                                {
-                                    if self.oppone_user_after_log_singles_rank >= self.Highest_Score_Singles
-                                    {
-                                        print("INCREMENT 1 FOR BLUE RIBBON")
-                                        OppOne_Badges_ref.updateData([
-                                            "Blue_Ribbon_Singles": FieldValue.increment(Int64(1))])
-                                        
-                                        if self.OppOneDoublesRank > 8.5
-                                        {
-                                            if self.OppOneDoublesRank == self.Highest_Score_Doubles
-                                            {
-                                                print("INCREMENT 1 FOR GOLD RIBBON")
-                                                OppOne_Badges_ref.updateData([
-                                                    "Gold_Ribbon": FieldValue.increment(Int64(1))])
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                            
-                            
+
                             
                             let dialogMessage = UIAlertController(title: "Success!", message: "Your game has been logged.", preferredStyle: .alert)
                             
@@ -1138,11 +595,7 @@ class SinglesAddGameViewController: UIViewController {
                                 self.performSegue(withIdentifier: "LogGameGoHomeSingles", sender: self)
                             })
                             
-                            
-                            
-                            
-                            
-                            
+
                             
                             //Add OK button to a dialog message
                             dialogMessage.addAction(ok)
@@ -1153,12 +606,12 @@ class SinglesAddGameViewController: UIViewController {
                             
                             
                         }
-                    }
                     
-                }
+                    
                 
-            }
-        }
+                
+            
+        
         
     
     

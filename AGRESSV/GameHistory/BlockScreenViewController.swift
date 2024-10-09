@@ -130,7 +130,7 @@ class BlockScreenViewController: UIViewController {
                let backgroundImage = UIImageView()
 
                // Set the image to "AppBackgroundOne.png" from your asset catalog
-               backgroundImage.image = UIImage(named: "AppBackgroundOne")
+               backgroundImage.image = UIImage(named: "BackgroundCoolGreen")
 
                // Make sure the image doesn't stretch or distort
                backgroundImage.contentMode = .scaleAspectFill
@@ -186,7 +186,7 @@ class BlockScreenViewController: UIViewController {
         
         // Prompt
         let lbl_prompt = UILabel()
-        lbl_prompt.text = "\(BlockedUser) created this game. If you dispute this game you can block the user and they will no longer be able to create games with your username. Additionally, the game will be deleted and .1 will be returned to your score. Do you wish to block this user?"
+        lbl_prompt.text = "\(BlockedUser) created this game. If you dispute this game you can block the user and they will no longer be able to create games with your username. Additionally, the game will be deleted from your history. Do you wish to block this user?"
         
         
         lbl_prompt.textAlignment = .center

@@ -44,7 +44,7 @@ class ContactUsViewController: UIViewController {
 
         // Create UIImageView for the background image
         let backgroundImage = UIImageView()
-        backgroundImage.image = UIImage(named: "AppBackgroundOne")
+        backgroundImage.image = UIImage(named: "BackgroundCoolGreen")
         backgroundImage.contentMode = .scaleAspectFill
         backgroundImage.translatesAutoresizingMaskIntoConstraints = false
 
