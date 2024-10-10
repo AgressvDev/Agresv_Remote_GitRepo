@@ -36,42 +36,31 @@ class SinglesAddGameViewController: UIViewController {
         return imageView
     }()
     
-    
-    var UserWithMostGames: String?
-    var currentuseremail: String = ""
-    
-    var CurrentISRedFangs: Bool = false
-    
-    var OppOneISRedFangs: Bool = false
+    //Variables for Evaluating skill increases
+    var Team_A_CurrentUser_Skill: Double = 0.0 //"Doubles_Rank"
+    var Team_B_OppOne_Skill: Double = 0.0
     
     
-    //for Badge evaluations
-    var current_user_after_log_singles_rank: Double = 0.0
-    var oppone_user_after_log_singles_rank: Double = 0.0
-    
-    var CurrentUserDoublesRank: Double = 0.0
-    var OppOneDoublesRank: Double = 0.0
-    
-    var Highest_Score_Doubles: Double = 0.0
-    var Highest_Score_Singles: Double = 0.0
+    var CurrentUser_Email: String = ""
     
     
-    var CurrentISHighestSingles: Bool = false
-    var OppOneISHighestSingles: Bool = false
+   
+    
+    
+    
     
     
     
     
     var CurrentUserSinglesRank: Double = 0.0
     var OppOneSinglesRank: Double = 0.0
-    var CurrentUser_PercentDiff_Increment: Double = 0.0
-    var OppOne_PercentDiff_Increment: Double = 0.0
+  
     
     var CurrentUser_Username_NoRank: String = ""
     var currentuser: String = ""
     var OppOneCellValue_NoRank: String = SharedData.shared.OppOneSelection//Opp One
-    
     var selectedCellValueOppOne: String = ""
+
     
     
     override func viewDidLoad() {
@@ -320,7 +309,7 @@ class SinglesAddGameViewController: UIViewController {
                         self.currentuser = userWithFormattedRank
                         lbl_CurrentUser.text = self.currentuser
                         self.CurrentUser_Username_NoRank = norank
-                        
+                        self.CurrentUser_Email = uid!
                     }
                 }
             }
@@ -435,7 +424,7 @@ class SinglesAddGameViewController: UIViewController {
                
                     
               
-                 
+        print(GetTeamA_Skill())
                     
 
                     
@@ -513,10 +502,46 @@ class SinglesAddGameViewController: UIViewController {
 
     
    
+    func GetTeamA_Skill()
+    {
+        let db = Firestore.firestore()
+        let uid = Auth.auth().currentUser!.email
+        let query = db.collection("Agressv_Users").whereField("Email", isEqualTo: uid!)
+        
+        query.getDocuments { (querySnapshot, error) in
+            if error != nil {
+                print("error")
+            } else {
+                for document in querySnapshot!.documents {
+                    
+                    if let skill = document["Singles_Rank"] as? Double {
+                        self.Team_A_CurrentUser_Skill = skill
+                        print("Current User Skill is:")
+                        print(self.Team_A_CurrentUser_Skill)
+                        self.GetTeamB_Skill_OppOne()
+                    }
+                }}}}
     
     
-    
-   
+    func GetTeamB_Skill_OppOne()
+    {
+        let db = Firestore.firestore()
+        let uid = self.OppOneCellValue_NoRank
+        let query = db.collection("Agressv_Users").whereField("Username", isEqualTo: uid)
+        
+        query.getDocuments { (querySnapshot, error) in
+            if error != nil {
+                print("error")
+            } else {
+                for document in querySnapshot!.documents {
+                    
+                    if let skill = document["Singles_Rank"] as? Double {
+                        self.Team_B_OppOne_Skill = skill
+                        print("Opp One Skill is:")
+                        print(self.Team_B_OppOne_Skill)
+                     
+                    }
+                }}}}
     
     
    
@@ -566,24 +591,111 @@ class SinglesAddGameViewController: UIViewController {
     @IBAction func btn_Log(_ sender: UIButton) {
         
 
-//                let db = Firestore.firestore()
-//                let uid = Auth.auth().currentUser!.email
-//                let Game_ref = db.collection("Agressv_Games").document()
-             
-                
-                if self.WL_Selection == "W" {
+        let db = Firestore.firestore()
+        let CurrentUser_Ref = db.collection("Agressv_Users").whereField("Username", isEqualTo: CurrentUser_Username_NoRank)
+        let Opp1_Ref = db.collection("Agressv_Users").whereField("Username", isEqualTo: OppOneCellValue_NoRank)
+        let Game_Ref = db.collection("Agressv_Games")
+        
+        let CurrentUser_Games_Ref = db.collection("Agressv_Users").document(CurrentUser_Email)
+        let Opp1_Games_Ref = db.collection("Agressv_Users").document(selectedCellValueOppOneEmail)
+        
+                if self.WL_Selection == "W"
+        {
                     self.Selection_Opposite = "L"
                     
-                    }
+                    CurrentUser_Games_Ref.updateData([
+                       "Singles_Games_Wins": FieldValue.increment(Int64(1))])
+                        Opp1_Games_Ref.updateData([
+                              "Singles_Games_Losses": FieldValue.increment(Int64(1))])
+                    
+                    //do new stuff
+                    if Team_A_CurrentUser_Skill < Team_B_OppOne_Skill
+                            {
+                        let result = percentDifference(valueA: Team_A_CurrentUser_Skill, valueB: Team_B_OppOne_Skill)
+                        
+                        
+                                        // Execute the query
+                                        CurrentUser_Ref.getDocuments { (querySnapshot, error) in
+                                            if let error = error {
+                                                print("Error getting documents: \(error)")
+                                            } else {
+                                                for document in querySnapshot!.documents {
+                                                    // Update the "Doubles_Rank" field to "replace"
+                                                    db.collection("Agressv_Users").document(document.documentID).updateData(["Singles_Rank": result + self.Team_A_CurrentUser_Skill]) { error in
+                                                        if let error = error {
+                                                            print("Error updating document: \(error)")
+                                                        } else {
+                                                            print("Document \(document.documentID) successfully updated")
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                        
+                            }
+                    
+                     
+                    
+        }
                    
                 
                 
-                else if self.WL_Selection == "L"{
+                else if self.WL_Selection == "L"
+        {
                     
                     self.Selection_Opposite = "W"
+                    
+                    Opp1_Games_Ref.updateData([
+                       "Singles_Games_Wins": FieldValue.increment(Int64(1))])
                    
-                }
+                       CurrentUser_Games_Ref.updateData([
+                          "Singles_Games_Losses": FieldValue.increment(Int64(1))])
+                    
+                    //do new stuff
+                    if Team_B_OppOne_Skill < Team_A_CurrentUser_Skill
+                            {
+                        let result = percentDifference(valueA: Team_B_OppOne_Skill, valueB: Team_A_CurrentUser_Skill)
+                        
+                        
+                                        // Execute the query
+                                        Opp1_Ref.getDocuments { (querySnapshot, error) in
+                                            if let error = error {
+                                                print("Error getting documents: \(error)")
+                                            } else {
+                                                for document in querySnapshot!.documents {
+                                                    // Update the "Doubles_Rank" field to "replace"
+                                                    db.collection("Agressv_Users").document(document.documentID).updateData(["Singles_Rank": result + self.Team_B_OppOne_Skill]) { error in
+                                                        if let error = error {
+                                                            print("Error updating document: \(error)")
+                                                        } else {
+                                                            print("Document \(document.documentID) successfully updated")
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                        
+                            }
+                   
+        }
                 
+        
+        CurrentUser_Games_Ref.updateData([
+        "Singles_Games_Played": FieldValue.increment(Int64(1))])
+                    Opp1_Games_Ref.updateData([
+                    "Singles_Games_Played": FieldValue.increment(Int64(1))])
+        
+        // Insert data directly into Firestore
+        Game_Ref.addDocument(data: [
+            "Game_Creator":  self.CurrentUser_Email,
+            "Game_Creator_Username": self.CurrentUser_Username_NoRank,
+            "Game_Date": Date(),
+            "Game_Opponent_One": self.selectedCellValueOppOneEmail,
+            "Game_Opponent_One_Username": self.OppOneCellValue_NoRank,
+            "Game_Result": self.WL_Selection,
+            "Game_Result_Opposite_For_UserView": self.Selection_Opposite,
+            "Game_Type": "Singles"
+        ])
 
                             
                             let dialogMessage = UIAlertController(title: "Success!", message: "Your game has been logged.", preferredStyle: .alert)
@@ -666,7 +778,18 @@ class SinglesAddGameViewController: UIViewController {
         }
     }
     
+    
+    func percentDifference(valueA: Double, valueB: Double) -> Double {
+        let difference = abs(valueA - valueB)
+        let average = (valueA + valueB) / 2
+        let percentDifference = (difference / average) * 100
+        
+        // Return the result as a decimal
+           return (percentDifference / 100).rounded(toPlaces: 2)
+        
+    }
+    
+   
+    
 } //end of class
-
-
 

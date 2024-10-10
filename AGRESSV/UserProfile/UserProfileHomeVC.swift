@@ -457,16 +457,13 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
 
 
 
-
-
         func fetchRankDoubles() {
             let db = Firestore.firestore()
-         
-            
+
             self.userDataDictionary.removeAll()
 
             db.collection("Agressv_Users")
-                .order(by: "Doubles_Rank", descending: true)
+                .order(by: "Doubles_Rank", descending: false) // Order by ascending to get the lowest rank first
                 .getDocuments { (querySnapshot, error) in
                     if let error = error {
                         print("Error getting documents: \(error)")
@@ -474,49 +471,29 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
                         for document in querySnapshot!.documents {
                             let data = document.data()
                             let username = data["Username"] as! String
-
-                            if let score = data["Doubles_Rank"] as? Double {
-                                let roundedScore = (score * 100).rounded() / 100
-                                let weightedScore = roundedScore * self.Weighted_Score
-                                self.userDataDictionary[username, default: [:]]["weightedScore"] = (self.userDataDictionary[username]?["weightedScore"] ?? 0.0) + weightedScore
-                            }
-
-                            if let games = data["Doubles_Games_Played"] as? Double {
-                                let weightedGames = games * self.Weighted_GamesPlayed
-                                self.userDataDictionary[username, default: [:]]["weightedGames"] = (self.userDataDictionary[username]?["weightedGames"] ?? 0.0) + weightedGames
-                            }
-
-                            if let gamesPlayed = data["Doubles_Games_Played"] as? Double,
-                               gamesPlayed > 0 {
-                                let gamesWon = data["Doubles_Games_Wins"] as? Double ?? 0.0
-                                let winPercentage = ((gamesWon) / gamesPlayed * 100).rounded()
-                                let weightedWinPercentage = winPercentage * self.Weighted_WinPercentage / 100
-                                self.userDataDictionary[username, default: [:]]["weightedWinPercentage"] = (self.userDataDictionary[username]?["weightedWinPercentage"] ?? 0.0) + weightedWinPercentage
+                            
+                            // Store the user's rank directly
+                            if let rank = data["Doubles_Rank"] as? Double {
+                                self.userDataDictionary[username, default: [:]]["Doubles_Rank"] = rank
                             }
                         }
 
-                        // Calculate the Sum_Of_Weights for each username
-                        for (username, values) in self.userDataDictionary {
-                            let sumOfWeights = (values["weightedScore"] ?? 0.0) + (values["weightedGames"] ?? 0.0) + (values["weightedWinPercentage"] ?? 0.0)
-                            
-                            // Round the sumOfWeights to 2 decimal places
-                            let roundedSumOfWeights = (sumOfWeights * 100).rounded() / 100
-                            
-                            self.userDataDictionary[username]?["Sum_Of_Weights"] = roundedSumOfWeights
-                        }
-
-                        // Sort the usernames based on Sum_Of_Weights in descending order
-                        self.sortedUsernames = self.userDataDictionary.keys.sorted(by: { (username1, username2) -> Bool in
-                            return (self.userDataDictionary[username1]?["Sum_Of_Weights"] ?? 0.0) > (self.userDataDictionary[username2]?["Sum_Of_Weights"] ?? 0.0)
+                        // Sort usernames by the "Doubles_Rank" in ascending order
+                        self.sortedUsernames = self.userDataDictionary.keys.sorted(by: {
+                            (username1, username2) -> Bool in
+                            return (self.userDataDictionary[username1]?["Doubles_Rank"] as? Double ?? Double.greatestFiniteMagnitude) <
+                                   (self.userDataDictionary[username2]?["Doubles_Rank"] as? Double ?? Double.greatestFiniteMagnitude)
                         })
 
-                        // Add numerical order to each username
-                                       for (index, username) in self.sortedUsernames.enumerated() {
-                                           self.userDataDictionary[username]?["Numerical_Order"] = Double(index + 1)
-                                       }
+                        // Assign numerical order: the lowest rank gets the highest numerical value (1)
+                        for (index, username) in self.sortedUsernames.enumerated() {
+                            // The highest rank (lowest Doubles_Rank value) should get a numerical order of 1
+                            let numericalOrder = Double(self.sortedUsernames.count - index)
+                            self.userDataDictionary[username]?["Numerical_Order"] = numericalOrder
+                        }
                         
+                        // Update lbl_DoublesNerdData.text with the numerical order of the current player
                         if let numericalOrder = self.userDataDictionary[self.player]?["Numerical_Order"] {
-                            // Convert numericalOrder to Int
                             let numericalOrderInt = Int(numericalOrder)
                             self.lbl_DoublesNerdData.text = "D: \(numericalOrderInt)"
                         }
@@ -526,12 +503,11 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
 
         func fetchRankSingles() {
             let db = Firestore.firestore()
-           
-            
+
             self.userDataDictionarySingles.removeAll()
 
             db.collection("Agressv_Users")
-                .order(by: "Singles_Rank", descending: true)
+                .order(by: "Singles_Rank", descending: false) // Order by ascending to get the lowest rank first
                 .getDocuments { (querySnapshot, error) in
                     if let error = error {
                         print("Error getting documents: \(error)")
@@ -539,55 +515,41 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
                         for document in querySnapshot!.documents {
                             let data = document.data()
                             let username = data["Username"] as! String
-
-                            if let score = data["Singles_Rank"] as? Double {
-                                let roundedScore = (score * 100).rounded() / 100
-                                let weightedScore = roundedScore * self.Weighted_Score
-                                self.userDataDictionarySingles[username, default: [:]]["weightedScore"] = (self.userDataDictionarySingles[username]?["weightedScore"] ?? 0.0) + weightedScore
-                            }
-
-                            if let games = data["Singles_Games_Played"] as? Double {
-                                let weightedGames = games * self.Weighted_GamesPlayed
-                                self.userDataDictionarySingles[username, default: [:]]["weightedGames"] = (self.userDataDictionarySingles[username]?["weightedGames"] ?? 0.0) + weightedGames
-                            }
-
-                            if let gamesPlayed = data["Singles_Games_Played"] as? Double,
-                               gamesPlayed > 0 {
-                                let gamesWon = data["Singles_Games_Wins"] as? Double ?? 0.0
-                                let winPercentage = ((gamesWon) / gamesPlayed * 100).rounded()
-                                let weightedWinPercentage = winPercentage * self.Weighted_WinPercentage / 100
-                                self.userDataDictionarySingles[username, default: [:]]["weightedWinPercentage"] = (self.userDataDictionarySingles[username]?["weightedWinPercentage"] ?? 0.0) + weightedWinPercentage
+                            
+                            // Store the user's rank directly
+                            if let rank = data["Singles_Rank"] as? Double {
+                                self.userDataDictionary[username, default: [:]]["Singles_Rank"] = rank
                             }
                         }
 
-                        // Calculate the Sum_Of_Weights for each username
-                        for (username, values) in self.userDataDictionarySingles {
-                            let sumOfWeights = (values["weightedScore"] ?? 0.0) + (values["weightedGames"] ?? 0.0) + (values["weightedWinPercentage"] ?? 0.0)
-                            
-                            // Round the sumOfWeights to 2 decimal places
-                            let roundedSumOfWeights = (sumOfWeights * 100).rounded() / 100
-                            
-                            self.userDataDictionarySingles[username]?["Sum_Of_Weights"] = roundedSumOfWeights
-                        }
-
-                        // Sort the usernames based on Sum_Of_Weights in descending order
-                        self.sortedUsernamesSingles = self.userDataDictionarySingles.keys.sorted(by: { (username1, username2) -> Bool in
-                            return (self.userDataDictionarySingles[username1]?["Sum_Of_Weights"] ?? 0.0) > (self.userDataDictionarySingles[username2]?["Sum_Of_Weights"] ?? 0.0)
+                        // Sort usernames by the "Doubles_Rank" in ascending order
+                        self.sortedUsernames = self.userDataDictionary.keys.sorted(by: {
+                            (username1, username2) -> Bool in
+                            return (self.userDataDictionary[username1]?["Singles_Rank"] as? Double ?? Double.greatestFiniteMagnitude) <
+                                   (self.userDataDictionary[username2]?["Singles_Rank"] as? Double ?? Double.greatestFiniteMagnitude)
                         })
 
-                        // Add numerical order to each username
-                                       for (index, username) in self.sortedUsernamesSingles.enumerated() {
-                                           self.userDataDictionarySingles[username]?["Numerical_Order"] = Double(index + 1)
-                                       }
+                        // Assign numerical order: the lowest rank gets the highest numerical value (1)
+                        for (index, username) in self.sortedUsernames.enumerated() {
+                            // The highest rank (lowest Doubles_Rank value) should get a numerical order of 1
+                            let numericalOrder = Double(self.sortedUsernames.count - index)
+                            self.userDataDictionary[username]?["Numerical_Order"] = numericalOrder
+                        }
                         
-                        if let numericalOrder = self.userDataDictionarySingles[self.player]?["Numerical_Order"] {
-                            // Convert numericalOrder to Int
+                        // Update lbl_DoublesNerdData.text with the numerical order of the current player
+                        if let numericalOrder = self.userDataDictionary[self.player]?["Numerical_Order"] {
                             let numericalOrderInt = Int(numericalOrder)
                             self.lbl_SinglesNerdData.text = "S: \(numericalOrderInt)"
                         }
                     }
                 }
         }
+
+
+
+
+
+      
         
        
 
@@ -679,154 +641,152 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
         img_RedFangs.translatesAutoresizingMaskIntoConstraints = false
         //RUN BADGES QUERY
                 
-        func GetBadgeData() {
-            let db = Firestore.firestore()
-            let uid = Auth.auth().currentUser!.email
-            let docRef = db.collection("Agressv_Badges").document(uid!)
-            
-            docRef.getDocument { (document, error) in
-                if let err = error {
-                    print("Error getting documents: \(err)")
-                } else {
-                    print("\(document!.documentID) => \(String(describing: document!.data()))")
-                    
-                    let blueribbondoubles = document!.data()!["Blue_Ribbon_Doubles"] as! Int
-                    let blueribbonsingles = document!.data()!["Blue_Ribbon_Singles"] as! Int
-                    let blueribbonsum = blueribbondoubles + blueribbonsingles
-                    
-                    self.bluebadgecount = blueribbonsum
-                    self.redfangscount = 1
-                    self.goldribboncount = document!.data()!["Gold_Ribbon"] as! Int
-                    
-                    print(self.bluebadgecount)
-                    print(self.redfangscount)
-                    print(self.goldribboncount)
-                    
-                    self.lbl_bluebadgecount.text = String(self.bluebadgecount)
-                    self.lbl_goldribboncount.text = String(self.goldribboncount)
-                    self.lbl_redfangscount.text = String(self.redfangscount)
-                    
-                    //Doubles Wins number to string conversion
-                    if let GoldRibbonValue = document!.data()!["Gold_Ribbon"] as? Int,
-                    GoldRibbonValue > 0
-                        {
-                        self.HasAchievedGoldRibbon = true
-                        }
-                    
-                    if let blueRibbonDoublesValue = document!.data()!["Blue_Ribbon_Doubles"] as? Int,
-                        let blueRibbonSinglesValue = document!.data()!["Blue_Ribbon_Singles"] as? Int,
-                        blueRibbonDoublesValue > 0 || blueRibbonSinglesValue > 0 {
-                        self.HasAchievedBlueRibbon = true
-                    }
-                   
-//                    if let RedFangsValue = document!.data()!["Red_Fangs"] as? Int,
-//                       RedFangsValue > 0
+//        func GetBadgeData() {
+//            let db = Firestore.firestore()
+//            let uid = Auth.auth().currentUser!.email
+//            let docRef = db.collection("Agressv_Badges").document(uid!)
+//
+//            docRef.getDocument { (document, error) in
+//                if let err = error {
+//                    print("Error getting documents: \(err)")
+//                } else {
+//                    print("\(document!.documentID) => \(String(describing: document!.data()))")
+//
+//                    let blueribbondoubles = document!.data()!["Blue_Ribbon_Doubles"] as! Int
+//                    let blueribbonsingles = document!.data()!["Blue_Ribbon_Singles"] as! Int
+//                    let blueribbonsum = blueribbondoubles + blueribbonsingles
+//
+//                    self.bluebadgecount = blueribbonsum
+//                    self.redfangscount = 1
+//                    self.goldribboncount = document!.data()!["Gold_Ribbon"] as! Int
+//
+//                    print(self.bluebadgecount)
+//                    print(self.redfangscount)
+//                    print(self.goldribboncount)
+//
+//                    self.lbl_bluebadgecount.text = String(self.bluebadgecount)
+//                    self.lbl_goldribboncount.text = String(self.goldribboncount)
+//                    self.lbl_redfangscount.text = String(self.redfangscount)
+//
+//                    //Doubles Wins number to string conversion
+//                    if let GoldRibbonValue = document!.data()!["Gold_Ribbon"] as? Int,
+//                    GoldRibbonValue > 0
 //                        {
-//                        self.HasAchievedRedFangs = true
+//                        self.HasAchievedGoldRibbon = true
 //                        }
-                   
-                    
-                    if self.HasAchievedGoldRibbon {
-                        
-                        
-                        self.view.addSubview(img_GoldRibbon)
-                        
-                        NSLayoutConstraint.activate([
-                            img_GoldRibbon.topAnchor.constraint(equalTo: self.lbl_DoublesNerdData.bottomAnchor, constant: 20 * scalingFactor), // Anchor to the bottom of the view
-                            img_GoldRibbon.leadingAnchor.constraint(equalTo: self.lbl_DoublesNerdData.leadingAnchor, constant: 55 * scalingFactor),  // Anchor to the left of the view
-                            img_GoldRibbon.widthAnchor.constraint(equalToConstant: 25 * scalingFactor),
-                            img_GoldRibbon.heightAnchor.constraint(equalToConstant: 25 * scalingFactor)
-                        ])
-                        
-                        let baseFontSize: CGFloat = 8.0 // Set your base font size
-                        let adjustedFontSize = baseFontSize * scalingFactor
-
-                 
-                        self.lbl_goldribboncount.font = UIFont.systemFont(ofSize: adjustedFontSize)
-                        
-                        self.lbl_goldribboncount.textColor = UIColor.black
-                        self.lbl_goldribboncount.translatesAutoresizingMaskIntoConstraints = false
-                        print(self.lbl_goldribboncount)
-                        self.view.addSubview(self.lbl_goldribboncount)
-                        
-                        NSLayoutConstraint.activate([
-                            self.lbl_goldribboncount.bottomAnchor.constraint(equalTo: img_GoldRibbon.topAnchor),
-                            self.lbl_goldribboncount.leadingAnchor.constraint(equalTo: img_GoldRibbon.trailingAnchor, constant: -2 * scalingFactor),
-                            self.lbl_goldribboncount.widthAnchor.constraint(equalToConstant: 10 * scalingFactor),
-                            self.lbl_goldribboncount.heightAnchor.constraint(equalToConstant: 10 * scalingFactor)
-                        ])
-                        
-                    }
-                    if self.HasAchievedBlueRibbon {
-                        
-                        
-                        
-                        self.view.addSubview(img_BlueRibbon)
-                
-                        NSLayoutConstraint.activate([
-                            img_BlueRibbon.topAnchor.constraint(equalTo: self.lbl_DoublesNerdData.bottomAnchor, constant: 20 * scalingFactor),
-                            img_BlueRibbon.leadingAnchor.constraint(equalTo: self.lbl_DoublesNerdData.leadingAnchor, constant: -5 * scalingFactor),
-                            img_BlueRibbon.widthAnchor.constraint(equalToConstant: 25 * scalingFactor),
-                            img_BlueRibbon.heightAnchor.constraint(equalToConstant: 25 * scalingFactor)
-                        ])
-                        
-                        let baseFontSize: CGFloat = 8.0 // Set your base font size
-                        let adjustedFontSize = baseFontSize * scalingFactor
-
-                 
-                        self.lbl_bluebadgecount.font = UIFont.systemFont(ofSize: adjustedFontSize)
-                        
-                        self.lbl_bluebadgecount.textColor = UIColor.black
-                        self.lbl_bluebadgecount.translatesAutoresizingMaskIntoConstraints = false
-                        print(self.lbl_bluebadgecount)
-                        self.view.addSubview(self.lbl_bluebadgecount)
-                        
-                        NSLayoutConstraint.activate([
-                            self.lbl_bluebadgecount.bottomAnchor.constraint(equalTo: img_BlueRibbon.topAnchor),
-                            self.lbl_bluebadgecount.leadingAnchor.constraint(equalTo: img_BlueRibbon.trailingAnchor, constant: -2 * scalingFactor),
-                            self.lbl_bluebadgecount.widthAnchor.constraint(equalToConstant: 10 * scalingFactor),
-                            self.lbl_bluebadgecount.heightAnchor.constraint(equalToConstant: 10 * scalingFactor)
-                        ])
-                    }
-                    
-                    if self.UserEarnedRedFangs {
-                        //put red fangs top right
-                        self.view.addSubview(img_RedFangs)
-                        
-                        // Position the label above the NewDoublesRankLabel
-                        NSLayoutConstraint.activate([
-                            img_RedFangs.topAnchor.constraint(equalTo: self.lbl_DoublesNerdData.bottomAnchor, constant: 20 * scalingFactor),
-                            img_RedFangs.leadingAnchor.constraint(equalTo: self.lbl_DoublesNerdData.leadingAnchor, constant: 25 * scalingFactor),
-                            img_RedFangs.widthAnchor.constraint(equalToConstant: 25 * scalingFactor),
-                            img_RedFangs.heightAnchor.constraint(equalToConstant: 25 * scalingFactor)
-                        ])
-                        
-                        let baseFontSize: CGFloat = 8.0 // Set your base font size
-                        let adjustedFontSize = baseFontSize * scalingFactor
-
-                 
-                        self.lbl_redfangscount.font = UIFont.systemFont(ofSize: adjustedFontSize)
-                        
-                        self.lbl_redfangscount.textColor = UIColor.black
-                        self.lbl_redfangscount.translatesAutoresizingMaskIntoConstraints = false
-                        print(self.lbl_redfangscount)
-                        self.view.addSubview(self.lbl_redfangscount)
-                        
-                        NSLayoutConstraint.activate([
-                            self.lbl_redfangscount.bottomAnchor.constraint(equalTo: img_RedFangs.topAnchor),
-                            self.lbl_redfangscount.leadingAnchor.constraint(equalTo: img_RedFangs.trailingAnchor, constant: -2 * scalingFactor),
-                            self.lbl_redfangscount.widthAnchor.constraint(equalToConstant: 10 * scalingFactor),
-                            self.lbl_redfangscount.heightAnchor.constraint(equalToConstant: 10 * scalingFactor)
-                        ])
-                    }
-                }
-                
-            }
-            
-        }
-        findUserGames {
-            GetBadgeData()
-        }
+//
+//                    if let blueRibbonDoublesValue = document!.data()!["Blue_Ribbon_Doubles"] as? Int,
+//                        let blueRibbonSinglesValue = document!.data()!["Blue_Ribbon_Singles"] as? Int,
+//                        blueRibbonDoublesValue > 0 || blueRibbonSinglesValue > 0 {
+//                        self.HasAchievedBlueRibbon = true
+//                    }
+//
+////                    if let RedFangsValue = document!.data()!["Red_Fangs"] as? Int,
+////                       RedFangsValue > 0
+////                        {
+////                        self.HasAchievedRedFangs = true
+////                        }
+//
+//
+//                    if self.HasAchievedGoldRibbon {
+//
+//
+//                        self.view.addSubview(img_GoldRibbon)
+//
+//                        NSLayoutConstraint.activate([
+//                            img_GoldRibbon.topAnchor.constraint(equalTo: self.lbl_DoublesNerdData.bottomAnchor, constant: 20 * scalingFactor), // Anchor to the bottom of the view
+//                            img_GoldRibbon.leadingAnchor.constraint(equalTo: self.lbl_DoublesNerdData.leadingAnchor, constant: 55 * scalingFactor),  // Anchor to the left of the view
+//                            img_GoldRibbon.widthAnchor.constraint(equalToConstant: 25 * scalingFactor),
+//                            img_GoldRibbon.heightAnchor.constraint(equalToConstant: 25 * scalingFactor)
+//                        ])
+//
+//                        let baseFontSize: CGFloat = 8.0 // Set your base font size
+//                        let adjustedFontSize = baseFontSize * scalingFactor
+//
+//
+//                        self.lbl_goldribboncount.font = UIFont.systemFont(ofSize: adjustedFontSize)
+//
+//                        self.lbl_goldribboncount.textColor = UIColor.black
+//                        self.lbl_goldribboncount.translatesAutoresizingMaskIntoConstraints = false
+//                        print(self.lbl_goldribboncount)
+//                        self.view.addSubview(self.lbl_goldribboncount)
+//
+//                        NSLayoutConstraint.activate([
+//                            self.lbl_goldribboncount.bottomAnchor.constraint(equalTo: img_GoldRibbon.topAnchor),
+//                            self.lbl_goldribboncount.leadingAnchor.constraint(equalTo: img_GoldRibbon.trailingAnchor, constant: -2 * scalingFactor),
+//                            self.lbl_goldribboncount.widthAnchor.constraint(equalToConstant: 10 * scalingFactor),
+//                            self.lbl_goldribboncount.heightAnchor.constraint(equalToConstant: 10 * scalingFactor)
+//                        ])
+//
+//                    }
+//                    if self.HasAchievedBlueRibbon {
+//
+//
+//
+//                        self.view.addSubview(img_BlueRibbon)
+//
+//                        NSLayoutConstraint.activate([
+//                            img_BlueRibbon.topAnchor.constraint(equalTo: self.lbl_DoublesNerdData.bottomAnchor, constant: 20 * scalingFactor),
+//                            img_BlueRibbon.leadingAnchor.constraint(equalTo: self.lbl_DoublesNerdData.leadingAnchor, constant: -5 * scalingFactor),
+//                            img_BlueRibbon.widthAnchor.constraint(equalToConstant: 25 * scalingFactor),
+//                            img_BlueRibbon.heightAnchor.constraint(equalToConstant: 25 * scalingFactor)
+//                        ])
+//
+//                        let baseFontSize: CGFloat = 8.0 // Set your base font size
+//                        let adjustedFontSize = baseFontSize * scalingFactor
+//
+//
+//                        self.lbl_bluebadgecount.font = UIFont.systemFont(ofSize: adjustedFontSize)
+//
+//                        self.lbl_bluebadgecount.textColor = UIColor.black
+//                        self.lbl_bluebadgecount.translatesAutoresizingMaskIntoConstraints = false
+//                        print(self.lbl_bluebadgecount)
+//                        self.view.addSubview(self.lbl_bluebadgecount)
+//
+//                        NSLayoutConstraint.activate([
+//                            self.lbl_bluebadgecount.bottomAnchor.constraint(equalTo: img_BlueRibbon.topAnchor),
+//                            self.lbl_bluebadgecount.leadingAnchor.constraint(equalTo: img_BlueRibbon.trailingAnchor, constant: -2 * scalingFactor),
+//                            self.lbl_bluebadgecount.widthAnchor.constraint(equalToConstant: 10 * scalingFactor),
+//                            self.lbl_bluebadgecount.heightAnchor.constraint(equalToConstant: 10 * scalingFactor)
+//                        ])
+//                    }
+//
+//                    if self.UserEarnedRedFangs {
+//                        //put red fangs top right
+//                        self.view.addSubview(img_RedFangs)
+//
+//                        // Position the label above the NewDoublesRankLabel
+//                        NSLayoutConstraint.activate([
+//                            img_RedFangs.topAnchor.constraint(equalTo: self.lbl_DoublesNerdData.bottomAnchor, constant: 20 * scalingFactor),
+//                            img_RedFangs.leadingAnchor.constraint(equalTo: self.lbl_DoublesNerdData.leadingAnchor, constant: 25 * scalingFactor),
+//                            img_RedFangs.widthAnchor.constraint(equalToConstant: 25 * scalingFactor),
+//                            img_RedFangs.heightAnchor.constraint(equalToConstant: 25 * scalingFactor)
+//                        ])
+//
+//                        let baseFontSize: CGFloat = 8.0 // Set your base font size
+//                        let adjustedFontSize = baseFontSize * scalingFactor
+//
+//
+//                        self.lbl_redfangscount.font = UIFont.systemFont(ofSize: adjustedFontSize)
+//
+//                        self.lbl_redfangscount.textColor = UIColor.black
+//                        self.lbl_redfangscount.translatesAutoresizingMaskIntoConstraints = false
+//                        print(self.lbl_redfangscount)
+//                        self.view.addSubview(self.lbl_redfangscount)
+//
+//                        NSLayoutConstraint.activate([
+//                            self.lbl_redfangscount.bottomAnchor.constraint(equalTo: img_RedFangs.topAnchor),
+//                            self.lbl_redfangscount.leadingAnchor.constraint(equalTo: img_RedFangs.trailingAnchor, constant: -2 * scalingFactor),
+//                            self.lbl_redfangscount.widthAnchor.constraint(equalToConstant: 10 * scalingFactor),
+//                            self.lbl_redfangscount.heightAnchor.constraint(equalToConstant: 10 * scalingFactor)
+//                        ])
+//                    }
+//                }
+//
+//            }
+//
+//        }
+        
         
         
         let fontSize: CGFloat = 25.0 // Set your default font size
@@ -998,27 +958,7 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
                     
                     self.lbl_testcount.layer.zPosition = 3
                     
-//                    // Check if gaugeactualcount is greater than or equal to 32
-//                    if self.gaugeactualcount >= 14 {
-//
-//
-//
-//                        // Create an image view for the "Fire" image
-//                        let fireImage = UIImageView(image: UIImage(named: "Fire"))
-//                        fireImage.contentMode = .scaleAspectFit // Adjust content mode as needed
-//                        fireImage.translatesAutoresizingMaskIntoConstraints = false // Enable Auto Layout
-//
-//                        // Add the "Fire" image as a subview
-//                        self.view.addSubview(fireImage)
-//
-//                        // Define Auto Layout constraints to position and scale the image over the word "fire"
-//                        NSLayoutConstraint.activate([
-//                            fireImage.trailingAnchor.constraint(equalTo: backgroundImage.trailingAnchor, constant: -15 * scalingFactor),
-//                            fireImage.bottomAnchor.constraint(equalTo: self.lbl_testcount.bottomAnchor, constant: 5 * scalingFactor),
-//                            fireImage.widthAnchor.constraint(equalToConstant: 50 * scalingFactor), // Set the width to 10
-//                            fireImage.heightAnchor.constraint(equalToConstant: 50 * scalingFactor), // Set the height to 10
-//                        ])
-//                    }
+
                     
                     let labelSize: CGFloat = 80.0
                     
@@ -1576,211 +1516,211 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
         
         
         
-        func GetHighScores() {
-           
-            let agressvUsersRef = db.collection("Agressv_Users")
-          
-
-            // Query to get the documents with max Doubles_Rank and max Singles_Rank
-            agressvUsersRef
-                .order(by: "Doubles_Rank", descending: true)
-                .limit(to: 1)
-                .getDocuments { (doublesRankQuerySnapshot, error) in
-                    if let err = error {
-                        print("Error getting documents: \(err)")
-                    } else {
-                        let maxDoublesRank = doublesRankQuerySnapshot?.documents.first?["Doubles_Rank"] as? Double
-                        let roundedValue = round(maxDoublesRank! * 10) / 10.0
-                        
-                        
-                        self.Highest_Score_Doubles = roundedValue
-                        print(self.Highest_Score_Doubles)
-                        // Query to get the documents with max Singles_Rank
-                        agressvUsersRef
-                            .order(by: "Singles_Rank", descending: true)
-                            .limit(to: 1)
-                            .getDocuments { (singlesRankQuerySnapshot, error) in
-                                if let err = error {
-                                    print("Error getting documents: \(err)")
-                                } else {
-                                    let maxSinglesRank = singlesRankQuerySnapshot?.documents.first?["Singles_Rank"] as? Double
-                                    let roundedValueSingles = round(maxSinglesRank! * 10) / 10.0
-                                    
-                                    self.Highest_Score_Singles = roundedValueSingles
-                                    print(self.Highest_Score_Singles)
-                                    
-                                    
-                                    
-                                    // Now you have the highest score in the variable Highest_Score
-                                    if self.Highest_Score_Doubles > 8.5 {
-                                        if
-                                            self.Player_DoublesRank == self.Highest_Score_Doubles
-                                        {
-                                            
-                                            
-                                            //Adornment for blue ribbon
-
-                                           // self.NewDoublesRankLabel.backgroundColor = UIColor.mustardYellow()
-                                            self.lbl_CurrentHighestScore.text = "Pro Level"
-                                            self.lbl_CurrentHighestScore.textColor = UIColor.mustardYellow()
-                                            
-                                            self.lbl_CurrentHighestScore.translatesAutoresizingMaskIntoConstraints = false // Enable Auto Layout
-                                            self.lbl_CurrentHighestScore.numberOfLines = 0 // Allow multiple lines
-                                            // Add the label to the view hierarchy
-                                            self.view.addSubview(self.lbl_CurrentHighestScore)
-                                            
-                                            let baseFontSize: CGFloat = 12.0 // Set your base font size
-                                            let adjustedFontSize = baseFontSize * scalingFactor
-
-                                            // Set the font size for lbl_Playometer
-                                            self.lbl_CurrentHighestScore.font = UIFont.systemFont(ofSize: adjustedFontSize)
-                                            
-
-                                            
-                                            // Define Auto Layout constraints to position and allow the label to expand its width based on content
-                                                    NSLayoutConstraint.activate([
-                                                        self.lbl_CurrentHighestScore.leadingAnchor.constraint(equalTo: self.NewDoublesRankLabel.leadingAnchor, constant: 15 * scalingFactor),
-                                                        self.lbl_CurrentHighestScore.topAnchor.constraint(equalTo: self.NewDoublesRankLabel.bottomAnchor, constant: 3 * scalingFactor),
-                                                        self.lbl_CurrentHighestScore.heightAnchor.constraint(equalToConstant: 20 * scalingFactor),
-                                                        self.lbl_CurrentHighestScore.widthAnchor.constraint(equalToConstant: 200 * scalingFactor)// Adjust the reference height as needed
-                                                    ])
-                                            
-                                        
-                                        
-                                        }
-                                        else
-                                        {
-                                            print("HIGHEST SCORE IS GREATER THAN 8.5 BUUTTT PLAYER IS NOT EVALUATING TO IT")
-                                        }
-                                    }
-                                    else
-                                    {
-                                        print("HIGHEST SCORE NOT EVALUATING TO > 8.5")
-                                    }
-                                    
-                                    
-                                    if self.Highest_Score_Singles > 8.5 {
-                                        if
-                                            self.Player_SinglesRank == self.Highest_Score_Singles
-                                        {
-                                            
-                                            //Adornment for blue ribbon
-
-                                            //self.NewSinglesRankLabel.backgroundColor = UIColor.mustardYellow()
-                                            self.lbl_CurrentHighestScoreSingles.text = "Pro Level"
-                                            self.lbl_CurrentHighestScoreSingles.textColor = UIColor.mustardYellow()
-                                            
-                                            self.lbl_CurrentHighestScoreSingles.translatesAutoresizingMaskIntoConstraints = false // Enable Auto Layout
-                                            self.lbl_CurrentHighestScoreSingles.numberOfLines = 0 // Allow multiple lines
-                                            // Add the label to the view hierarchy
-                                            self.view.addSubview(self.lbl_CurrentHighestScoreSingles)
-                                            
-                                            let baseFontSize: CGFloat = 12.0 // Set your base font size
-                                            let adjustedFontSize = baseFontSize * scalingFactor
-
-                                            // Set the font size for lbl_Playometer
-                                            self.lbl_CurrentHighestScoreSingles.font = UIFont.systemFont(ofSize: adjustedFontSize)
-                                            
-
-                                            
-                                            // Define Auto Layout constraints to position and allow the label to expand its width based on content
-                                                    NSLayoutConstraint.activate([
-                                                        self.lbl_CurrentHighestScoreSingles.leadingAnchor.constraint(equalTo: self.NewSinglesRankLabel.leadingAnchor, constant: 15 * scalingFactor),
-                                                        self.lbl_CurrentHighestScoreSingles.topAnchor.constraint(equalTo: self.NewSinglesRankLabel.bottomAnchor, constant: 3 * scalingFactor),
-                                                        self.lbl_CurrentHighestScoreSingles.heightAnchor.constraint(equalToConstant: 20 * scalingFactor),
-                                                        self.lbl_CurrentHighestScoreSingles.widthAnchor.constraint(equalToConstant: 200 * scalingFactor)// Adjust the reference height as needed
-                                                    ])
-                                            
-                                           
-                                            
-                                        }
-                                        else
-                                        {
-                                            print("HIGHEST SCORE IS GREATER THAN 8.5 BUUTTT PLAYER IS NOT EVALUATING TO IT")
-                                        }
-                                    }
-                                    else
-                                    {
-                                        print("HIGHEST SCORE NOT EVALUATING TO > 8.5")
-                                    }
-                                    
-                                    if self.Highest_Score_Doubles > 8.5
-                                    {
-                                        if self.Highest_Score_Singles > 8.5
-                                        {
-                                            
-                                        
-                                        if self.Highest_Score_Doubles == self.Player_DoublesRank
-                                            {
-                                            if self.Highest_Score_Singles == self.Player_SinglesRank
-                                                    {
-                                                //Adornment for blue ribbon
-
-                                                self.NewDoublesRankLabel.backgroundColor = UIColor.mustardYellow()
-                                                self.lbl_CurrentHighestScore.text = "Highest Score!"
-                                                self.lbl_CurrentHighestScore.textColor = UIColor.mustardYellow()
-                                                
-                                                self.lbl_CurrentHighestScore.translatesAutoresizingMaskIntoConstraints = false // Enable Auto Layout
-                                                self.lbl_CurrentHighestScore.numberOfLines = 0 // Allow multiple lines
-                                                // Add the label to the view hierarchy
-                                                self.view.addSubview(self.lbl_CurrentHighestScore)
-                                                
-                                                let baseFontSize: CGFloat = 12.0 // Set your base font size
-                                                let adjustedFontSize = baseFontSize * scalingFactor
-
-                                                // Set the font size for lbl_Playometer
-                                                self.lbl_CurrentHighestScore.font = UIFont.systemFont(ofSize: adjustedFontSize)
-                                                
-
-                                                
-                                                // Define Auto Layout constraints to position and allow the label to expand its width based on content
-                                                        NSLayoutConstraint.activate([
-                                                            self.lbl_CurrentHighestScore.leadingAnchor.constraint(equalTo: self.NewDoublesRankLabel.leadingAnchor),
-                                                            self.lbl_CurrentHighestScore.topAnchor.constraint(equalTo: self.NewDoublesRankLabel.bottomAnchor, constant: 3 * scalingFactor),
-                                                            self.lbl_CurrentHighestScore.heightAnchor.constraint(equalToConstant: 20 * scalingFactor),
-                                                            self.lbl_CurrentHighestScore.widthAnchor.constraint(equalToConstant: 200 * scalingFactor)// Adjust the reference height as needed
-                                                        ])
-                                                
-                                                //Adornment for blue ribbon
-
-                                                self.NewSinglesRankLabel.backgroundColor = UIColor.mustardYellow()
-                                                self.lbl_CurrentHighestScoreSingles.text = "Highest Score!"
-                                                self.lbl_CurrentHighestScoreSingles.textColor = UIColor.mustardYellow()
-                                                
-                                                self.lbl_CurrentHighestScoreSingles.translatesAutoresizingMaskIntoConstraints = false // Enable Auto Layout
-                                                self.lbl_CurrentHighestScoreSingles.numberOfLines = 0 // Allow multiple lines
-                                                // Add the label to the view hierarchy
-                                                self.view.addSubview(self.lbl_CurrentHighestScoreSingles)
-                                                
-                                                let baseFontSize_singles: CGFloat = 12.0 // Set your base font size
-                                                let adjustedFontSize_singles = baseFontSize_singles * scalingFactor
-
-                                                // Set the font size for lbl_Playometer
-                                                self.lbl_CurrentHighestScoreSingles.font = UIFont.systemFont(ofSize: adjustedFontSize_singles)
-                                                
-
-                                                
-                                                // Define Auto Layout constraints to position and allow the label to expand its width based on content
-                                                        NSLayoutConstraint.activate([
-                                                            self.lbl_CurrentHighestScoreSingles.leadingAnchor.constraint(equalTo: self.NewSinglesRankLabel.leadingAnchor),
-                                                            self.lbl_CurrentHighestScoreSingles.topAnchor.constraint(equalTo: self.NewSinglesRankLabel.bottomAnchor, constant: 3 * scalingFactor),
-                                                            self.lbl_CurrentHighestScoreSingles.heightAnchor.constraint(equalToConstant: 20 * scalingFactor),
-                                                            self.lbl_CurrentHighestScoreSingles.widthAnchor.constraint(equalToConstant: 200 * scalingFactor)// Adjust the reference height as needed
-                                                        ])
-                                               
-                                                    }
-                                           
-                                            }
-                                    }
-                                    }
-                                    else {}
-                                }
-                            }
-                    }
-                }
-        }
-
-        print(GetHighScores())
+//        func GetHighScores() {
+//
+//            let agressvUsersRef = db.collection("Agressv_Users")
+//
+//
+//            // Query to get the documents with max Doubles_Rank and max Singles_Rank
+//            agressvUsersRef
+//                .order(by: "Doubles_Rank", descending: true)
+//                .limit(to: 1)
+//                .getDocuments { (doublesRankQuerySnapshot, error) in
+//                    if let err = error {
+//                        print("Error getting documents: \(err)")
+//                    } else {
+//                        let maxDoublesRank = doublesRankQuerySnapshot?.documents.first?["Doubles_Rank"] as? Double
+//                        let roundedValue = round(maxDoublesRank! * 10) / 10.0
+//
+//
+//                        self.Highest_Score_Doubles = roundedValue
+//                        print(self.Highest_Score_Doubles)
+//                        // Query to get the documents with max Singles_Rank
+//                        agressvUsersRef
+//                            .order(by: "Singles_Rank", descending: true)
+//                            .limit(to: 1)
+//                            .getDocuments { (singlesRankQuerySnapshot, error) in
+//                                if let err = error {
+//                                    print("Error getting documents: \(err)")
+//                                } else {
+//                                    let maxSinglesRank = singlesRankQuerySnapshot?.documents.first?["Singles_Rank"] as? Double
+//                                    let roundedValueSingles = round(maxSinglesRank! * 10) / 10.0
+//
+//                                    self.Highest_Score_Singles = roundedValueSingles
+//                                    print(self.Highest_Score_Singles)
+//
+//
+//
+//                                    // Now you have the highest score in the variable Highest_Score
+//                                    if self.Highest_Score_Doubles > 8.5 {
+//                                        if
+//                                            self.Player_DoublesRank == self.Highest_Score_Doubles
+//                                        {
+//
+//
+//                                            //Adornment for blue ribbon
+//
+//                                           // self.NewDoublesRankLabel.backgroundColor = UIColor.mustardYellow()
+//                                            self.lbl_CurrentHighestScore.text = "Pro Level"
+//                                            self.lbl_CurrentHighestScore.textColor = UIColor.mustardYellow()
+//
+//                                            self.lbl_CurrentHighestScore.translatesAutoresizingMaskIntoConstraints = false // Enable Auto Layout
+//                                            self.lbl_CurrentHighestScore.numberOfLines = 0 // Allow multiple lines
+//                                            // Add the label to the view hierarchy
+//                                            self.view.addSubview(self.lbl_CurrentHighestScore)
+//
+//                                            let baseFontSize: CGFloat = 12.0 // Set your base font size
+//                                            let adjustedFontSize = baseFontSize * scalingFactor
+//
+//                                            // Set the font size for lbl_Playometer
+//                                            self.lbl_CurrentHighestScore.font = UIFont.systemFont(ofSize: adjustedFontSize)
+//
+//
+//
+//                                            // Define Auto Layout constraints to position and allow the label to expand its width based on content
+//                                                    NSLayoutConstraint.activate([
+//                                                        self.lbl_CurrentHighestScore.leadingAnchor.constraint(equalTo: self.NewDoublesRankLabel.leadingAnchor, constant: 15 * scalingFactor),
+//                                                        self.lbl_CurrentHighestScore.topAnchor.constraint(equalTo: self.NewDoublesRankLabel.bottomAnchor, constant: 3 * scalingFactor),
+//                                                        self.lbl_CurrentHighestScore.heightAnchor.constraint(equalToConstant: 20 * scalingFactor),
+//                                                        self.lbl_CurrentHighestScore.widthAnchor.constraint(equalToConstant: 200 * scalingFactor)// Adjust the reference height as needed
+//                                                    ])
+//
+//
+//
+//                                        }
+//                                        else
+//                                        {
+//                                            print("HIGHEST SCORE IS GREATER THAN 8.5 BUUTTT PLAYER IS NOT EVALUATING TO IT")
+//                                        }
+//                                    }
+//                                    else
+//                                    {
+//                                        print("HIGHEST SCORE NOT EVALUATING TO > 8.5")
+//                                    }
+//
+//
+//                                    if self.Highest_Score_Singles > 8.5 {
+//                                        if
+//                                            self.Player_SinglesRank == self.Highest_Score_Singles
+//                                        {
+//
+//                                            //Adornment for blue ribbon
+//
+//                                            //self.NewSinglesRankLabel.backgroundColor = UIColor.mustardYellow()
+//                                            self.lbl_CurrentHighestScoreSingles.text = "Pro Level"
+//                                            self.lbl_CurrentHighestScoreSingles.textColor = UIColor.mustardYellow()
+//
+//                                            self.lbl_CurrentHighestScoreSingles.translatesAutoresizingMaskIntoConstraints = false // Enable Auto Layout
+//                                            self.lbl_CurrentHighestScoreSingles.numberOfLines = 0 // Allow multiple lines
+//                                            // Add the label to the view hierarchy
+//                                            self.view.addSubview(self.lbl_CurrentHighestScoreSingles)
+//
+//                                            let baseFontSize: CGFloat = 12.0 // Set your base font size
+//                                            let adjustedFontSize = baseFontSize * scalingFactor
+//
+//                                            // Set the font size for lbl_Playometer
+//                                            self.lbl_CurrentHighestScoreSingles.font = UIFont.systemFont(ofSize: adjustedFontSize)
+//
+//
+//
+//                                            // Define Auto Layout constraints to position and allow the label to expand its width based on content
+//                                                    NSLayoutConstraint.activate([
+//                                                        self.lbl_CurrentHighestScoreSingles.leadingAnchor.constraint(equalTo: self.NewSinglesRankLabel.leadingAnchor, constant: 15 * scalingFactor),
+//                                                        self.lbl_CurrentHighestScoreSingles.topAnchor.constraint(equalTo: self.NewSinglesRankLabel.bottomAnchor, constant: 3 * scalingFactor),
+//                                                        self.lbl_CurrentHighestScoreSingles.heightAnchor.constraint(equalToConstant: 20 * scalingFactor),
+//                                                        self.lbl_CurrentHighestScoreSingles.widthAnchor.constraint(equalToConstant: 200 * scalingFactor)// Adjust the reference height as needed
+//                                                    ])
+//
+//
+//
+//                                        }
+//                                        else
+//                                        {
+//                                            print("HIGHEST SCORE IS GREATER THAN 8.5 BUUTTT PLAYER IS NOT EVALUATING TO IT")
+//                                        }
+//                                    }
+//                                    else
+//                                    {
+//                                        print("HIGHEST SCORE NOT EVALUATING TO > 8.5")
+//                                    }
+//
+//                                    if self.Highest_Score_Doubles > 8.5
+//                                    {
+//                                        if self.Highest_Score_Singles > 8.5
+//                                        {
+//
+//
+//                                        if self.Highest_Score_Doubles == self.Player_DoublesRank
+//                                            {
+//                                            if self.Highest_Score_Singles == self.Player_SinglesRank
+//                                                    {
+//                                                //Adornment for blue ribbon
+//
+//                                                self.NewDoublesRankLabel.backgroundColor = UIColor.mustardYellow()
+//                                                self.lbl_CurrentHighestScore.text = "Highest Score!"
+//                                                self.lbl_CurrentHighestScore.textColor = UIColor.mustardYellow()
+//
+//                                                self.lbl_CurrentHighestScore.translatesAutoresizingMaskIntoConstraints = false // Enable Auto Layout
+//                                                self.lbl_CurrentHighestScore.numberOfLines = 0 // Allow multiple lines
+//                                                // Add the label to the view hierarchy
+//                                                self.view.addSubview(self.lbl_CurrentHighestScore)
+//
+//                                                let baseFontSize: CGFloat = 12.0 // Set your base font size
+//                                                let adjustedFontSize = baseFontSize * scalingFactor
+//
+//                                                // Set the font size for lbl_Playometer
+//                                                self.lbl_CurrentHighestScore.font = UIFont.systemFont(ofSize: adjustedFontSize)
+//
+//
+//
+//                                                // Define Auto Layout constraints to position and allow the label to expand its width based on content
+//                                                        NSLayoutConstraint.activate([
+//                                                            self.lbl_CurrentHighestScore.leadingAnchor.constraint(equalTo: self.NewDoublesRankLabel.leadingAnchor),
+//                                                            self.lbl_CurrentHighestScore.topAnchor.constraint(equalTo: self.NewDoublesRankLabel.bottomAnchor, constant: 3 * scalingFactor),
+//                                                            self.lbl_CurrentHighestScore.heightAnchor.constraint(equalToConstant: 20 * scalingFactor),
+//                                                            self.lbl_CurrentHighestScore.widthAnchor.constraint(equalToConstant: 200 * scalingFactor)// Adjust the reference height as needed
+//                                                        ])
+//
+//                                                //Adornment for blue ribbon
+//
+//                                                self.NewSinglesRankLabel.backgroundColor = UIColor.mustardYellow()
+//                                                self.lbl_CurrentHighestScoreSingles.text = "Highest Score!"
+//                                                self.lbl_CurrentHighestScoreSingles.textColor = UIColor.mustardYellow()
+//
+//                                                self.lbl_CurrentHighestScoreSingles.translatesAutoresizingMaskIntoConstraints = false // Enable Auto Layout
+//                                                self.lbl_CurrentHighestScoreSingles.numberOfLines = 0 // Allow multiple lines
+//                                                // Add the label to the view hierarchy
+//                                                self.view.addSubview(self.lbl_CurrentHighestScoreSingles)
+//
+//                                                let baseFontSize_singles: CGFloat = 12.0 // Set your base font size
+//                                                let adjustedFontSize_singles = baseFontSize_singles * scalingFactor
+//
+//                                                // Set the font size for lbl_Playometer
+//                                                self.lbl_CurrentHighestScoreSingles.font = UIFont.systemFont(ofSize: adjustedFontSize_singles)
+//
+//
+//
+//                                                // Define Auto Layout constraints to position and allow the label to expand its width based on content
+//                                                        NSLayoutConstraint.activate([
+//                                                            self.lbl_CurrentHighestScoreSingles.leadingAnchor.constraint(equalTo: self.NewSinglesRankLabel.leadingAnchor),
+//                                                            self.lbl_CurrentHighestScoreSingles.topAnchor.constraint(equalTo: self.NewSinglesRankLabel.bottomAnchor, constant: 3 * scalingFactor),
+//                                                            self.lbl_CurrentHighestScoreSingles.heightAnchor.constraint(equalToConstant: 20 * scalingFactor),
+//                                                            self.lbl_CurrentHighestScoreSingles.widthAnchor.constraint(equalToConstant: 200 * scalingFactor)// Adjust the reference height as needed
+//                                                        ])
+//
+//                                                    }
+//
+//                                            }
+//                                    }
+//                                    }
+//                                    else {}
+//                                }
+//                            }
+//                    }
+//                }
+//        }
+//
+//        print(GetHighScores())
         
         
         
@@ -1843,54 +1783,7 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
     }
    
         
-    func findUserGames(completion: @escaping () -> Void) {
-        let db = Firestore.firestore()
-        let agressvGamesCollection = db.collection("Agressv_Games")
-        
-        // Get the current user's UID
-        guard let uid = Auth.auth().currentUser?.email else {
-            completion()
-            return
-        }
-        
-       
-        
-        var emailCount = 0
-        
-        let fieldsToCheck = ["Game_Creator", "Game_Partner", "Game_Opponent_One", "Game_Opponent_Two"]
-        
-        let group = DispatchGroup()
-        
-        // Calculate the date 30 days ago from the current date
-        let thirtyDaysAgo = Calendar.current.date(byAdding: .day, value: -30, to: Date())!
-        
-        for field in fieldsToCheck {
-            group.enter()
-            agressvGamesCollection
-                .whereField(field, isEqualTo: uid)
-                .whereField("Game_Date", isGreaterThan: thirtyDaysAgo)
-                .getDocuments { (querySnapshot, error) in
-                    if let error = error {
-                        print("Error fetching documents: \(error)")
-                    } else {
-                        emailCount += querySnapshot?.documents.count ?? 0
-                    }
-                    group.leave()
-                }
-        }
-        
-        group.notify(queue: .main) {
-            // Check if the email count for the user is 20 or more
-            print("HOW MANY GAMES USER PLAYED IN LAST 30 DAYS")
-            print(emailCount)
-            if emailCount >= 20 {
-                // Update the bool variable
-                self.UserEarnedRedFangs = true
-            }
-            completion()
-        }
-    }
-
+  
        
    
     

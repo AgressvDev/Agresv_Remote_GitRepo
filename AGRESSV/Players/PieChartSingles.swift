@@ -48,7 +48,7 @@ class PieChartViewSingles: UIView {
             let color: UIColor
             if index == 0 {
                 // Use green for winPercentage
-                color = UIColor.green
+                color = UIColor(red: 12/255, green: 89.3/255, blue: 78.9/255, alpha: 1.0)
             } else {
                 // Use black for lossPercentage
                 color = UIColor.black

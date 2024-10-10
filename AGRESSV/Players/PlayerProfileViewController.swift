@@ -115,7 +115,7 @@ class PlayerProfileViewController: UIViewController {
     
     let DWP_Letter: UILabel = {
             let label = UILabel()
-            label.textColor = .systemRed // Set your desired text color
+            label.textColor = .white // Set your desired text color
             label.text = "%:"
             label.translatesAutoresizingMaskIntoConstraints = false
             return label
@@ -123,7 +123,7 @@ class PlayerProfileViewController: UIViewController {
     
     let SWP_Letter: UILabel = {
             let label = UILabel()
-            label.textColor = .systemRed // Set your desired text color
+            label.textColor = .white // Set your desired text color
             label.text = "%:"
             label.translatesAutoresizingMaskIntoConstraints = false
             return label
@@ -526,7 +526,7 @@ class PlayerProfileViewController: UIViewController {
                     if let userEmail = document["Email"] as? String, userEmail == playersEmail {
                         self.D_currentUserWinPercentage = winPercentage
                         if winPercentage.isNaN {
-                            self.Doubles_WP_Label.text = ""
+                            self.Doubles_WP_Label.text = "0"
                         } else {
                             self.Doubles_WP_Label.text = String((winPercentage * 100).rounded())
                         }
@@ -631,7 +631,7 @@ class PlayerProfileViewController: UIViewController {
                     if let userEmail = document["Email"] as? String, userEmail == playersEmail {
                         self.S_currentUserWinPercentage = winPercentage
                         if winPercentage.isNaN {
-                            self.Singles_WP_Label.text = ""
+                            self.Singles_WP_Label.text = "0"
                         } else {
                             self.Singles_WP_Label.text = String((winPercentage * 100).rounded())
                         }
@@ -664,7 +664,7 @@ class PlayerProfileViewController: UIViewController {
                         ])
                         
                         // Set the text color for WP_Letter
-                        self.SWP_Letter.textColor = UIColor.systemYellow
+                        self.SWP_Letter.textColor = UIColor.white
                         
                         NSLayoutConstraint.activate([
                             self.Singles_WP_Label.leadingAnchor.constraint(equalTo: self.SinglesWinsLabel.leadingAnchor),
@@ -673,7 +673,7 @@ class PlayerProfileViewController: UIViewController {
                         ])
                         
                         // Set the text color for WP_Letter
-                        self.Singles_WP_Label.textColor = UIColor.systemYellow
+                        self.Singles_WP_Label.textColor = UIColor.white
                         
                         
                     }
@@ -799,12 +799,11 @@ class PlayerProfileViewController: UIViewController {
        
         func fetchRankDoubles() {
             let db = Firestore.firestore()
-         
-            
+
             self.userDataDictionary.removeAll()
 
             db.collection("Agressv_Users")
-                .order(by: "Doubles_Rank", descending: true)
+                .order(by: "Doubles_Rank", descending: false) // Order by ascending to get the lowest rank first
                 .getDocuments { (querySnapshot, error) in
                     if let error = error {
                         print("Error getting documents: \(error)")
@@ -812,49 +811,29 @@ class PlayerProfileViewController: UIViewController {
                         for document in querySnapshot!.documents {
                             let data = document.data()
                             let username = data["Username"] as! String
-
-                            if let score = data["Doubles_Rank"] as? Double {
-                                let roundedScore = (score * 10).rounded() / 10
-                                let weightedScore = roundedScore * self.Weighted_Score
-                                self.userDataDictionary[username, default: [:]]["weightedScore"] = (self.userDataDictionary[username]?["weightedScore"] ?? 0.0) + weightedScore
-                            }
-
-                            if let games = data["Doubles_Games_Played"] as? Double {
-                                let weightedGames = games * self.Weighted_GamesPlayed
-                                self.userDataDictionary[username, default: [:]]["weightedGames"] = (self.userDataDictionary[username]?["weightedGames"] ?? 0.0) + weightedGames
-                            }
-
-                            if let gamesPlayed = data["Doubles_Games_Played"] as? Double,
-                               gamesPlayed > 0 {
-                                let gamesWon = data["Doubles_Games_Wins"] as? Double ?? 0.0
-                                let winPercentage = ((gamesWon) / gamesPlayed * 100).rounded()
-                                let weightedWinPercentage = winPercentage * self.Weighted_WinPercentage / 100
-                                self.userDataDictionary[username, default: [:]]["weightedWinPercentage"] = (self.userDataDictionary[username]?["weightedWinPercentage"] ?? 0.0) + weightedWinPercentage
+                            
+                            // Store the user's rank directly
+                            if let rank = data["Doubles_Rank"] as? Double {
+                                self.userDataDictionary[username, default: [:]]["Doubles_Rank"] = rank
                             }
                         }
 
-                        // Calculate the Sum_Of_Weights for each username
-                        for (username, values) in self.userDataDictionary {
-                            let sumOfWeights = (values["weightedScore"] ?? 0.0) + (values["weightedGames"] ?? 0.0) + (values["weightedWinPercentage"] ?? 0.0)
-                            
-                            // Round the sumOfWeights to 2 decimal places
-                            let roundedSumOfWeights = (sumOfWeights * 100).rounded() / 100
-                            
-                            self.userDataDictionary[username]?["Sum_Of_Weights"] = roundedSumOfWeights
-                        }
-
-                        // Sort the usernames based on Sum_Of_Weights in descending order
-                        self.sortedUsernames = self.userDataDictionary.keys.sorted(by: { (username1, username2) -> Bool in
-                            return (self.userDataDictionary[username1]?["Sum_Of_Weights"] ?? 0.0) > (self.userDataDictionary[username2]?["Sum_Of_Weights"] ?? 0.0)
+                        // Sort usernames by the "Doubles_Rank" in ascending order
+                        self.sortedUsernames = self.userDataDictionary.keys.sorted(by: {
+                            (username1, username2) -> Bool in
+                            return (self.userDataDictionary[username1]?["Doubles_Rank"] as? Double ?? Double.greatestFiniteMagnitude) <
+                                   (self.userDataDictionary[username2]?["Doubles_Rank"] as? Double ?? Double.greatestFiniteMagnitude)
                         })
 
-                        // Add numerical order to each username
-                                       for (index, username) in self.sortedUsernames.enumerated() {
-                                           self.userDataDictionary[username]?["Numerical_Order"] = Double(index + 1)
-                                       }
+                        // Assign numerical order: the lowest rank gets the highest numerical value (1)
+                        for (index, username) in self.sortedUsernames.enumerated() {
+                            // The highest rank (lowest Doubles_Rank value) should get a numerical order of 1
+                            let numericalOrder = Double(self.sortedUsernames.count - index)
+                            self.userDataDictionary[username]?["Numerical_Order"] = numericalOrder
+                        }
                         
+                        // Update lbl_DoublesNerdData.text with the numerical order of the current player
                         if let numericalOrder = self.userDataDictionary[self.player]?["Numerical_Order"] {
-                            // Convert numericalOrder to Int
                             let numericalOrderInt = Int(numericalOrder)
                             self.lbl_DoublesNerdData.text = "D: \(numericalOrderInt)"
                         }
@@ -864,12 +843,11 @@ class PlayerProfileViewController: UIViewController {
 
         func fetchRankSingles() {
             let db = Firestore.firestore()
-           
-            
+
             self.userDataDictionarySingles.removeAll()
 
             db.collection("Agressv_Users")
-                .order(by: "Singles_Rank", descending: true)
+                .order(by: "Singles_Rank", descending: false) // Order by ascending to get the lowest rank first
                 .getDocuments { (querySnapshot, error) in
                     if let error = error {
                         print("Error getting documents: \(error)")
@@ -877,49 +855,29 @@ class PlayerProfileViewController: UIViewController {
                         for document in querySnapshot!.documents {
                             let data = document.data()
                             let username = data["Username"] as! String
-
-                            if let score = data["Singles_Rank"] as? Double {
-                                let roundedScore = (score * 10).rounded() / 10
-                                let weightedScore = roundedScore * self.Weighted_Score
-                                self.userDataDictionarySingles[username, default: [:]]["weightedScore"] = (self.userDataDictionarySingles[username]?["weightedScore"] ?? 0.0) + weightedScore
-                            }
-
-                            if let games = data["Singles_Games_Played"] as? Double {
-                                let weightedGames = games * self.Weighted_GamesPlayed
-                                self.userDataDictionarySingles[username, default: [:]]["weightedGames"] = (self.userDataDictionarySingles[username]?["weightedGames"] ?? 0.0) + weightedGames
-                            }
-
-                            if let gamesPlayed = data["Singles_Games_Played"] as? Double,
-                               gamesPlayed > 0 {
-                                let gamesWon = data["Singles_Games_Wins"] as? Double ?? 0.0
-                                let winPercentage = ((gamesWon) / gamesPlayed * 100).rounded()
-                                let weightedWinPercentage = winPercentage * self.Weighted_WinPercentage / 100
-                                self.userDataDictionarySingles[username, default: [:]]["weightedWinPercentage"] = (self.userDataDictionarySingles[username]?["weightedWinPercentage"] ?? 0.0) + weightedWinPercentage
+                            
+                            // Store the user's rank directly
+                            if let rank = data["Singles_Rank"] as? Double {
+                                self.userDataDictionary[username, default: [:]]["Singles_Rank"] = rank
                             }
                         }
 
-                        // Calculate the Sum_Of_Weights for each username
-                        for (username, values) in self.userDataDictionarySingles {
-                            let sumOfWeights = (values["weightedScore"] ?? 0.0) + (values["weightedGames"] ?? 0.0) + (values["weightedWinPercentage"] ?? 0.0)
-                            
-                            // Round the sumOfWeights to 2 decimal places
-                            let roundedSumOfWeights = (sumOfWeights * 100).rounded() / 100
-                            
-                            self.userDataDictionarySingles[username]?["Sum_Of_Weights"] = roundedSumOfWeights
-                        }
-
-                        // Sort the usernames based on Sum_Of_Weights in descending order
-                        self.sortedUsernamesSingles = self.userDataDictionarySingles.keys.sorted(by: { (username1, username2) -> Bool in
-                            return (self.userDataDictionarySingles[username1]?["Sum_Of_Weights"] ?? 0.0) > (self.userDataDictionarySingles[username2]?["Sum_Of_Weights"] ?? 0.0)
+                        // Sort usernames by the "Doubles_Rank" in ascending order
+                        self.sortedUsernames = self.userDataDictionary.keys.sorted(by: {
+                            (username1, username2) -> Bool in
+                            return (self.userDataDictionary[username1]?["Singles_Rank"] as? Double ?? Double.greatestFiniteMagnitude) <
+                                   (self.userDataDictionary[username2]?["Singles_Rank"] as? Double ?? Double.greatestFiniteMagnitude)
                         })
 
-                        // Add numerical order to each username
-                                       for (index, username) in self.sortedUsernamesSingles.enumerated() {
-                                           self.userDataDictionarySingles[username]?["Numerical_Order"] = Double(index + 1)
-                                       }
+                        // Assign numerical order: the lowest rank gets the highest numerical value (1)
+                        for (index, username) in self.sortedUsernames.enumerated() {
+                            // The highest rank (lowest Doubles_Rank value) should get a numerical order of 1
+                            let numericalOrder = Double(self.sortedUsernames.count - index)
+                            self.userDataDictionary[username]?["Numerical_Order"] = numericalOrder
+                        }
                         
-                        if let numericalOrder = self.userDataDictionarySingles[self.player]?["Numerical_Order"] {
-                            // Convert numericalOrder to Int
+                        // Update lbl_DoublesNerdData.text with the numerical order of the current player
+                        if let numericalOrder = self.userDataDictionary[self.player]?["Numerical_Order"] {
                             let numericalOrderInt = Int(numericalOrder)
                             self.lbl_SinglesNerdData.text = "S: \(numericalOrderInt)"
                         }
@@ -1702,9 +1660,9 @@ class PlayerProfileViewController: UIViewController {
                                             
                                             //Adornment for blue ribbon
 
-                                            self.NewDoublesRankLabel.backgroundColor = UIColor.mustardYellow()
-                                            self.lbl_CurrentHighestScore.text = "Highest Score!"
-                                            self.lbl_CurrentHighestScore.textColor = UIColor.mustardYellow()
+                                           // self.NewDoublesRankLabel.backgroundColor = UIColor.mustardYellow()
+                                            //self.lbl_CurrentHighestScore.text = "Highest Score!"
+                                            //self.lbl_CurrentHighestScore.textColor = UIColor.mustardYellow()
                                             
                                             self.lbl_CurrentHighestScore.translatesAutoresizingMaskIntoConstraints = false // Enable Auto Layout
                                             self.lbl_CurrentHighestScore.numberOfLines = 0 // Allow multiple lines
@@ -1748,9 +1706,9 @@ class PlayerProfileViewController: UIViewController {
                                             
                                             //Adornment for blue ribbon
 
-                                            self.NewSinglesRankLabel.backgroundColor = UIColor.mustardYellow()
-                                            self.lbl_CurrentHighestScoreSingles.text = "Highest Score!"
-                                            self.lbl_CurrentHighestScoreSingles.textColor = UIColor.mustardYellow()
+//                                            self.NewSinglesRankLabel.backgroundColor = UIColor.mustardYellow()
+//                                            self.lbl_CurrentHighestScoreSingles.text = "Highest Score!"
+//                                            self.lbl_CurrentHighestScoreSingles.textColor = UIColor.mustardYellow()
                                             
                                             self.lbl_CurrentHighestScoreSingles.translatesAutoresizingMaskIntoConstraints = false // Enable Auto Layout
                                             self.lbl_CurrentHighestScoreSingles.numberOfLines = 0 // Allow multiple lines
@@ -1798,9 +1756,9 @@ class PlayerProfileViewController: UIViewController {
                                                     {
                                                 //Adornment for blue ribbon
 
-                                                self.NewDoublesRankLabel.backgroundColor = UIColor.mustardYellow()
-                                                self.lbl_CurrentHighestScore.text = "Highest Score!"
-                                                self.lbl_CurrentHighestScore.textColor = UIColor.mustardYellow()
+//                                                self.NewDoublesRankLabel.backgroundColor = UIColor.mustardYellow()
+//                                                self.lbl_CurrentHighestScore.text = "Highest Score!"
+//                                                self.lbl_CurrentHighestScore.textColor = UIColor.mustardYellow()
                                                 
                                                 self.lbl_CurrentHighestScore.translatesAutoresizingMaskIntoConstraints = false // Enable Auto Layout
                                                 self.lbl_CurrentHighestScore.numberOfLines = 0 // Allow multiple lines
@@ -1825,9 +1783,9 @@ class PlayerProfileViewController: UIViewController {
                                                 
                                                 //Adornment for blue ribbon
 
-                                                self.NewSinglesRankLabel.backgroundColor = UIColor.mustardYellow()
-                                                self.lbl_CurrentHighestScoreSingles.text = "Highest Score!"
-                                                self.lbl_CurrentHighestScoreSingles.textColor = UIColor.mustardYellow()
+//                                                self.NewSinglesRankLabel.backgroundColor = UIColor.mustardYellow()
+//                                                self.lbl_CurrentHighestScoreSingles.text = "Highest Score!"
+//                                                self.lbl_CurrentHighestScoreSingles.textColor = UIColor.mustardYellow()
                                                 
                                                 self.lbl_CurrentHighestScoreSingles.translatesAutoresizingMaskIntoConstraints = false // Enable Auto Layout
                                                 self.lbl_CurrentHighestScoreSingles.numberOfLines = 0 // Allow multiple lines
@@ -2005,5 +1963,3 @@ class PlayerProfileViewController: UIViewController {
     
     
 } //end of class
-
-

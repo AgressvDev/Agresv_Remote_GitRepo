@@ -300,12 +300,12 @@ class SinglesSearchOppVC: UIViewController, UITableViewDataSource, UITableViewDe
 
                 if let username = document["Username"] as? String,
                    let email = document["Email"] as? String,
-                   let doublesrank = document["Doubles_Rank"] as? Double {
+                   let singlesrank = document["Singles_Rank"] as? Double {
                     
                     // Check if the email matches the current user's email
                     if email != currentUserEmail {
-                        self.dataSourceArrayPartner[username] = (email, doublesrank)
-                        print("Added user: \(username), Email: \(email), Doubles Rank: \(doublesrank)") // Debugging
+                        self.dataSourceArrayPartner[username] = (email, singlesrank)
+                        print("Added user: \(username), Email: \(email), Singles Rank: \(singlesrank)") // Debugging
                     } else {
                         print("Skipping user: \(username), Email: \(email) (matches current user)") // Debugging
                     }
@@ -382,7 +382,7 @@ class SinglesSearchOppVC: UIViewController, UITableViewDataSource, UITableViewDe
 //
     // Merge data and reload table view
     func mergeDataAndReloadTable() {
-        for (username, (email, doublesRank)) in dataSourceArrayPartner {
+        for (username, (email, singlesrank)) in dataSourceArrayPartner {
             var imageData: String?
 
             // Check if there is User_Img data for the current email
@@ -398,7 +398,7 @@ class SinglesSearchOppVC: UIViewController, UITableViewDataSource, UITableViewDe
             }
 
             // Construct the username_plus_skill
-            let username_plus_skill = "\(username) - \(doublesRank)"
+            let username_plus_skill = "\(username) - \(singlesrank)"
 
             // Add tuple to mergedArray
             if let imageData = imageData {

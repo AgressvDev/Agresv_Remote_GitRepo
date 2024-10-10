@@ -81,6 +81,7 @@ class AddGameViewController: UIViewController {
     var OppTwoCellValue_NoRank: String = SharedData.shared.OppTwoSelection
     
     //For posting to Agressv_Games table to enable rolling 7 day count of games played
+    var CurrentUser_Email: String = ""
     var selectedCellValueEmail: String = SharedDataEmails.sharedemails.PartnerEmail
     var selectedCellValueOppOneEmail: String = SharedDataEmails.sharedemails.OppOneEmail
     var selectedCellValueOppTwoEmail: String = SharedDataEmails.sharedemails.OppTwoEmail
@@ -341,7 +342,7 @@ class AddGameViewController: UIViewController {
                         self.currentuser = userWithFormattedRank
                         lbl_CurrentUser.text = self.currentuser
                         self.CurrentUser_Username_NoRank = norank
-                        
+                        self.CurrentUser_Email = uid!
                         GetImageLabel_Partner()
                         
                     }
@@ -726,17 +727,35 @@ class AddGameViewController: UIViewController {
     let Partner_Ref = db.collection("Agressv_Users").whereField("Username", isEqualTo: PartnerCellValue_NoRank)
     let Opp1_Ref = db.collection("Agressv_Users").whereField("Username", isEqualTo: OppOneCellValue_NoRank)
     let Opp2_Ref = db.collection("Agressv_Users").whereField("Username", isEqualTo: OppTwoCellValue_NoRank)
+    let Game_Ref = db.collection("Agressv_Games")
     
+    let CurrentUser_Games_Ref = db.collection("Agressv_Users").document(CurrentUser_Email)
+    let Partner_Games_Ref = db.collection("Agressv_Users").document(selectedCellValueEmail)
+    let Opp1_Games_Ref = db.collection("Agressv_Users").document(selectedCellValueOppOneEmail)
+    let Opp2_Games_Ref = db.collection("Agressv_Users").document(selectedCellValueOppTwoEmail)
 
     if self.WL_Selection == "W"
     {
         self.Selection_Opposite = "L"
+        
+        CurrentUser_Games_Ref.updateData([
+           "Doubles_Games_Wins": FieldValue.increment(Int64(1))])
+        Partner_Games_Ref.updateData([
+           "Doubles_Games_Wins": FieldValue.increment(Int64(1))])
+           
+            Opp1_Games_Ref.updateData([
+                  "Doubles_Games_Losses": FieldValue.increment(Int64(1))])
+            Opp2_Games_Ref.updateData([
+                  "Doubles_Games_Losses": FieldValue.increment(Int64(1))])
+        
         //do new stuff
         if Team_A_CurrentUser_Skill < Team_B_Average_Skill
                 {
             let result = percentDifference(valueA: Team_A_CurrentUser_Skill, valueB: Team_B_Average_Skill)
             
-            
+                
+                   
+                   
                             // Execute the query
                             CurrentUser_Ref.getDocuments { (querySnapshot, error) in
                                 if let error = error {
@@ -788,6 +807,16 @@ class AddGameViewController: UIViewController {
     if self.WL_Selection == "L" {
         
         self.Selection_Opposite = "W"
+        
+        Opp1_Games_Ref.updateData([
+           "Doubles_Games_Wins": FieldValue.increment(Int64(1))])
+        Opp2_Games_Ref.updateData([
+           "Doubles_Games_Wins": FieldValue.increment(Int64(1))])
+           
+           CurrentUser_Games_Ref.updateData([
+              "Doubles_Games_Losses": FieldValue.increment(Int64(1))])
+           Partner_Games_Ref.updateData([
+              "Doubles_Games_Losses": FieldValue.increment(Int64(1))])
         
         if Team_B_OppOne_Skill < Team_A_Average_Skill
                 {
@@ -842,6 +871,33 @@ class AddGameViewController: UIViewController {
     }
     
    
+            CurrentUser_Games_Ref.updateData([
+            "Doubles_Games_Played": FieldValue.increment(Int64(1))])
+                Partner_Games_Ref.updateData([
+                "Doubles_Games_Played": FieldValue.increment(Int64(1))])
+                        Opp1_Games_Ref.updateData([
+                        "Doubles_Games_Played": FieldValue.increment(Int64(1))])
+                                Opp2_Games_Ref.updateData([
+                                "Doubles_Games_Played": FieldValue.increment(Int64(1))])
+    
+    // Insert data directly into Firestore
+    Game_Ref.addDocument(data: [
+        "Game_Creator":  self.CurrentUser_Email,
+        "Game_Creator_Username": self.CurrentUser_Username_NoRank,
+        "Game_Date": Date(),
+        "Game_Opponent_One": self.selectedCellValueOppOneEmail,
+        "Game_Opponent_One_Username": self.OppOneCellValue_NoRank,
+        "Game_Opponent_Two": self.selectedCellValueOppTwoEmail,
+        "Game_Opponent_Two_Username": self.OppTwoCellValue_NoRank,
+        "Game_Partner": self.selectedCellValueEmail,
+        "Game_Partner_Username": self.PartnerCellValue_NoRank,
+        "Game_Result": self.WL_Selection,
+        "Game_Result_Opposite_For_UserView": self.Selection_Opposite,
+        "Game_Type": "Doubles"
+    ])
+    
+    
+    
 
     let dialogMessage = UIAlertController(title: "Success!", message: "Your game has been logged.", preferredStyle: .alert)
     

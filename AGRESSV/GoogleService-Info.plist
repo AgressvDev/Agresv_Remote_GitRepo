@@ -13,21 +13,21 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>AGRESSV.AGRESSV</string>
+	<string>AGRESSV.RYMAX</string>
 	<key>PROJECT_ID</key>
 	<string>agressv-3f3cd</string>
 	<key>STORAGE_BUCKET</key>
 	<string>agressv-3f3cd.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
-	<false></false>
+	<false/>
 	<key>IS_ANALYTICS_ENABLED</key>
-	<false></false>
+	<false/>
 	<key>IS_APPINVITE_ENABLED</key>
-	<true></true>
+	<true/>
 	<key>IS_GCM_ENABLED</key>
-	<true></true>
+	<true/>
 	<key>IS_SIGNIN_ENABLED</key>
-	<true></true>
+	<true/>
 	<key>GOOGLE_APP_ID</key>
 	<string>1:626127019480:ios:e9177278f6ae1e65da66ad</string>
 </dict>
