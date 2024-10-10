@@ -400,45 +400,7 @@ class NewPlayerSearchVC: UIViewController, UITableViewDataSource, UITableViewDel
 
 
 
-//    // Merge data and reload table view
-//    func mergeDataAndReloadTable() {
-//        for (username, email) in dataSourceArrayPartner {
-//            var imageData: String?
-//
-//            // Check if there is User_Img data for the current email
-//            if let profileImageData = dataSourceProfileImages[email] {
-//                imageData = profileImageData
-//            } else {
-//                print("No User_Img data found for \(email). Using default image.")
-//
-//                // Use default image for "testuser@gmail.com"
-//                if let defaultImageData = dataSourceProfileImages["testuser@gmail.com"] {
-//                    imageData = defaultImageData
-//                }
-//            }
-//
-//            // Add tuple to mergedArray
-//            if let imageData = imageData {
-//                let tuple = (username: username, imageData: imageData)
-//                mergedArray.append(tuple)
-//            }
-//        }
-//
-//        // Sort the mergedArray by username, case-insensitive
-//        mergedArray.sort { $0.username.caseInsensitiveCompare($1.username) == .orderedAscending }
-//
-//
-//        // Set corner radius for circular image view after reload
-//           DispatchQueue.main.async {
-//               self.setCornerRadiusForVisibleCells()
-//           }
-//
-//        // Set a fixed row height for each table view cell
-//        tableView.rowHeight = 80.0  // Adjust the height to your preference
-//
-//        // Reload the table view to reflect the updated data
-//        tableView.reloadData()
-//    }
+    
  
     // Merge data and reload table view
     func mergeDataAndReloadTable() {
@@ -629,13 +591,129 @@ class NewPlayerSearchVC: UIViewController, UITableViewDataSource, UITableViewDel
 //    }
 
     @objc private func createGroupTapped() {
-        // Action to perform when the button is tapped
-        print("Create Group button tapped")
+        // Create the alert controller
+        let alert = UIAlertController(title: "Create Group Name", message: nil, preferredStyle: .alert)
+        
+        // Add a text field for the group name
+        alert.addTextField { textField in
+            textField.placeholder = "Enter group name"
+        }
+        
+        // Add the "Create Group" action
+        let createAction = UIAlertAction(title: "Create Group", style: .default) { _ in
+            if let groupName = alert.textFields?.first?.text, !groupName.isEmpty {
+                
+                // Handle the creation of the group with the groupName
+                print("Group created with name: \(groupName)")
+                
+                // Create a reference to the Firestore database
+                let db = Firestore.firestore()
+                // Assume CurrentUser_Email is defined outside this function
+                let CurrentUser_Email = Auth.auth().currentUser!.email // Replace this with your actual user email variable
+                
+                // Create a new group document in the Agressv_Groups collection
+                let groupData: [String: Any] = [
+                    "Group_Name": groupName,
+                    "Group_Creator_Email": CurrentUser_Email!,
+                    "Group_Members": [CurrentUser_Email] // Initial member is the creator
+                ]
+                
+                // Add the group data to Firestore
+                db.collection("Agressv_Groups").addDocument(data: groupData) { error in
+                    if let error = error {
+                        print("Error adding document: \(error)")
+                    } else {
+                        print("Group successfully created!")
+                        
+                        // Navigate to the next view controller after successfully creating the group
+                        let yourViewController = GroupsHeaderViewController()
+                        self.navigationController?.pushViewController(yourViewController, animated: true)
+                    }
+                }
+                
+            } else {
+                // Optionally, handle the case where the text field is empty
+                print("Group name cannot be empty")
+            }
+        }
+        
+        // Add the action to the alert
+        alert.addAction(createAction)
+        
+        // Add a cancel action (optional)
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        alert.addAction(cancelAction)
+        
+        // Present the alert using the current view controller
+        if let topController = UIApplication.shared.connectedScenes
+            .filter({ $0 is UIWindowScene })
+            .map({ $0 as! UIWindowScene })
+            .flatMap({ $0.windows })
+            .first(where: { $0.isKeyWindow })?
+            .rootViewController {
+            topController.present(alert, animated: true, completion: nil)
+        }
     }
+
+//    @objc private func createGroupTapped() {
+//        // Create the alert controller
+//        let alert = UIAlertController(title: "Create Group Name", message: nil, preferredStyle: .alert)
+//
+//        // Add a text field for the group name
+//        alert.addTextField { textField in
+//            textField.placeholder = "Enter group name"
+//        }
+//
+//        // Add the "Create Group" action
+//        let createAction = UIAlertAction(title: "Create Group", style: .default) { _ in
+//            if let groupName = alert.textFields?.first?.text, !groupName.isEmpty {
+//
+//                // Handle the creation of the group with the groupName
+//                print("Group created with name: \(groupName)")
+//
+//                // Add your group creation logic here
+//
+//
+//
+//                                let yourViewController = GroupsHeaderViewController()
+//
+//                                // Present or push your view controller
+//                                self.navigationController?.pushViewController(yourViewController, animated: true)
+//
+//            } else {
+//                // Optionally, handle the case where the text field is empty
+//                print("Group name cannot be empty")
+//            }
+//        }
+//
+//        // Add the action to the alert
+//        alert.addAction(createAction)
+//
+//        // Add a cancel action (optional)
+//        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+//        alert.addAction(cancelAction)
+//
+//        // Present the alert using the current view controller
+//            if let topController = UIApplication.shared.connectedScenes
+//                .filter({ $0 is UIWindowScene })
+//                .map({ $0 as! UIWindowScene })
+//                .flatMap({ $0.windows })
+//                .first(where: { $0.isKeyWindow })?
+//                .rootViewController {
+//                topController.present(alert, animated: true, completion: nil)
+//        }
+//    }
+    
+    
+    
     
     @objc private func myGroupsTapped() {
         // Action to perform when the button is tapped
         print("My Groups button tapped")
+        
+        // Navigate to the next view controller after successfully creating the group
+        let yourViewController = GroupsHeaderViewController()
+        self.navigationController?.pushViewController(yourViewController, animated: true)
     }
     
         func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
