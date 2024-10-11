@@ -572,23 +572,7 @@ class NewPlayerSearchVC: UIViewController, UITableViewDataSource, UITableViewDel
         }
     }
 
-//    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-//        // Ensure the array is sorted before filtering
-//        mergedArray.sort { $0.username.caseInsensitiveCompare($1.username) == .orderedAscending }
-//
-//        // Filter the merged array based on the search text (case-insensitive)
-//        filteredDataSourceArray = mergedArray.filter { (username, _) in
-//            return username.lowercased().contains(searchText.lowercased())
-//        }
-//
-//        // Update the searching flag
-//           searching = !searchText.isEmpty
-//
-//
-//        DispatchQueue.main.async {
-//            self.tableView.reloadData()
-//        }
-//    }
+
 
     @objc private func createGroupTapped() {
         // Create the alert controller
