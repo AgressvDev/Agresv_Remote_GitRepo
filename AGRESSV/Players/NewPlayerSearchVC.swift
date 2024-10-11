@@ -655,55 +655,7 @@ class NewPlayerSearchVC: UIViewController, UITableViewDataSource, UITableViewDel
         }
     }
 
-//    @objc private func createGroupTapped() {
-//        // Create the alert controller
-//        let alert = UIAlertController(title: "Create Group Name", message: nil, preferredStyle: .alert)
-//
-//        // Add a text field for the group name
-//        alert.addTextField { textField in
-//            textField.placeholder = "Enter group name"
-//        }
-//
-//        // Add the "Create Group" action
-//        let createAction = UIAlertAction(title: "Create Group", style: .default) { _ in
-//            if let groupName = alert.textFields?.first?.text, !groupName.isEmpty {
-//
-//                // Handle the creation of the group with the groupName
-//                print("Group created with name: \(groupName)")
-//
-//                // Add your group creation logic here
-//
-//
-//
-//                                let yourViewController = GroupsHeaderViewController()
-//
-//                                // Present or push your view controller
-//                                self.navigationController?.pushViewController(yourViewController, animated: true)
-//
-//            } else {
-//                // Optionally, handle the case where the text field is empty
-//                print("Group name cannot be empty")
-//            }
-//        }
-//
-//        // Add the action to the alert
-//        alert.addAction(createAction)
-//
-//        // Add a cancel action (optional)
-//        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-//        alert.addAction(cancelAction)
-//
-//        // Present the alert using the current view controller
-//            if let topController = UIApplication.shared.connectedScenes
-//                .filter({ $0 is UIWindowScene })
-//                .map({ $0 as! UIWindowScene })
-//                .flatMap({ $0.windows })
-//                .first(where: { $0.isKeyWindow })?
-//                .rootViewController {
-//                topController.present(alert, animated: true, completion: nil)
-//        }
-//    }
-    
+
     
     
     
