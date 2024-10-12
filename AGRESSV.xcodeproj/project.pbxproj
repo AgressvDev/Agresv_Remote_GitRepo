@@ -27,6 +27,7 @@
 		45540EED2ACF843B00F2C932 /* BlockScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45540EEC2ACF843B00F2C932 /* BlockScreenViewController.swift */; };
 		455606E12AB8AECC00CBE801 /* AddGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 455606E02AB8AECC00CBE801 /* AddGameViewController.swift */; };
 		4557F10E2CB89A4F00C3B4F5 /* GroupsHeaderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4557F10D2CB89A4F00C3B4F5 /* GroupsHeaderViewController.swift */; };
+		4557F1102CB9FA4B00C3B4F5 /* GroupDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4557F10F2CB9FA4B00C3B4F5 /* GroupDetailViewController.swift */; };
 		455BDA2A2ACA3D89003B2EBF /* SinglesSearchOppVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 455BDA292ACA3D89003B2EBF /* SinglesSearchOppVC.swift */; };
 		455BDA2C2ACA4098003B2EBF /* SinglesAddGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 455BDA2B2ACA4098003B2EBF /* SinglesAddGameViewController.swift */; };
 		4573B8B82A91A636009FAE1E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4573B8B72A91A636009FAE1E /* GoogleService-Info.plist */; };
@@ -91,6 +92,7 @@
 		45540EEC2ACF843B00F2C932 /* BlockScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockScreenViewController.swift; sourceTree = "<group>"; };
 		455606E02AB8AECC00CBE801 /* AddGameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddGameViewController.swift; sourceTree = "<group>"; };
 		4557F10D2CB89A4F00C3B4F5 /* GroupsHeaderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupsHeaderViewController.swift; sourceTree = "<group>"; };
+		4557F10F2CB9FA4B00C3B4F5 /* GroupDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupDetailViewController.swift; sourceTree = "<group>"; };
 		455BDA292ACA3D89003B2EBF /* SinglesSearchOppVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SinglesSearchOppVC.swift; sourceTree = "<group>"; };
 		455BDA2B2ACA4098003B2EBF /* SinglesAddGameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SinglesAddGameViewController.swift; sourceTree = "<group>"; };
 		4573B8B72A91A636009FAE1E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -225,6 +227,7 @@
 			isa = PBXGroup;
 			children = (
 				4557F10D2CB89A4F00C3B4F5 /* GroupsHeaderViewController.swift */,
+				4557F10F2CB9FA4B00C3B4F5 /* GroupDetailViewController.swift */,
 			);
 			path = Groups;
 			sourceTree = "<group>";
@@ -445,6 +448,7 @@
 				45540EED2ACF843B00F2C932 /* BlockScreenViewController.swift in Sources */,
 				4526236B2AC4A8D00070B637 /* OppTwoViewController.swift in Sources */,
 				45E6DC0A2AFDA73600345671 /* PlayersSearchViewController.swift in Sources */,
+				4557F1102CB9FA4B00C3B4F5 /* GroupDetailViewController.swift in Sources */,
 				4526236D2AC4B24A0070B637 /* OppOneViewController.swift in Sources */,
 				45540EEB2ACF83E800F2C932 /* BlockedStruct.swift in Sources */,
 				4526342E2A98734E0045FD6A /* HomeScreenViewController.swift in Sources */,
