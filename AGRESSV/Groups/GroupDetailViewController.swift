@@ -149,9 +149,9 @@ class GroupDetailViewController: UIViewController, UIImagePickerControllerDelega
             // Update the profile image view with the selected image
             GroupImageView.image = pickedImage
             
-            // Upload the image to Firestore with currentUserEmail
-            if let currentUserEmail = self.currentUserEmail {
-                uploadImageToFirestore(image: pickedImage, currentUserEmail: currentUserEmail)
+            // Ensure currentUserEmail is available and groupName is used directly
+            if let currentUserEmail = self.currentUserEmail { // Assuming this is an optional String
+                uploadImageToFirestore(image: pickedImage, currentUserEmail: currentUserEmail, groupName: groupName) // Use groupName directly if it's a String
             } else {
                 print("Current user email is not available.")
             }
@@ -160,13 +160,14 @@ class GroupDetailViewController: UIViewController, UIImagePickerControllerDelega
         dismiss(animated: true, completion: nil)
     }
 
+
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         dismiss(animated: true, completion: nil)
     }
     
-    func uploadImageToFirestore(image: UIImage, currentUserEmail: String) {
-            
+    
+    func uploadImageToFirestore(image: UIImage, currentUserEmail: String, groupName: String) {
         // Convert the UIImage to Data
         if let imageData = image.jpegData(compressionQuality: 0.5) {
             // Check if there's an existing document reference
@@ -182,37 +183,91 @@ class GroupDetailViewController: UIViewController, UIImagePickerControllerDelega
             } else {
                 let collectionRef = Firestore.firestore().collection("Agressv_Groups")
                 
-                // Query the collection to find documents where Group_Creator_Email matches currentUserEmail
-                collectionRef.whereField("Group_Creator_Email", isEqualTo: self.currentUserEmail!).getDocuments { (querySnapshot, error) in
-                    if let error = error {
-                        print("Error querying Firestore: \(error.localizedDescription)")
-                        return
-                    }
-                    
-                    // Check if any documents were found
-                    if let documents = querySnapshot?.documents, !documents.isEmpty {
-                        // Use the first matching document's ID
-                        let documentRef = collectionRef.document(documents[0].documentID)
-                        
-                        // Save the reference for future updates
-                        self.currentGroupImageRef = documentRef
-                        
-                        // Upload the image data to Firestore
-                        documentRef.updateData(["Group_Img": imageData]) { error in
-                            if let error = error {
-                                print("Error uploading image to Firestore: \(error.localizedDescription)")
-                            } else {
-                                print("Image uploaded to Firestore successfully!")
-                            }
+                // Query the collection to find documents where Group_Creator_Email matches currentUserEmail and Group_Name matches groupName
+                collectionRef
+                    .whereField("Group_Creator_Email", isEqualTo: currentUserEmail)
+                    .whereField("Group_Name", isEqualTo: groupName)
+                    .getDocuments { (querySnapshot, error) in
+                        if let error = error {
+                            print("Error querying Firestore: \(error.localizedDescription)")
+                            return
                         }
-                    } else {
-                        // Handle the case where no matching document was found
-                        print("No document found for the current user email.")
+                        
+                        // Check if any documents were found
+                        if let documents = querySnapshot?.documents, !documents.isEmpty {
+                            // Use the first matching document's ID
+                            let documentRef = collectionRef.document(documents[0].documentID)
+                            
+                            // Save the reference for future updates
+                            self.currentGroupImageRef = documentRef
+                            
+                            // Upload the image data to Firestore
+                            documentRef.updateData(["Group_Img": imageData]) { error in
+                                if let error = error {
+                                    print("Error uploading image to Firestore: \(error.localizedDescription)")
+                                } else {
+                                    print("Image uploaded to Firestore successfully!")
+                                }
+                            }
+                        } else {
+                            // Handle the case where no matching document was found
+                            print("No document found for the current user email and group name.")
+                        }
                     }
-                }
             }
         }
     }
+
+    
+    
+//    func uploadImageToFirestore(image: UIImage, currentUserEmail: String) {
+//
+//        // Convert the UIImage to Data
+//        if let imageData = image.jpegData(compressionQuality: 0.5) {
+//            // Check if there's an existing document reference
+//            if let currentUserProfileImageRef = currentGroupImageRef {
+//                // Update the existing document with the new image data
+//                currentUserProfileImageRef.updateData(["Group_Img": imageData]) { error in
+//                    if let error = error {
+//                        print("Error updating image in Firestore: \(error.localizedDescription)")
+//                    } else {
+//                        print("Image updated in Firestore successfully!")
+//                    }
+//                }
+//            } else {
+//                let collectionRef = Firestore.firestore().collection("Agressv_Groups")
+//
+//                // Query the collection to find documents where Group_Creator_Email matches currentUserEmail
+//                collectionRef.whereField("Group_Creator_Email", isEqualTo: self.currentUserEmail!).getDocuments { (querySnapshot, error) in
+//                    if let error = error {
+//                        print("Error querying Firestore: \(error.localizedDescription)")
+//                        return
+//                    }
+//
+//                    // Check if any documents were found
+//                    if let documents = querySnapshot?.documents, !documents.isEmpty {
+//                        // Use the first matching document's ID
+//                        let documentRef = collectionRef.document(documents[0].documentID)
+//
+//                        // Save the reference for future updates
+//                        self.currentGroupImageRef = documentRef
+//
+//                        // Upload the image data to Firestore
+//                        documentRef.updateData(["Group_Img": imageData]) { error in
+//                            if let error = error {
+//                                print("Error uploading image to Firestore: \(error.localizedDescription)")
+//                            } else {
+//                                print("Image uploaded to Firestore successfully!")
+//                            }
+//                        }
+//                    } else {
+//                        // Handle the case where no matching document was found
+//                        print("No document found for the current user email.")
+//                    }
+//                }
+//            }
+//        }
+//    }
 
 
     

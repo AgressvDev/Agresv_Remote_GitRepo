@@ -123,7 +123,8 @@ class GroupsHeaderViewController: UIViewController, UITableViewDataSource, UITab
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        tableView.reloadData() // Reload data to refresh cell appearance
+        fetchGroups()
+        //tableView.reloadData() // Reload data to refresh cell appearance
     }
 
   
