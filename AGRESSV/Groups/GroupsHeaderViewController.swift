@@ -127,11 +127,7 @@ class GroupsHeaderViewController: UIViewController, UITableViewDataSource, UITab
         //tableView.reloadData() // Reload data to refresh cell appearance
     }
 
-  
    
-
-        
-       
 
     private func setupTableView() {
         tableView.translatesAutoresizingMaskIntoConstraints = false

@@ -512,47 +512,7 @@ class NewPlayerSearchVC: UIViewController, UITableViewDataSource, UITableViewDel
     }
 
 
-//    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        guard let cell = tableView.dequeueReusableCell(withIdentifier: "CircularImageCell", for: indexPath) as? CircularImageCell else {
-//            return UITableViewCell()
-//        }
-//
-//
-//
-//
-//        let data: (username: String, imageData: String)
-//
-//        if searching {
-//            data = filteredDataSourceArray[indexPath.row]
-//        } else {
-//            data = mergedArray[indexPath.row]
-//        }
-//
-//
-//
-//
-//        // Set username label
-//        cell.usernameLabel.text = data.username
-//        cell.usernameLabel.textColor = UIColor.white // Set text color to white
-//
-//        // Set circular image
-//        if let imageData = Data(base64Encoded: data.imageData), let image = UIImage(data: imageData) {
-//            cell.circularImageView.image = image
-//
-//             //Make the circular image view
-//            cell.circularImageView.contentMode = .scaleAspectFill
-//            cell.circularImageView.layer.cornerRadius = cell.circularImageView.bounds.width / 2
-//            cell.circularImageView.layer.masksToBounds = true
-//
-//
-//        }
-//
-//        // Set background color of the cells
-//        cell.backgroundColor = UIColor(red: 12/255, green: 89.3/255, blue: 78.9/255, alpha: 1.0)
-//
-//        return cell
-//    }
-//
+
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         // Ensure the array is sorted before filtering
@@ -573,7 +533,6 @@ class NewPlayerSearchVC: UIViewController, UITableViewDataSource, UITableViewDel
     }
 
 
-
     @objc private func createGroupTapped() {
         // Create the alert controller
         let alert = UIAlertController(title: "Create Group Name", message: nil, preferredStyle: .alert)
@@ -586,35 +545,59 @@ class NewPlayerSearchVC: UIViewController, UITableViewDataSource, UITableViewDel
         // Add the "Create Group" action
         let createAction = UIAlertAction(title: "Create Group", style: .default) { _ in
             if let groupName = alert.textFields?.first?.text, !groupName.isEmpty {
-                
-                // Handle the creation of the group with the groupName
-                print("Group created with name: \(groupName)")
-                
                 // Create a reference to the Firestore database
                 let db = Firestore.firestore()
                 // Assume CurrentUser_Email is defined outside this function
-                let CurrentUser_Email = Auth.auth().currentUser!.email // Replace this with your actual user email variable
-                
-                // Create a new group document in the Agressv_Groups collection
-                let groupData: [String: Any] = [
-                    "Group_Name": groupName,
-                    "Group_Creator_Email": CurrentUser_Email!,
-                    "Group_Members": [CurrentUser_Email] // Initial member is the creator
-                ]
-                
-                // Add the group data to Firestore
-                db.collection("Agressv_Groups").addDocument(data: groupData) { error in
-                    if let error = error {
-                        print("Error adding document: \(error)")
-                    } else {
-                        print("Group successfully created!")
-                        
-                        // Navigate to the next view controller after successfully creating the group
-                        let yourViewController = GroupsHeaderViewController()
-                        self.navigationController?.pushViewController(yourViewController, animated: true)
-                    }
+                guard let currentUserEmail = Auth.auth().currentUser?.email else {
+                    print("Current user email not found.")
+                    return
                 }
                 
+                // Check if the group already exists
+                let query = db.collection("Agressv_Groups")
+                    .whereField("Group_Name", isEqualTo: groupName)
+                    .whereField("Group_Creator_Email", isEqualTo: currentUserEmail)
+                
+                query.getDocuments { (querySnapshot, error) in
+                    if let error = error {
+                        print("Error checking for existing group: \(error)")
+                        return
+                    }
+                    
+                    if let documents = querySnapshot?.documents, !documents.isEmpty {
+                        // Group already exists
+                        let alert = UIAlertController(title: "Group Exists", message: "A group with this name already exists for your account.", preferredStyle: .alert)
+                        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                        if let topController = UIApplication.shared.connectedScenes
+                            .filter({ $0 is UIWindowScene })
+                            .map({ $0 as! UIWindowScene })
+                            .flatMap({ $0.windows })
+                            .first(where: { $0.isKeyWindow })?
+                            .rootViewController {
+                            topController.present(alert, animated: true, completion: nil)
+                        }
+                    } else {
+                        // Group does not exist, proceed to create it
+                        let groupData: [String: Any] = [
+                            "Group_Name": groupName,
+                            "Group_Creator_Email": currentUserEmail,
+                            "Group_Members": [currentUserEmail] // Initial member is the creator
+                        ]
+                        
+                        // Add the group data to Firestore
+                        db.collection("Agressv_Groups").addDocument(data: groupData) { error in
+                            if let error = error {
+                                print("Error adding document: \(error)")
+                            } else {
+                                print("Group successfully created!")
+                                
+                                // Navigate to the next view controller after successfully creating the group
+                                let yourViewController = GroupsHeaderViewController()
+                                self.navigationController?.pushViewController(yourViewController, animated: true)
+                            }
+                        }
+                    }
+                }
             } else {
                 // Optionally, handle the case where the text field is empty
                 print("Group name cannot be empty")
@@ -638,6 +621,9 @@ class NewPlayerSearchVC: UIViewController, UITableViewDataSource, UITableViewDel
             topController.present(alert, animated: true, completion: nil)
         }
     }
+
+    
+
 
 
     

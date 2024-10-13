@@ -49,6 +49,7 @@
 		45EE444A2AAAC1DA00319597 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45EE44492AAAC1DA00319597 /* ViewController.swift */; };
 		45F489262A9D7A4C0043238C /* GaugeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F489252A9D7A4C0043238C /* GaugeView.swift */; };
 		45F7AB992AB669E700D1DA2C /* GamesCount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F7AB982AB669E700D1DA2C /* GamesCount.swift */; };
+		45F7B3FE2CBB6FCA009DC0B5 /* MessageKit in Frameworks */ = {isa = PBXBuildFile; productRef = 45F7B3FD2CBB6FCA009DC0B5 /* MessageKit */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -120,6 +121,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				45F7B3FE2CBB6FCA009DC0B5 /* MessageKit in Frameworks */,
 				4573B8BB2A91A868009FAE1E /* FirebaseAuth in Frameworks */,
 				450C07CD2A92CFCD006E4540 /* FirebaseFirestore in Frameworks */,
 			);
@@ -307,6 +309,7 @@
 			packageProductDependencies = (
 				4573B8BA2A91A868009FAE1E /* FirebaseAuth */,
 				450C07CC2A92CFCD006E4540 /* FirebaseFirestore */,
+				45F7B3FD2CBB6FCA009DC0B5 /* MessageKit */,
 			);
 			productName = AGRESSV;
 			productReference = 450A49702A8EC94D00DEB7CF /* AGRESSV.app */;
@@ -382,6 +385,7 @@
 			mainGroup = 450A49672A8EC94D00DEB7CF;
 			packageReferences = (
 				4573B8B92A91A868009FAE1E /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				45F7B3FC2CBB6FCA009DC0B5 /* XCRemoteSwiftPackageReference "MessageKit" */,
 			);
 			productRefGroup = 450A49712A8EC94D00DEB7CF /* Products */;
 			projectDirPath = "";
@@ -812,6 +816,14 @@
 				minimumVersion = 10.0.0;
 			};
 		};
+		45F7B3FC2CBB6FCA009DC0B5 /* XCRemoteSwiftPackageReference "MessageKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/MessageKit/MessageKit";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -824,6 +836,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 4573B8B92A91A868009FAE1E /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseAuth;
+		};
+		45F7B3FD2CBB6FCA009DC0B5 /* MessageKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 45F7B3FC2CBB6FCA009DC0B5 /* XCRemoteSwiftPackageReference "MessageKit" */;
+			productName = MessageKit;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
