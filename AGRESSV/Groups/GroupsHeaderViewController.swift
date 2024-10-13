@@ -32,6 +32,8 @@ class CircularImageCellGroups: UITableViewCell {
     private func commonInit() {
         contentView.addSubview(circularImageView)
         contentView.addSubview(GroupNameLabel)
+        
+      
 
         NSLayoutConstraint.activate([
             circularImageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
@@ -43,7 +45,9 @@ class CircularImageCellGroups: UITableViewCell {
             GroupNameLabel.leadingAnchor.constraint(equalTo: circularImageView.trailingAnchor, constant: 16.0),
             GroupNameLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16.0)
         ])
+        
     }
+    
 
     func configure(with imageUrl: String, groupName: String) {
         // Assuming imageUrl is a URL string to download the image
@@ -52,18 +56,29 @@ class CircularImageCellGroups: UITableViewCell {
                 if let data = data, let image = UIImage(data: data) {
                     DispatchQueue.main.async {
                         self.circularImageView.image = image
+                        self.circularImageView.layer.cornerRadius = self.circularImageView.bounds.width / 2
+                        self.circularImageView.layer.masksToBounds = true
                     }
                 }
             }.resume()
         }
         GroupNameLabel.text = groupName
+      
     }
 }
 
+
+
 class GroupsHeaderViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+    
+    
     let tableView = UITableView()
     var groups: [(name: String, imageUrl: String)] = [] // Array to hold group names and image URLs
     var currentUserEmail = Auth.auth().currentUser?.email
+    
+    
+    // Data source
+    var dataSourceProfileImages: [String: String] = [:]
     
     // Declare lbl_Groups as a property
         let lbl_Groups: UILabel = {
@@ -78,6 +93,8 @@ class GroupsHeaderViewController: UIViewController, UITableViewDataSource, UITab
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
+       
         // Add the label to the view
                 view.addSubview(lbl_Groups)
         
@@ -98,28 +115,22 @@ class GroupsHeaderViewController: UIViewController, UITableViewDataSource, UITab
         setupTableView()
         fetchGroups()
         
+    
         
+       
+    } //end of load
+    
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        tableView.reloadData() // Reload data to refresh cell appearance
     }
 
-    // Fetch groups from Firestore
-    func fetchGroups() {
-        let db = Firestore.firestore()
+  
+   
+
         
-        db.collection("Agressv_Groups")
-            .whereField("Group_Creator_Email", isEqualTo: self.currentUserEmail!)
-            .getDocuments { (snapshot, error) in
-                if let error = error {
-                    print("Error fetching documents: \(error)")
-                } else if let snapshot = snapshot {
-                    self.groups = snapshot.documents.compactMap { doc in
-                        let name = doc.get("Group_Name") as? String ?? ""
-                        let imageUrl = doc.get("Group_Img") as? String ?? ""
-                        return (name, imageUrl)
-                    }
-                    self.tableView.reloadData() // Reload the table with new data
-                }
-            }
-    }
+       
 
     private func setupTableView() {
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -134,6 +145,8 @@ class GroupsHeaderViewController: UIViewController, UITableViewDataSource, UITab
         
         
         tableView.rowHeight = 80.0
+        
+        
     }
 
     private func setupBackgroundImage() {
@@ -173,7 +186,7 @@ class GroupsHeaderViewController: UIViewController, UITableViewDataSource, UITab
         // Configure the circular image view properties
         cell.circularImageView.layer.cornerRadius = cell.circularImageView.bounds.width / 2
         cell.circularImageView.layer.masksToBounds = true
-
+       
         // Set the cell background color
         cell.backgroundColor = UIColor(red: 12/255, green: 89/255, blue: 78/255, alpha: 1.0)
 
@@ -184,7 +197,7 @@ class GroupsHeaderViewController: UIViewController, UITableViewDataSource, UITab
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let groupDetailVC = GroupDetailViewController()
         // Pass data to GroupDetailViewController if needed
-        // For example: groupDetailVC.groupName = groups[indexPath.row].name
+        groupDetailVC.groupName = groups[indexPath.row].name
         navigationController?.pushViewController(groupDetailVC, animated: true)
     }
     
@@ -243,6 +256,46 @@ class GroupsHeaderViewController: UIViewController, UITableViewDataSource, UITab
                 completion()
             }
     }
+
+    // Fetch groups from Firestore
+    func fetchGroups() {
+        let db = Firestore.firestore()
+        
+        db.collection("Agressv_Groups")
+            .whereField("Group_Creator_Email", isEqualTo: self.currentUserEmail!)
+            .getDocuments { (snapshot, error) in
+                if let error = error {
+                    print("Error fetching documents: \(error)")
+                } else if let snapshot = snapshot {
+                    self.groups = snapshot.documents.compactMap { doc in
+                        let name = doc.get("Group_Name") as? String ?? ""
+                        
+                        // Assuming you want to store image URLs or placeholders
+                        if let imageData = doc.get("Group_Img") as? Data {
+                            // Convert Data to a base64 string
+                            let imageUrl = "Data:image/png;base64,\(imageData.base64EncodedString())"
+                            return (name, imageUrl)
+                        } else if let imageString = doc.get("Group_Img") as? String, !imageString.isEmpty {
+                            // If it's already a URL and not empty
+                            return (name, imageString)
+                        }
+                        
+                        // Set default image if Group_Img is nil or empty
+                        let defaultImageUrl = UIImage(named: "DefaultPlayerImage")?.pngData()?.base64EncodedString()
+                        let placeholderUrl = "Data:image/png;base64,\(defaultImageUrl ?? "")"
+                        return (name, placeholderUrl)
+                    }
+                    self.tableView.reloadData()
+                }
+            }
+    }
+
+
+    
+    
+   
+    
+
 
     
 } //end of class

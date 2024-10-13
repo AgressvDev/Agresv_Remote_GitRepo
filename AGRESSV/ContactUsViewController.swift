@@ -142,7 +142,7 @@ class ContactUsViewController: UIViewController {
         if MFMailComposeViewController.canSendMail() {
             let mailComposeViewController = MFMailComposeViewController()
             mailComposeViewController.mailComposeDelegate = self
-            mailComposeViewController.setToRecipients(["agressvapp@gmail.com"])
+            mailComposeViewController.setToRecipients(["agressvdev@gmail.com"])
             
             // Set the subject to include the user's email
             if let user = Auth.auth().currentUser, let email = user.email, let message = yourTextView.text {
