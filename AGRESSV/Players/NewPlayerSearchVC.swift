@@ -556,7 +556,7 @@ class NewPlayerSearchVC: UIViewController, UITableViewDataSource, UITableViewDel
                 // Check if the group already exists
                 let query = db.collection("Agressv_Groups")
                     .whereField("Group_Name", isEqualTo: groupName)
-                    .whereField("Group_Creator_Email", isEqualTo: currentUserEmail)
+                   
                 
                 query.getDocuments { (querySnapshot, error) in
                     if let error = error {
@@ -566,7 +566,7 @@ class NewPlayerSearchVC: UIViewController, UITableViewDataSource, UITableViewDel
                     
                     if let documents = querySnapshot?.documents, !documents.isEmpty {
                         // Group already exists
-                        let alert = UIAlertController(title: "Group Exists", message: "A group with this name already exists for your account.", preferredStyle: .alert)
+                        let alert = UIAlertController(title: "Group Exists", message: "A group with this name already exists.", preferredStyle: .alert)
                         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
                         if let topController = UIApplication.shared.connectedScenes
                             .filter({ $0 is UIWindowScene })

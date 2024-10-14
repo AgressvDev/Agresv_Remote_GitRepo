@@ -1,15 +1,16 @@
 import UIKit
 import Firebase
 import FirebaseFirestore
+import SwiftUI
 
 class PaddedLabel: UILabel {
     var padding: UIEdgeInsets = .zero
-    
+
     override func drawText(in rect: CGRect) {
         let paddedRect = rect.inset(by: padding)
         super.drawText(in: paddedRect)
     }
-    
+
     override var intrinsicContentSize: CGSize {
         let size = super.intrinsicContentSize
         return CGSize(width: size.width + padding.left + padding.right,
@@ -140,7 +141,7 @@ class GroupDetailViewController: UIViewController,
         
         let db = Firestore.firestore()
             db.collection("Agressv_GroupChat")
-            .whereField("GroupChat_Group_Creator_Email", isEqualTo: self.currentUserEmail!)
+            .whereField("GroupChat_Members", arrayContains: self.currentUserEmail!)
                 .whereField("GroupChat_GroupName", isEqualTo: self.groupName)
                 .getDocuments { (snapshot, error) in
                     guard let documents = snapshot?.documents, error == nil else {
@@ -153,67 +154,90 @@ class GroupDetailViewController: UIViewController,
         }
         
     
-    func displayMessages(documents: [QueryDocumentSnapshot]) {
-        
-            var previousMessageView: UIView?
-            let padding: CGFloat = 10
-            
-            for document in documents {
-                guard let message = document.data()["GroupChat_MessageText"] as? String,
-                      let senderEmail = document.data()["GroupChat_Sender"] as? String else { continue }
-                
-                print("DISPLAY Document Data: \(document.data())")
-                // Print the fetched message and sender email
-                        print("Message: \(message), Sender: \(senderEmail)")
-                
-                let messageLabel = PaddedLabel()
-                messageLabel.padding = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10) // Set desired padding
-                messageLabel.text = message
-                messageLabel.textColor = .black
-                messageLabel.numberOfLines = 0
-                
-                // Determine background color and alignment
-                if senderEmail == self.currentUserEmail {
-                    messageLabel.backgroundColor = .systemGreen
-                    messageLabel.textAlignment = .right
-                } else {
-                    messageLabel.backgroundColor = .lightGray
-                    messageLabel.textAlignment = .left
-                }
-                
-                messageLabel.layer.cornerRadius = 8
-                messageLabel.layer.masksToBounds = true
-                messageLabel.translatesAutoresizingMaskIntoConstraints = false
-                
-                scrollView.addSubview(messageLabel)
-                
-               
-                NSLayoutConstraint.activate([
-                    // Check if the sender is the current user
-                    senderEmail == currentUserEmail
-                        ? messageLabel.leadingAnchor.constraint(greaterThanOrEqualTo: scrollView.leadingAnchor, constant: padding)
-                        : messageLabel.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: padding),
-                    
-                    // Current user's messages will be right-aligned
-                    senderEmail == currentUserEmail
-                        ? messageLabel.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -padding)
-                        : messageLabel.trailingAnchor.constraint(lessThanOrEqualTo: scrollView.trailingAnchor, constant: -padding),
 
-                    messageLabel.topAnchor.constraint(equalTo: previousMessageView?.bottomAnchor ?? scrollView.topAnchor, constant: padding),
-                    messageLabel.widthAnchor.constraint(lessThanOrEqualTo: scrollView.widthAnchor, constant: -2 * padding) // Optional: Limit label width
-                ])
-                
-                previousMessageView = messageLabel
-            }
-            
-            // Set the bottom constraint of the last message label to the bottom of the scroll view
-            if let lastMessageView = previousMessageView {
-                lastMessageView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: -padding).isActive = true
-            }
-        
-        scrollView.layoutIfNeeded()
-        
+    func displayMessages(documents: [QueryDocumentSnapshot]) {
+        var previousMessageView: PaddedLabel?
+        let padding: CGFloat = 10
+        let maxWidth: CGFloat = 300
+        let messageSpacing: CGFloat = 15 // Desired space between messages
+
+        // Sort the documents by timestamp
+        let sortedDocuments = documents.sorted { (doc1, doc2) in
+            let timestamp1 = doc1.data()["GroupChat_TimeStamp"] as? Timestamp
+            let timestamp2 = doc2.data()["GroupChat_TimeStamp"] as? Timestamp
+            return timestamp1?.dateValue() ?? Date.distantPast < timestamp2?.dateValue() ?? Date.distantPast
         }
+
+        // Iterate to display the most current message at the bottom
+        for document in sortedDocuments {
+            guard let message = document.data()["GroupChat_MessageText"] as? String,
+                  let senderEmail = document.data()["GroupChat_Sender"] as? String else { continue }
+
+            print("DISPLAY Document Data: \(document.data())")
+            print("Message: \(message), Sender: \(senderEmail)")
+
+            let messageLabel = PaddedLabel()
+            messageLabel.padding = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10) // Set desired padding
+            messageLabel.text = message
+            messageLabel.textColor = .black
+            messageLabel.numberOfLines = 0 // Allow for multiple lines
+
+            // Determine background color and alignment
+            if senderEmail == self.currentUserEmail {
+                messageLabel.backgroundColor = UIColor(red: 12/255, green: 89.3/255, blue: 78.9/255, alpha: 1.0)
+                messageLabel.textColor = .white
+            } else {
+                messageLabel.backgroundColor = .lightGray
+            }
+
+            messageLabel.layer.cornerRadius = 15
+            messageLabel.layer.masksToBounds = true
+            messageLabel.translatesAutoresizingMaskIntoConstraints = false
+
+            scrollView.addSubview(messageLabel)
+
+            NSLayoutConstraint.activate([
+                // Set leading and trailing constraints based on sender
+                senderEmail == self.currentUserEmail
+                    ? messageLabel.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -padding)
+                    : messageLabel.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: padding),
+
+                // For current user's messages
+                senderEmail == self.currentUserEmail
+                    ? messageLabel.leadingAnchor.constraint(greaterThanOrEqualTo: scrollView.leadingAnchor, constant: scrollView.bounds.width - maxWidth - padding)
+                    : messageLabel.trailingAnchor.constraint(lessThanOrEqualTo: scrollView.trailingAnchor, constant: -padding),
+
+                // Top constraint to previous message or scroll view
+                messageLabel.topAnchor.constraint(equalTo: previousMessageView?.bottomAnchor ?? scrollView.topAnchor, constant: previousMessageView == nil ? padding : messageSpacing),
+
+                // Limit label width to maxWidth
+                messageLabel.widthAnchor.constraint(lessThanOrEqualToConstant: maxWidth)
+            ])
+
+    
+            previousMessageView = messageLabel
+        }
+
+        // Set the bottom constraint of the last message label to the bottom of the scroll view
+        if let lastMessageView = previousMessageView {
+            lastMessageView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: -25).isActive = true
+        }
+
+        scrollView.layoutIfNeeded()
+    }
+
+    
+
+
+
+
+
+  
+
+    
+
+    
+    
     
     @objc func handleProfileImageTap() {
         showImagePicker()
