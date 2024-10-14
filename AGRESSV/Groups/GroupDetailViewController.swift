@@ -1,37 +1,34 @@
 import UIKit
 import Firebase
 import FirebaseFirestore
-import MessageKit
 
-struct Message: MessageType {
-    var sender: SenderType
-    var messageId: String
-    var sentDate: Date
-    var kind: MessageKind
+class PaddedLabel: UILabel {
+    var padding: UIEdgeInsets = .zero
+    
+    override func drawText(in rect: CGRect) {
+        let paddedRect = rect.inset(by: padding)
+        super.drawText(in: paddedRect)
+    }
+    
+    override var intrinsicContentSize: CGSize {
+        let size = super.intrinsicContentSize
+        return CGSize(width: size.width + padding.left + padding.right,
+                      height: size.height + padding.top + padding.bottom)
+    }
 }
 
-struct Sender: SenderType {
-    var senderId: String
-    var displayName: String
-}
 
 class GroupDetailViewController: UIViewController,
                                    UIImagePickerControllerDelegate,
                                  UINavigationControllerDelegate {
-
-    
-    
-    
     
 
     var currentUserEmail = Auth.auth().currentUser?.email
     var groupName: String = ""
     
+    let scrollView = UIScrollView()
     
     
-    
-    
-
     // Create UIImageView for the profile picture
     let GroupImageView: UIImageView = {
         let imageView = UIImageView()
@@ -42,22 +39,42 @@ class GroupDetailViewController: UIViewController,
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
+    
+    let groupNameLabel: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .center
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = UIFont.systemFont(ofSize: 16) // Customize font size as needed
+        label.textColor = .white // Customize text color as needed
+        return label
+    }()
 
     var currentGroupImageRef: DocumentReference?
 
+  
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-       
+
+        fetchMessages()
         setupBackgroundImage()
         loadProfileImage()
-        setupUI()
+        setupGroupImage()
         
-    }
+        
+    } //end of load
+    
+    
 
-    func setupUI() {
+    func setupGroupImage() {
         view.addSubview(GroupImageView)
-
+        view.addSubview(groupNameLabel)
+        view.addSubview(scrollView)
+        
+        
+        self.groupNameLabel.text = self.groupName
+        
         let screenWidth = view.bounds.size.width
         let screenHeight = view.bounds.size.height
         let widthScalingFactor = screenWidth / 430.0
@@ -68,9 +85,31 @@ class GroupDetailViewController: UIViewController,
             GroupImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             GroupImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 5 * scalingFactor),
             GroupImageView.widthAnchor.constraint(equalToConstant: 150 * scalingFactor),
-            GroupImageView.heightAnchor.constraint(equalToConstant: 150 * scalingFactor)
+            GroupImageView.heightAnchor.constraint(equalToConstant: 150 * scalingFactor),
+            
+            groupNameLabel.centerXAnchor.constraint(equalTo: GroupImageView.centerXAnchor),
+            groupNameLabel.topAnchor.constraint(equalTo: GroupImageView.bottomAnchor, constant: 10)
+        ])
+        
+        
+        // Set up the scroll view
+        scrollView.backgroundColor = .white
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        
+        // Set rounded corners
+            scrollView.layer.cornerRadius = 30 // Set the desired corner radius
+            scrollView.layer.masksToBounds = true // Ensures that the corners are rounded
+        
+        // Constraints for scroll view
+        NSLayoutConstraint.activate([
+            scrollView.topAnchor.constraint(equalTo: groupNameLabel.bottomAnchor, constant: 10 * scalingFactor),
+            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
 
+        
+        
         GroupImageView.layer.cornerRadius = (150 * scalingFactor) / 2
         GroupImageView.clipsToBounds = true
 
@@ -96,6 +135,86 @@ class GroupDetailViewController: UIViewController,
         ])
     }
 
+    
+    func fetchMessages() {
+        
+        let db = Firestore.firestore()
+            db.collection("Agressv_GroupChat")
+            .whereField("GroupChat_Group_Creator_Email", isEqualTo: self.currentUserEmail!)
+                .whereField("GroupChat_GroupName", isEqualTo: self.groupName)
+                .getDocuments { (snapshot, error) in
+                    guard let documents = snapshot?.documents, error == nil else {
+                        print("Error fetching documents: \(error?.localizedDescription ?? "Unknown error")")
+                        return
+                    }
+                    print("FETCH Document Data: \(documents)")
+                    self.displayMessages(documents: documents)
+                }
+        }
+        
+    
+    func displayMessages(documents: [QueryDocumentSnapshot]) {
+        
+            var previousMessageView: UIView?
+            let padding: CGFloat = 10
+            
+            for document in documents {
+                guard let message = document.data()["GroupChat_MessageText"] as? String,
+                      let senderEmail = document.data()["GroupChat_Sender"] as? String else { continue }
+                
+                print("DISPLAY Document Data: \(document.data())")
+                // Print the fetched message and sender email
+                        print("Message: \(message), Sender: \(senderEmail)")
+                
+                let messageLabel = PaddedLabel()
+                messageLabel.padding = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10) // Set desired padding
+                messageLabel.text = message
+                messageLabel.textColor = .black
+                messageLabel.numberOfLines = 0
+                
+                // Determine background color and alignment
+                if senderEmail == self.currentUserEmail {
+                    messageLabel.backgroundColor = .systemGreen
+                    messageLabel.textAlignment = .right
+                } else {
+                    messageLabel.backgroundColor = .lightGray
+                    messageLabel.textAlignment = .left
+                }
+                
+                messageLabel.layer.cornerRadius = 8
+                messageLabel.layer.masksToBounds = true
+                messageLabel.translatesAutoresizingMaskIntoConstraints = false
+                
+                scrollView.addSubview(messageLabel)
+                
+               
+                NSLayoutConstraint.activate([
+                    // Check if the sender is the current user
+                    senderEmail == currentUserEmail
+                        ? messageLabel.leadingAnchor.constraint(greaterThanOrEqualTo: scrollView.leadingAnchor, constant: padding)
+                        : messageLabel.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: padding),
+                    
+                    // Current user's messages will be right-aligned
+                    senderEmail == currentUserEmail
+                        ? messageLabel.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -padding)
+                        : messageLabel.trailingAnchor.constraint(lessThanOrEqualTo: scrollView.trailingAnchor, constant: -padding),
+
+                    messageLabel.topAnchor.constraint(equalTo: previousMessageView?.bottomAnchor ?? scrollView.topAnchor, constant: padding),
+                    messageLabel.widthAnchor.constraint(lessThanOrEqualTo: scrollView.widthAnchor, constant: -2 * padding) // Optional: Limit label width
+                ])
+                
+                previousMessageView = messageLabel
+            }
+            
+            // Set the bottom constraint of the last message label to the bottom of the scroll view
+            if let lastMessageView = previousMessageView {
+                lastMessageView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: -padding).isActive = true
+            }
+        
+        scrollView.layoutIfNeeded()
+        
+        }
+    
     @objc func handleProfileImageTap() {
         showImagePicker()
     }
@@ -141,7 +260,6 @@ class GroupDetailViewController: UIViewController,
         }
     }
 
-    // MARK: - UIImagePickerControllerDelegate
 
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if let pickedImage = info[.editedImage] as? UIImage {
@@ -205,7 +323,7 @@ class GroupDetailViewController: UIViewController,
         let db = Firestore.firestore()
 
         db.collection("Agressv_Groups")
-            .whereField("Group_Creator_Email", isEqualTo: currentUserEmail)
+            .whereField("Group_Members", arrayContains: currentUserEmail)
             .whereField("Group_Name", isEqualTo: self.groupName)
             .getDocuments { (querySnapshot, error) in
                 if let error = error {
@@ -247,9 +365,7 @@ class GroupDetailViewController: UIViewController,
 
     
     
-
-   
-
+  
    
 } // end of class
 

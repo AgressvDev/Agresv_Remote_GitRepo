@@ -2,6 +2,8 @@ import UIKit
 import Firebase
 import FirebaseFirestore
 
+
+
 class CircularImageCellGroups: UITableViewCell {
     let circularImageView: UIImageView = {
         let imageView = UIImageView()
@@ -259,7 +261,7 @@ class GroupsHeaderViewController: UIViewController, UITableViewDataSource, UITab
         let db = Firestore.firestore()
         
         db.collection("Agressv_Groups")
-            .whereField("Group_Creator_Email", isEqualTo: self.currentUserEmail!)
+            .whereField("Group_Members", arrayContains: self.currentUserEmail!) // Adding the new condition
             .getDocuments { (snapshot, error) in
                 if let error = error {
                     print("Error fetching documents: \(error)")
@@ -286,6 +288,7 @@ class GroupsHeaderViewController: UIViewController, UITableViewDataSource, UITab
                 }
             }
     }
+
 
 
     

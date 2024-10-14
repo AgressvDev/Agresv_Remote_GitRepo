@@ -37,6 +37,8 @@
 		457C70A02B48A97A00796A57 /* RankingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 457C709F2B48A97A00796A57 /* RankingsVC.swift */; };
 		45A1DF4D2AA3F58D00191437 /* NewGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45A1DF4C2AA3F58D00191437 /* NewGameViewController.swift */; };
 		45B2195F2ADB9E240081AA5F /* ContactUsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45B2195E2ADB9E240081AA5F /* ContactUsViewController.swift */; };
+		45B56C4B2CBC686F0061120A /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45B56C4A2CBC686F0061120A /* Message.swift */; };
+		45B56C4D2CBC69290061120A /* MessageBubble.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45B56C4C2CBC69290061120A /* MessageBubble.swift */; };
 		45BD18212B01CA9A00EB98C6 /* PieChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45BD18202B01CA9900EB98C6 /* PieChart.swift */; };
 		45BD18232B01E83900EB98C6 /* PieChartSingles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45BD18222B01E83900EB98C6 /* PieChartSingles.swift */; };
 		45BD18252B02E53200EB98C6 /* NewPlayerSearchVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45BD18242B02E53200EB98C6 /* NewPlayerSearchVC.swift */; };
@@ -102,6 +104,8 @@
 		457C709F2B48A97A00796A57 /* RankingsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RankingsVC.swift; sourceTree = "<group>"; };
 		45A1DF4C2AA3F58D00191437 /* NewGameViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewGameViewController.swift; sourceTree = "<group>"; };
 		45B2195E2ADB9E240081AA5F /* ContactUsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactUsViewController.swift; sourceTree = "<group>"; };
+		45B56C4A2CBC686F0061120A /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
+		45B56C4C2CBC69290061120A /* MessageBubble.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageBubble.swift; sourceTree = "<group>"; };
 		45BD18202B01CA9900EB98C6 /* PieChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieChart.swift; sourceTree = "<group>"; };
 		45BD18222B01E83900EB98C6 /* PieChartSingles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieChartSingles.swift; sourceTree = "<group>"; };
 		45BD18242B02E53200EB98C6 /* NewPlayerSearchVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPlayerSearchVC.swift; sourceTree = "<group>"; };
@@ -171,6 +175,7 @@
 				450A49792A8EC94D00DEB7CF /* Main.storyboard */,
 				45B2195E2ADB9E240081AA5F /* ContactUsViewController.swift */,
 				45ECA1D82AD4AC4D00A706C9 /* AccountSettingsViewController.swift */,
+				45B56C492CBC685C0061120A /* Messages */,
 				4557F10C2CB89A2100C3B4F5 /* Groups */,
 				45E6DC082AFDA72700345671 /* Players */,
 				45E6DC052AFD8FF900345671 /* UserProfile */,
@@ -241,6 +246,15 @@
 				455BDA2B2ACA4098003B2EBF /* SinglesAddGameViewController.swift */,
 			);
 			path = Singles;
+			sourceTree = "<group>";
+		};
+		45B56C492CBC685C0061120A /* Messages */ = {
+			isa = PBXGroup;
+			children = (
+				45B56C4A2CBC686F0061120A /* Message.swift */,
+				45B56C4C2CBC69290061120A /* MessageBubble.swift */,
+			);
+			path = Messages;
 			sourceTree = "<group>";
 		};
 		45B875902AA41A29008A67EF /* Playometer */ = {
@@ -463,6 +477,8 @@
 				450A49762A8EC94D00DEB7CF /* SceneDelegate.swift in Sources */,
 				455BDA2C2ACA4098003B2EBF /* SinglesAddGameViewController.swift in Sources */,
 				45E6DC102AFE06EA00345671 /* PlayersSharedVariable.swift in Sources */,
+				45B56C4B2CBC686F0061120A /* Message.swift in Sources */,
+				45B56C4D2CBC69290061120A /* MessageBubble.swift in Sources */,
 				45271D0F2AC1241F006A3050 /* DoublesSearchVCNew.swift in Sources */,
 				45F489262A9D7A4C0043238C /* GaugeView.swift in Sources */,
 				4526236F2AC4DECA0070B637 /* DoublesSharedVariables.swift in Sources */,
