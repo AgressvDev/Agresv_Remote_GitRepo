@@ -78,7 +78,7 @@ class LoginViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
+        //addGroupChat()
         
         // Calculate scaling factors based on screen width and height
         let screenWidth = view.bounds.size.width
@@ -412,6 +412,37 @@ class LoginViewController: UIViewController {
             }
         }
     }
+    
+    
+    func addGroupChat() {
+        // Get a reference to the Firestore database
+        let db = Firestore.firestore()
+        
+        // Create a dictionary with the data you want to add
+        let groupChatData: [String: Any] = [
+            "GroupChat_Sender": "player3@gmail.com",
+            "GroupChat_MessageText": "I have to baptize my cock but after that I'm free!",
+            "GroupChat_TimeStamp": Date(),
+            "GroupChat_GroupName": "LA Pickleball",
+            "GroupChat_Group_Creator_Email": "player1@gmail.com",
+            "GroupChat_Members": [
+                "player1@gmail.com",
+                "ryanmaxomelia@gmail.com",
+                "jackmunro@something.com",
+                "player3@gmail.com"
+            ]
+        ]
+        
+        // Add the data to the "Agressv_GroupChat" collection
+        db.collection("Agressv_GroupChat").addDocument(data: groupChatData) { error in
+            if let error = error {
+                print("Error adding document: \(error)")
+            } else {
+                print("Document added successfully!")
+            }
+        }
+    }
+    
     
     
 

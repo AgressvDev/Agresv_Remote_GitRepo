@@ -3,6 +3,10 @@ import Firebase
 import FirebaseFirestore
 import SwiftUI
 
+import UIKit
+
+import UIKit
+
 class PaddedLabel: UILabel {
     var padding: UIEdgeInsets = .zero
 
@@ -17,6 +21,9 @@ class PaddedLabel: UILabel {
                       height: size.height + padding.top + padding.bottom)
     }
 }
+
+
+
 
 
 class GroupDetailViewController: UIViewController,
@@ -154,12 +161,88 @@ class GroupDetailViewController: UIViewController,
         }
         
     
+//    func displayMessages(documents: [QueryDocumentSnapshot]) {
+//        var previousMessageView: PaddedLabel?
+//        let padding: CGFloat = 10
+//        let maxWidth: CGFloat = 270
+//        let messageSpacing: CGFloat = 15 // Desired space between messages
+//
+//        // Sort the documents by timestamp
+//        let sortedDocuments = documents.sorted { (doc1, doc2) in
+//            let timestamp1 = doc1.data()["GroupChat_TimeStamp"] as? Timestamp
+//            let timestamp2 = doc2.data()["GroupChat_TimeStamp"] as? Timestamp
+//            return timestamp1?.dateValue() ?? Date.distantPast < timestamp2?.dateValue() ?? Date.distantPast
+//        }
+//
+//        for document in sortedDocuments {
+//            guard let message = document.data()["GroupChat_MessageText"] as? String,
+//                  let senderEmail = document.data()["GroupChat_Sender"] as? String,
+//                  let usernameSender = document.data()["GroupChat_Sender_Username"] as? String
+//            else { continue }
+//
+//            print("DISPLAY Document Data: \(document.data())")
+//            print("Message: \(message), Sender: \(senderEmail), Username_Sender: \(usernameSender)")
+//
+//            // Create username label
+//            let usernameLabel = UILabel()
+//            usernameLabel.text = usernameSender
+//            usernameLabel.textColor = UIColor.lightGray // Light grey color
+//            usernameLabel.font = UIFont.systemFont(ofSize: 10) // Set font size
+//            usernameLabel.translatesAutoresizingMaskIntoConstraints = false
+//
+//            // Create message label
+//            let messageLabel = PaddedLabel()
+//            messageLabel.padding = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
+//            messageLabel.text = message
+//            messageLabel.textColor = .black
+//            messageLabel.numberOfLines = 0
+//
+//            // Determine background color and alignment
+//            if senderEmail == self.currentUserEmail {
+//                messageLabel.backgroundColor = UIColor(red: 12/255, green: 89.3/255, blue: 78.9/255, alpha: 1.0)
+//                messageLabel.textColor = .white
+//            } else {
+//                messageLabel.backgroundColor = .lightGray
+//            }
+//
+//            messageLabel.layer.cornerRadius = 15
+//            messageLabel.layer.masksToBounds = true
+//            messageLabel.translatesAutoresizingMaskIntoConstraints = false
+//
+//            scrollView.addSubview(usernameLabel)
+//            scrollView.addSubview(messageLabel)
+//
+//            // Set constraints for usernameLabel
+//            NSLayoutConstraint.activate([
+//                usernameLabel.leadingAnchor.constraint(equalTo: senderEmail == self.currentUserEmail ? scrollView.trailingAnchor : scrollView.leadingAnchor, constant: padding),
+//                usernameLabel.trailingAnchor.constraint(equalTo: senderEmail == self.currentUserEmail ? scrollView.trailingAnchor : scrollView.leadingAnchor, constant: -padding),
+//                usernameLabel.topAnchor.constraint(equalTo: previousMessageView?.bottomAnchor ?? scrollView.topAnchor, constant: previousMessageView == nil ? padding : messageSpacing),
+//            ])
+//
+//            // Set constraints for messageLabel
+//            NSLayoutConstraint.activate([
+//                messageLabel.leadingAnchor.constraint(equalTo: usernameLabel.leadingAnchor),
+//                messageLabel.trailingAnchor.constraint(equalTo: usernameLabel.trailingAnchor),
+//                messageLabel.topAnchor.constraint(equalTo: usernameLabel.bottomAnchor, constant: 5), // Space between username and message
+//                messageLabel.widthAnchor.constraint(lessThanOrEqualToConstant: maxWidth)
+//            ])
+//
+//            previousMessageView = messageLabel
+//        }
+//
+//        // Set the bottom constraint of the last message label to the bottom of the scroll view
+//        if let lastMessageView = previousMessageView {
+//            lastMessageView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: -25).isActive = true
+//        }
+//
+//        scrollView.layoutIfNeeded()
+//    }
 
     func displayMessages(documents: [QueryDocumentSnapshot]) {
         var previousMessageView: PaddedLabel?
         let padding: CGFloat = 10
-        let maxWidth: CGFloat = 300
-        let messageSpacing: CGFloat = 15 // Desired space between messages
+        let maxWidth: CGFloat = 270
+        let messageSpacing: CGFloat = 25 // Desired space between messages
 
         // Sort the documents by timestamp
         let sortedDocuments = documents.sorted { (doc1, doc2) in
@@ -171,16 +254,27 @@ class GroupDetailViewController: UIViewController,
         // Iterate to display the most current message at the bottom
         for document in sortedDocuments {
             guard let message = document.data()["GroupChat_MessageText"] as? String,
-                  let senderEmail = document.data()["GroupChat_Sender"] as? String else { continue }
+                  let senderEmail = document.data()["GroupChat_Sender"] as? String,
+                  let username_sender = document.data()["GroupChat_Sender_Username"] as? String
+            else { continue }
 
             print("DISPLAY Document Data: \(document.data())")
-            print("Message: \(message), Sender: \(senderEmail)")
+            print("Message: \(message), Sender: \(senderEmail), Username_Sender: \(username_sender)")
 
+         
+                       let usernameLabel = UILabel()
+                       usernameLabel.text = username_sender
+                       usernameLabel.textColor = UIColor.lightGray // Light grey color
+                       usernameLabel.font = UIFont.systemFont(ofSize: 10) // Set font size
+                       usernameLabel.translatesAutoresizingMaskIntoConstraints = false
+            
             let messageLabel = PaddedLabel()
-            messageLabel.padding = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10) // Set desired padding
+            messageLabel.padding = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5) // Set desired padding
             messageLabel.text = message
             messageLabel.textColor = .black
             messageLabel.numberOfLines = 0 // Allow for multiple lines
+            //messageLabel.lineBreakMode = .byWordWrapping
+
 
             // Determine background color and alignment
             if senderEmail == self.currentUserEmail {
@@ -195,6 +289,7 @@ class GroupDetailViewController: UIViewController,
             messageLabel.translatesAutoresizingMaskIntoConstraints = false
 
             scrollView.addSubview(messageLabel)
+            scrollView.addSubview(usernameLabel)
 
             NSLayoutConstraint.activate([
                 // Set leading and trailing constraints based on sender
@@ -214,7 +309,12 @@ class GroupDetailViewController: UIViewController,
                 messageLabel.widthAnchor.constraint(lessThanOrEqualToConstant: maxWidth)
             ])
 
-    
+            // Set constraints for usernameLabel
+                        NSLayoutConstraint.activate([
+                            usernameLabel.leadingAnchor.constraint(equalTo: messageLabel.leadingAnchor),
+                            usernameLabel.bottomAnchor.constraint(equalTo: messageLabel.topAnchor, constant: -3)
+                        ])
+
             previousMessageView = messageLabel
         }
 
@@ -228,16 +328,6 @@ class GroupDetailViewController: UIViewController,
 
     
 
-
-
-
-
-  
-
-    
-
-    
-    
     
     @objc func handleProfileImageTap() {
         showImagePicker()
@@ -392,4 +482,3 @@ class GroupDetailViewController: UIViewController,
   
    
 } // end of class
-
