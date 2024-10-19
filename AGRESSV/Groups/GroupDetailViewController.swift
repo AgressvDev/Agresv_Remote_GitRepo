@@ -8,7 +8,7 @@ import UIKit
 import UIKit
 
 class PaddedLabel: UILabel {
-    var padding: UIEdgeInsets = .zero
+    var padding: UIEdgeInsets = .zero //UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
 
     override func drawText(in rect: CGRect) {
         let paddedRect = rect.inset(by: padding)
@@ -21,9 +21,6 @@ class PaddedLabel: UILabel {
                       height: size.height + padding.top + padding.bottom)
     }
 }
-
-
-
 
 
 class GroupDetailViewController: UIViewController,
@@ -94,7 +91,7 @@ class GroupDetailViewController: UIViewController,
     override func viewDidLoad() {
         super.viewDidLoad()
         
-
+        setupKeyboardObservers()
         //fetchMessages()
         setupBackgroundImage()
         loadProfileImage()
@@ -119,6 +116,31 @@ class GroupDetailViewController: UIViewController,
         }
         
     } //end of load
+    
+    private func setupKeyboardObservers() {
+         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+     }
+     
+    @objc private func keyboardWillShow(notification: Notification) {
+            if let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
+                let keyboardHeight = keyboardFrame.cgRectValue.height
+                UIView.animate(withDuration: 0.3) {
+                    self.view.frame.origin.y = -keyboardHeight + 16 // Adjust as needed
+                }
+            }
+        }
+        
+        @objc private func keyboardWillHide(notification: Notification) {
+            UIView.animate(withDuration: 0.3) {
+                self.view.frame.origin.y = 0 // Reset the view position
+            }
+        }
+     
+     deinit {
+         NotificationCenter.default.removeObserver(self)
+     }
+ 
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -318,9 +340,19 @@ class GroupDetailViewController: UIViewController,
             } else {
                 print("Document added successfully!")
                 self.messageField.text = "" //clear the field after update
-               
                 
+                self.hideKeyboardAndResetView()
             }
+        }
+    }
+    
+    private func hideKeyboardAndResetView() {
+        // Hide the keyboard
+        self.messageField.resignFirstResponder()
+        
+        // Reset the view position
+        UIView.animate(withDuration: 0.3) {
+            self.view.frame.origin.y = 0 // Return to original position
         }
     }
     
@@ -348,7 +380,7 @@ class GroupDetailViewController: UIViewController,
             scrollView.subviews.forEach { $0.removeFromSuperview() }
         
         var previousMessageView: PaddedLabel?
-        let padding: CGFloat = 10
+        let padding: CGFloat = 25
         let maxWidth: CGFloat = 270
         let messageSpacing: CGFloat = 25 // Desired space between messages
 
@@ -377,7 +409,7 @@ class GroupDetailViewController: UIViewController,
                        usernameLabel.translatesAutoresizingMaskIntoConstraints = false
             
             let messageLabel = PaddedLabel()
-            messageLabel.padding = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5) // Set desired padding
+            //messageLabel.padding = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5) // Set desired padding
             messageLabel.text = message
             messageLabel.textColor = .black
             messageLabel.numberOfLines = 0 // Allow for multiple lines
@@ -392,7 +424,7 @@ class GroupDetailViewController: UIViewController,
                 messageLabel.backgroundColor = .lightGray
             }
 
-            messageLabel.layer.cornerRadius = 15
+            messageLabel.layer.cornerRadius = 4
             messageLabel.layer.masksToBounds = true
             messageLabel.translatesAutoresizingMaskIntoConstraints = false
 
