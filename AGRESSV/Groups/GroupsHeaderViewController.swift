@@ -230,7 +230,7 @@ class GroupsHeaderViewController: UIViewController, UITableViewDataSource, UITab
         // Query for the group to delete
         db.collection("Agressv_Groups")
             .whereField("Group_Name", isEqualTo: groupName)
-            .whereField("Group_Creator_Email", isEqualTo: self.currentUserEmail!)
+            .whereField("Group_Members", arrayContains: self.currentUserEmail!)
             .getDocuments { (snapshot, error) in
                 if let error = error {
                     print("Error fetching documents: \(error)")
