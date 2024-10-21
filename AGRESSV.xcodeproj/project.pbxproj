@@ -54,6 +54,8 @@
 		45FE55E42CC44C9D00339F14 /* RemoveMemberViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45FE55E32CC44C9D00339F14 /* RemoveMemberViewController.swift */; };
 		45FE55E72CC46D6E00339F14 /* BadgeDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45FE55E62CC46D6E00339F14 /* BadgeDictionary.swift */; };
 		45FE55E92CC5E39600339F14 /* MessageBubble.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45FE55E82CC5E39600339F14 /* MessageBubble.swift */; };
+		45FE55EB2CC64DF900339F14 /* FirebaseMessaging in Resources */ = {isa = PBXBuildFile; fileRef = 45FE55EA2CC64DF900339F14 /* FirebaseMessaging */; };
+		45FE55ED2CC64E3300339F14 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 45FE55EC2CC64E3300339F14 /* FirebaseMessaging */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -120,9 +122,10 @@
 		45F7AB982AB669E700D1DA2C /* GamesCount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamesCount.swift; sourceTree = "<group>"; };
 		45FE55E12CC44C9100339F14 /* AddMemberViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMemberViewController.swift; sourceTree = "<group>"; };
 		45FE55E32CC44C9D00339F14 /* RemoveMemberViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoveMemberViewController.swift; sourceTree = "<group>"; };
-		45FE55E52CC4513B00339F14 /* AGRESSVRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = AGRESSVRelease.entitlements; sourceTree = "<group>"; };
 		45FE55E62CC46D6E00339F14 /* BadgeDictionary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BadgeDictionary.swift; sourceTree = "<group>"; };
 		45FE55E82CC5E39600339F14 /* MessageBubble.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageBubble.swift; sourceTree = "<group>"; };
+		45FE55EA2CC64DF900339F14 /* FirebaseMessaging */ = {isa = PBXFileReference; lastKnownFileType = folder; path = FirebaseMessaging; sourceTree = "<group>"; };
+		45FE55EF2CC6E77700339F14 /* AGRESSVRelease.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = AGRESSVRelease.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -130,6 +133,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				45FE55ED2CC64E3300339F14 /* FirebaseMessaging in Frameworks */,
 				45F7B3FE2CBB6FCA009DC0B5 /* MessageKit in Frameworks */,
 				4573B8BB2A91A868009FAE1E /* FirebaseAuth in Frameworks */,
 				450C07CD2A92CFCD006E4540 /* FirebaseFirestore in Frameworks */,
@@ -175,8 +179,9 @@
 		450A49722A8EC94D00DEB7CF /* AGRESSV */ = {
 			isa = PBXGroup;
 			children = (
-				45FE55E52CC4513B00339F14 /* AGRESSVRelease.entitlements */,
+				45FE55EA2CC64DF900339F14 /* FirebaseMessaging */,
 				450A49732A8EC94D00DEB7CF /* AppDelegate.swift */,
+				45FE55EF2CC6E77700339F14 /* AGRESSVRelease.entitlements */,
 				450A49752A8EC94D00DEB7CF /* SceneDelegate.swift */,
 				450A49792A8EC94D00DEB7CF /* Main.storyboard */,
 				45B2195E2ADB9E240081AA5F /* ContactUsViewController.swift */,
@@ -332,6 +337,7 @@
 				4573B8BA2A91A868009FAE1E /* FirebaseAuth */,
 				450C07CC2A92CFCD006E4540 /* FirebaseFirestore */,
 				45F7B3FD2CBB6FCA009DC0B5 /* MessageKit */,
+				45FE55EC2CC64E3300339F14 /* FirebaseMessaging */,
 			);
 			productName = AGRESSV;
 			productReference = 450A49702A8EC94D00DEB7CF /* AGRESSV.app */;
@@ -427,6 +433,7 @@
 			files = (
 				450A49802A8EC94E00DEB7CF /* LaunchScreen.storyboard in Resources */,
 				4573B8B82A91A636009FAE1E /* GoogleService-Info.plist in Resources */,
+				45FE55EB2CC64DF900339F14 /* FirebaseMessaging in Resources */,
 				450A497D2A8EC94E00DEB7CF /* Assets.xcassets in Resources */,
 				450A497B2A8EC94D00DEB7CF /* Main.storyboard in Resources */,
 				45E6DC0C2AFDB33900345671 /* Angel wish.ttf in Resources */,
@@ -664,6 +671,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconCoolGreenIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = AGRESSV/AGRESSVRelease.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = TXKCDNZBZR;
@@ -713,7 +721,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1;
-				PRODUCT_BUNDLE_IDENTIFIER = AGRESSV.RYMAX;
+				PRODUCT_BUNDLE_IDENTIFIER = TXKCDNZBZR.AGRESSV.RYMAX;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -868,6 +876,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 45F7B3FC2CBB6FCA009DC0B5 /* XCRemoteSwiftPackageReference "MessageKit" */;
 			productName = MessageKit;
+		};
+		45FE55EC2CC64E3300339F14 /* FirebaseMessaging */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4573B8B92A91A868009FAE1E /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseMessaging;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

@@ -8,7 +8,7 @@
 import UIKit
 import Firebase
 import FirebaseFirestore
-
+import FirebaseMessaging
 
 class CreateAccountViewController: UIViewController {
 
@@ -237,6 +237,34 @@ class CreateAccountViewController: UIViewController {
     } //end of load
     
     
+    func fetchFCMToken() {
+        Messaging.messaging().token { token, error in
+            if let error = error {
+                print("Error fetching FCM token: \(error)")
+                return
+            }
+            guard let token = token else { return }
+            print("FCM token: \(token)")
+            
+            // Now store this token in Firestore
+            self.storeFCMToken(token)
+        }
+    }
+    
+    func storeFCMToken(_ token: String) {
+        guard let userEmail = Auth.auth().currentUser?.email else { return }
+        
+        let db = Firestore.firestore()
+        let userRef = db.collection("Agressv_Users").document(userEmail) // Use email as document ID
+
+        userRef.setData(["fcmToken": token], merge: true) { error in
+            if let error = error {
+                print("Error storing FCM token: \(error)")
+            } else {
+                print("FCM token stored successfully!")
+            }
+        }
+    }
     
     
 

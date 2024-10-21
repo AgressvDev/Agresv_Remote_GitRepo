@@ -9,7 +9,7 @@ import UIKit
 import Firebase
 import SwiftUI
 import Foundation
-import QuartzCore // Import QuartzCore to use CABasicAnimation
+import FirebaseMessaging
 
 class LoginViewController: UIViewController {
 
@@ -86,7 +86,7 @@ class LoginViewController: UIViewController {
         let widthScalingFactor = screenWidth / 430.0 // Use a reference width, e.g., iPhone 6/6s/7/8 width
         let heightScalingFactor = screenHeight / 932.0 // Use a reference height, e.g., iPhone 6/6s/7/8 height
         let scalingFactor = min(widthScalingFactor, heightScalingFactor)
-        let marginPercentage: CGFloat = 0.07
+       
         // Initialize tap gesture recognizer
             tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
 
@@ -273,7 +273,7 @@ class LoginViewController: UIViewController {
     } //end of load
     
   
-
+   
     
     
     override func viewDidLayoutSubviews() {
@@ -376,9 +376,10 @@ class LoginViewController: UIViewController {
                 self.present(dialogMessage, animated: true, completion: nil)
             }
             else {
-                //go to User's Homescreen
                 
-               
+                
+                
+                //go to User's Homescreen
                 // Create an instance of opp two VC
                 let UserProfileVC = self.storyboard?.instantiateViewController(withIdentifier: "UserProfileID") as! UserProfileHomeVC
                 
@@ -390,6 +391,7 @@ class LoginViewController: UIViewController {
             }
         }
     }
+    
     
     
     func addGroupChat() {
@@ -422,7 +424,34 @@ class LoginViewController: UIViewController {
     }
     
     
+    func fetchFCMToken() {
+        Messaging.messaging().token { token, error in
+            if let error = error {
+                print("Error fetching FCM token: \(error)")
+                return
+            }
+            guard let token = token else { return }
+            print("FCM token: \(token)")
+            
+            // Now store this token in Firestore
+            self.storeFCMToken(token)
+        }
+    }
     
+    func storeFCMToken(_ token: String) {
+        guard let userEmail = Auth.auth().currentUser?.email else { return }
+        
+        let db = Firestore.firestore()
+        let userRef = db.collection("Agressv_Users").document(userEmail) // Use email as document ID
+
+        userRef.setData(["fcmToken": token], merge: true) { error in
+            if let error = error {
+                print("Error storing FCM token: \(error)")
+            } else {
+                print("FCM token stored successfully!")
+            }
+        }
+    }
 
 } //end of class
 
