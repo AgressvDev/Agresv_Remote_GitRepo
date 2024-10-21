@@ -14,7 +14,6 @@ import QuartzCore // Import QuartzCore to use CABasicAnimation
 class LoginViewController: UIViewController {
 
   
-   
 
     
     // Add this property
@@ -36,18 +35,7 @@ class LoginViewController: UIViewController {
         return imageView
     }()
     
-//    // Create UILabel for the letter "a"
-//    let letterLabel: UILabel = {
-//        let label = UILabel()
-//        label.text = "a"
-//        label.font = UIFont(name: "Fancy Card Text", size: 150) // Use the Angel Wish font
-//        label.textColor = UIColor.black // Change color if needed
-//        label.translatesAutoresizingMaskIntoConstraints = false
-//        label.textAlignment = .center
-//        return label
-//    }()
 
-    
     
     // Add EmailTextField
     let EmailTextField: UITextField = {
@@ -79,6 +67,18 @@ class LoginViewController: UIViewController {
         super.viewDidLoad()
         
         //addGroupChat()
+        
+      
+//        
+//        let badgeCount: Int = 0
+//                let application = UIApplication.shared
+//                let center = UNUserNotificationCenter.current()
+//                center.requestAuthorization(options:[.badge, .alert, .sound]) { (granted, error) in
+//                    // Enable or disable features based on authorization.
+//                }
+//                application.registerForRemoteNotifications()
+//                application.applicationIconBadgeNumber = badgeCount
+            
         
         // Calculate scaling factors based on screen width and height
         let screenWidth = view.bounds.size.width
@@ -112,30 +112,6 @@ class LoginViewController: UIViewController {
         
         
        
-//        // Add the label as a subview to the image view
-//        appIconImageView.addSubview(letterLabel)
-//
-//        // Center the label within the image view
-//        NSLayoutConstraint.activate([
-//            letterLabel.centerXAnchor.constraint(equalTo: appIconImageView.centerXAnchor),
-//            letterLabel.centerYAnchor.constraint(equalTo: appIconImageView.centerYAnchor)
-//        ])
-        
-//        // Add the blackOverlayImageView to your view hierarchy
-//        self.view.addSubview(blackOverlayImageView)
-//
-//        // Add constraints to position the blackOverlayImageView at the bottom of the emailTextField
-//        NSLayoutConstraint.activate([
-//            blackOverlayImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 1 * marginPercentage),
-//            blackOverlayImageView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -1 * marginPercentage),
-//            blackOverlayImageView.topAnchor.constraint(equalTo: appIconImageView.bottomAnchor, constant: 15 * scalingFactor),
-//
-//            //blackOverlayImageView.widthAnchor.constraint(equalToConstant: 15 * scalingFactor),
-//            blackOverlayImageView.heightAnchor.constraint(equalToConstant: 700 * scalingFactor)
-//        ])
-
-        // Scale the image using the scalingFactor
-       // blackOverlayImageView.transform = CGAffineTransform(scaleX: scalingFactor, y: scalingFactor)
       
             view.addSubview(EmailTextField)
 
@@ -296,6 +272,8 @@ class LoginViewController: UIViewController {
        
     } //end of load
     
+  
+
     
     
     override func viewDidLayoutSubviews() {

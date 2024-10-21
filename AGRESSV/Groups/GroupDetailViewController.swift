@@ -3,25 +3,28 @@ import Firebase
 import FirebaseFirestore
 import SwiftUI
 
-import UIKit
 
-import UIKit
 
-class PaddedLabel: UILabel {
-    var padding: UIEdgeInsets = .zero //UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
 
-    override func drawText(in rect: CGRect) {
-        let paddedRect = rect.inset(by: padding)
-        super.drawText(in: paddedRect)
-    }
-
-    override var intrinsicContentSize: CGSize {
-        let size = super.intrinsicContentSize
-        return CGSize(width: size.width + padding.left + padding.right,
-                      height: size.height + padding.top + padding.bottom)
+struct MessageBubble: View {
+    var message: String
+    var isCurrentUser: Bool
+    
+    var body: some View {
+        VStack {
+            HStack {
+                Text(message)
+                    .padding()
+                    .background(isCurrentUser ? Color(red: 12/255, green: 89.3/255, blue: 78.9/255) : Color.gray)
+                    .foregroundColor(isCurrentUser ? .white : .black) // Set text color based on isCurrentUser
+                    .cornerRadius(30)
+            }
+            .frame(maxWidth: 280, alignment: isCurrentUser ? .trailing : .leading)
+        }
+        .frame(maxWidth: .infinity, alignment: isCurrentUser ? .trailing : .leading)
+        .padding(.horizontal, 10)
     }
 }
-
 
 class GroupDetailViewController: UIViewController,
                                    UIImagePickerControllerDelegate,
@@ -32,6 +35,8 @@ class GroupDetailViewController: UIViewController,
     var currentUser_Username: String?
     var groupName: String = ""
     var group_members_array: [String] = []
+    
+    var badgeCounts: [String: Int] = [:] // Dictionary to store badge counts keyed by email
     
     let scrollView = UIScrollView()
     var listener: ListenerRegistration?
@@ -115,7 +120,12 @@ class GroupDetailViewController: UIViewController,
             }
         }
         
+   
+        
     } //end of load
+    
+    
+  
     
     private func setupKeyboardObservers() {
          NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
@@ -260,6 +270,13 @@ class GroupDetailViewController: UIViewController,
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         scrollView.layer.cornerRadius = 30
         scrollView.layer.masksToBounds = true
+     
+        scrollView.isScrollEnabled = true
+        scrollView.showsHorizontalScrollIndicator = false
+        scrollView.showsVerticalScrollIndicator = true
+        scrollView.contentSize = CGSize(width: view.bounds.width, height: scrollView.contentSize.height)
+
+    
 
         
         
@@ -341,6 +358,7 @@ class GroupDetailViewController: UIViewController,
                 print("Document added successfully!")
                 self.messageField.text = "" //clear the field after update
                 
+                
                 self.hideKeyboardAndResetView()
             }
         }
@@ -372,16 +390,11 @@ class GroupDetailViewController: UIViewController,
                 }
         }
         
-
-
     func displayMessages(documents: [QueryDocumentSnapshot]) {
-        
         // Clear existing messages from scroll view
-            scrollView.subviews.forEach { $0.removeFromSuperview() }
+        scrollView.subviews.forEach { $0.removeFromSuperview() }
         
-        var previousMessageView: PaddedLabel?
         let padding: CGFloat = 25
-        let maxWidth: CGFloat = 270
         let messageSpacing: CGFloat = 25 // Desired space between messages
 
         // Sort the documents by timestamp
@@ -391,84 +404,68 @@ class GroupDetailViewController: UIViewController,
             return timestamp1?.dateValue() ?? Date.distantPast < timestamp2?.dateValue() ?? Date.distantPast
         }
 
+        var previousMessageView: UIView?
+
         // Iterate to display the most current message at the bottom
         for document in sortedDocuments {
             guard let message = document.data()["GroupChat_MessageText"] as? String,
                   let senderEmail = document.data()["GroupChat_Sender"] as? String,
                   let username_sender = document.data()["GroupChat_Sender_Username"] as? String
             else { continue }
-
-            print("DISPLAY Document Data: \(document.data())")
-            print("Message: \(message), Sender: \(senderEmail), Username_Sender: \(username_sender)")
-
-         
-                       let usernameLabel = UILabel()
-                       usernameLabel.text = username_sender
-                       usernameLabel.textColor = UIColor.lightGray // Light grey color
-                       usernameLabel.font = UIFont.systemFont(ofSize: 10) // Set font size
-                       usernameLabel.translatesAutoresizingMaskIntoConstraints = false
             
-            let messageLabel = PaddedLabel()
-            //messageLabel.padding = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5) // Set desired padding
-            messageLabel.text = message
-            messageLabel.textColor = .black
-            messageLabel.numberOfLines = 0 // Allow for multiple lines
-            //messageLabel.lineBreakMode = .byWordWrapping
+           
 
+            let isCurrentUser = senderEmail == self.currentUserEmail
+            
+            // Create a hosting controller for the SwiftUI view
+            let messageBubble = UIHostingController(rootView: MessageBubble(message: message, isCurrentUser: isCurrentUser))
+            messageBubble.view.translatesAutoresizingMaskIntoConstraints = false
+            
+            scrollView.addSubview(messageBubble.view)
+            
 
-            // Determine background color and alignment
-            if senderEmail == self.currentUserEmail {
-                messageLabel.backgroundColor = UIColor(red: 12/255, green: 89.3/255, blue: 78.9/255, alpha: 1.0)
-                messageLabel.textColor = .white
-            } else {
-                messageLabel.backgroundColor = .lightGray
-            }
-
-            messageLabel.layer.cornerRadius = 4
-            messageLabel.layer.masksToBounds = true
-            messageLabel.translatesAutoresizingMaskIntoConstraints = false
-
-            scrollView.addSubview(messageLabel)
-            scrollView.addSubview(usernameLabel)
-
+            // Set the constraints for the message bubble
             NSLayoutConstraint.activate([
-                // Set leading and trailing constraints based on sender
-                senderEmail == self.currentUserEmail
-                    ? messageLabel.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -padding)
-                    : messageLabel.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: padding),
-
-                // For current user's messages
-                senderEmail == self.currentUserEmail
-                    ? messageLabel.leadingAnchor.constraint(greaterThanOrEqualTo: scrollView.leadingAnchor, constant: scrollView.bounds.width - maxWidth - padding)
-                    : messageLabel.trailingAnchor.constraint(lessThanOrEqualTo: scrollView.trailingAnchor, constant: -padding),
-
-                // Top constraint to previous message or scroll view
-                messageLabel.topAnchor.constraint(equalTo: previousMessageView?.bottomAnchor ?? scrollView.topAnchor, constant: previousMessageView == nil ? padding : messageSpacing),
-
-                // Limit label width to maxWidth
-                messageLabel.widthAnchor.constraint(lessThanOrEqualToConstant: maxWidth)
+                messageBubble.view.topAnchor.constraint(equalTo: previousMessageView?.bottomAnchor ?? scrollView.topAnchor, constant: previousMessageView == nil ? padding : messageSpacing),
+                // Adjust padding from scrollView edges
+               
+              
+                messageBubble.view.trailingAnchor.constraint(equalTo: isCurrentUser ? scrollView.trailingAnchor : scrollView.trailingAnchor, constant: isCurrentUser ? -15 : -60),
+                messageBubble.view.leadingAnchor.constraint(equalTo: isCurrentUser ? scrollView.leadingAnchor : scrollView.leadingAnchor, constant: isCurrentUser ? 60 : 15)
             ])
+            
+            // Show username label only if the user is not the current user
+                    if !isCurrentUser {
+                        let usernameLabel = UILabel()
+                        usernameLabel.text = username_sender
+                        usernameLabel.textColor = UIColor.lightGray // Light grey color
+                        usernameLabel.font = UIFont.systemFont(ofSize: 12) // Set font size
+                        usernameLabel.translatesAutoresizingMaskIntoConstraints = false
+                        
+                        scrollView.addSubview(usernameLabel)
 
-            // Set constraints for usernameLabel
+                       
                         NSLayoutConstraint.activate([
-                            usernameLabel.leadingAnchor.constraint(equalTo: messageLabel.leadingAnchor),
-                            usernameLabel.bottomAnchor.constraint(equalTo: messageLabel.topAnchor, constant: -3)
-                        ])
-
-            previousMessageView = messageLabel
+                            usernameLabel.leadingAnchor.constraint(equalTo: messageBubble.view.leadingAnchor, constant: 25),
+                            usernameLabel.bottomAnchor.constraint(equalTo: messageBubble.view.topAnchor, constant: -3)
+                            
+                            ])
+                    }
+            
+            previousMessageView = messageBubble.view
         }
 
-        // Set the bottom constraint of the last message label to the bottom of the scroll view
+        // Set the bottom constraint of the last message bubble to the bottom of the scroll view
         if let lastMessageView = previousMessageView {
             lastMessageView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: -25).isActive = true
         }
 
         scrollView.layoutIfNeeded()
         scrollView.setContentOffset(CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.size.height), animated: true)
-
     }
 
-    
+
+
 
     
     @objc func handleProfileImageTap() {
