@@ -110,10 +110,6 @@ class CreateAccountViewController: UIViewController {
     
     
     
-  
-   
-
-
     
     @IBAction func CreateMyAccountClicked(_ sender: UIButton) {
         guard let Email = CreateEmailTextField.text?.lowercased() else {return}

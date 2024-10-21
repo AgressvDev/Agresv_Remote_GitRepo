@@ -358,11 +358,36 @@ class GroupDetailViewController: UIViewController,
                 print("Document added successfully!")
                 self.messageField.text = "" //clear the field after update
                 
-                
+                self.incrementBadgeCounts(for: self.group_members_array)
                 self.hideKeyboardAndResetView()
             }
         }
     }
+    
+    
+    func incrementBadgeCounts(for groupMembers: [String]) {
+        let db = Firestore.firestore()
+
+        // Iterate through each email in the group members array
+        for userEmail in groupMembers {
+            // Skip the current user's email
+            if userEmail == self.currentUserEmail {
+                continue
+            }
+            
+            let userRef = db.collection("Agressv_BadgeCounts").document(userEmail)
+            
+            userRef.updateData(["BadgeCount": FieldValue.increment(Int64(1))]) { error in
+                if let error = error {
+                    print("Error updating badge count for \(userEmail): \(error)")
+                } else {
+                    print("Successfully incremented badge count for \(userEmail)")
+                }
+            }
+        }
+    }
+
+    
     
     private func hideKeyboardAndResetView() {
         // Hide the keyboard
@@ -533,34 +558,7 @@ class GroupDetailViewController: UIViewController,
         }
     }
 
-//    func showImagePicker() {
-//
-//
-//
-//        let imagePickerController = UIImagePickerController()
-//        imagePickerController.delegate = self
-//        imagePickerController.allowsEditing = true
-//
-//        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-//
-//        if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
-//            let choosePhotoAction = UIAlertAction(title: "Choose Photo", style: .default) { _ in
-//                imagePickerController.sourceType = .photoLibrary
-//                self.present(imagePickerController, animated: true, completion: nil)
-//            }
-//            alertController.addAction(choosePhotoAction)
-//        }
-//
-//        let deletePhotoAction = UIAlertAction(title: "Delete Photo", style: .destructive) { _ in
-//            self.deletePhoto()
-//        }
-//        alertController.addAction(deletePhotoAction)
-//
-//        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-//        alertController.addAction(cancelAction)
-//
-//        present(alertController, animated: true, completion: nil)
-//    }
+
 
     func deletePhoto() {
         if let currentUserProfileImageRef = currentGroupImageRef {
@@ -595,61 +593,7 @@ class GroupDetailViewController: UIViewController,
         dismiss(animated: true, completion: nil)
     }
 
-//    func uploadImageToFirestore(image: UIImage, currentUserEmail: String, groupName: String) {
-//        // Convert the image to JPEG data
-//        guard let imageData = image.jpegData(compressionQuality: 0.5) else {
-//            print("Error converting image to JPEG data.")
-//            return
-//        }
-//
-//        // Fetch the group data for the specified group name
-//        let collectionRef = Firestore.firestore().collection("Agressv_Groups")
-//        collectionRef.whereField("Group_Name", isEqualTo: groupName)
-//            .whereField("Group_Creator_Email", isEqualTo: currentUserEmail)
-//            .getDocuments { (querySnapshot, error) in
-//                if let error = error {
-//                    print("Error querying Firestore: \(error.localizedDescription)")
-//                    return
-//                }
-//
-//                // Ensure we have documents and get the first document as groupData
-//                guard let documents = querySnapshot?.documents, let groupData = documents.first else {
-//                    print("No group found with that name or current user is not a member.")
-//                    return
-//                }
-//
-//                // Retrieve the group creator's email
-//                let groupCreatorEmail = groupData["Group_Creator_Email"] as? String
-//
-//                // Check if the current user is the group creator
-//                if currentUserEmail != groupCreatorEmail {
-//                    // Show popup alert
-//                    let alert = UIAlertController(title: "Nahh",message: "Only the group creator can change the photo.", preferredStyle: .alert)
-//                    alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-//                    if let topController = UIApplication.shared.connectedScenes
-//                        .filter({ $0 is UIWindowScene })
-//                        .map({ $0 as! UIWindowScene })
-//                        .flatMap({ $0.windows })
-//                        .first(where: { $0.isKeyWindow })?
-//                        .rootViewController {
-//                        topController.present(alert, animated: true, completion: nil)
-//                        return
-//                    }
-//
-//                    // Set the current group image reference
-//                    self.currentGroupImageRef = collectionRef.document(documents[0].documentID)
-//
-//                    // Update the image data in Firestore
-//                    self.currentGroupImageRef?.updateData(["Group_Img": imageData]) { error in
-//                        if let error = error {
-//                            print("Error uploading image to Firestore: \(error.localizedDescription)")
-//                        } else {
-//                            print("Image uploaded to Firestore successfully!")
-//                        }
-//                    }
-//                }
-//            }
-//    }
+
 
    
     func uploadImageToFirestore(image: UIImage, currentUserEmail: String, groupName: String) {
@@ -739,6 +683,9 @@ class GroupDetailViewController: UIViewController,
 
     
    
-  
+
+
+    
+
    
 } // end of class
