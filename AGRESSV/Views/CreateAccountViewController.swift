@@ -99,13 +99,13 @@ class CreateAccountViewController: UIViewController {
     func addUser(Username: String, Email: String){
         let db = Firestore.firestore()
         let ref = db.collection("Agressv_Users").document(Email)
-        let ref_badges = db.collection("Agressv_Badges").document(Email)
         
-        ref.setData(["Username" : Username, "Doubles_Rank" : 3.0, "Singles_Rank": 3.0, "Email": Email,
+        
+        ref.setData(["Username" : Username, "Doubles_Rank" : 3.5, "Singles_Rank": 3.5, "Email": Email,
                      "Doubles_Games_Played": 0, "Singles_Games_Played": 0,
-                     "Doubles_Games_Wins": 0, "Doubles_Games_Losses": 0, "Singles_Games_Wins": 0, "Singles_Games_Losses": 0])
+                     "Doubles_Games_Wins": 0, "Doubles_Games_Losses": 0, "Singles_Games_Wins": 0, "Singles_Games_Losses": 0, "Verified_Pro": false, "fcmToken": ""])
         
-        ref_badges.setData(["Username" : Username, "Blue_Ribbon_Doubles" : 0, "Blue_Ribbon_Singles" : 0, "Gold_Ribbon" : 0, "Red_Fangs" : 0])
+        fetchFCMToken()
     }
     
     
@@ -234,6 +234,8 @@ class CreateAccountViewController: UIViewController {
                 
             }
         }
+        
+        
     } //end of load
     
     
@@ -265,7 +267,6 @@ class CreateAccountViewController: UIViewController {
             }
         }
     }
-    
     
 
 } //end of class
