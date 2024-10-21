@@ -377,7 +377,9 @@ class LoginViewController: UIViewController {
             }
             else {
                 
-                
+                let userEmail = Auth.auth().currentUser?.email
+                //check if user token exists and if not add it
+                self.checkFCMToken(for: userEmail! )
                 
                 //go to User's Homescreen
                 // Create an instance of opp two VC
@@ -452,6 +454,36 @@ class LoginViewController: UIViewController {
             }
         }
     }
+    
+    func checkFCMToken(for userEmail: String) {
+        let db = Firestore.firestore()
+        
+        // Reference to the "Agressv_Users" collection
+        let userDocRef = db.collection("Agressv_Users").document(userEmail)
+        
+        // Fetch the document for the current user
+        userDocRef.getDocument { (document, error) in
+            if let error = error {
+                print("Error fetching document: \(error.localizedDescription)")
+                return
+            }
+            
+            // Check if the document exists
+            if let document = document, document.exists {
+                // Check if fcmToken field exists and is not empty
+                if let fcmToken = document.data()?["fcmToken"] as? String, !fcmToken.isEmpty {
+                    print("FCM Token exists: \(fcmToken)")
+                    // Do nothing
+                } else {
+                    print("FCM Token is missing or empty, fetching...")
+                    self.fetchFCMToken()
+                }
+            } else {
+                print("User document does not exist. No action taken.")
+            }
+        }
+    }
+
 
 } //end of class
 
