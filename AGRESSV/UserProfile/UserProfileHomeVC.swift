@@ -16,6 +16,9 @@ import Foundation
 
 class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UINavigationControllerDelegate {
     
+    var UserHasMessages = false
+    var messageLabel: UILabel?
+    
     var player: String = ""
     var Weighted_Score: Double = 0.60
     var Weighted_GamesPlayed: Double = 0.15
@@ -442,6 +445,12 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
                     self.player = (document!.data()!["Username"] as? String)!
                     print(fetchRankDoubles())
                     print(fetchRankSingles())
+                    
+                    self.hasBadgeCountsGreaterThanZero {
+                        // At this point, UserHasMessages has been set
+                    }
+                    
+                    
                 }
             }
         }
@@ -630,162 +639,7 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
         img_GoldRibbon.translatesAutoresizingMaskIntoConstraints = false
       
     
-        //put gold ribbon top right
-        let img_BlueRibbon = UIImageView(image: UIImage(named: "BlueRibbon"))
-        img_BlueRibbon.translatesAutoresizingMaskIntoConstraints = false
-      
-      
-        
-        //put gold ribbon top right
-        let img_RedFangs = UIImageView(image: UIImage(named: "RedFangs"))
-        img_RedFangs.translatesAutoresizingMaskIntoConstraints = false
-        //RUN BADGES QUERY
-                
-//        func GetBadgeData() {
-//            let db = Firestore.firestore()
-//            let uid = Auth.auth().currentUser!.email
-//            let docRef = db.collection("Agressv_Badges").document(uid!)
-//
-//            docRef.getDocument { (document, error) in
-//                if let err = error {
-//                    print("Error getting documents: \(err)")
-//                } else {
-//                    print("\(document!.documentID) => \(String(describing: document!.data()))")
-//
-//                    let blueribbondoubles = document!.data()!["Blue_Ribbon_Doubles"] as! Int
-//                    let blueribbonsingles = document!.data()!["Blue_Ribbon_Singles"] as! Int
-//                    let blueribbonsum = blueribbondoubles + blueribbonsingles
-//
-//                    self.bluebadgecount = blueribbonsum
-//                    self.redfangscount = 1
-//                    self.goldribboncount = document!.data()!["Gold_Ribbon"] as! Int
-//
-//                    print(self.bluebadgecount)
-//                    print(self.redfangscount)
-//                    print(self.goldribboncount)
-//
-//                    self.lbl_bluebadgecount.text = String(self.bluebadgecount)
-//                    self.lbl_goldribboncount.text = String(self.goldribboncount)
-//                    self.lbl_redfangscount.text = String(self.redfangscount)
-//
-//                    //Doubles Wins number to string conversion
-//                    if let GoldRibbonValue = document!.data()!["Gold_Ribbon"] as? Int,
-//                    GoldRibbonValue > 0
-//                        {
-//                        self.HasAchievedGoldRibbon = true
-//                        }
-//
-//                    if let blueRibbonDoublesValue = document!.data()!["Blue_Ribbon_Doubles"] as? Int,
-//                        let blueRibbonSinglesValue = document!.data()!["Blue_Ribbon_Singles"] as? Int,
-//                        blueRibbonDoublesValue > 0 || blueRibbonSinglesValue > 0 {
-//                        self.HasAchievedBlueRibbon = true
-//                    }
-//
-////                    if let RedFangsValue = document!.data()!["Red_Fangs"] as? Int,
-////                       RedFangsValue > 0
-////                        {
-////                        self.HasAchievedRedFangs = true
-////                        }
-//
-//
-//                    if self.HasAchievedGoldRibbon {
-//
-//
-//                        self.view.addSubview(img_GoldRibbon)
-//
-//                        NSLayoutConstraint.activate([
-//                            img_GoldRibbon.topAnchor.constraint(equalTo: self.lbl_DoublesNerdData.bottomAnchor, constant: 20 * scalingFactor), // Anchor to the bottom of the view
-//                            img_GoldRibbon.leadingAnchor.constraint(equalTo: self.lbl_DoublesNerdData.leadingAnchor, constant: 55 * scalingFactor),  // Anchor to the left of the view
-//                            img_GoldRibbon.widthAnchor.constraint(equalToConstant: 25 * scalingFactor),
-//                            img_GoldRibbon.heightAnchor.constraint(equalToConstant: 25 * scalingFactor)
-//                        ])
-//
-//                        let baseFontSize: CGFloat = 8.0 // Set your base font size
-//                        let adjustedFontSize = baseFontSize * scalingFactor
-//
-//
-//                        self.lbl_goldribboncount.font = UIFont.systemFont(ofSize: adjustedFontSize)
-//
-//                        self.lbl_goldribboncount.textColor = UIColor.black
-//                        self.lbl_goldribboncount.translatesAutoresizingMaskIntoConstraints = false
-//                        print(self.lbl_goldribboncount)
-//                        self.view.addSubview(self.lbl_goldribboncount)
-//
-//                        NSLayoutConstraint.activate([
-//                            self.lbl_goldribboncount.bottomAnchor.constraint(equalTo: img_GoldRibbon.topAnchor),
-//                            self.lbl_goldribboncount.leadingAnchor.constraint(equalTo: img_GoldRibbon.trailingAnchor, constant: -2 * scalingFactor),
-//                            self.lbl_goldribboncount.widthAnchor.constraint(equalToConstant: 10 * scalingFactor),
-//                            self.lbl_goldribboncount.heightAnchor.constraint(equalToConstant: 10 * scalingFactor)
-//                        ])
-//
-//                    }
-//                    if self.HasAchievedBlueRibbon {
-//
-//
-//
-//                        self.view.addSubview(img_BlueRibbon)
-//
-//                        NSLayoutConstraint.activate([
-//                            img_BlueRibbon.topAnchor.constraint(equalTo: self.lbl_DoublesNerdData.bottomAnchor, constant: 20 * scalingFactor),
-//                            img_BlueRibbon.leadingAnchor.constraint(equalTo: self.lbl_DoublesNerdData.leadingAnchor, constant: -5 * scalingFactor),
-//                            img_BlueRibbon.widthAnchor.constraint(equalToConstant: 25 * scalingFactor),
-//                            img_BlueRibbon.heightAnchor.constraint(equalToConstant: 25 * scalingFactor)
-//                        ])
-//
-//                        let baseFontSize: CGFloat = 8.0 // Set your base font size
-//                        let adjustedFontSize = baseFontSize * scalingFactor
-//
-//
-//                        self.lbl_bluebadgecount.font = UIFont.systemFont(ofSize: adjustedFontSize)
-//
-//                        self.lbl_bluebadgecount.textColor = UIColor.black
-//                        self.lbl_bluebadgecount.translatesAutoresizingMaskIntoConstraints = false
-//                        print(self.lbl_bluebadgecount)
-//                        self.view.addSubview(self.lbl_bluebadgecount)
-//
-//                        NSLayoutConstraint.activate([
-//                            self.lbl_bluebadgecount.bottomAnchor.constraint(equalTo: img_BlueRibbon.topAnchor),
-//                            self.lbl_bluebadgecount.leadingAnchor.constraint(equalTo: img_BlueRibbon.trailingAnchor, constant: -2 * scalingFactor),
-//                            self.lbl_bluebadgecount.widthAnchor.constraint(equalToConstant: 10 * scalingFactor),
-//                            self.lbl_bluebadgecount.heightAnchor.constraint(equalToConstant: 10 * scalingFactor)
-//                        ])
-//                    }
-//
-//                    if self.UserEarnedRedFangs {
-//                        //put red fangs top right
-//                        self.view.addSubview(img_RedFangs)
-//
-//                        // Position the label above the NewDoublesRankLabel
-//                        NSLayoutConstraint.activate([
-//                            img_RedFangs.topAnchor.constraint(equalTo: self.lbl_DoublesNerdData.bottomAnchor, constant: 20 * scalingFactor),
-//                            img_RedFangs.leadingAnchor.constraint(equalTo: self.lbl_DoublesNerdData.leadingAnchor, constant: 25 * scalingFactor),
-//                            img_RedFangs.widthAnchor.constraint(equalToConstant: 25 * scalingFactor),
-//                            img_RedFangs.heightAnchor.constraint(equalToConstant: 25 * scalingFactor)
-//                        ])
-//
-//                        let baseFontSize: CGFloat = 8.0 // Set your base font size
-//                        let adjustedFontSize = baseFontSize * scalingFactor
-//
-//
-//                        self.lbl_redfangscount.font = UIFont.systemFont(ofSize: adjustedFontSize)
-//
-//                        self.lbl_redfangscount.textColor = UIColor.black
-//                        self.lbl_redfangscount.translatesAutoresizingMaskIntoConstraints = false
-//                        print(self.lbl_redfangscount)
-//                        self.view.addSubview(self.lbl_redfangscount)
-//
-//                        NSLayoutConstraint.activate([
-//                            self.lbl_redfangscount.bottomAnchor.constraint(equalTo: img_RedFangs.topAnchor),
-//                            self.lbl_redfangscount.leadingAnchor.constraint(equalTo: img_RedFangs.trailingAnchor, constant: -2 * scalingFactor),
-//                            self.lbl_redfangscount.widthAnchor.constraint(equalToConstant: 10 * scalingFactor),
-//                            self.lbl_redfangscount.heightAnchor.constraint(equalToConstant: 10 * scalingFactor)
-//                        ])
-//                    }
-//                }
-//
-//            }
-//
-//        }
+
         
         
         
@@ -1088,10 +942,11 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
         // Adjust the image size within the buttons
                 settingsButton.imageView?.contentMode = .scaleAspectFit
                 historyButton.imageView?.contentMode = .scaleAspectFit
-        PlayersButton.imageView?.contentMode = .scaleAspectFit
+                PlayersButton.imageView?.contentMode = .scaleAspectFit
                 newGameButton.imageView?.contentMode = .scaleAspectFit
         
-  
+       
+            
         
     func createButton(withImageName imageName: String) -> UIButton {
             let button = UIButton()
@@ -1516,235 +1371,62 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
         
         
         
-//        func GetHighScores() {
-//
-//            let agressvUsersRef = db.collection("Agressv_Users")
-//
-//
-//            // Query to get the documents with max Doubles_Rank and max Singles_Rank
-//            agressvUsersRef
-//                .order(by: "Doubles_Rank", descending: true)
-//                .limit(to: 1)
-//                .getDocuments { (doublesRankQuerySnapshot, error) in
-//                    if let err = error {
-//                        print("Error getting documents: \(err)")
-//                    } else {
-//                        let maxDoublesRank = doublesRankQuerySnapshot?.documents.first?["Doubles_Rank"] as? Double
-//                        let roundedValue = round(maxDoublesRank! * 10) / 10.0
-//
-//
-//                        self.Highest_Score_Doubles = roundedValue
-//                        print(self.Highest_Score_Doubles)
-//                        // Query to get the documents with max Singles_Rank
-//                        agressvUsersRef
-//                            .order(by: "Singles_Rank", descending: true)
-//                            .limit(to: 1)
-//                            .getDocuments { (singlesRankQuerySnapshot, error) in
-//                                if let err = error {
-//                                    print("Error getting documents: \(err)")
-//                                } else {
-//                                    let maxSinglesRank = singlesRankQuerySnapshot?.documents.first?["Singles_Rank"] as? Double
-//                                    let roundedValueSingles = round(maxSinglesRank! * 10) / 10.0
-//
-//                                    self.Highest_Score_Singles = roundedValueSingles
-//                                    print(self.Highest_Score_Singles)
-//
-//
-//
-//                                    // Now you have the highest score in the variable Highest_Score
-//                                    if self.Highest_Score_Doubles > 8.5 {
-//                                        if
-//                                            self.Player_DoublesRank == self.Highest_Score_Doubles
-//                                        {
-//
-//
-//                                            //Adornment for blue ribbon
-//
-//                                           // self.NewDoublesRankLabel.backgroundColor = UIColor.mustardYellow()
-//                                            self.lbl_CurrentHighestScore.text = "Pro Level"
-//                                            self.lbl_CurrentHighestScore.textColor = UIColor.mustardYellow()
-//
-//                                            self.lbl_CurrentHighestScore.translatesAutoresizingMaskIntoConstraints = false // Enable Auto Layout
-//                                            self.lbl_CurrentHighestScore.numberOfLines = 0 // Allow multiple lines
-//                                            // Add the label to the view hierarchy
-//                                            self.view.addSubview(self.lbl_CurrentHighestScore)
-//
-//                                            let baseFontSize: CGFloat = 12.0 // Set your base font size
-//                                            let adjustedFontSize = baseFontSize * scalingFactor
-//
-//                                            // Set the font size for lbl_Playometer
-//                                            self.lbl_CurrentHighestScore.font = UIFont.systemFont(ofSize: adjustedFontSize)
-//
-//
-//
-//                                            // Define Auto Layout constraints to position and allow the label to expand its width based on content
-//                                                    NSLayoutConstraint.activate([
-//                                                        self.lbl_CurrentHighestScore.leadingAnchor.constraint(equalTo: self.NewDoublesRankLabel.leadingAnchor, constant: 15 * scalingFactor),
-//                                                        self.lbl_CurrentHighestScore.topAnchor.constraint(equalTo: self.NewDoublesRankLabel.bottomAnchor, constant: 3 * scalingFactor),
-//                                                        self.lbl_CurrentHighestScore.heightAnchor.constraint(equalToConstant: 20 * scalingFactor),
-//                                                        self.lbl_CurrentHighestScore.widthAnchor.constraint(equalToConstant: 200 * scalingFactor)// Adjust the reference height as needed
-//                                                    ])
-//
-//
-//
-//                                        }
-//                                        else
-//                                        {
-//                                            print("HIGHEST SCORE IS GREATER THAN 8.5 BUUTTT PLAYER IS NOT EVALUATING TO IT")
-//                                        }
-//                                    }
-//                                    else
-//                                    {
-//                                        print("HIGHEST SCORE NOT EVALUATING TO > 8.5")
-//                                    }
-//
-//
-//                                    if self.Highest_Score_Singles > 8.5 {
-//                                        if
-//                                            self.Player_SinglesRank == self.Highest_Score_Singles
-//                                        {
-//
-//                                            //Adornment for blue ribbon
-//
-//                                            //self.NewSinglesRankLabel.backgroundColor = UIColor.mustardYellow()
-//                                            self.lbl_CurrentHighestScoreSingles.text = "Pro Level"
-//                                            self.lbl_CurrentHighestScoreSingles.textColor = UIColor.mustardYellow()
-//
-//                                            self.lbl_CurrentHighestScoreSingles.translatesAutoresizingMaskIntoConstraints = false // Enable Auto Layout
-//                                            self.lbl_CurrentHighestScoreSingles.numberOfLines = 0 // Allow multiple lines
-//                                            // Add the label to the view hierarchy
-//                                            self.view.addSubview(self.lbl_CurrentHighestScoreSingles)
-//
-//                                            let baseFontSize: CGFloat = 12.0 // Set your base font size
-//                                            let adjustedFontSize = baseFontSize * scalingFactor
-//
-//                                            // Set the font size for lbl_Playometer
-//                                            self.lbl_CurrentHighestScoreSingles.font = UIFont.systemFont(ofSize: adjustedFontSize)
-//
-//
-//
-//                                            // Define Auto Layout constraints to position and allow the label to expand its width based on content
-//                                                    NSLayoutConstraint.activate([
-//                                                        self.lbl_CurrentHighestScoreSingles.leadingAnchor.constraint(equalTo: self.NewSinglesRankLabel.leadingAnchor, constant: 15 * scalingFactor),
-//                                                        self.lbl_CurrentHighestScoreSingles.topAnchor.constraint(equalTo: self.NewSinglesRankLabel.bottomAnchor, constant: 3 * scalingFactor),
-//                                                        self.lbl_CurrentHighestScoreSingles.heightAnchor.constraint(equalToConstant: 20 * scalingFactor),
-//                                                        self.lbl_CurrentHighestScoreSingles.widthAnchor.constraint(equalToConstant: 200 * scalingFactor)// Adjust the reference height as needed
-//                                                    ])
-//
-//
-//
-//                                        }
-//                                        else
-//                                        {
-//                                            print("HIGHEST SCORE IS GREATER THAN 8.5 BUUTTT PLAYER IS NOT EVALUATING TO IT")
-//                                        }
-//                                    }
-//                                    else
-//                                    {
-//                                        print("HIGHEST SCORE NOT EVALUATING TO > 8.5")
-//                                    }
-//
-//                                    if self.Highest_Score_Doubles > 8.5
-//                                    {
-//                                        if self.Highest_Score_Singles > 8.5
-//                                        {
-//
-//
-//                                        if self.Highest_Score_Doubles == self.Player_DoublesRank
-//                                            {
-//                                            if self.Highest_Score_Singles == self.Player_SinglesRank
-//                                                    {
-//                                                //Adornment for blue ribbon
-//
-//                                                self.NewDoublesRankLabel.backgroundColor = UIColor.mustardYellow()
-//                                                self.lbl_CurrentHighestScore.text = "Highest Score!"
-//                                                self.lbl_CurrentHighestScore.textColor = UIColor.mustardYellow()
-//
-//                                                self.lbl_CurrentHighestScore.translatesAutoresizingMaskIntoConstraints = false // Enable Auto Layout
-//                                                self.lbl_CurrentHighestScore.numberOfLines = 0 // Allow multiple lines
-//                                                // Add the label to the view hierarchy
-//                                                self.view.addSubview(self.lbl_CurrentHighestScore)
-//
-//                                                let baseFontSize: CGFloat = 12.0 // Set your base font size
-//                                                let adjustedFontSize = baseFontSize * scalingFactor
-//
-//                                                // Set the font size for lbl_Playometer
-//                                                self.lbl_CurrentHighestScore.font = UIFont.systemFont(ofSize: adjustedFontSize)
-//
-//
-//
-//                                                // Define Auto Layout constraints to position and allow the label to expand its width based on content
-//                                                        NSLayoutConstraint.activate([
-//                                                            self.lbl_CurrentHighestScore.leadingAnchor.constraint(equalTo: self.NewDoublesRankLabel.leadingAnchor),
-//                                                            self.lbl_CurrentHighestScore.topAnchor.constraint(equalTo: self.NewDoublesRankLabel.bottomAnchor, constant: 3 * scalingFactor),
-//                                                            self.lbl_CurrentHighestScore.heightAnchor.constraint(equalToConstant: 20 * scalingFactor),
-//                                                            self.lbl_CurrentHighestScore.widthAnchor.constraint(equalToConstant: 200 * scalingFactor)// Adjust the reference height as needed
-//                                                        ])
-//
-//                                                //Adornment for blue ribbon
-//
-//                                                self.NewSinglesRankLabel.backgroundColor = UIColor.mustardYellow()
-//                                                self.lbl_CurrentHighestScoreSingles.text = "Highest Score!"
-//                                                self.lbl_CurrentHighestScoreSingles.textColor = UIColor.mustardYellow()
-//
-//                                                self.lbl_CurrentHighestScoreSingles.translatesAutoresizingMaskIntoConstraints = false // Enable Auto Layout
-//                                                self.lbl_CurrentHighestScoreSingles.numberOfLines = 0 // Allow multiple lines
-//                                                // Add the label to the view hierarchy
-//                                                self.view.addSubview(self.lbl_CurrentHighestScoreSingles)
-//
-//                                                let baseFontSize_singles: CGFloat = 12.0 // Set your base font size
-//                                                let adjustedFontSize_singles = baseFontSize_singles * scalingFactor
-//
-//                                                // Set the font size for lbl_Playometer
-//                                                self.lbl_CurrentHighestScoreSingles.font = UIFont.systemFont(ofSize: adjustedFontSize_singles)
-//
-//
-//
-//                                                // Define Auto Layout constraints to position and allow the label to expand its width based on content
-//                                                        NSLayoutConstraint.activate([
-//                                                            self.lbl_CurrentHighestScoreSingles.leadingAnchor.constraint(equalTo: self.NewSinglesRankLabel.leadingAnchor),
-//                                                            self.lbl_CurrentHighestScoreSingles.topAnchor.constraint(equalTo: self.NewSinglesRankLabel.bottomAnchor, constant: 3 * scalingFactor),
-//                                                            self.lbl_CurrentHighestScoreSingles.heightAnchor.constraint(equalToConstant: 20 * scalingFactor),
-//                                                            self.lbl_CurrentHighestScoreSingles.widthAnchor.constraint(equalToConstant: 200 * scalingFactor)// Adjust the reference height as needed
-//                                                        ])
-//
-//                                                    }
-//
-//                                            }
-//                                    }
-//                                    }
-//                                    else {}
-//                                }
-//                            }
-//                    }
-//                }
-//        }
-//
-//        print(GetHighScores())
-        
-        
-        
-        
-        
-        
-        
+
         
         
         
         // Simulate loading for 2 seconds
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.25) {
             // Call a function to hide the loading view
+            if self.UserHasMessages == true {
+                self.createMessageLabel()
+                
+                NSLayoutConstraint.activate([
+                    self.messageLabel!.bottomAnchor.constraint(equalTo: PlayersButton.topAnchor, constant: 7),
+                    self.messageLabel!.leadingAnchor.constraint(equalTo: PlayersButton.trailingAnchor, constant: -15),
+                    self.messageLabel!.widthAnchor.constraint(equalToConstant: 20),
+                    self.messageLabel!.heightAnchor.constraint(equalToConstant: 20)
+                        ])
+            }
+            
             self.hideLoadingView()
         }
         
         
         
+       
         
         
     } //end of load
     
     
+    func createMessageLabel() {
+            // Create the label
+            messageLabel = UILabel()
+            messageLabel?.text = "!"
+            messageLabel?.textColor = .white
+            messageLabel?.backgroundColor = .red
+            messageLabel?.textAlignment = .center
+            messageLabel?.font = UIFont.systemFont(ofSize: 13)
+            
+        // Set a small size for the circular label
+              
+               messageLabel?.layer.cornerRadius = 10 // Half of the width/height for circular shape
+               messageLabel?.clipsToBounds = true // Ensures the corners are clipped
+        
+            // Set the frame or constraints
+            messageLabel?.translatesAutoresizingMaskIntoConstraints = false
+            view.addSubview(messageLabel!)
+        
+            
+       
+            
+            // Bring label to the front
+            view.bringSubviewToFront(messageLabel!)
+        }
     
+
+
     func checkUserVerification() {
            let db = Firestore.firestore()
         let uid = Auth.auth().currentUser!.email
@@ -2045,5 +1727,42 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
         }
     
     
-} // end of class
+    
+    
+    func hasBadgeCountsGreaterThanZero(completion: @escaping () -> Void) {
+        let db = Firestore.firestore()
 
+        // Reference to the user's document
+        let userRef = db.collection("Agressv_BadgeCounts").document(playersEmail)
+        
+        // Reference to the subcollection GroupName_ForBadge
+        let groupRef = userRef.collection("GroupName_ForBadge")
+
+        // Get documents from the subcollection
+        groupRef.getDocuments { (subQuerySnapshot, error) in
+            if let error = error {
+                print("Error getting sub-collection documents: \(error)")
+                self.UserHasMessages = false
+                completion()
+                return
+            }
+
+            if let subDocuments = subQuerySnapshot?.documents {
+                for subDocument in subDocuments {
+                    if let badgeCount = subDocument.data()["BadgeCount"] as? Int, badgeCount > 0 {
+                        self.UserHasMessages = true
+                        completion()
+                        return
+                    }
+                }
+            }
+            
+            // If no badge counts were found > 0
+            self.UserHasMessages = false
+            completion()
+        }
+    }
+    
+    
+    
+} // end of class

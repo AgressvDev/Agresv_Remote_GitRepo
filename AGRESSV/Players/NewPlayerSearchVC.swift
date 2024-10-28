@@ -591,6 +591,30 @@ class NewPlayerSearchVC: UIViewController, UITableViewDataSource, UITableViewDel
                             } else {
                                 print("Group successfully created!")
                                 
+                                
+                                
+                                // Define the main collection and document
+                                    let badgeCountRef = db.collection("Agressv_BadgeCounts").document(currentUserEmail)
+                                    
+                                    // Set data for the main document (if needed)
+                                badgeCountRef.setData([:]) { error in
+                                    if let error = error {
+                                        print("Error adding document: \(error)")
+                                        return
+                                    }
+                                    
+                                    // Now add a subcollection with the group name
+                                    let groupBadgeCountRef = badgeCountRef.collection("GroupName_ForBadge").document(groupName)
+                                    
+                                    // Set the BadgeCount field value to 0
+                                    groupBadgeCountRef.setData(["BadgeCount": 0]) { error in
+                                        if let error = error {
+                                            print("Error adding subdocument: \(error)")
+                                        } else {
+                                            print("Badge count successfully set for group \(groupName).")
+                                        }}}
+                                
+                                
                                 // Navigate to the next view controller after successfully creating the group
                                 let yourViewController = GroupsHeaderViewController()
                                 self.navigationController?.pushViewController(yourViewController, animated: true)

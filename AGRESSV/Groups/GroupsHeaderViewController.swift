@@ -6,7 +6,7 @@ import FirebaseFirestore
 
 class CircularImageCellGroups: UITableViewCell {
     
-    let badgeLabel: UILabel = {
+    var badgeLabel: UILabel = {
         let label = UILabel()
         label.backgroundColor = UIColor.red
         label.textColor = .white
@@ -47,7 +47,7 @@ class CircularImageCellGroups: UITableViewCell {
     private func commonInit() {
         contentView.addSubview(circularImageView)
         contentView.addSubview(GroupNameLabel)
-        contentView.addSubview(badgeLabel)
+        //contentView.addSubview(badgeLabel)
       
 
         NSLayoutConstraint.activate([
@@ -58,13 +58,13 @@ class CircularImageCellGroups: UITableViewCell {
             
             GroupNameLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
             GroupNameLabel.leadingAnchor.constraint(equalTo: circularImageView.trailingAnchor, constant: 16.0),
-            GroupNameLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16.0),
+            GroupNameLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16.0)
             
-            // Set the constraints for the badge label
-            badgeLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            badgeLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -30), // Adjust spacing as needed
-            badgeLabel.widthAnchor.constraint(equalToConstant: 24), // Set fixed width for the badge
-            badgeLabel.heightAnchor.constraint(equalTo: badgeLabel.widthAnchor) // Make it circular
+//            // Set the constraints for the badge label
+//            badgeLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+//            badgeLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -30), // Adjust spacing as needed
+//            badgeLabel.widthAnchor.constraint(equalToConstant: 24), // Set fixed width for the badge
+//            badgeLabel.heightAnchor.constraint(equalTo: badgeLabel.widthAnchor) // Make it circular
         ])
         
         
@@ -90,9 +90,32 @@ class CircularImageCellGroups: UITableViewCell {
     }
     
     func updateBadgeCount(_ count: Int) {
-            badgeLabel.text = "\(count)"
-            badgeLabel.isHidden = count == 0
+        // Create badgeLabel if it hasn't been created yet
+        if badgeLabel.superview == nil {
+            badgeLabel = UILabel()
+            badgeLabel.translatesAutoresizingMaskIntoConstraints = false
+            badgeLabel.textAlignment = .center // Center text in the badge
+            badgeLabel.backgroundColor = .red // Set a background color if needed
+            badgeLabel.layer.cornerRadius = 12 // Half of width/height for a circle
+            badgeLabel.clipsToBounds = true // Clip to bounds to ensure circular shape
+            
+            contentView.addSubview(badgeLabel)
+            
+            badgeLabel.textColor = .white
+            
+            // Set constraints for the badge label
+            NSLayoutConstraint.activate([
+                badgeLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+                badgeLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -30), // Adjust spacing as needed
+                badgeLabel.widthAnchor.constraint(equalToConstant: 24), // Set fixed width for the badge
+                badgeLabel.heightAnchor.constraint(equalTo: badgeLabel.widthAnchor) // Make it circular
+            ])
         }
+
+        // Update badge count
+        badgeLabel.text = "\(count)"
+        badgeLabel.isHidden = count == 0
+    }
 }
 
 
