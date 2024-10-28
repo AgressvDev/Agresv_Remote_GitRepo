@@ -5,6 +5,19 @@ import FirebaseFirestore
 
 
 class CircularImageCellGroups: UITableViewCell {
+    
+    let badgeLabel: UILabel = {
+        let label = UILabel()
+        label.backgroundColor = UIColor.red
+        label.textColor = .white
+        label.textAlignment = .center
+        label.layer.cornerRadius = 12 // Adjust the corner radius for circular shape
+        label.layer.masksToBounds = true
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+
+    
     let circularImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
@@ -34,7 +47,7 @@ class CircularImageCellGroups: UITableViewCell {
     private func commonInit() {
         contentView.addSubview(circularImageView)
         contentView.addSubview(GroupNameLabel)
-        
+        contentView.addSubview(badgeLabel)
       
 
         NSLayoutConstraint.activate([
@@ -45,8 +58,16 @@ class CircularImageCellGroups: UITableViewCell {
             
             GroupNameLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
             GroupNameLabel.leadingAnchor.constraint(equalTo: circularImageView.trailingAnchor, constant: 16.0),
-            GroupNameLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16.0)
+            GroupNameLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16.0),
+            
+            // Set the constraints for the badge label
+            badgeLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            badgeLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -30), // Adjust spacing as needed
+            badgeLabel.widthAnchor.constraint(equalToConstant: 24), // Set fixed width for the badge
+            badgeLabel.heightAnchor.constraint(equalTo: badgeLabel.widthAnchor) // Make it circular
         ])
+        
+        
         
     }
     
@@ -67,6 +88,11 @@ class CircularImageCellGroups: UITableViewCell {
         GroupNameLabel.text = groupName
       
     }
+    
+    func updateBadgeCount(_ count: Int) {
+            badgeLabel.text = "\(count)"
+            badgeLabel.isHidden = count == 0
+        }
 }
 
 
@@ -188,7 +214,14 @@ class GroupsHeaderViewController: UIViewController, UITableViewDataSource, UITab
        
         // Set the cell background color
         cell.backgroundColor = UIColor(red: 12/255, green: 89/255, blue: 78/255, alpha: 1.0)
-
+        
+        // Fetch the badge count for the group and update the badge label
+           fetchBadgeCount(for: group.name) { badgeCount in
+               DispatchQueue.main.async {
+                   cell.updateBadgeCount(badgeCount)
+               }
+           }
+        
         return cell
     }
 
@@ -242,19 +275,34 @@ class GroupsHeaderViewController: UIViewController, UITableViewDataSource, UITab
                     return
                 }
 
-                // Delete each document found
                 for document in documents {
-                    db.collection("Agressv_Groups").document(document.documentID).delete { error in
-                        if let error = error {
-                            print("Error deleting document: \(error)")
-                        } else {
-                            print("Document successfully deleted.")
+                    let groupMembers = document.get("Group_Members") as? [String] ?? []
+
+                    if groupMembers.count == 1 && groupMembers.first == self.currentUserEmail {
+                        // Delete the entire document if it's the only member
+                        db.collection("Agressv_Groups").document(document.documentID).delete { error in
+                            if let error = error {
+                                print("Error deleting document: \(error)")
+                            } else {
+                                print("Document successfully deleted.")
+                            }
+                        }
+                    } else {
+                        // Remove self.currentUserEmail from the Group_Members array
+                        let updatedMembers = groupMembers.filter { $0 != self.currentUserEmail }
+                        db.collection("Agressv_Groups").document(document.documentID).updateData(["Group_Members": updatedMembers]) { error in
+                            if let error = error {
+                                print("Error updating document: \(error)")
+                            } else {
+                                print("Group_Members successfully updated.")
+                            }
                         }
                     }
                 }
                 completion()
             }
     }
+
 
     // Fetch groups from Firestore
     func fetchGroups() {
@@ -289,9 +337,33 @@ class GroupsHeaderViewController: UIViewController, UITableViewDataSource, UITab
             }
     }
 
+    func fetchBadgeCount(for groupName: String, completion: @escaping (Int) -> Void) {
+        guard let userEmail = Auth.auth().currentUser?.email else {
+            completion(0) // Return 0 if there's no user email
+            return
+        }
+
+        let db = Firestore.firestore()
+        
+        db.collection("Agressv_BadgeCounts")
+            .document(userEmail)
+            .collection("GroupName_ForBadge")
+            .document(groupName)
+            .getDocument { (document, error) in
+                if let error = error {
+                    print("Error fetching badge count: \(error)")
+                    completion(0) // Return 0 on error
+                } else if let document = document, document.exists {
+                    let badgeCount = document.get("BadgeCount") as? Int ?? 0 // Default to 0 if not found
+                    completion(badgeCount)
+                } else {
+                    completion(0) // No document found, return 0
+                }
+            }
+    }
 
 
-    
+   
     
    
     

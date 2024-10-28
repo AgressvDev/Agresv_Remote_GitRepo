@@ -14,7 +14,7 @@ import FirebaseMessaging
 class LoginViewController: UIViewController {
 
   
-
+    
     
     // Add this property
         var tapGesture: UITapGestureRecognizer!
@@ -68,8 +68,8 @@ class LoginViewController: UIViewController {
         
         //addGroupChat()
         
-      
-//        
+       
+//
 //        let badgeCount: Int = 0
 //                let application = UIApplication.shared
 //                let center = UNUserNotificationCenter.current()

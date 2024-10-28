@@ -14,7 +14,7 @@ import FirebaseAuth
 import FirebaseMessaging
 
 @main
-class AppDelegate: UIResponder, UIApplicationDelegate, MessagingDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, MessagingDelegate, UNUserNotificationCenterDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Configure Firebase
@@ -23,11 +23,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MessagingDelegate {
         // Set the messaging delegate
         Messaging.messaging().delegate = self
         
+        // Set the notification center delegate
+        //UNUserNotificationCenter.current().delegate = self
+        
         // Request permission for notifications
         requestNotificationAuthorization()
         
-        // Register for remote notifications
-        application.registerForRemoteNotifications()
+//        // Register for remote notifications
+//        application.registerForRemoteNotifications()
+        
+       
 
         return true
     }
@@ -65,6 +70,29 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MessagingDelegate {
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         Messaging.messaging().apnsToken = deviceToken
     }
+
+    // Handle incoming notifications
+    func userNotificationCenter(_ center: UNUserNotificationCenter,
+                                 didReceive response: UNNotificationResponse,
+                                 withCompletionHandler completionHandler: @escaping () -> Void) {
+        let userInfo = response.notification.request.content.userInfo
+        
+        // Update badge count from the notification payload
+        if let badge = userInfo["badge"] as? String, let badgeCount = Int(badge) {
+            UIApplication.shared.applicationIconBadgeNumber = badgeCount
+        }
+        
+        completionHandler()
+    }
+
+    // Optional: Handle foreground notifications (if needed)
+    func userNotificationCenter(_ center: UNUserNotificationCenter,
+                                 willPresent notification: UNNotification,
+                                 withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        // Show the notification even if the app is in the foreground
+        completionHandler([.badge, .sound]) // Removed .alert if you want to avoid showing an alert in the foreground
+    }
+
 
     // Uncomment if you have background fetch implementation
     /*

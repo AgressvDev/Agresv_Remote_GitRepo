@@ -1,3 +1,4 @@
+
 import UIKit
 import Firebase
 import FirebaseFirestore
@@ -95,6 +96,9 @@ class GroupDetailViewController: UIViewController,
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        ResetBadgeCounts()
+        //clear current user / specific groupName badge count to 0
         
         setupKeyboardObservers()
         //fetchMessages()
@@ -360,10 +364,12 @@ class GroupDetailViewController: UIViewController,
                 
                 self.incrementBadgeCounts(for: self.group_members_array)
                 self.hideKeyboardAndResetView()
+                
+               
+
             }
         }
     }
-    
     
     func incrementBadgeCounts(for groupMembers: [String]) {
         let db = Firestore.firestore()
@@ -375,9 +381,13 @@ class GroupDetailViewController: UIViewController,
                 continue
             }
             
+            // Reference to the user's document
             let userRef = db.collection("Agressv_BadgeCounts").document(userEmail)
             
-            userRef.updateData(["BadgeCount": FieldValue.increment(Int64(1))]) { error in
+            // Reference to the specific group name document within the subcollection
+            let groupRef = userRef.collection("GroupName_ForBadge").document(self.groupName)
+            
+            groupRef.updateData(["BadgeCount": FieldValue.increment(Int64(1))]) { error in
                 if let error = error {
                     print("Error updating badge count for \(userEmail): \(error)")
                 } else {
@@ -387,7 +397,27 @@ class GroupDetailViewController: UIViewController,
         }
     }
 
-    
+    func ResetBadgeCounts() {
+        let db = Firestore.firestore()
+        
+       
+            // Reference to the user's document
+        let userRef = db.collection("Agressv_BadgeCounts").document(self.currentUserEmail!)
+            
+            // Reference to the specific group name document within the subcollection
+            let groupRef = userRef.collection("GroupName_ForBadge").document(self.groupName)
+            
+           
+                // Set BadgeCount to zero for the current user
+                groupRef.setData(["BadgeCount": 0], merge: true) { error in
+                    if let error = error {
+                        print("Error setting badge count to zero for \(self.currentUserEmail!): \(error)")
+                    } else {
+                        print("Successfully set badge count to zero for \(self.currentUserEmail!)")
+                    }
+                }
+        
+    }
     
     private func hideKeyboardAndResetView() {
         // Hide the keyboard

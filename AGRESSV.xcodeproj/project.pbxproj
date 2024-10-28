@@ -16,7 +16,6 @@
 		450A497D2A8EC94E00DEB7CF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 450A497C2A8EC94E00DEB7CF /* Assets.xcassets */; };
 		450A49802A8EC94E00DEB7CF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 450A497E2A8EC94E00DEB7CF /* LaunchScreen.storyboard */; };
 		450C07CD2A92CFCD006E4540 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 450C07CC2A92CFCD006E4540 /* FirebaseFirestore */; };
-		450C07CF2A9321C7006E4540 /* Erectlorite.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 450C07CE2A9321C7006E4540 /* Erectlorite.ttf */; };
 		4526236B2AC4A8D00070B637 /* OppTwoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4526236A2AC4A8D00070B637 /* OppTwoViewController.swift */; };
 		4526236D2AC4B24A0070B637 /* OppOneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4526236C2AC4B24A0070B637 /* OppOneViewController.swift */; };
 		4526236F2AC4DECA0070B637 /* DoublesSharedVariables.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4526236E2AC4DECA0070B637 /* DoublesSharedVariables.swift */; };
@@ -30,11 +29,11 @@
 		4557F1102CB9FA4B00C3B4F5 /* GroupDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4557F10F2CB9FA4B00C3B4F5 /* GroupDetailViewController.swift */; };
 		455BDA2A2ACA3D89003B2EBF /* SinglesSearchOppVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 455BDA292ACA3D89003B2EBF /* SinglesSearchOppVC.swift */; };
 		455BDA2C2ACA4098003B2EBF /* SinglesAddGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 455BDA2B2ACA4098003B2EBF /* SinglesAddGameViewController.swift */; };
-		4573B8B82A91A636009FAE1E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4573B8B72A91A636009FAE1E /* GoogleService-Info.plist */; };
 		4573B8BB2A91A868009FAE1E /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 4573B8BA2A91A868009FAE1E /* FirebaseAuth */; };
 		457C709C2B48A8BA00796A57 /* ScoresVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 457C709B2B48A8BA00796A57 /* ScoresVC.swift */; };
 		457C709E2B48A93700796A57 /* WinPercentagesVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 457C709D2B48A93700796A57 /* WinPercentagesVC.swift */; };
 		457C70A02B48A97A00796A57 /* RankingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 457C709F2B48A97A00796A57 /* RankingsVC.swift */; };
+		459D8EFF2CCDB62800F42969 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 459D8EFE2CCDB62800F42969 /* GoogleService-Info.plist */; };
 		45A1DF4D2AA3F58D00191437 /* NewGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45A1DF4C2AA3F58D00191437 /* NewGameViewController.swift */; };
 		45B2195F2ADB9E240081AA5F /* ContactUsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45B2195E2ADB9E240081AA5F /* ContactUsViewController.swift */; };
 		45BD18212B01CA9A00EB98C6 /* PieChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45BD18202B01CA9900EB98C6 /* PieChart.swift */; };
@@ -49,7 +48,6 @@
 		45EE444A2AAAC1DA00319597 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45EE44492AAAC1DA00319597 /* ViewController.swift */; };
 		45F489262A9D7A4C0043238C /* GaugeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F489252A9D7A4C0043238C /* GaugeView.swift */; };
 		45F7AB992AB669E700D1DA2C /* GamesCount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F7AB982AB669E700D1DA2C /* GamesCount.swift */; };
-		45F7B3FE2CBB6FCA009DC0B5 /* MessageKit in Frameworks */ = {isa = PBXBuildFile; productRef = 45F7B3FD2CBB6FCA009DC0B5 /* MessageKit */; };
 		45FE55E22CC44C9100339F14 /* AddMemberViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45FE55E12CC44C9100339F14 /* AddMemberViewController.swift */; };
 		45FE55E42CC44C9D00339F14 /* RemoveMemberViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45FE55E32CC44C9D00339F14 /* RemoveMemberViewController.swift */; };
 		45FE55E72CC46D6E00339F14 /* BadgeDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45FE55E62CC46D6E00339F14 /* BadgeDictionary.swift */; };
@@ -88,7 +86,6 @@
 		450A49812A8EC94E00DEB7CF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		450A49862A8EC94F00DEB7CF /* AGRESSVTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AGRESSVTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		450A49902A8EC94F00DEB7CF /* AGRESSVUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AGRESSVUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		450C07CE2A9321C7006E4540 /* Erectlorite.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Erectlorite.ttf; sourceTree = "<group>"; };
 		4526236A2AC4A8D00070B637 /* OppTwoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OppTwoViewController.swift; sourceTree = "<group>"; };
 		4526236C2AC4B24A0070B637 /* OppOneViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OppOneViewController.swift; sourceTree = "<group>"; };
 		4526236E2AC4DECA0070B637 /* DoublesSharedVariables.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoublesSharedVariables.swift; sourceTree = "<group>"; };
@@ -102,10 +99,10 @@
 		4557F10F2CB9FA4B00C3B4F5 /* GroupDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupDetailViewController.swift; sourceTree = "<group>"; };
 		455BDA292ACA3D89003B2EBF /* SinglesSearchOppVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SinglesSearchOppVC.swift; sourceTree = "<group>"; };
 		455BDA2B2ACA4098003B2EBF /* SinglesAddGameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SinglesAddGameViewController.swift; sourceTree = "<group>"; };
-		4573B8B72A91A636009FAE1E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		457C709B2B48A8BA00796A57 /* ScoresVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoresVC.swift; sourceTree = "<group>"; };
 		457C709D2B48A93700796A57 /* WinPercentagesVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WinPercentagesVC.swift; sourceTree = "<group>"; };
 		457C709F2B48A97A00796A57 /* RankingsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RankingsVC.swift; sourceTree = "<group>"; };
+		459D8EFE2CCDB62800F42969 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		45A1DF4C2AA3F58D00191437 /* NewGameViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewGameViewController.swift; sourceTree = "<group>"; };
 		45B2195E2ADB9E240081AA5F /* ContactUsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactUsViewController.swift; sourceTree = "<group>"; };
 		45BD18202B01CA9900EB98C6 /* PieChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieChart.swift; sourceTree = "<group>"; };
@@ -134,7 +131,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				45FE55ED2CC64E3300339F14 /* FirebaseMessaging in Frameworks */,
-				45F7B3FE2CBB6FCA009DC0B5 /* MessageKit in Frameworks */,
 				4573B8BB2A91A868009FAE1E /* FirebaseAuth in Frameworks */,
 				450C07CD2A92CFCD006E4540 /* FirebaseFirestore in Frameworks */,
 			);
@@ -195,12 +191,11 @@
 				45271D0D2AC121EA006A3050 /* DoublesSearchBars */,
 				455606DD2AB8AD4B00CBE801 /* Games */,
 				45FFBE5A2A96F26F004AB0D3 /* Views */,
-				450C07CE2A9321C7006E4540 /* Erectlorite.ttf */,
 				45E6DC0B2AFDB33900345671 /* Angel wish.ttf */,
 				450A497C2A8EC94E00DEB7CF /* Assets.xcassets */,
 				450A497E2A8EC94E00DEB7CF /* LaunchScreen.storyboard */,
 				450A49812A8EC94E00DEB7CF /* Info.plist */,
-				4573B8B72A91A636009FAE1E /* GoogleService-Info.plist */,
+				459D8EFE2CCDB62800F42969 /* GoogleService-Info.plist */,
 			);
 			path = AGRESSV;
 			sourceTree = "<group>";
@@ -336,7 +331,6 @@
 			packageProductDependencies = (
 				4573B8BA2A91A868009FAE1E /* FirebaseAuth */,
 				450C07CC2A92CFCD006E4540 /* FirebaseFirestore */,
-				45F7B3FD2CBB6FCA009DC0B5 /* MessageKit */,
 				45FE55EC2CC64E3300339F14 /* FirebaseMessaging */,
 			);
 			productName = AGRESSV;
@@ -413,7 +407,6 @@
 			mainGroup = 450A49672A8EC94D00DEB7CF;
 			packageReferences = (
 				4573B8B92A91A868009FAE1E /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
-				45F7B3FC2CBB6FCA009DC0B5 /* XCRemoteSwiftPackageReference "MessageKit" */,
 			);
 			productRefGroup = 450A49712A8EC94D00DEB7CF /* Products */;
 			projectDirPath = "";
@@ -432,12 +425,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				450A49802A8EC94E00DEB7CF /* LaunchScreen.storyboard in Resources */,
-				4573B8B82A91A636009FAE1E /* GoogleService-Info.plist in Resources */,
 				45FE55EB2CC64DF900339F14 /* FirebaseMessaging in Resources */,
 				450A497D2A8EC94E00DEB7CF /* Assets.xcassets in Resources */,
 				450A497B2A8EC94D00DEB7CF /* Main.storyboard in Resources */,
 				45E6DC0C2AFDB33900345671 /* Angel wish.ttf in Resources */,
-				450C07CF2A9321C7006E4540 /* Erectlorite.ttf in Resources */,
+				459D8EFF2CCDB62800F42969 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -689,8 +681,12 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1;
-				PRODUCT_BUNDLE_IDENTIFIER = AGRESSV.RYMAX;
+				PRODUCT_BUNDLE_IDENTIFIER = TXKCDNZBZR.AGRESSV.RYMAX;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -723,6 +719,10 @@
 				MARKETING_VERSION = 1;
 				PRODUCT_BUNDLE_IDENTIFIER = TXKCDNZBZR.AGRESSV.RYMAX;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -851,14 +851,6 @@
 				minimumVersion = 10.0.0;
 			};
 		};
-		45F7B3FC2CBB6FCA009DC0B5 /* XCRemoteSwiftPackageReference "MessageKit" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/MessageKit/MessageKit";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 4.0.0;
-			};
-		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -871,11 +863,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 4573B8B92A91A868009FAE1E /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseAuth;
-		};
-		45F7B3FD2CBB6FCA009DC0B5 /* MessageKit */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 45F7B3FC2CBB6FCA009DC0B5 /* XCRemoteSwiftPackageReference "MessageKit" */;
-			productName = MessageKit;
 		};
 		45FE55EC2CC64E3300339F14 /* FirebaseMessaging */ = {
 			isa = XCSwiftPackageProductDependency;
