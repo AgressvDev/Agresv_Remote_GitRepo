@@ -11,7 +11,7 @@ import UserNotifications
 import Firebase
 import FirebaseFirestore
 import FirebaseAuth
-import FirebaseMessaging
+
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate, MessagingDelegate, UNUserNotificationCenterDelegate {
@@ -23,16 +23,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MessagingDelegate, UNUser
         // Set the messaging delegate
         Messaging.messaging().delegate = self
         
-        // Set the notification center delegate
-        //UNUserNotificationCenter.current().delegate = self
+        // Set UNUserNotificationCenter delegate
+        UNUserNotificationCenter.current().delegate = self
         
         // Request permission for notifications
         requestNotificationAuthorization()
         
-//        // Register for remote notifications
-//        application.registerForRemoteNotifications()
-        
-       
+        // Register for remote notifications
+        application.registerForRemoteNotifications()
 
         return true
     }
@@ -44,12 +42,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MessagingDelegate, UNUser
             if let error = error {
                 print("Error requesting notifications permission: \(error)")
             }
-            // Optionally handle the granted status here
+            // Handle the granted status if necessary
+            print("Notification permission granted: \(granted)")
         }
     }
 
     // MARK: UISceneSession Lifecycle
-
     func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
         return UISceneConfiguration(name: "Default Configuration", sessionRole: connectingSceneSession.role)
     }
@@ -63,7 +61,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MessagingDelegate, UNUser
     // Handle receiving the FCM token
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
         print("FCM Token: \(fcmToken ?? "")")
-        // Send the FCM token to your server, if needed
+        // Send the FCM token to your server if needed
     }
 
     // Handle APNs token receipt
@@ -78,52 +76,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MessagingDelegate, UNUser
         let userInfo = response.notification.request.content.userInfo
         
         // Update badge count from the notification payload
-        if let badge = userInfo["badge"] as? String, let badgeCount = Int(badge) {
-            UIApplication.shared.applicationIconBadgeNumber = badgeCount
+        if let badge = userInfo["badge"] as? Int {
+            UIApplication.shared.applicationIconBadgeNumber = badge
         }
         
         completionHandler()
     }
 
-    // Optional: Handle foreground notifications (if needed)
+    // Handle foreground notifications
     func userNotificationCenter(_ center: UNUserNotificationCenter,
                                  willPresent notification: UNNotification,
                                  withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         // Show the notification even if the app is in the foreground
-        completionHandler([.badge, .sound]) // Removed .alert if you want to avoid showing an alert in the foreground
+        completionHandler([.alert, .badge, .sound]) // Show alert if needed
     }
 
-
-    // Uncomment if you have background fetch implementation
-    /*
-    func application(_ application: UIApplication, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        print("Background fetch started")
-        guard let userEmail = UserDefaults.standard.string(forKey: "userEmail") else {
-            print("User email not found")
-            completionHandler(.noData)
-            return
-        }
-        print("User email: \(userEmail)")
-
-        let db = Firestore.firestore()
-        db.collection("Agressv_BadgeCounts").document(userEmail).getDocument { document, error in
-            if let error = error {
-                print("Error fetching document: \(error.localizedDescription)")
-                completionHandler(.failed)
-                return
-            }
-
-            guard let document = document, document.exists,
-                  let badgeCount = document.data()?["BadgeCount"] as? Int else {
-                print("Document does not exist or badge count not found")
-                completionHandler(.noData)
-                return
-            }
-
-            UIApplication.shared.applicationIconBadgeNumber = max(badgeCount, 0)
-            print("Badge count updated to: \(badgeCount)")
-            completionHandler(.newData)
-        }
-    }
-    */
+    
 }

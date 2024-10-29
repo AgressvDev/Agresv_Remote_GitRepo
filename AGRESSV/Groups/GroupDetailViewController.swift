@@ -7,6 +7,7 @@ import SwiftUI
 
 
 
+
 struct MessageBubble: View {
     var message: String
     var isCurrentUser: Bool
@@ -32,6 +33,11 @@ class GroupDetailViewController: UIViewController,
                                  UINavigationControllerDelegate {
     
 
+    
+    
+    
+    let btn_Add = UIButton(type: .system)
+    
     var currentUserEmail = Auth.auth().currentUser?.email
     var currentUser_Username: String?
     var groupName: String = ""
@@ -129,7 +135,7 @@ class GroupDetailViewController: UIViewController,
     } //end of load
     
     
-  
+   
     
     private func setupKeyboardObservers() {
          NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
@@ -159,6 +165,17 @@ class GroupDetailViewController: UIViewController,
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         startListeningForMessages()
+        
+        print("View will appear - fetching group members")
+        fetchGroupMembers(for: self.groupName, currentUserEmail: self.currentUserEmail!) { membersArray, error in
+            if let error = error {
+                print("Error fetching group members: \(error)")
+            } else if let membersArray = membersArray {
+                self.group_members_array = membersArray // Store the members in the variable
+                print("Group Members: \(self.group_members_array)")
+            }
+        }
+        
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -220,11 +237,11 @@ class GroupDetailViewController: UIViewController,
     
     func fetchGroupMembers(for groupName: String, currentUserEmail: String, completion: @escaping ([String]?, Error?) -> Void) {
         let db = Firestore.firestore()
-        let groupChatRef = db.collection("Agressv_GroupChat")
+        let groupChatRef = db.collection("Agressv_Groups")
         
         // Query to find the document where GroupChat_GroupName matches groupName
-        groupChatRef.whereField("GroupChat_GroupName", isEqualTo: groupName)
-            .whereField("GroupChat_Members", arrayContains: currentUserEmail)
+        groupChatRef.whereField("Group_Name", isEqualTo: groupName)
+            .whereField("Group_Members", arrayContains: currentUserEmail)
             .getDocuments { (querySnapshot, error) in
                 if let error = error {
                     // Handle the error
@@ -237,7 +254,7 @@ class GroupDetailViewController: UIViewController,
                     }
                     
                     // Retrieve GroupChat_Members array from the first document
-                    if let membersArray = documents.first?.data()["GroupChat_Members"] as? [String] {
+                    if let membersArray = documents.first?.data()["Group_Members"] as? [String] {
                         completion(membersArray, nil) // Pass the members array
                     } else {
                         completion(nil, NSError(domain: "FirestoreError", code: 0, userInfo: [NSLocalizedDescriptionKey: "No members array found."]))
@@ -315,8 +332,63 @@ class GroupDetailViewController: UIViewController,
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleProfileImageTap))
         GroupImageView.addGestureRecognizer(tapGestureRecognizer)
         GroupImageView.isUserInteractionEnabled = true
+        
+        // Set up the Add button
+            let btn_Add = UIButton(type: .system)
+            btn_Add.setImage(UIImage(named: "add_member")?.withRenderingMode(.alwaysOriginal), for: .normal)
+            btn_Add.contentMode = .scaleAspectFit
+            btn_Add.translatesAutoresizingMaskIntoConstraints = false
+            btn_Add.addTarget(self, action: #selector(addButtonTapped), for: .touchUpInside)
+            
+            view.addSubview(btn_Add)
+
+            // Constraints for btn_Add
+            NSLayoutConstraint.activate([
+                btn_Add.bottomAnchor.constraint(equalTo: scrollView.topAnchor, constant: -10),
+                btn_Add.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -30),
+                btn_Add.widthAnchor.constraint(equalToConstant: 50),  // Adjust as needed
+                btn_Add.heightAnchor.constraint(equalToConstant: 50)  // Adjust as needed
+            ])
+        
+        // Set up the Add button
+            let btn_Minus = UIButton(type: .system)
+        btn_Minus.setImage(UIImage(named: "remove_member")?.withRenderingMode(.alwaysOriginal), for: .normal)
+        btn_Minus.contentMode = .scaleAspectFit
+        btn_Minus.translatesAutoresizingMaskIntoConstraints = false
+        btn_Minus.addTarget(self, action: #selector(removeButtonTapped), for: .touchUpInside)
+            
+            view.addSubview(btn_Minus)
+
+            // Constraints for btn_Add
+            NSLayoutConstraint.activate([
+                btn_Minus.bottomAnchor.constraint(equalTo: scrollView.topAnchor, constant: -10),
+                btn_Minus.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 30),
+                btn_Minus.widthAnchor.constraint(equalToConstant: 50),  // Adjust as needed
+                btn_Minus.heightAnchor.constraint(equalToConstant: 50)  // Adjust as needed
+            ])
     }
     
+    
+    @objc private func addButtonTapped() {
+        
+        SharedGroupNameData.shared.groupName_shared = self.groupName
+        SharedGroupNameData.shared.group_members_array_shared = self.group_members_array
+          
+        
+        let addMemberVC = AddMemberViewController()
+        navigationController?.pushViewController(addMemberVC, animated: true)
+        
+    }
+    
+    @objc private func removeButtonTapped() {
+       
+        SharedGroupNameData.shared.groupName_shared = self.groupName
+        SharedGroupNameData.shared.group_members_array_shared = self.group_members_array
+        
+        
+        let removeMemberVC = RemoveMemberViewController()
+        navigationController?.pushViewController(removeMemberVC, animated: true)
+    }
 
     private func setupBackgroundImage() {
         let backgroundImage = UIImageView()
@@ -405,7 +477,7 @@ class GroupDetailViewController: UIViewController,
         let userRef = db.collection("Agressv_BadgeCounts").document(self.currentUserEmail!)
             
             // Reference to the specific group name document within the subcollection
-            let groupRef = userRef.collection("GroupName_ForBadge").document(self.groupName)
+        let groupRef = userRef.collection("GroupName_ForBadge").document(self.groupName)
             
            
                 // Set BadgeCount to zero for the current user
@@ -713,7 +785,7 @@ class GroupDetailViewController: UIViewController,
 
     
    
-
+   
 
     
 

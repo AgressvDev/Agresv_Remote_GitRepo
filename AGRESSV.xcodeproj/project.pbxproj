@@ -50,7 +50,7 @@
 		45F7AB992AB669E700D1DA2C /* GamesCount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F7AB982AB669E700D1DA2C /* GamesCount.swift */; };
 		45FE55E22CC44C9100339F14 /* AddMemberViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45FE55E12CC44C9100339F14 /* AddMemberViewController.swift */; };
 		45FE55E42CC44C9D00339F14 /* RemoveMemberViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45FE55E32CC44C9D00339F14 /* RemoveMemberViewController.swift */; };
-		45FE55E72CC46D6E00339F14 /* BadgeDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45FE55E62CC46D6E00339F14 /* BadgeDictionary.swift */; };
+		45FE55E72CC46D6E00339F14 /* SharedGroupVariables.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45FE55E62CC46D6E00339F14 /* SharedGroupVariables.swift */; };
 		45FE55E92CC5E39600339F14 /* MessageBubble.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45FE55E82CC5E39600339F14 /* MessageBubble.swift */; };
 		45FE55EB2CC64DF900339F14 /* FirebaseMessaging in Resources */ = {isa = PBXBuildFile; fileRef = 45FE55EA2CC64DF900339F14 /* FirebaseMessaging */; };
 		45FE55ED2CC64E3300339F14 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 45FE55EC2CC64E3300339F14 /* FirebaseMessaging */; };
@@ -119,7 +119,7 @@
 		45F7AB982AB669E700D1DA2C /* GamesCount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamesCount.swift; sourceTree = "<group>"; };
 		45FE55E12CC44C9100339F14 /* AddMemberViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMemberViewController.swift; sourceTree = "<group>"; };
 		45FE55E32CC44C9D00339F14 /* RemoveMemberViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoveMemberViewController.swift; sourceTree = "<group>"; };
-		45FE55E62CC46D6E00339F14 /* BadgeDictionary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BadgeDictionary.swift; sourceTree = "<group>"; };
+		45FE55E62CC46D6E00339F14 /* SharedGroupVariables.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedGroupVariables.swift; sourceTree = "<group>"; };
 		45FE55E82CC5E39600339F14 /* MessageBubble.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageBubble.swift; sourceTree = "<group>"; };
 		45FE55EA2CC64DF900339F14 /* FirebaseMessaging */ = {isa = PBXFileReference; lastKnownFileType = folder; path = FirebaseMessaging; sourceTree = "<group>"; };
 		45FE55EF2CC6E77700339F14 /* AGRESSVRelease.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = AGRESSVRelease.entitlements; sourceTree = "<group>"; };
@@ -243,7 +243,7 @@
 				4557F10F2CB9FA4B00C3B4F5 /* GroupDetailViewController.swift */,
 				45FE55E12CC44C9100339F14 /* AddMemberViewController.swift */,
 				45FE55E32CC44C9D00339F14 /* RemoveMemberViewController.swift */,
-				45FE55E62CC46D6E00339F14 /* BadgeDictionary.swift */,
+				45FE55E62CC46D6E00339F14 /* SharedGroupVariables.swift */,
 			);
 			path = Groups;
 			sourceTree = "<group>";
@@ -407,6 +407,7 @@
 			mainGroup = 450A49672A8EC94D00DEB7CF;
 			packageReferences = (
 				4573B8B92A91A868009FAE1E /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				45777F4F2CCF55F9005D727A /* XCRemoteSwiftPackageReference "MessageKit" */,
 			);
 			productRefGroup = 450A49712A8EC94D00DEB7CF /* Products */;
 			projectDirPath = "";
@@ -468,7 +469,7 @@
 				450A49742A8EC94D00DEB7CF /* AppDelegate.swift in Sources */,
 				457C709C2B48A8BA00796A57 /* ScoresVC.swift in Sources */,
 				455BDA2A2ACA3D89003B2EBF /* SinglesSearchOppVC.swift in Sources */,
-				45FE55E72CC46D6E00339F14 /* BadgeDictionary.swift in Sources */,
+				45FE55E72CC46D6E00339F14 /* SharedGroupVariables.swift in Sources */,
 				45BD18232B01E83900EB98C6 /* PieChartSingles.swift in Sources */,
 				45540EE92ACF49DB00F2C932 /* GameHistoryViewController.swift in Sources */,
 				45FE55E42CC44C9D00339F14 /* RemoveMemberViewController.swift in Sources */,
@@ -675,7 +676,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -711,7 +712,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -849,6 +850,14 @@
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 10.0.0;
+			};
+		};
+		45777F4F2CCF55F9005D727A /* XCRemoteSwiftPackageReference "MessageKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/MessageKit/MessageKit";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.3.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
