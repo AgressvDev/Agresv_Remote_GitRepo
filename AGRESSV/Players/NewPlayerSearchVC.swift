@@ -81,7 +81,10 @@ class CircularImageCell: UITableViewCell {
 class NewPlayerSearchVC: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate {
 
     
-    
+    var UserHasMessages = false
+    var messageLabel: UILabel?
+    var BadgeCountNumber: String = ""
+    var playersEmail: String = (Auth.auth().currentUser?.email)!
     
     // UI Components
         let PlayerSearch_label = UILabel()
@@ -136,8 +139,38 @@ class NewPlayerSearchVC: UIViewController, UITableViewDataSource, UITableViewDel
             setupSearchBar()
             setupTableView()
             setupConstraints()
-        }
+            
+            hasBadgeCountsGreaterThanZero{
+                if self.UserHasMessages == true {
+                    self.createMessageLabel()
+                    
+                    NSLayoutConstraint.activate([
+                        self.messageLabel!.bottomAnchor.constraint(equalTo: self.myGroups.topAnchor, constant: 7),
+                        self.messageLabel!.leadingAnchor.constraint(equalTo: self.myGroups.trailingAnchor, constant: -15),
+                        self.messageLabel!.widthAnchor.constraint(equalToConstant: 20),
+                        self.messageLabel!.heightAnchor.constraint(equalToConstant: 20)
+                        
+                        
+                    ])
+                }
+            }
+            
+        } //end load
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        self.hasBadgeCountsGreaterThanZero {
+            if !self.UserHasMessages {
+                self.messageLabel?.isHidden = true
+            } else {
+                
+            }
+        }
+        
+       
+    }
+    
         private func setupSearchBarAppearance() {
             searchBar_Players.backgroundImage = UIImage()
             searchBar_Players.barTintColor = UIColor.white
@@ -238,6 +271,8 @@ class NewPlayerSearchVC: UIViewController, UITableViewDataSource, UITableViewDel
         // Add the button to the view
         view.addSubview(createGroupButton)
         view.addSubview(myGroups)
+        
+        
     }
 
      
@@ -686,8 +721,65 @@ class NewPlayerSearchVC: UIViewController, UITableViewDataSource, UITableViewDel
     }
     
 
-    
-  
+    func hasBadgeCountsGreaterThanZero(completion: @escaping () -> Void) {
+        let db = Firestore.firestore()
+
+        // Reference to the user's document
+        let userRef = db.collection("Agressv_BadgeCounts").document(playersEmail)
         
+        // Reference to the subcollection GroupName_ForBadge
+        let groupRef = userRef.collection("GroupName_ForBadge")
+
+        // Get documents from the subcollection
+        groupRef.getDocuments { (subQuerySnapshot, error) in
+            if let error = error {
+                print("Error getting sub-collection documents: \(error)")
+                self.UserHasMessages = false
+                completion()
+                return
+            }
+
+            if let subDocuments = subQuerySnapshot?.documents {
+                for subDocument in subDocuments {
+                    if let badgeCount = subDocument.data()["BadgeCount"] as? Int, badgeCount > 0 {
+                        self.UserHasMessages = true
+                        self.BadgeCountNumber = String(badgeCount)
+                        
+                        completion()
+                        return
+                    }
+                }
+            }
+            
+            // If no badge counts were found > 0
+            self.UserHasMessages = false
+            completion()
+        }
+    }
+  
+    func createMessageLabel() {
+            // Create the label
+            messageLabel = UILabel()
+            messageLabel?.text = self.BadgeCountNumber
+            messageLabel?.textColor = .white
+            messageLabel?.backgroundColor = .red
+            messageLabel?.textAlignment = .center
+            messageLabel?.font = UIFont.systemFont(ofSize: 15)
+            
+        // Set a small size for the circular label
+              
+               messageLabel?.layer.cornerRadius = 10 // Half of the width/height for circular shape
+               messageLabel?.clipsToBounds = true // Ensures the corners are clipped
+        
+            // Set the frame or constraints
+            messageLabel?.translatesAutoresizingMaskIntoConstraints = false
+            view.addSubview(messageLabel!)
+        
+            
        
-}
+            
+            // Bring label to the front
+            view.bringSubviewToFront(messageLabel!)
+        }
+       
+} // end of class

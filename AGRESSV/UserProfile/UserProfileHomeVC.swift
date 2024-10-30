@@ -18,6 +18,7 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
     
     var UserHasMessages = false
     var messageLabel: UILabel?
+    var BadgeCountNumber: String = ""
     
     var player: String = ""
     var Weighted_Score: Double = 0.60
@@ -1386,8 +1387,11 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
                     self.messageLabel!.leadingAnchor.constraint(equalTo: PlayersButton.trailingAnchor, constant: -15),
                     self.messageLabel!.widthAnchor.constraint(equalToConstant: 20),
                     self.messageLabel!.heightAnchor.constraint(equalToConstant: 20)
+                    
+                    
                         ])
             }
+            
             
             self.hideLoadingView()
         }
@@ -1399,15 +1403,29 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
         
     } //end of load
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        self.hasBadgeCountsGreaterThanZero {
+            if !self.UserHasMessages {
+                self.messageLabel?.isHidden = true
+            } else {
+                
+            }
+        }
+        
+       
+    }
+    
     
     func createMessageLabel() {
             // Create the label
             messageLabel = UILabel()
-            messageLabel?.text = "!"
+            messageLabel?.text = self.BadgeCountNumber
             messageLabel?.textColor = .white
             messageLabel?.backgroundColor = .red
             messageLabel?.textAlignment = .center
-            messageLabel?.font = UIFont.systemFont(ofSize: 13)
+            messageLabel?.font = UIFont.systemFont(ofSize: 15)
             
         // Set a small size for the circular label
               
@@ -1424,7 +1442,9 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
             // Bring label to the front
             view.bringSubviewToFront(messageLabel!)
         }
+
     
+   
 
 
     func checkUserVerification() {
@@ -1751,6 +1771,8 @@ class UserProfileHomeVC: UIViewController, UIImagePickerControllerDelegate & UIN
                 for subDocument in subDocuments {
                     if let badgeCount = subDocument.data()["BadgeCount"] as? Int, badgeCount > 0 {
                         self.UserHasMessages = true
+                        self.BadgeCountNumber = String(badgeCount)
+                        
                         completion()
                         return
                     }

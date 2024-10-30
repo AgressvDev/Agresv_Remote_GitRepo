@@ -202,7 +202,7 @@ class RemoveMemberViewController: UIViewController, UITableViewDataSource, UITab
         let heightScalingFactor = screenHeight / 932.0 // Use a reference height
         let scalingFactor = min(widthScalingFactor, heightScalingFactor)
         
-        PlayerSearch_label.text = "Select to Add Member"
+        PlayerSearch_label.text = "Select to Remove Member"
         PlayerSearch_label.textAlignment = .center
         PlayerSearch_label.translatesAutoresizingMaskIntoConstraints = false
         PlayerSearch_label.textColor = UIColor.white
